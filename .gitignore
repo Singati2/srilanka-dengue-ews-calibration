@@ -1,0 +1,55 @@
+# ---- Data & quarantine: NEVER commit ----
+data_quarantine/
+raw_bulk/
+frozen/*.csv
+data/*           # data/ holds only a README (force-added explicitly)
+!data/README.md
+
+# ---- Raw / large / binary data formats ----
+*.pdf
+*.zip
+*.tar
+*.gz
+*.tgz
+*.xz
+*.7z
+*.h5
+*.hdf5
+*.nc
+*.nc4
+*.grib
+*.grib2
+*.tif
+*.tiff
+*.img
+*.parquet
+*.feather
+
+# ---- CSV: blocked by default, EXCEPT curated templates/examples ----
+*.csv
+!geomatics_templates/*.csv
+!**/templates/*.csv
+!**/*_template.csv
+!**/example_*.csv
+
+# ---- Secrets / correspondence / private ----
+.env
+.env.*
+*.pem
+*.key
+credentials*
+secrets*
+*email*.md
+*correspondence*
+private/
+
+# ---- Python / OS / editor cruft ----
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+.DS_Store
+*.log
+.idea/
+.vscode/
