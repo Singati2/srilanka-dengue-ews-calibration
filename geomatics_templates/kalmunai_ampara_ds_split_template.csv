@@ -1,0 +1,20 @@
+ds_name_source,ds_name_standardized,parent_district,assigned_rdhs,assignment_source,match_status,notes
+Kalmunai,Kalmunai,Ampara,Kalmunai,candidate-geographic; CONFIRM vs official RDHS-Kalmunai list,candidate_high,LK5221; coastal core; eponymous DS of Kalmunai RDHS
+Karaitivu,Karaitivu,Ampara,Kalmunai,candidate-geographic; CONFIRM vs official RDHS-Kalmunai list,candidate_high,LK5227; coastal Tamil-majority
+Sainthamaruthu,Sainthamaruthu,Ampara,Kalmunai,candidate-geographic; CONFIRM vs official RDHS-Kalmunai list,candidate_high,LK5225; coastal Muslim-majority (smallest DS ~3.35 sqkm)
+Sammanthurai,Sammanthurai,Ampara,Kalmunai,candidate-geographic; CONFIRM vs official RDHS-Kalmunai list,candidate_high,LK5218; coastal-belt Muslim-majority
+Nintavur,Nintavur,Ampara,Kalmunai,candidate-geographic; CONFIRM vs official RDHS-Kalmunai list,candidate_high,LK5230; alias 'Ninthavur'; coastal Muslim-majority
+Addalaichenai,Addalaichchenai,Ampara,Kalmunai,candidate-geographic; CONFIRM vs official RDHS-Kalmunai list,candidate_high,LK5233; alias 'Addalaichchenai'; coastal
+Akkaraipattu,Akkaraipattu,Ampara,Kalmunai,candidate-geographic; CONFIRM vs official RDHS-Kalmunai list,candidate_high,LK5236; coastal town
+Alayadivembu,Alayadivembu,Ampara,Kalmunai,candidate-geographic; CONFIRM vs official RDHS-Kalmunai list,candidate_medium,LK5239; near coastal belt
+Irakkamam,Irakkamam,Ampara,Kalmunai,candidate-geographic; CONFIRM vs official RDHS-Kalmunai list,candidate_medium,LK5234; inland-of-coast; verify
+Pottuvil,Pottuvil,Ampara,Kalmunai,candidate-geographic; CONFIRM vs official RDHS-Kalmunai list,candidate_medium,LK5248; far south-east coast; verify RDHS
+Tirukkovil,Tirukkovil,Ampara,Kalmunai,candidate-geographic; CONFIRM vs official RDHS-Kalmunai list,candidate_medium,LK5245; alias 'Thirukkovil'; south-east coast
+Ampara,Ampara,Ampara,Ampara,candidate-geographic; CONFIRM vs official RDHS-Kalmunai list,candidate_high,LK5215; interior district capital; Ampara RDHS core
+Dehiattakandiya,Dehiattakandiya,Ampara,Ampara,candidate-geographic; CONFIRM vs official RDHS-Kalmunai list,candidate_high,LK5203; interior north-west Sinhala-majority
+Mahaoya,Mahaoya,Ampara,Ampara,candidate-geographic; CONFIRM vs official RDHS-Kalmunai list,candidate_high,LK5209; interior north Sinhala-majority
+Padiyathalawa,Padiyathalawa,Ampara,Ampara,candidate-geographic; CONFIRM vs official RDHS-Kalmunai list,candidate_high,LK5206; interior north Sinhala-majority
+Uhana,Uhana,Ampara,Ampara,candidate-geographic; CONFIRM vs official RDHS-Kalmunai list,candidate_high,LK5212; interior Sinhala-majority
+Damana,Damana,Ampara,Ampara,candidate-geographic; CONFIRM vs official RDHS-Kalmunai list,candidate_medium,LK5242; interior; BORDERLINE - verify RDHS
+Navithanveli,Navithanveli,Ampara,Ampara,candidate-geographic; CONFIRM vs official RDHS-Kalmunai list,candidate_medium,LK5216; near Ampara town; BORDERLINE - verify RDHS
+Lahugala,Lahugala,Ampara,Ampara,candidate-geographic; CONFIRM vs official RDHS-Kalmunai list,candidate_medium,LK5251; far south interior; BORDERLINE - verify RDHS
