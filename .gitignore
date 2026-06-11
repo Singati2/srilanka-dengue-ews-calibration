@@ -25,6 +25,22 @@ data/*           # data/ holds only a README (force-added explicitly)
 *.parquet
 *.feather
 
+# ---- Geospatial vector / boundary formats: NEVER commit ----
+*.shp
+*.dbf
+*.shx
+*.prj
+*.cpg
+*.qpj
+*.sbn
+*.sbx
+*.gpkg
+*.geojson
+*.kml
+*.kmz
+*.gdb/
+boundary_recon/
+
 # ---- CSV: blocked by default, EXCEPT curated templates/examples ----
 *.csv
 !geomatics_templates/*.csv
