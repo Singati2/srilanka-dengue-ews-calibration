@@ -1,27 +1,27 @@
 rdhs_name_frozen,official_rdhs_name,district_name,province_name,admin_level,geometry_source_candidate,geometry_id,boundary_year,population_source_candidate,population_year,match_status,notes
-Colombo,Colombo,Colombo,Western,RDHS (≈ADM2 district),HDX_ADM2,TBD,TBD,WorldPop_annual,TBD,pending_geometry,1:1 district
-Gampaha,Gampaha,Gampaha,Western,RDHS (≈ADM2 district),HDX_ADM2,TBD,TBD,WorldPop_annual,TBD,pending_geometry,1:1 district
-Kalutara,Kalutara,Kalutara,Western,RDHS (≈ADM2 district),HDX_ADM2,TBD,TBD,WorldPop_annual,TBD,pending_geometry,1:1 district
-Kandy,Kandy,Kandy,Central,RDHS (≈ADM2 district),HDX_ADM2,TBD,TBD,WorldPop_annual,TBD,pending_geometry,1:1 district
-Matale,Matale,Matale,Central,RDHS (≈ADM2 district),HDX_ADM2,TBD,TBD,WorldPop_annual,TBD,pending_geometry,1:1 district
-Nuwara Eliya,Nuwara Eliya,Nuwara Eliya,Central,RDHS (≈ADM2 district),HDX_ADM2,TBD,TBD,WorldPop_annual,TBD,pending_geometry,ALIAS: source spellings 'Nuwaraeliya'/'Nuwara-Eliya'
-Galle,Galle,Galle,Southern,RDHS (≈ADM2 district),HDX_ADM2,TBD,TBD,WorldPop_annual,TBD,pending_geometry,1:1 district
-Hambantota,Hambantota,Hambantota,Southern,RDHS (≈ADM2 district),HDX_ADM2,TBD,TBD,WorldPop_annual,TBD,pending_geometry,1:1 district
-Matara,Matara,Matara,Southern,RDHS (≈ADM2 district),HDX_ADM2,TBD,TBD,WorldPop_annual,TBD,pending_geometry,1:1 district
-Jaffna,Jaffna,Jaffna,Northern,RDHS (≈ADM2 district),HDX_ADM2,TBD,TBD,WorldPop_annual,TBD,pending_geometry,1:1 district
-Killinochchi,Kilinochchi,Kilinochchi,Northern,RDHS (≈ADM2 district),HDX_ADM2,TBD,TBD,WorldPop_annual,TBD,pending_geometry,ALIAS: frozen 'Killinochchi' -> official 'Kilinochchi' (one L)
-Mannar,Mannar,Mannar,Northern,RDHS (≈ADM2 district),HDX_ADM2,TBD,TBD,WorldPop_annual,TBD,pending_geometry,1:1 district
-Vavuniya,Vavuniya,Vavuniya,Northern,RDHS (≈ADM2 district),HDX_ADM2,TBD,TBD,WorldPop_annual,TBD,pending_geometry,1:1 district
-Mullaitivu,Mullaitivu,Mullaitivu,Northern,RDHS (≈ADM2 district),HDX_ADM2,TBD,TBD,WorldPop_annual,TBD,pending_geometry,ALIAS: source spelling 'Mullaittivu'
-Batticaloa,Batticaloa,Batticaloa,Eastern,RDHS (≈ADM2 district),HDX_ADM2,TBD,TBD,WorldPop_annual,TBD,pending_geometry,1:1 district
-Ampara,Ampara (RDHS),Ampara,Eastern,RDHS (PARTIAL Ampara district),HDX_ADM3_aggregate,TBD,TBD,WorldPop_annual,TBD,pending_split,"SPLIT: Ampara district is served by TWO RDHS (Ampara + Kalmunai). This row = non-Kalmunai DS divisions of Ampara."
-Trincomalee,Trincomalee,Trincomalee,Eastern,RDHS (≈ADM2 district),HDX_ADM2,TBD,TBD,WorldPop_annual,TBD,pending_geometry,1:1 district
-Kalmunai,Kalmunai (RDHS),Ampara,Eastern,RDHS (SUB-district of Ampara; ADM2 split),HDX_ADM3_aggregate,TBD,TBD,WorldPop_annual,TBD,needs_DSdivision_aggregation,"KEY SPLIT CASE: Kalmunai is NOT a district. It is a coastal RDHS within Ampara district. No standard ADM2 geometry exists; reconstruct by aggregating the Kalmunai-side DS divisions (ADM3), or merge with Ampara if split infeasible (document decision)."
-Kurunegala,Kurunegala,Kurunegala,North Western,RDHS (≈ADM2 district),HDX_ADM2,TBD,TBD,WorldPop_annual,TBD,pending_geometry,1:1 district
-Puttalam,Puttalam,Puttalam,North Western,RDHS (≈ADM2 district),HDX_ADM2,TBD,TBD,WorldPop_annual,TBD,pending_geometry,1:1 district
-Anuradhapura,Anuradhapura,Anuradhapura,North Central,RDHS (≈ADM2 district),HDX_ADM2,TBD,TBD,WorldPop_annual,TBD,pending_geometry,"ALIAS: frozen sometimes truncated 'Anuradhapur' in raw PDFs (resolved in extractor)"
-Polonnaruwa,Polonnaruwa,Polonnaruwa,North Central,RDHS (≈ADM2 district),HDX_ADM2,TBD,TBD,WorldPop_annual,TBD,pending_geometry,1:1 district
-Badulla,Badulla,Badulla,Uva,RDHS (≈ADM2 district),HDX_ADM2,TBD,TBD,WorldPop_annual,TBD,pending_geometry,1:1 district
-Moneragala,Monaragala,Monaragala,Uva,RDHS (≈ADM2 district),HDX_ADM2,TBD,TBD,WorldPop_annual,TBD,pending_geometry,ALIAS: frozen 'Moneragala' -> official 'Monaragala'
-Ratnapura,Ratnapura,Ratnapura,Sabaragamuwa,RDHS (≈ADM2 district),HDX_ADM2,TBD,TBD,WorldPop_annual,TBD,pending_geometry,1:1 district
-Kegalle,Kegalle,Kegalle,Sabaragamuwa,RDHS (≈ADM2 district),HDX_ADM2,TBD,TBD,WorldPop_annual,TBD,pending_geometry,1:1 district
+Colombo,Colombo,Colombo,Western,RDHS (≈ADM2 district),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK11,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_1to1,1:1 district = COD-AB ADM2 LK11
+Gampaha,Gampaha,Gampaha,Western,RDHS (≈ADM2 district),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK12,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_1to1,1:1 district = COD-AB ADM2 LK12
+Kalutara,Kalutara,Kalutara,Western,RDHS (≈ADM2 district),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK13,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_1to1,1:1 district = COD-AB ADM2 LK13
+Kandy,Kandy,Kandy,Central,RDHS (≈ADM2 district),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK21,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_1to1,1:1 district = COD-AB ADM2 LK21
+Matale,Matale,Matale,Central,RDHS (≈ADM2 district),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK22,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_1to1,1:1 district = COD-AB ADM2 LK22
+Nuwara Eliya,Nuwara Eliya,Nuwara Eliya,Central,RDHS (≈ADM2 district),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK23,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_1to1,1:1 district = COD-AB ADM2 LK23
+Galle,Galle,Galle,Southern,RDHS (≈ADM2 district),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK31,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_1to1,1:1 district = COD-AB ADM2 LK31
+Hambantota,Hambantota,Hambantota,Southern,RDHS (≈ADM2 district),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK33,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_1to1,1:1 district = COD-AB ADM2 LK33
+Matara,Matara,Matara,Southern,RDHS (≈ADM2 district),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK32,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_1to1,1:1 district = COD-AB ADM2 LK32
+Jaffna,Jaffna,Jaffna,Northern,RDHS (≈ADM2 district),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK41,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_1to1,1:1 district = COD-AB ADM2 LK41
+Killinochchi,Kilinochchi,Kilinochchi,Northern,RDHS (≈ADM2 district),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK45,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_1to1,1:1 district = COD-AB ADM2 LK45; ALIAS: frozen 'Killinochchi' -> COD-AB ADM2 'Kilinochchi' (one L)
+Mannar,Mannar,Mannar,Northern,RDHS (≈ADM2 district),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK42,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_1to1,1:1 district = COD-AB ADM2 LK42
+Vavuniya,Vavuniya,Vavuniya,Northern,RDHS (≈ADM2 district),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK43,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_1to1,1:1 district = COD-AB ADM2 LK43
+Mullaitivu,Mullaitivu,Mullaitivu,Northern,RDHS (≈ADM2 district),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK44,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_1to1,1:1 district = COD-AB ADM2 LK44
+Batticaloa,Batticaloa,Batticaloa,Eastern,RDHS (≈ADM2 district),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK51,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_1to1,1:1 district = COD-AB ADM2 LK51
+Ampara,Ampara (RDHS),Ampara,Eastern,RDHS (PARTIAL Ampara district),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK52A,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_ds_dissolve_7,geometry_id LK52A; dissolved from 7 complement-confirmed Ampara DS divisions
+Trincomalee,Trincomalee,Trincomalee,Eastern,RDHS (≈ADM2 district),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK53,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_1to1,1:1 district = COD-AB ADM2 LK53
+Kalmunai,Kalmunai (RDHS),Ampara,Eastern,RDHS (SUB-district of Ampara; ADM2 split),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK52K,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_ds_dissolve_12,geometry_id LK52K; dissolved from 12 confirmed Kalmunai DS divisions (official RDHS-Kalmunai MOH list)
+Kurunegala,Kurunegala,Kurunegala,North Western,RDHS (≈ADM2 district),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK61,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_1to1,1:1 district = COD-AB ADM2 LK61
+Puttalam,Puttalam,Puttalam,North Western,RDHS (≈ADM2 district),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK62,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_1to1,1:1 district = COD-AB ADM2 LK62
+Anuradhapura,Anuradhapura,Anuradhapura,North Central,RDHS (≈ADM2 district),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK71,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_1to1,1:1 district = COD-AB ADM2 LK71
+Polonnaruwa,Polonnaruwa,Polonnaruwa,North Central,RDHS (≈ADM2 district),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK72,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_1to1,1:1 district = COD-AB ADM2 LK72
+Badulla,Badulla,Badulla,Uva,RDHS (≈ADM2 district),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK81,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_1to1,1:1 district = COD-AB ADM2 LK81
+Moneragala,Monaragala,Monaragala,Uva,RDHS (≈ADM2 district),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK82,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_1to1,1:1 district = COD-AB ADM2 LK82; ALIAS: frozen 'Moneragala' -> COD-AB ADM2 'Monaragala'
+Ratnapura,Ratnapura,Ratnapura,Sabaragamuwa,RDHS (≈ADM2 district),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK91,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_1to1,1:1 district = COD-AB ADM2 LK91
+Kegalle,Kegalle,Kegalle,Sabaragamuwa,RDHS (≈ADM2 district),"HDX COD-AB Sri Lanka ADM2/ADM3, Survey Department via HDX/OCHA",LK92,2022-08-16 / v03,WorldPop_annual,TBD,confirmed_1to1,1:1 district = COD-AB ADM2 LK92
