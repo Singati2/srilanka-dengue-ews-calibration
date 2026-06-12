@@ -94,3 +94,53 @@ Retrospective **observational** evaluation on a **Sri Lanka RDHS × epidemiologi
 3. **No modeling until the exposure table is frozen** and this plan is registered.
 
 *Design lock: spatial unit, temporal unit, outcome, denominators, adjacency, primary metric (net benefit at cost-anchored `p*`), threshold policy, and go/no-go are fixed here, before any climate/exposure or modeling work.*
+
+---
+
+## Addendum — Analysis-frame clarification after linkage QC (2026-06-12)
+
+*This is the first amendment to this preregistration after the outcome↔exposure↔population linkage and its QC. It is a **pre-modeling clarification of the analysis frame (the outcome↔climate join rule), based solely on linkage/QC findings**. **No models have been run; no outbreak labels, AUC, calibration, decision-curve, regression, or forecast quantities have been computed.** Nothing in the original plan above is deleted or revised — this addendum only adds the now-finalized linkage rule that the original plan left to be specified at exposure-table construction.*
+
+### 1. Reason for this addendum
+Linkage QC (operating only on already-frozen layers) established that the frozen outcome's stored `week` variable is the **WER issue number**, not the true ISO climate week. The WER issue number is offset from the ISO week by a **year-varying** amount (+1 in most years, +2 in 2021; issue *N* reports the surveillance week that closed ~1 week earlier, and WER's Saturday–Friday epi-week sits a further ~1 week behind ISO Monday–Sunday). A literal `week == epi_week` join therefore **misaligns dengue outcome and climate exposure by 1–2 ISO weeks** — unacceptable for a climate-lag EWS. **Primary modeling will use the date-aligned v2 linked table**, in which each WER issue is matched to the ISO climate week derived from its returns-cutoff / surveillance date. This is a change to the *join rule only*; the frozen data are unchanged.
+
+### 2. Primary analysis table
+- **Primary table:** `~/data_quarantine/analysis_tables/dengue_climate_population_linked_2018_2025_v2_date_aligned.csv`
+- **SHA256:** `3a197d610fde721ffdf2be6388df88fea675a5b49bf131a0919fd89ec2518e91`
+- **Status:** quarantined, read-only, **not committed** (git-ignored, like all data artifacts).
+- The **v1 literal-week table** (`d892f62f…`) is retained **only** as an audit / sensitivity artifact (see S1), not for primary inference.
+
+### 3. Primary modeling filter
+Primary analyses use only rows satisfying **all** of:
+- `outcome_missing_flag == 0`
+- `exposure_missing_flag == 0`
+- `population_missing_flag == 0`
+- `2018 <= epi_year <= 2025`
+
+This yields **10,705 fully-modelable RDHS × epi-week rows**. Rows failing the filter are retained in the table (flagged) for transparency but are excluded from primary inference; missingness is **never imputed**.
+
+### 4. Handling of calendar anomalies (no imputation)
+- **2021 issue no_53 — excluded** from the primary table as a verbatim **duplicate of no_52** (identical returns-cutoff 17 Dec 2021, byte-identical 26-RDHS counts, identical cumulative 25,084; 26 rows / 771 cases). It contains no new dengue data; its nominal ISO week (2021-W51) is therefore documented missing.
+- **2021 missing issue no_43 — genuinely missing** (publication gap → ISO **2021-W41** unreported); treated as missing outcome, **no imputation**.
+- **2022 missing issue no_44 — remains documented missing** (genuinely absent from the public archive → ISO **2022-W43**); **no imputation**.
+- **2017-W52 outside-frame rows** (from 2018 issue no_01, whose surveillance week precedes the study frame) — **26 rows retained for provenance** but excluded from primary modeling by the `2018 <= epi_year` filter.
+
+### 5. Planned sensitivity analyses (added)
+- **S1 — Naive literal week-number linkage (v1):** repeat the primary evaluation on the v1 `week == epi_week` table as an audit/sensitivity comparison, quantifying how much the 1–2-week misalignment moves calibration / net-benefit results.
+- **S2 — Climate-lag sweep:** evaluate climate lags of **0–8 weeks** (consistent with §N's DLNM lag-window sensitivity) to assess robustness to lag structure; the year-varying offset finding makes lag a primary robustness axis.
+- **S3 — Drop late-2021 anomaly window:** exclude the affected late-2021 calendar-anomaly weeks and confirm the main conclusions are not driven by that period.
+
+### 6. Scope statement
+This addendum affects **only the analysis-frame / linkage rule**. It does **not** change:
+- the frozen outcome data (`99f0b9b1…`),
+- the frozen exposure data (`3900082b…`),
+- the population denominators (`e4585741…`),
+- the planned primary metric or model-evaluation objective (net benefit at cost-anchored `p*`; calibration; recalibration; decision-curve/DCA — all per the sections above).
+
+It uses **no outcome-modeling results, because no models have been run.** The go/no-go criteria (§O) and threshold policy are unchanged.
+
+### 7. Provenance references
+- Calendar-anomaly investigation & decision: [`docs/wer_2021_calendar_anomaly_decision_memo.md`](./wer_2021_calendar_anomaly_decision_memo.md)
+- Date-aligned v2 build & QC (primary): [`docs/analysis_table_linkage_v2_date_aligned_report.md`](./analysis_table_linkage_v2_date_aligned_report.md)
+- Literal-week v1 linkage (audit/sensitivity, S1): [`docs/analysis_table_linkage_v1_report.md`](./analysis_table_linkage_v1_report.md)
+- Exposure freeze of record: [`docs/exposure_freeze_v1.md`](./exposure_freeze_v1.md)
