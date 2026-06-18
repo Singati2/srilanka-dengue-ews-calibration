@@ -46,11 +46,17 @@ th['flag_h4_prev_lt1pct']=th.h4_prevalence<0.01
 th['flag_h4_prev_gt80pct']=th.h4_prevalence>0.80
 th.to_csv(f'{OUT}/colombia_label_thresholds_train_only_v1.csv',index=False)
 
-# lag availability (panel rows have both precip+temp, so avail == (GID_2, wk-k) in panel)
+# lag availability — CLIMATE-GRID keyset (NOT the OpenDengue observed panel).
+# A climate lag k at week t is available iff the full gap-free climate grid has (GID_2, t-k);
+# it does NOT require an OpenDengue outcome row at t-k. (Corrected 2026-06-18.)
+GRID='/home/mpcrlab/data_quarantine/colombia_climate_linkage_full_v1/colombia_weekly_climate_precip_temp_gid2_v1.csv'
+_grid=pd.read_csv(GRID,dtype={'week_start':str})
+_cok=_grid[_grid.precip_mm_week.notna()&_grid.temp_C_week.notna()]
+ckey=set(zip(_cok.GID_2,_cok.week_start))
 la=panel[['GID_2','week_start','split','wk']].copy()
 for k in range(9):
-    shifted=set(zip(panel.GID_2,panel.wk-pd.Timedelta(weeks=0)))  # placeholder
-    avail=[ (g,w-pd.Timedelta(weeks=k)) in keyset for g,w in zip(panel.GID_2,panel.wk)]
+    sh=(panel.wk-pd.Timedelta(weeks=k)).dt.date.astype(str)
+    avail=[ (g,w) in ckey for g,w in zip(panel.GID_2,sh)]
     la[f'precip_lag{k}_avail']=avail; la[f'temp_lag{k}_avail']=avail
 full=np.all([la[f'precip_lag{k}_avail'] for k in range(9)],axis=0)
 la['full_lag0_8_precip']=full; la['full_lag0_8_temp']=full; la['full_lag0_8_both']=full
