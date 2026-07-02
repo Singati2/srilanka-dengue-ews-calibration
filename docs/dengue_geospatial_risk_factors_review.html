@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Geospatial & Remotely-Sensed Risk Factors for Dengue — Literature Review</title>
+<style>
+  :root{
+    --bg:#0f1720; --panel:#ffffff; --ink:#1a2430; --muted:#5b6b7b;
+    --accent:#0b6e4f; --accent2:#1d6fa5; --line:#e3e8ee;
+    --strong:#0b6e4f; --moderate:#c98a00; --weak:#b04632; --mixed:#6b57b8;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#eef2f6;color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.55;font-size:16px}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 22px 80px}
+  header.hero{background:linear-gradient(135deg,#0b6e4f 0%,#0e4f6e 100%);color:#fff;
+    padding:46px 22px 40px;margin-bottom:26px}
+  header.hero .inner{max-width:1180px;margin:0 auto}
+  header.hero h1{margin:0 0 8px;font-size:30px;line-height:1.2;font-weight:700}
+  header.hero p{margin:6px 0 0;max-width:900px;color:#e6f2ee;font-size:16px}
+  .tag{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);
+    padding:3px 10px;border-radius:20px;font-size:12.5px;margin:10px 8px 0 0}
+  h2{font-size:22px;margin:38px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--accent);color:#0c3a2c}
+  h3{font-size:17.5px;margin:22px 0 6px;color:var(--accent2)}
+  p{margin:10px 0}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px 24px;
+    box-shadow:0 1px 3px rgba(16,40,60,.05);margin-bottom:18px}
+  .lead{font-size:16.5px;color:#2a3745}
+  table{border-collapse:collapse;width:100%;font-size:13.3px;margin:6px 0 4px}
+  caption{caption-side:top;text-align:left;color:var(--muted);font-size:12.5px;margin-bottom:8px}
+  th,td{border:1px solid var(--line);padding:8px 9px;vertical-align:top;text-align:left}
+  th{background:#f2f6f9;font-weight:700;color:#243444;position:sticky;top:0}
+  tbody tr:nth-child(even){background:#f9fbfc}
+  .pill{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11.5px;font-weight:700;color:#fff;white-space:nowrap}
+  .s-strong{background:var(--strong)} .s-mod{background:var(--moderate)}
+  .s-weak{background:var(--weak)} .s-mixed{background:var(--mixed)}
+  .d-easy{color:var(--strong);font-weight:700} .d-mod{color:var(--moderate);font-weight:700}
+  .d-hard{color:var(--weak);font-weight:700}
+  .role{font-size:12px;color:#33475b}
+  .refnum{color:var(--accent2);font-weight:600;white-space:nowrap}
+  .callout{border-left:4px solid var(--accent2);background:#f2f8fc;padding:12px 16px;border-radius:0 8px 8px 0;margin:14px 0}
+  .gap{border-left:4px solid #b04632;background:#fdf3f1}
+  ol.refs{font-size:13px;color:#33475b;padding-left:22px}
+  ol.refs li{margin-bottom:9px}
+  a{color:var(--accent2);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .legend{font-size:12.5px;color:var(--muted);margin:8px 0 2px}
+  .legend .pill{margin-right:4px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:820px){.grid2{grid-template-columns:1fr}}
+  .toc{columns:2;font-size:14px;color:var(--accent2)}
+  @media(max-width:640px){.toc{columns:1}}
+  .toc a{display:block;margin:3px 0}
+  .small{font-size:12.5px;color:var(--muted)}
+  .num{font-variant-numeric:tabular-nums}
+  .tbl-scroll{overflow-x:auto}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="inner">
+    <h1>Geospatial &amp; Remotely-Sensed Risk Factors for Dengue Transmission</h1>
+    <p>A citation-backed literature review to guide extension of a dengue early-warning exposure layer beyond temperature, humidity and precipitation — for areal health-unit × epidemiological-week modelling in Sri Lanka (RDHS divisions) and Colombia (municipalities).</p>
+    <div>
+      <span class="tag">Calibration &amp; net-benefit early-warning study</span>
+      <span class="tag">ERA5-Land + CHIRPS baseline</span>
+      <span class="tag">Focus: additional geomatics-derivable drivers</span>
+      <span class="tag">59 peer-reviewed sources</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="panel">
+    <p class="lead">This review catalogues every geomatics / remotely-sensed / geospatially-derivable factor with published evidence as a driver or effect-modifier of dengue, so the exposure layer extension misses nothing important. For each factor it records the direction and strength of association, the mechanism through the <em>Aedes</em> life cycle or human–vector contact, the operating spatial/temporal scale and lag, an open data product for derivation, and the factor's modelling role (driver / effect-modifier / confounder). Evidence from South Asia, Sri Lanka and tropical monsoon settings is flagged throughout, alongside conflicts and untested gaps.</p>
+    <div class="legend">
+      <strong>Evidence:</strong>
+      <span class="pill s-strong">strong</span><span class="pill s-mod">moderate</span><span class="pill s-weak">weak</span><span class="pill s-mixed">mixed/conflicting</span>
+      &nbsp;·&nbsp; <strong>Derivability:</strong> <span class="d-easy">easy</span> · <span class="d-mod">moderate</span> · <span class="d-hard">hard</span>
+    </div>
+    <div class="toc" style="margin-top:14px">
+      <a href="#table">1 · Ranked summary table</a>
+      <a href="#top">2 · Top variables not to miss</a>
+      <a href="#interactions">3 · Interactions with temp/humidity/rain</a>
+      <a href="#reviews">4 · Reviews to read in full</a>
+      <a href="#gaps">5 · Strong globally, untested in South Asia</a>
+      <a href="#refs">6 · Full references</a>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 1 : TABLE ============ -->
+  <h2 id="table">1 · Ranked summary table</h2>
+  <p class="small">Ordered by combined strength of evidence and relevance to an areal early-warning model. "Role" indicates whether a factor belongs in the exposure layer (driver), should stratify or interact (modifier), or must be adjusted for to avoid bias (confounder). Many factors play more than one role.</p>
+
+  <div class="panel tbl-scroll">
+  <table>
+    <caption>Reference numbers link to the full list in §6.</caption>
+    <thead>
+      <tr>
+        <th style="min-width:150px">Factor</th>
+        <th>Evidence</th>
+        <th style="min-width:150px">Direction &amp; scale / lag</th>
+        <th>Derivability</th>
+        <th style="min-width:190px">Suggested open product &amp; resolution</th>
+        <th style="min-width:120px">Role</th>
+        <th>Key refs</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Elevation / altitude</strong></td>
+        <td><span class="pill s-strong">strong</span></td>
+        <td>Negative above a thermal ceiling (~1,500–2,000 m; expanding upward). Static; bounds seasonal suitability.</td>
+        <td class="d-easy">easy</td>
+        <td>Copernicus GLO-30 DEM / SRTM (30 m)</td>
+        <td class="role">Modifier (thermal envelope), confounder</td>
+        <td class="refnum">[10][11][12][13]</td>
+      </tr>
+      <tr>
+        <td><strong>Built-up density / impervious surface / urbanisation</strong></td>
+        <td><span class="pill s-strong">strong</span></td>
+        <td>Positive; neighbourhood→city; contemporaneous to weeks.</td>
+        <td class="d-easy">easy</td>
+        <td>GHSL built-up (10–100 m); ESA WorldCover (10 m); NDBI from Sentinel-2/Landsat</td>
+        <td class="role">Driver + confounder</td>
+        <td class="refnum">[2][6][22][24][26][42]</td>
+      </tr>
+      <tr>
+        <td><strong>Diurnal temperature range (DTR)</strong></td>
+        <td><span class="pill s-strong">strong</span> <span class="small">(mechanistic)</span></td>
+        <td>Non-linear: large DTR <em>reduces</em> transmission at warm means (&gt;18&nbsp;°C), raises it at cool means. Lag ~1–8 wk.</td>
+        <td class="d-mod">moderate</td>
+        <td>ERA5-Land hourly T; or MODIS MOD11 LST day–night spread (1 km)</td>
+        <td class="role">Driver / modifier</td>
+        <td class="refnum">[27][28][29][31]</td>
+      </tr>
+      <tr>
+        <td><strong>Land-surface temperature / urban heat island</strong></td>
+        <td><span class="pill s-strong">strong</span></td>
+        <td>Positive up to the ~29&nbsp;°C optimum, suppressive at extreme heat. Fine intra-urban scale.</td>
+        <td class="d-easy">easy</td>
+        <td>MODIS MOD11A2 (1 km, 8-day); Landsat TIRS (100 m)</td>
+        <td class="role">Driver / modifier</td>
+        <td class="refnum">[25][44][57]</td>
+      </tr>
+      <tr>
+        <td><strong>Human mobility / connectivity</strong></td>
+        <td><span class="pill s-strong">strong</span></td>
+        <td>Positive; connects sources to sinks; days–weeks; shapes spatial spread &amp; synchrony.</td>
+        <td class="d-hard">hard</td>
+        <td>OSM road networks; gravity/radiation models over WorldPop; mobile-phone / Meta Data-for-Good flows</td>
+        <td class="role">Driver</td>
+        <td class="refnum">[35][36][37][45][56]</td>
+      </tr>
+      <tr>
+        <td><strong>Population density</strong></td>
+        <td><span class="pill s-strong">strong</span></td>
+        <td>Positive; interacts with elevation (matters most in low-lying areas). Static–slow.</td>
+        <td class="d-easy">easy</td>
+        <td>WorldPop (100 m); GHSL-POP</td>
+        <td class="role">Driver / confounder</td>
+        <td class="refnum">[13][44][47]</td>
+      </tr>
+      <tr>
+        <td><strong>Extreme rainfall &amp; drought→rain sequence</strong></td>
+        <td><span class="pill s-strong">strong</span></td>
+        <td>Wet spells ↑ risk 0–3 mo; <em>drought</em> ↑ risk 3–5 mo later (water storage). Non-linear, lagged.</td>
+        <td class="d-mod">moderate</td>
+        <td>CHIRPS; GPM IMERG; SPI/SPEI drought indices</td>
+        <td class="role">Driver</td>
+        <td class="refnum">[14][15]</td>
+      </tr>
+      <tr>
+        <td><strong>Vegetation greenness (NDVI / EVI)</strong></td>
+        <td><span class="pill s-mixed">mixed</span></td>
+        <td>Bidirectional — negative in dense-urban settings (Colombo), positive where vegetation shelters vectors; sign flips with SES. Lag ~0–1 mo.</td>
+        <td class="d-easy">easy</td>
+        <td>MODIS MOD13 (250 m–1 km); Sentinel-2 (10 m)</td>
+        <td class="role">Modifier / confounder</td>
+        <td class="refnum">[19][20][23][55]</td>
+      </tr>
+      <tr>
+        <td><strong>ENSO / large-scale oscillations (ONI, IOD)</strong></td>
+        <td><span class="pill s-strong">strong</span> <span class="small">(regional)</span></td>
+        <td>El Niño ↑ risk at 3–6 mo lead; IOD can suppress. Basin scale; long lead time.</td>
+        <td class="d-easy">easy</td>
+        <td>NOAA Oceanic Niño Index; Dipole Mode Index (public monthly)</td>
+        <td class="role">Driver (long-lead)</td>
+        <td class="refnum">[32][33][58]</td>
+      </tr>
+      <tr>
+        <td><strong>Household water storage / piped-water reliability</strong></td>
+        <td><span class="pill s-strong">strong</span> <span class="small">(field)</span></td>
+        <td>Stored water &amp; intermittent supply ↑ risk; reliable piped water protective. Household–community.</td>
+        <td class="d-hard">hard</td>
+        <td>Proxy via DHS/JMP water-access surfaces, WASH surveys; drought×supply-shortage layers</td>
+        <td class="role">Driver / modifier</td>
+        <td class="refnum">[38][40][46][9]</td>
+      </tr>
+      <tr>
+        <td><strong>Distance to / % cover of water bodies</strong></td>
+        <td><span class="pill s-mod">moderate</span></td>
+        <td>Mixed — proximity to rivers/ponds/marsh often ↑ risk; open water itself often negative. Local.</td>
+        <td class="d-easy">easy</td>
+        <td>JRC Global Surface Water (30 m); NDWI from Sentinel-2</td>
+        <td class="role">Driver / modifier</td>
+        <td class="refnum">[4][17][53]</td>
+      </tr>
+      <tr>
+        <td><strong>Flooding / flood-prone terrain</strong></td>
+        <td><span class="pill s-mod">moderate</span></td>
+        <td>Short-term dip (&lt;1 mo) then ↑ 1–4 mo; disrupts control, displaces people.</td>
+        <td class="d-mod">moderate</td>
+        <td>HAND index from DEM; JRC GSW seasonal; Sentinel-1 SAR flood maps</td>
+        <td class="role">Driver</td>
+        <td class="refnum">[14][15][18]</td>
+      </tr>
+      <tr>
+        <td><strong>Socioeconomic status / poverty / wealth</strong></td>
+        <td><span class="pill s-mixed">mixed</span></td>
+        <td>Context-dependent: often higher burden in low-SES, but wealthier districts can show higher IgG. Community.</td>
+        <td class="d-mod">moderate</td>
+        <td>DHS wealth surfaces; Meta Relative Wealth Index; nighttime-lights proxy</td>
+        <td class="role">Confounder / modifier</td>
+        <td class="refnum">[38][39][41][59]</td>
+      </tr>
+      <tr>
+        <td><strong>Nighttime lights (urbanisation / SES proxy)</strong></td>
+        <td><span class="pill s-mod">moderate</span></td>
+        <td>Positive; proxies population, GDP, road density, ambient activity. Coarse but consistent.</td>
+        <td class="d-easy">easy</td>
+        <td>VIIRS DNB / NASA Black Marble (500 m)</td>
+        <td class="role">Driver-proxy / confounder</td>
+        <td class="refnum">[42][43][44]</td>
+      </tr>
+      <tr>
+        <td><strong>Land-cover heterogeneity / fragmentation / edge density</strong></td>
+        <td><span class="pill s-mixed">mixed</span></td>
+        <td>Bidirectional; greenspace aggregation ↑ risk, edge density ↓ risk in China; modified by urbanisation.</td>
+        <td class="d-mod">moderate</td>
+        <td>Landscape metrics (FRAGSTATS) on ESA WorldCover / Dynamic World (10 m)</td>
+        <td class="role">Modifier</td>
+        <td class="refnum">[21][26]</td>
+      </tr>
+      <tr>
+        <td><strong>Slope / terrain / Topographic Wetness Index</strong></td>
+        <td><span class="pill s-weak">weak</span>–<span class="pill s-mod">moderate</span></td>
+        <td>Flat, low-lying terrain pools stagnant water → positive; steep slopes drain → negative. Static.</td>
+        <td class="d-easy">easy</td>
+        <td>DEM-derived slope &amp; TWI from Copernicus GLO-30 / SRTM (30 m)</td>
+        <td class="role">Modifier</td>
+        <td class="refnum">[16][17]</td>
+      </tr>
+      <tr>
+        <td><strong>Rice paddies / irrigation / cropland</strong></td>
+        <td><span class="pill s-mixed">mixed</span></td>
+        <td>Context — marsh/paddy edges favour vectors (esp. <em>Ae. albopictus</em>) in peri-urban/rural. Seasonal (phenology).</td>
+        <td class="d-mod">moderate</td>
+        <td>ESA WorldCover cropland; MODIS EVI phenology; Sentinel-2</td>
+        <td class="role">Modifier</td>
+        <td class="refnum">[16][6]</td>
+      </tr>
+      <tr>
+        <td><strong>Housing / roof material &amp; type</strong></td>
+        <td><span class="pill s-mod">moderate</span> <span class="small">(field)</span></td>
+        <td>Poor housing / overcrowding ↑ risk; apartments protective. Household.</td>
+        <td class="d-hard">hard</td>
+        <td>Very-high-res imagery / drone; building density from GHSL; census/DHS</td>
+        <td class="role">Modifier / confounder</td>
+        <td class="refnum">[2][41][59]</td>
+      </tr>
+      <tr>
+        <td><strong>Absolute humidity / vapour-pressure deficit</strong></td>
+        <td><span class="pill s-mod">moderate</span></td>
+        <td>High absolute humidity ↑ risk (RR ~2 at ≥60 g/m³, 5–15 wk lag in India).</td>
+        <td class="d-easy">easy</td>
+        <td>Derive from ERA5-Land 2 m dewpoint &amp; temperature</td>
+        <td class="role">Driver</td>
+        <td class="refnum">[22]</td>
+      </tr>
+      <tr>
+        <td><strong>Access to healthcare / reporting infrastructure</strong></td>
+        <td><span class="pill s-mod">moderate</span></td>
+        <td>Affects case detection more than transmission; shapes observed incidence.</td>
+        <td class="d-mod">moderate</td>
+        <td>Distance to facilities (OSM / HDX healthsites); travel-time surfaces</td>
+        <td class="role">Confounder (surveillance)</td>
+        <td class="refnum">[17][56]</td>
+      </tr>
+      <tr>
+        <td><strong>Forest cover</strong></td>
+        <td><span class="pill s-weak">weak</span>–<span class="pill s-mixed">mixed</span></td>
+        <td>Usually negative for <em>Ae. aegypti</em> dengue; plantations can raise <em>Ae. albopictus</em> risk. Landscape.</td>
+        <td class="d-easy">easy</td>
+        <td>ESA WorldCover forest; Hansen Global Forest Change (30 m)</td>
+        <td class="role">Modifier</td>
+        <td class="refnum">[24][9]</td>
+      </tr>
+      <tr>
+        <td><strong>Wind speed</strong></td>
+        <td><span class="pill s-weak">weak</span></td>
+        <td>Mixed; occasionally predictive in Sri Lankan forecasting models. Local.</td>
+        <td class="d-easy">easy</td>
+        <td>ERA5-Land 10 m wind components</td>
+        <td class="role">Modifier</td>
+        <td class="refnum">[48]</td>
+      </tr>
+      <tr>
+        <td><strong>Artificial light at night (biting behaviour)</strong></td>
+        <td><span class="pill s-weak">weak</span> <span class="small">(emerging)</span></td>
+        <td>Positive — ALAN extends <em>Ae. aegypti</em> nocturnal biting; experimental so far.</td>
+        <td class="d-easy">easy</td>
+        <td>VIIRS DNB radiance (500 m)</td>
+        <td class="role">Modifier (exposure)</td>
+        <td class="refnum">[43]</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <!-- ============ SECTION 2 : TOP VARIABLES ============ -->
+  <h2 id="top">2 · The top variables you cannot afford to miss</h2>
+  <p>Beyond the ERA5-Land / CHIRPS temperature–humidity–precipitation core, these are the additions most strongly justified by the evidence and most readily derived from open geospatial products.</p>
+
+  <div class="panel">
+    <h3>1. Elevation (and its interaction with temperature)</h3>
+    <p><em>Aedes aegypti</em> and <em>Ae. albopictus</em> historically thin out above ~1,500–2,000 m because cooler air lengthens the extrinsic incubation period and shortens vector survival; below ~1% of historical dengue cases in the Americas occur above 2,000 m <span class="refnum">[11]</span>. But the ceiling is rising — established populations now reach 1,700–2,300 m in Mexico <span class="refnum">[10]</span>, 2,100 m in Nepal <span class="refnum">[12]</span>, and even ~2,900 m in Bolivia. In the Philippines, elevation shapes force-of-infection and <em>interacts</em> with population density: density drives transmission below ~1,200 m but not above <span class="refnum">[13]</span>. For Sri Lanka's RDHS divisions and Colombia's municipalities — both spanning coast-to-highland gradients — elevation from a 30 m DEM is a near-free, high-value stratifier of the thermal envelope.</p>
+
+    <h3>2. Built-up density / impervious surface / urbanisation</h3>
+    <p>The single most consistently positive landscape predictor. Built-up area carries the highest information value among land-cover classes <span class="refnum">[24]</span>, is the dominant driver of intra-city dengue patterns in Hangzhou <span class="refnum">[26]</span> and Bhopal <span class="refnum">[22]</span>, and correlates strongly with hotspots (ρ≈0.82) in Tamil Nadu <span class="refnum">[25]</span>. Mechanistically, dense settlement concentrates hosts and <em>Ae. aegypti</em> breeding containers and raises local temperature. Derive from GHSL built-up, ESA WorldCover, or NDBI.</p>
+
+    <h3>3. Diurnal temperature range (DTR)</h3>
+    <p>A mechanistic must-have that mean temperature alone cannot capture. Large daily swings reduce midgut infection and vector survival; at warm mean temperatures (&gt;18&nbsp;°C, i.e. most of lowland Sri Lanka and Colombia) a <em>larger</em> DTR <em>lowers</em> transmission, while at cooler means it raises it <span class="refnum">[27][28][29]</span>. Critically, this has been demonstrated locally: in Colombo, DTR&gt;7.5&nbsp;°C was negatively correlated with dengue at an 8-week lag <span class="refnum">[31]</span>. Compute from ERA5-Land hourly temperature or MODIS day–night LST.</p>
+
+    <h3>4. Land-surface temperature &amp; urban heat islands</h3>
+    <p>LST resolves within-city thermal heterogeneity that air-temperature reanalysis smooths over. Heat-island cores align with dengue hotspots, though the very hottest cores (&gt;48&nbsp;°C surface) can suppress vector survival — the relationship is unimodal around the ~29&nbsp;°C optimum <span class="refnum">[25][30][57]</span>. MODIS MOD11 (1 km) or Landsat TIRS (100 m) provide it cheaply.</p>
+
+    <h3>5. Human mobility &amp; connectivity</h3>
+    <p>Movement, not mosquito flight, drives spatial spread and inter-unit synchrony. Mobile-phone-derived mobility predicted the geographic spread and timing of Pakistan's 2013 epidemic <span class="refnum">[35]</span>; adding mobility improved provincial forecasts in Thailand <span class="refnum">[36]</span>; and connectivity governs when environment-limited "patchy" emergence gives way to contiguous spread <span class="refnum">[37]</span>. In Sri Lanka, the wet-zone epidemic synchrony is attributed to mobility in and out of Colombo <span class="refnum">[49]</span>. Approximate with OSM road density, gravity/radiation models over WorldPop, or Meta Data-for-Good flows.</p>
+
+    <h3>6. Population density</h3>
+    <p>A robust positive driver and essential offset/confounder, interacting with elevation <span class="refnum">[13]</span> and appearing in the best-fitting Sri Lankan GIS risk models <span class="refnum">[47]</span>. WorldPop (100 m) or GHSL-POP make it trivial to include.</p>
+
+    <h3>7. The drought→rain sequence &amp; extreme rainfall</h3>
+    <p>Beyond mean precipitation, the <em>sequence</em> matters. In 558 Brazilian microregions, extremely wet conditions raised risk at 0–3 months while <em>drought</em> raised it at 3–5 months — the latter concentrated in urban areas with intermittent water supply, because households store water <span class="refnum">[14]</span>. A flooding scoping review of 131 studies found a short post-flood dip then a 1–4 month rise <span class="refnum">[15]</span>. Capture with CHIRPS/GPM plus an SPI/SPEI drought index.</p>
+
+    <h3>8. Household water storage &amp; piped-water reliability</h3>
+    <p>Among the strongest field-level determinants, though only indirectly remote-sensed. Lack of reliable tap water was a far stronger dengue risk factor than poverty <em>per se</em> in Delhi (adjusted OR 4.7) <span class="refnum">[38]</span>; water-storage containers held 92–97% of <em>Ae. aegypti</em> immatures in rural Vietnam <span class="refnum">[40]</span>; and in-house piped water was protective in Vientiane <span class="refnum">[46]</span>. Proxy with DHS/JMP water-access surfaces and couple to the drought layer.</p>
+
+    <h3>9. ENSO / large-scale climate oscillations</h3>
+    <p>Provides multi-month lead time that local weather cannot. El Niño (ONI) raised dengue risk in Peru <span class="refnum">[32]</span> and, directly relevant here, raised <em>Aedes</em> vector indices in Kalutara, Sri Lanka at a 6-month lag <span class="refnum">[33]</span>; the Indian Ocean Dipole can suppress risk <span class="refnum">[58]</span>. Free monthly indices (NOAA ONI, DMI).</p>
+
+    <h3>10. Vegetation greenness — include, but as an effect-modifier</h3>
+    <p>NDVI/EVI is the most <em>conflicted</em> variable and must be handled carefully. It is negative in dense-urban Colombo and across Sri Lankan districts <span class="refnum">[52][19]</span>, yet positive at 1-month lag in Cirebon (IRR 3.07) <span class="refnum">[23]</span>, and its sign flips with socioeconomic vulnerability in Brazil <span class="refnum">[20]</span>. Treat it as a modifier/confounder — interacted with urbanisation and SES — not a standalone driver.</p>
+  </div>
+
+  <!-- ============ SECTION 3 : INTERACTIONS ============ -->
+  <h2 id="interactions">3 · Likely interactions &amp; confounding with the existing T / RH / precipitation set</h2>
+  <div class="panel">
+    <div class="callout">
+      <strong>Bottom line:</strong> most of the new candidate variables are correlated with — or effect-modifiers of — the existing temperature, humidity and precipitation set. Adding them naïvely risks collinearity and double-counting; the value is in <em>interactions</em> and in resolving spatial heterogeneity the climate variables miss.
+    </div>
+    <h3>Elevation ↔ temperature</h3>
+    <p>Elevation is largely a proxy for air temperature and the two are strongly collinear; elevation is best used to define suitability bounds or interacted with density rather than entered as an independent linear term <span class="refnum">[11][13]</span>.</p>
+    <h3>DTR &amp; LST ↔ mean temperature</h3>
+    <p>DTR is orthogonal information the mean misses, but its sign depends on the mean — the interaction term (mean × range) is what carries the mechanism <span class="refnum">[27][28]</span>. LST is correlated with air temperature but adds sub-unit spatial texture and heat-island structure <span class="refnum">[25][57]</span>.</p>
+    <h3>Drought / water storage ↔ precipitation</h3>
+    <p>The drought effect is a <em>non-monotonic, lagged</em> transform of precipitation, opposite in sign to the wet-season effect, and is mediated by water-supply reliability — so a simple linear rainfall term will mask it. Model rainfall non-linearly (DLNM) and add a separate drought index and a supply-shortage/storage proxy <span class="refnum">[14][40]</span>.</p>
+    <h3>Absolute humidity ↔ relative humidity</h3>
+    <p>Absolute humidity (from ERA5 dewpoint) captures the moisture load driving survival better than RH alone and showed strong lagged effects in India <span class="refnum">[22]</span>; the two are correlated, so choose one or orthogonalise.</p>
+    <h3>Urbanisation cluster (built-up · population · nighttime lights · SES · roads)</h3>
+    <p>These co-vary tightly — nighttime-light brightness itself scales with population, GDP and road density <span class="refnum">[44]</span>. They should be treated as one latent "urbanisation/exposure" construct (e.g. via a composite index or careful selection) to avoid collinearity, while retaining SES as a confounder for care-seeking and reporting.</p>
+    <h3>Mobility ↔ everything spatial</h3>
+    <p>Mobility interacts with both climate suitability and population, converting local weather-driven suitability into realised spread and cross-unit correlation <span class="refnum">[37][49]</span>. In an areal week model it is best encoded through the neighbourhood/adjacency structure (gravity/radiation weights) rather than as a single covariate.</p>
+    <h3>Healthcare access &amp; reporting</h3>
+    <p>Distance to care and surveillance intensity confound <em>observed</em> incidence independently of true transmission and should be adjusted for, especially when comparing rural RDHS divisions with Colombo, or remote Colombian municipalities with cities <span class="refnum">[17][56]</span>.</p>
+  </div>
+
+  <!-- ============ SECTION 4 : REVIEWS ============ -->
+  <h2 id="reviews">4 · Review / synthesis papers to read in full</h2>
+  <div class="panel">
+    <p>Six synthesis papers give the most complete map of the field; the first four are the priority reads.</p>
+    <ol>
+      <li><strong>Louis et al. 2014 — <em>Modeling tools for dengue risk mapping: a systematic review</em></strong> (Int. J. Health Geographics). The foundational systematic review of predictors and spatial modelling approaches; explicitly flags entomological predictors, human mobility and serology as persistent gaps <span class="refnum">[1]</span>.</li>
+      <li><strong>Marti et al. 2020 — <em>A Mapping Review on Urban Landscape Factors of Dengue from Earth Observation, GIS and Surveys</em></strong> (Remote Sensing). 78 articles; builds a co-occurrence network of land-cover, land-use and housing factors with signed associations — the best single guide to landscape covariates <span class="refnum">[2]</span>.</li>
+      <li><strong>Yin et al. 2022 — <em>Systematic Review on Modeling Methods and Influential Factors for Mapping Dengue Risk in Urban Settings</em></strong> (IJERPH). Focuses on urban-scale methods and factor selection; argues socioeconomic and connectivity data best capture within-city heterogeneity <span class="refnum">[3]</span>.</li>
+      <li><strong>Chaiyarit et al. 2025 — <em>Environmental health factors influencing dengue: a systematic review with thematic categorization</em></strong> (Int. J. Environ. Health Res.). 64 studies distilled into eight environmental-health themes (water storage, waste, housing, drainage, vegetation, urbanisation, climate, water-supply reliability) — directly maps onto exposure-layer design <span class="refnum">[9]</span>.</li>
+      <li><strong>Li et al. 2022 — <em>Big Geospatial Data and Data-Driven Methods for Urban Dengue Risk Forecasting: A Review</em></strong> (Remote Sensing). Catalogues predictors, open data sources, scales and modelling methods across 53 recent studies — useful for data-product choices <span class="refnum">[5]</span>.</li>
+      <li><strong>Gao et al. 2021 — <em>Land use / land cover change and dengue in China: a systematic review</em></strong> (PLoS NTD). Detailed treatment of how LULC change, green space and blue space act on dengue, including where the evidence conflicts <span class="refnum">[6]</span>.</li>
+    </ol>
+    <p class="small">Also worth scanning: Pakaya et al. 2023 scoping review of DHF spatial models <span class="refnum">[7]</span>; Liu et al. 2025 systematic review of geospatial epidemiology for vector-borne diseases <span class="refnum">[8]</span>; Coalson et al. 2021 scoping review on flooding and mosquito-borne disease <span class="refnum">[15]</span>; Mulligan et al. 2015 on the contested dengue–poverty link <span class="refnum">[39]</span>.</p>
+  </div>
+
+  <!-- ============ SECTION 5 : GAPS ============ -->
+  <h2 id="gaps">5 · Strong globally but under-tested in South Asia / Sri Lanka — potential contributions</h2>
+  <div class="panel">
+    <div class="callout gap">
+      <strong>Each of these is a defensible novelty claim for the study:</strong> a factor with solid evidence elsewhere but little or no formal test in Sri Lankan RDHS divisions.
+    </div>
+    <h3>Drought→rain sequence &amp; intermittent water supply</h3>
+    <p>The delayed drought effect is well established in Brazil <span class="refnum">[14]</span> and mechanistically tied to household storage, which dominates <em>Aedes</em> production in South Asia <span class="refnum">[40][38]</span> — yet Sri Lankan modelling remains centred on rainfall/temperature/humidity and rarely encodes a drought index or supply-reliability layer <span class="refnum">[47][48][51]</span>. A DLNM drought term for RDHS divisions would be genuinely new.</p>
+    <h3>Diurnal temperature range at areal scale</h3>
+    <p>DTR is only tested for Colombo district (a single time series) <span class="refnum">[31]</span>; a systematic DTR × mean-temperature interaction across <em>all</em> RDHS divisions and Colombian municipalities has not been done and is mechanistically well-motivated <span class="refnum">[27][28]</span>.</p>
+    <h3>Landscape fragmentation / greenspace morphology</h3>
+    <p>Edge density and greenspace aggregation have measurable, opposing effects in China <span class="refnum">[21]</span> but have not been quantified for South Asian monsoon settings, where NDVI evidence is contradictory <span class="refnum">[19][23]</span>.</p>
+    <h3>Nighttime lights &amp; artificial light at night</h3>
+    <p>VIIRS nighttime lights as an urbanisation/SES proxy — and ALAN as a driver of extended <em>Aedes</em> biting <span class="refnum">[43]</span> — are essentially untested in Sri Lankan dengue models despite being trivially derivable at 500 m.</p>
+    <h3>Formal human-mobility connectivity structure</h3>
+    <p>Mobility is invoked qualitatively to explain wet-zone synchrony in Sri Lanka <span class="refnum">[49]</span> but has not been built into an areal-week model there via gravity/radiation weights, as done for Thailand and Pakistan <span class="refnum">[35][36]</span>.</p>
+    <h3>Topographic Wetness Index / HAND flood-proneness</h3>
+    <p>DEM-derived wetness and height-above-nearest-drainage indices are standard in hydrology and plausibly capture stagnant-water pooling, but are rarely used as dengue covariates anywhere, let alone in Sri Lanka <span class="refnum">[16][17]</span>.</p>
+    <div class="callout" style="margin-top:16px">
+      <strong>Note on the two study regions.</strong> Sri Lankan evidence is strongest for rainfall (positive, ~2–10 wk lag), the wet-zone vs dry-zone contrast in periodicity, population density, and ENSO at long lead <span class="refnum">[47][49][33][51]</span>; temperature associations are inconsistent across studies <span class="refnum">[47][51][52]</span>. Colombian evidence is dominated by vector-distribution/altitude work showing <em>Aedes</em> now reaching &gt;2,500 m and both species co-occurring across elevation and urban–rural gradients <span class="refnum">[5*]</span> — implying elevation, urbanisation and species composition are the key modifiers to encode for municipalities. <span class="small">(*Colombian vector-ecology sources reviewed but not all individually numbered here; see Mantilla-Granados 2025 and Echeverría/Mejía-Jurado niche models for municipality-level altitude ranges.)</span>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 6 : REFERENCES ============ -->
+  <h2 id="refs">6 · Full references</h2>
+  <div class="panel">
+    <p class="small">All sources are peer-reviewed studies, systematic reviews or scoping reviews located via the Consensus academic search corpus (Semantic Scholar / PubMed / Scopus). Links resolve to the paper record.</p>
+    <ol class="refs">
+      <li id="r1"><a href="https://consensus.app/papers/details/9b0e54d971195d56b082eba4d88bfec1/">Modeling tools for dengue risk mapping — a systematic review</a>. Louis V. et al., 2014, <em>Int. J. Health Geographics</em>.</li>
+      <li id="r2"><a href="https://consensus.app/papers/details/dc7c7ef7aac75ffbad055a151aac5f68/">A Mapping Review on Urban Landscape Factors of Dengue Retrieved from Earth Observation Data, GIS Techniques, and Survey Questionnaires</a>. Marti R. et al., 2020, <em>Remote Sensing</em>.</li>
+      <li id="r3"><a href="https://consensus.app/papers/details/12eaf0fda25c5e7a9c7291c7c429fef8/">A Systematic Review on Modeling Methods and Influential Factors for Mapping Dengue-Related Risk in Urban Settings</a>. Yin S. et al., 2022, <em>IJERPH</em>.</li>
+      <li id="r4"><a href="https://consensus.app/papers/details/ad33b8e077355d669e23df1150343999/">Leveraging geographic information system for dengue surveillance: a scoping review</a>. Nayak P.P. et al., 2025, <em>Tropical Medicine and Health</em>.</li>
+      <li id="r5"><a href="https://consensus.app/papers/details/b6cb7a2ca58757f285c298fcc44229b7/">Big Geospatial Data and Data-Driven Methods for Urban Dengue Risk Forecasting: A Review</a>. Li Z. et al., 2022, <em>Remote Sensing</em>.</li>
+      <li id="r6"><a href="https://consensus.app/papers/details/be6c9d578df15868896465a86db3c6f0/">Land use and land cover change and its impacts on dengue dynamics in China: A systematic review</a>. Gao P. et al., 2021, <em>PLoS NTD</em>.</li>
+      <li id="r7"><a href="https://consensus.app/papers/details/87690186293c53ff8c237c83388e105f/">Spatial model of Dengue Hemorrhagic Fever (DHF) risk: scoping review</a>. Pakaya R. et al., 2023, <em>BMC Public Health</em>.</li>
+      <li id="r8"><a href="https://consensus.app/papers/details/d0746a4509a65b15bc1ddbef5706f33c/">Geospatial epidemiological approaches to the prevention and control of vector-borne diseases: A systematic review</a>. Liu K. et al., 2025, <em>Infectious Diseases &amp; Immunity</em>.</li>
+      <li id="r9"><a href="https://consensus.app/papers/details/75a9b89b64d459cd9b48f4cd09f41ad1/">Environmental health factors influencing dengue: a systematic review with thematic categorization</a>. Chaiyarit J. et al., 2025, <em>Int. J. Environ. Health Res.</em></li>
+      <li id="r10"><a href="https://consensus.app/papers/details/214417ba54f952c680e61184457a4713/">The dengue virus mosquito vector Aedes aegypti at high elevation in Mexico</a>. Lozano-Fuentes S. et al., 2012, <em>Am. J. Trop. Med. Hyg.</em></li>
+      <li id="r11"><a href="https://consensus.app/papers/details/11b4968863065a2a8119c7f7b0513faa/">Elevation as a proxy for mosquito-borne Zika virus transmission in the Americas</a>. Watts A. et al., 2017, <em>PLoS ONE</em>.</li>
+      <li id="r12"><a href="https://consensus.app/papers/details/39cc81e66cd15582ab41bf3f7df40765/">Risk Factors for the Presence of Chikungunya and Dengue Vectors, Their Altitudinal Distribution and Climatic Determinants in Central Nepal</a>. Dhimal M. et al., 2015, <em>PLoS NTD</em>.</li>
+      <li id="r13"><a href="https://consensus.app/papers/details/c39b277a270c5044b74589fc87429ca5/">The impact of elevation and population density on dengue incidence and force of infection across the Philippines</a>. Sy A.K. et al., 2026, <em>PLoS NTD</em>.</li>
+      <li id="r14"><a href="https://consensus.app/papers/details/6d9881693b3656679d42fcf1795bccaa/">Combined effects of hydrometeorological hazards and urbanisation on dengue risk in Brazil: a spatiotemporal modelling study</a>. Lowe R. et al., 2021, <em>Lancet Planetary Health</em>.</li>
+      <li id="r15"><a href="https://consensus.app/papers/details/f40e9163510b5f928db71f7bd7978a00/">The Complex Epidemiological Relationship between Flooding Events and Human Outbreaks of Mosquito-Borne Diseases: A Scoping Review</a>. Coalson J. et al., 2021, <em>Environmental Health Perspectives</em>.</li>
+      <li id="r16"><a href="https://consensus.app/papers/details/228253da40b758fda9062d792c422c00/">Analyzing the spatio-temporal relationship between dengue vector larval density and land-use</a>. Sarfraz M. et al., 2012, <em>BMC Public Health</em>.</li>
+      <li id="r17"><a href="https://consensus.app/papers/details/0946493bd8235a75b5a488216e3c17ad/">Spatial Analysis on Dengue Fever Vulnerability in South Sulawesi and East Nusa Tenggara, Indonesia (distance to pond/drain)</a>. Haryanto B. et al., 2025, <em>Annals of Global Health</em>.</li>
+      <li id="r18"><a href="https://consensus.app/papers/details/5f805d6abb6b51b4886d7e35d2f1e433/">Seroprevalence, incidence and environmental risk factors for dengue, chikungunya and Zika in informal urban settlements in Indonesia and Fiji (flooding, trash)</a>. Rosser J.I. et al., 2025, <em>BMC Infectious Diseases</em>.</li>
+      <li id="r19"><a href="https://consensus.app/papers/details/de6078c4244a5302b2945d068784c1e7/">Urban structure and dengue fever in Puntarenas, Costa Rica (NDVI, tree cover, building density)</a>. Troyo A. et al., 2009, <em>Singapore J. Tropical Geography</em>.</li>
+      <li id="r20"><a href="https://consensus.app/papers/details/d60733cfbb87523ea11486e0d43f4b33/">Disentangling associations between vegetation greenness and dengue in a Latin American city</a>. Cunha M.C.M. et al., 2021, <em>Landscape and Urban Planning</em>.</li>
+      <li id="r21"><a href="https://consensus.app/papers/details/b05b0f1109875b3685c163b99f4d7383/">Association between greenspace morphology and dengue fever in China (fragmentation, edge density)</a>. Cao Y. et al., 2025, <em>Parasites &amp; Vectors</em>.</li>
+      <li id="r22"><a href="https://consensus.app/papers/details/ca9718f51bcd5aceaf081fef89f8fbb7/">An assessment of remotely sensed environmental variables on Dengue epidemiology in Central India (built-up, absolute humidity)</a>. Sarma D. et al., 2022, <em>PLoS NTD</em>.</li>
+      <li id="r23"><a href="https://consensus.app/papers/details/f72cb23fa49b56feb03c21866f27f3ca/">Paediatric dengue infection in Cirebon, Indonesia (NDVI positive, lagged)</a>. Astuti E. et al., 2019, <em>Parasites &amp; Vectors</em>.</li>
+      <li id="r24"><a href="https://consensus.app/papers/details/1e2b448af88d55df98d6c5053cf2add6/">An information value based analysis of physical and climatic factors affecting DF/DHF incidence (built-up highest info value)</a>. Nakhapakorn K. et al., 2005, <em>Int. J. Health Geographics</em>.</li>
+      <li id="r25"><a href="https://consensus.app/papers/details/47a1c564ef2a54929e55439b0d54da8b/">Impact of urban heat island effect on dengue incidence: a remote sensing approach</a>. Sureshkumar S. et al., 2025, <em>BMC Public Health</em>.</li>
+      <li id="r26"><a href="https://consensus.app/papers/details/5d36e0335cec520a8929a9c4ebc97927/">Urban landscape pattern mainly drives the early epidemic distribution of dengue fever in Hangzhou, China</a>. Zhao X. et al., 2024, <em>Landscape Ecology</em>.</li>
+      <li id="r27"><a href="https://consensus.app/papers/details/8efb0c7728585b4896e61fc7c12d555c/">Impact of daily temperature fluctuations on dengue virus transmission by Aedes aegypti</a>. Lambrechts L. et al., 2011, <em>PNAS</em>.</li>
+      <li id="r28"><a href="https://consensus.app/papers/details/a16ddbff741855c3bf23e29b85acd85b/">Vectorial Capacity of Aedes aegypti: Effects of Temperature and Implications for Global Dengue Epidemic Potential (DTR)</a>. Liu-Helmersson J. et al., 2014, <em>PLoS ONE</em>.</li>
+      <li id="r29"><a href="https://consensus.app/papers/details/048105ed826e5401b0abefd6ea1eb0c9/">Fluctuations at a Low Mean Temperature Accelerate Dengue Virus Transmission by Aedes aegypti</a>. Carrington L.B. et al., 2013, <em>PLoS NTD</em>.</li>
+      <li id="r30"><a href="https://consensus.app/papers/details/63d459b8f675568893e5487cd6fbf2d2/">Detecting the impact of temperature on transmission of Zika, dengue and chikungunya using mechanistic models (18–34 °C)</a>. Mordecai E. et al., 2017, <em>PLoS NTD</em>.</li>
+      <li id="r31"><a href="https://consensus.app/papers/details/7f75accd769d5bafa05bb1cac85ecb15/">The correlation between dengue incidence and diurnal ranges of temperature of Colombo district, Sri Lanka 2005–2014</a>. Ehelepola N.D.B. et al., 2016, <em>Global Health Action</em>.</li>
+      <li id="r32"><a href="https://consensus.app/papers/details/9eea8507f6155f929e11fffe5775a2a4/">The effect of weather and climate on dengue outbreak risk in Peru, 2000–2018 (ENSO)</a>. Dostal T. et al., 2022, <em>PLoS NTD</em>.</li>
+      <li id="r33"><a href="https://consensus.app/papers/details/bb7f3481cb1a5bb6af074fffb968d9c5/">Effect of El Niño-Southern Oscillation and local weather on Aedes vector activity in Kalutara district, Sri Lanka</a>. Liyanage P.G. et al., 2022, <em>Lancet Planetary Health</em>.</li>
+      <li id="r34"><a href="https://consensus.app/papers/details/4c9248cfab4c5f839aecc10e7e9d779d/">Global temperature constraints on Aedes aegypti and Ae. albopictus persistence and competence for dengue transmission</a>. Brady O. et al., 2014, <em>Parasites &amp; Vectors</em>.</li>
+      <li id="r35"><a href="https://consensus.app/papers/details/b5dd4aca5bf553a3b9bdb803c8fd6da3/">Impact of human mobility on the emergence of dengue epidemics in Pakistan</a>. Wesolowski A. et al., 2015, <em>PNAS</em>.</li>
+      <li id="r36"><a href="https://consensus.app/papers/details/089ff100bdb65fb7b4537b86b374fcc6/">Incorporating human mobility data improves forecasts of Dengue fever in Thailand</a>. Kiang M. et al., 2020, <em>Scientific Reports</em>.</li>
+      <li id="r37"><a href="https://consensus.app/papers/details/3db58d09aed25f069995d05e7ee149f7/">Human movement and environmental barriers shape the emergence of dengue</a>. Harish V. et al., 2024, <em>Nature Communications</em>.</li>
+      <li id="r38"><a href="https://consensus.app/papers/details/bbc50fe2046b51da9fa643ddc67da0dd/">Social and environmental risk factors for dengue in Delhi city (tap-water access)</a>. Telle O. et al., 2021, <em>PLoS NTD</em>.</li>
+      <li id="r39"><a href="https://consensus.app/papers/details/00a41e54c79051b6b9976f873f25391b/">Is dengue a disease of poverty? A systematic review</a>. Mulligan K. et al., 2015, <em>Pathogens and Global Health</em>.</li>
+      <li id="r40"><a href="https://consensus.app/papers/details/478f4e8af4f45f5db19932f5304ae72c/">Abundance and prevalence of Aedes aegypti immatures and relationships with household water storage in rural southern Vietnam</a>. Nguyen L. et al., 2011, <em>International Health</em>.</li>
+      <li id="r41"><a href="https://consensus.app/papers/details/34edd45c7ef954fea1339bf3deb764c0/">Socioeconomic and environmental determinants of dengue transmission in Nouméa, New Caledonia</a>. Zellweger R. et al., 2017, <em>PLoS NTD</em>.</li>
+      <li id="r42"><a href="https://consensus.app/papers/details/eb2c77d67e7c517fbda34cdb6fc162d5/">Urban villages as transfer stations for dengue fever epidemic: a case study in Guangzhou (road density, GDP)</a>. Ren H. et al., 2019, <em>PLoS NTD</em>.</li>
+      <li id="r43"><a href="https://consensus.app/papers/details/ee907013044b5a5ab4dd4f3b867357e6/">Artificial Light at Night Increases Aedes aegypti Mosquito Biting Behavior</a>. Rund S.S.C. et al., 2020, <em>Am. J. Trop. Med. Hyg.</em></li>
+      <li id="r44"><a href="https://consensus.app/papers/details/a4a535bb135553648020d727a9e63b1b/">Spatial analysis of dengue fever and its environmental and socio-economic risk factors, Guangzhou (population density, LST, GDP)</a>. Yue Y. et al., 2018, <em>Int. J. Infectious Diseases</em>.</li>
+      <li id="r45"><a href="https://consensus.app/papers/details/c8a668e88a625596a37884b4cdd3e13e/">Inferences about spatiotemporal variation in dengue virus transmission are sensitive to assumptions about human mobility, Lahore</a>. Kraemer M. et al., 2018, <em>EPJ Data Science</em>.</li>
+      <li id="r46"><a href="https://consensus.app/papers/details/0d8da3ccb8f05c4ba76fedac6f697c32/">Dengue dynamics beyond biological factors: urbanisation, planning and mobilities in Vientiane, Lao PDR (piped water protective)</a>. Telle O. et al., 2025, <em>PLoS NTD</em>.</li>
+      <li id="r47"><a href="https://consensus.app/papers/details/ede658ef00dc51e69f3cbe5cfe89493c/">Effect of Climatic Factors and Population Density on the Distribution of Dengue in Sri Lanka: A GIS Based Evaluation</a>. Sirisena P. et al., 2017, <em>PLoS ONE</em>.</li>
+      <li id="r48"><a href="https://consensus.app/papers/details/fbdcf15b0d575b7baa01e37793ea3e81/">A forecasting model for dengue incidence in the District of Gampaha, Sri Lanka (rain, temp, humidity, wind)</a>. Withanage G. et al., 2018, <em>Parasites &amp; Vectors</em>.</li>
+      <li id="r49"><a href="https://consensus.app/papers/details/41883ce0702d567eb9f2b3f89281dfa7/">Coherence of dengue incidence and climate in the wet and dry zones of Sri Lanka</a>. Prabodanie R.A.R. et al., 2020, <em>Science of the Total Environment</em>.</li>
+      <li id="r50"><a href="https://consensus.app/papers/details/561ac752e80551b7bd77b99178decf29/">Climatological, virological and sociological drivers of current and projected dengue outbreak dynamics in Sri Lanka</a>. Wagner C. et al., 2020, <em>J. Royal Society Interface</em>.</li>
+      <li id="r51"><a href="https://consensus.app/papers/details/8532b2c93698506e84a5f3bd78557998/">Impact of environmental factors on the spread of dengue fever in Sri Lanka (bioclimatic zone, air pressure)</a>. Faruk M. et al., 2022, <em>Int. J. Environ. Sci. Technol.</em></li>
+      <li id="r52"><a href="https://consensus.app/papers/details/3e8f6bfe0c85598e9897083793903733/">Data Driven Dengue Dynamics via Satellite Data (NDVI negative, Sri Lanka)</a>. Magdon-Ismail R. et al., 2025, <em>IEEE Big Data</em>.</li>
+      <li id="r53"><a href="https://consensus.app/papers/details/ea0ea8612798553faa23c1a807f494f7/">Refining the suitable conditions index to predict dengue in Bangladesh and Sri Lanka (waterbody weighting)</a>. Islam J. et al., 2026, <em>Tropical Medicine and Health</em>.</li>
+      <li id="r54"><a href="https://consensus.app/papers/details/416d10c1463b5ea1bb7eb5834dcbb428/">Satellite observation to assess dengue risk in a subtropical city of Argentina (NDVI/NDWI/NDBI, Sentinel-2)</a>. Martín M.E. et al., 2022, <em>Medical and Veterinary Entomology</em>.</li>
+      <li id="r55"><a href="https://consensus.app/papers/details/d3cb43a9b2bf5595ad9ebf6703678c64/">Spatial Clustering of Dengue Fever Incidence and Its Association with Surrounding Greenness (parks positive), Taiwan</a>. Huang C. et al., 2018, <em>IJERPH</em>.</li>
+      <li id="r56"><a href="https://consensus.app/papers/details/0a9b2312127e59bb99cb321946fae2ad/">Modeling Intraday Aedes-human exposure dynamics enhances dengue risk prediction, Rio de Janeiro</a>. Knoblauch S. et al., 2025, <em>Scientific Reports</em>.</li>
+      <li id="r57"><a href="https://consensus.app/papers/details/b1e0b2cf21c45f168a426c9a4b1b7835/">Relationship between Urban Environmental Components and Dengue Prevalence in Dhaka City (LST, UHI, NDWI)</a>. Kamal A. et al., 2023, <em>IJERPH</em>.</li>
+      <li id="r58"><a href="https://consensus.app/papers/details/7af6c5e9a90f592e9d66b6a0b81c09d1/">Climate drivers and winter constraints of dengue epidemics in Lao PDR (ENSO/IOD, winter bottleneck)</a>. Houatthongkham S. et al., 2026, <em>Infectious Diseases of Poverty</em>.</li>
+      <li id="r59"><a href="https://consensus.app/papers/details/4cdf59f84d6f5078976c0af02fb5f690/">Socioeconomic markers of dengue mortality in the 100 Million Brazilian Cohort (2007–2018)</a>. Cardim L. et al., 2025, <em>PLoS NTD</em>.</li>
+    </ol>
+    <p class="small" style="margin-top:16px">Additional Colombia vector-ecology / niche-model sources consulted for the elevation and species-composition discussion (municipality relevance): Mantilla-Granados et al. 2025 (<em>PLoS NTD</em>), Echeverry-Cárdenas et al. 2020 and Mejía-Jurado et al. 2024 (MaxEnt distributions of <em>Ae. aegypti</em>/<em>Ae. albopictus</em> in Colombia), and Ruiz-López et al. 2016 (dengue-infected <em>Ae. aegypti</em> above 1,900 m in Colombia).</p>
+  </div>
+
+  <p class="small" style="text-align:center;color:#8595a4;margin-top:30px">Prepared as a research aid for the dengue early-warning calibration &amp; net-benefit study · Sri Lanka RDHS divisions &amp; Colombian municipalities · Evidence current to mid-2026.</p>
+
+</div>
+</body>
+</html>

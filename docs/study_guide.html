@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Guide — Dengue Early-Warning Calibration Study</title>
+<style>
+  :root {
+    --surface-1: #fcfcfb;
+    --page: #f9f9f7;
+    --card: #ffffff;
+    --text-primary: #0b0b0b;
+    --text-secondary: #52514e;
+    --muted: #898781;
+    --grid: #e1e0d9;
+    --border: rgba(11,11,11,0.10);
+    --series-1: #2a78d6;   /* blue  */
+    --series-2: #1baf7a;   /* aqua  */
+    --series-3: #e34948;   /* red   */
+    --good: #006300;
+    --warn: #b8791a;
+    --accent-soft: #eef4fc;
+    --accent-line: #cde2fb;
+    --radius: 12px;
+    --maxw: 900px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --surface-1: #1a1a19;
+      --page: #0d0d0d;
+      --card: #1f1f1e;
+      --text-primary: #ffffff;
+      --text-secondary: #c3c2b7;
+      --muted: #898781;
+      --grid: #2c2c2a;
+      --border: rgba(255,255,255,0.10);
+      --series-1: #3987e5;
+      --series-2: #199e70;
+      --series-3: #e66767;
+      --good: #0ca30c;
+      --warn: #fab219;
+      --accent-soft: #13233a;
+      --accent-line: #1c5cab;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--page);
+    color: var(--text-primary);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    line-height: 1.65;
+    font-size: 17px;
+  }
+  .wrap { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 260px 1fr; gap: 0; }
+  /* Sidebar nav */
+  nav {
+    position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto;
+    padding: 28px 18px; border-right: 1px solid var(--border); background: var(--surface-1);
+  }
+  nav .brand { font-weight: 700; font-size: 15px; letter-spacing: .2px; margin-bottom: 4px; }
+  nav .brand-sub { color: var(--muted); font-size: 12.5px; margin-bottom: 20px; }
+  nav a {
+    display: block; color: var(--text-secondary); text-decoration: none;
+    font-size: 14px; padding: 6px 10px; border-radius: 8px; margin: 1px 0;
+  }
+  nav a:hover { background: var(--accent-soft); color: var(--text-primary); }
+  nav a.section-num::before { content: attr(data-n) "  "; color: var(--muted); font-variant-numeric: tabular-nums; }
+  nav .navgroup { font-size: 11.5px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); margin: 18px 0 4px 10px; }
+  main { padding: 48px 40px 120px; max-width: var(--maxw); }
+  header.hero { margin-bottom: 8px; }
+  .kicker { color: var(--series-1); font-weight: 600; font-size: 13px; letter-spacing: .8px; text-transform: uppercase; }
+  h1 { font-size: 34px; line-height: 1.2; margin: 8px 0 12px; }
+  .lede { font-size: 19px; color: var(--text-secondary); margin: 0 0 8px; }
+  h2 { font-size: 25px; margin: 56px 0 14px; padding-top: 10px; scroll-margin-top: 20px; }
+  h2 .num { color: var(--muted); font-weight: 600; margin-right: 10px; font-variant-numeric: tabular-nums; }
+  h3 { font-size: 18.5px; margin: 30px 0 8px; }
+  p { margin: 12px 0; }
+  a { color: var(--series-1); }
+  code { background: var(--accent-soft); padding: 1.5px 6px; border-radius: 5px; font-size: 14px;
+    font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace; }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 20px 22px; margin: 18px 0;
+  }
+  .callout {
+    border-left: 4px solid var(--series-1); background: var(--accent-soft);
+    border-radius: 0 var(--radius) var(--radius) 0; padding: 14px 20px; margin: 18px 0;
+  }
+  .callout.warn { border-left-color: var(--warn); }
+  .callout.good { border-left-color: var(--good); }
+  .callout .lbl { font-weight: 700; font-size: 12.5px; text-transform: uppercase; letter-spacing: .5px; }
+  .callout.warn .lbl { color: var(--warn); }
+  .callout.good .lbl { color: var(--good); }
+  .callout.plain .lbl { color: var(--series-1); }
+  .analogy { font-style: italic; color: var(--text-secondary); }
+  /* Tables */
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 14.5px; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  th { color: var(--muted); font-size: 12.5px; text-transform: uppercase; letter-spacing: .4px; font-weight: 600; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tbody tr:hover { background: var(--accent-soft); }
+  .tag { display: inline-block; font-size: 11.5px; font-weight: 600; padding: 2px 9px; border-radius: 20px; white-space: nowrap; }
+  .tag.done { background: rgba(0,131,0,.13); color: var(--good); }
+  .tag.prog { background: rgba(184,121,26,.15); color: var(--warn); }
+  .tag.gate { background: var(--accent-soft); color: var(--series-1); }
+  /* Bar chart */
+  .chart { margin: 18px 0 8px; }
+  .bar-row { display: grid; grid-template-columns: 140px 1fr; align-items: center; gap: 12px; margin: 7px 0; }
+  .bar-label { font-size: 14px; color: var(--text-secondary); }
+  .bar-track { position: relative; background: var(--grid); border-radius: 4px; height: 26px; }
+  .bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end;
+    padding-right: 8px; color: #fff; font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .chance-line { position: absolute; top: -6px; bottom: -6px; width: 2px; background: var(--text-primary); opacity: .55; }
+  .chance-cap { position: absolute; top: -22px; font-size: 11px; color: var(--muted); transform: translateX(-50%); white-space: nowrap; }
+  .legend { font-size: 13px; color: var(--muted); margin-top: 10px; }
+  /* Folder map */
+  .tree { font-family: "SF Mono", ui-monospace, Menlo, monospace; font-size: 13.5px; line-height: 1.9; }
+  .tree .f { color: var(--series-1); font-weight: 600; }
+  .tree .c { color: var(--muted); }
+  ul.clean { padding-left: 22px; }
+  ul.clean li { margin: 6px 0; }
+  .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+  .step { display: flex; gap: 14px; margin: 14px 0; }
+  .step .n { flex: 0 0 32px; height: 32px; border-radius: 50%; background: var(--series-1); color: #fff;
+    display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; }
+  .step .body { flex: 1; }
+  .step .body b { display: block; }
+  footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--border); margin-top: 60px; padding-top: 18px; }
+  .toc-mini { columns: 2; gap: 24px; font-size: 14.5px; }
+  hr { border: none; border-top: 1px solid var(--grid); margin: 40px 0; }
+  @media (max-width: 860px) {
+    .wrap { grid-template-columns: 1fr; }
+    nav { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+    main { padding: 28px 20px 80px; }
+    .toc-mini { columns: 1; }
+    .bar-row { grid-template-columns: 110px 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <!-- ============ SIDEBAR ============ -->
+  <nav>
+    <div class="brand">Dengue EWS Study</div>
+    <div class="brand-sub">A plain-language guide for new collaborators</div>
+    <a href="#tldr" class="section-num" data-n="0">The 60-second version</a>
+    <a href="#big-idea" class="section-num" data-n="1">What is this study about?</a>
+    <a href="#words" class="section-num" data-n="2">Key words, explained simply</a>
+    <a href="#models" class="section-num" data-n="3">The models being compared</a>
+    <a href="#findings" class="section-num" data-n="4">What they found</a>
+    <a href="#countries" class="section-num" data-n="5">Two countries, one story</a>
+
+    <div class="navgroup">The folder, module by module</div>
+    <a href="#map" class="section-num" data-n="6">Map of the whole folder</a>
+    <a href="#docs" class="section-num" data-n="7">The <code>docs/</code> library</a>
+    <a href="#scripts" class="section-num" data-n="8">The <code>scripts/</code> (the code)</a>
+    <a href="#data" class="section-num" data-n="9">Data, QC &amp; freezing</a>
+    <a href="#geo" class="section-num" data-n="10">Geomatics (maps &amp; people)</a>
+
+    <div class="navgroup">Where things stand</div>
+    <a href="#status" class="section-num" data-n="11">Progress dashboard</a>
+    <a href="#issues" class="section-num" data-n="12">Open problems to fix</a>
+    <a href="#start" class="section-num" data-n="13">If you're just starting</a>
+  </nav>
+
+  <!-- ============ MAIN ============ -->
+  <main>
+    <header class="hero">
+      <div class="kicker">Onboarding guide</div>
+      <h1>Understanding the Dengue Early-Warning Calibration Study</h1>
+      <p class="lede">A simple, section-by-section tour of the whole research project — what the
+      big question is, what every folder and file does, what was found, and what still needs doing.</p>
+      <p style="color:var(--muted); font-size:14px;">Repository: <code>srilanka-dengue-ews-calibration</code> · Written for a collaborator opening this folder for the first time.</p>
+    </header>
+
+    <!-- 0 -->
+    <section id="tldr">
+      <div class="callout plain">
+        <span class="lbl">The 60-second version</span>
+        <p style="margin-top:8px;">Dengue is a mosquito-borne disease. Health officials want an <b>early-warning system</b>
+        that tells them <i>"an outbreak is likely in a few weeks — get ready."</i> Many researchers build these using
+        <b>weather data</b> (rain and temperature drive mosquitoes). This study asks a sharper, more practical question:</p>
+        <p style="margin:8px 0 0;"><b>When two warning systems look equally accurate on paper, do they actually lead
+        to different real-world decisions?</b> And — surprisingly — it finds that just watching <b>recent case counts</b>
+        is usually a stronger, cheaper warning signal than weather models. Weather only adds a little, and only when
+        <i>combined</i> with recent cases. The study's real contribution is the <b>rigorous way it measures usefulness</b>,
+        borrowed from medical research, which the dengue field rarely uses.</p>
+      </div>
+    </section>
+
+    <!-- 1 -->
+    <section id="big-idea">
+      <h2><span class="num">1</span>What is this study about?</h2>
+      <p>Imagine you run public health in a region. Every week you must decide: <b>do I raise a dengue alert?</b>
+      Raising an alert costs money and effort (spraying, clinic prep, public messaging). <i>Not</i> raising one when an
+      outbreak comes is far worse. So you want a warning system that helps you make the <b>right call</b> more often.</p>
+
+      <p>Researchers have built many dengue warning systems. Most are judged on a score called <b>AUC</b> — roughly,
+      "how well can the model tell outbreak weeks apart from calm weeks?" But the researchers here noticed a gap:
+      <b>a good AUC score does not automatically mean the model helps you make better <i>decisions</i>.</b>
+      Two models can have the same AUC and yet, in practice, one triggers smarter alerts than the other.</p>
+
+      <div class="callout">
+        <span class="lbl">The core question</span>
+        <p style="margin-top:8px;">When two climate-driven dengue warning systems have <b>comparable accuracy (AUC)</b>,
+        do they lead to <b>different public-health alert decisions</b> once you properly measure them with
+        <b>calibration</b> and <b>net-benefit</b> analysis?</p>
+      </div>
+
+      <p>Importantly, the team <b>did not invent a new forecasting model.</b> They took <b>existing, published
+      model types</b> and put them through a much more honest, decision-focused evaluation than the field normally does.
+      That evaluation — not a shiny new algorithm — is the contribution.</p>
+
+      <p class="analogy">Analogy: Two weather apps both claim "90% accurate." But if one keeps you dry and the other
+      makes you carry an umbrella on 200 sunny days, they are <i>not</i> equally useful. This study measures the umbrella-carrying,
+      not just the accuracy badge.</p>
+    </section>
+
+    <!-- 2 -->
+    <section id="words">
+      <h2><span class="num">2</span>Key words, explained simply</h2>
+      <p>You'll see these terms everywhere in the folder. Here they are in plain English.</p>
+      <table>
+        <thead><tr><th style="width:210px;">Term</th><th>What it means (plainly)</th></tr></thead>
+        <tbody>
+          <tr><td><b>Dengue</b></td><td>A viral disease spread by mosquitoes. Outbreaks come in waves, partly driven by rain and heat.</td></tr>
+          <tr><td><b>Early-warning system (EWS)</b></td><td>A model that predicts, weeks ahead, whether an outbreak is coming — so officials can prepare.</td></tr>
+          <tr><td><b>Outbreak label</b></td><td>The yes/no answer we're trying to predict. Here: "were cases this week above that area's usual high level (its 75th-percentile)?"</td></tr>
+          <tr><td><b>Horizon (h)</b></td><td>How far ahead we predict. <code>h=4</code> means "will there be an outbreak <b>4 weeks from now?</b>"</td></tr>
+          <tr><td><b>AUC</b></td><td>An accuracy score from 0.5 (useless coin-flip) to 1.0 (perfect). Measures how well the model <i>ranks</i> risky weeks above calm ones.</td></tr>
+          <tr><td><b>Calibration</b></td><td>Do the model's probabilities mean what they say? If it says "70% chance," does an outbreak really happen ~70% of the time? A model can rank well (good AUC) but still be badly calibrated.</td></tr>
+          <tr><td><b>Recalibration</b></td><td>A simple correction that fixes a model whose probabilities have drifted (e.g., cases are generally rising over time).</td></tr>
+          <tr><td><b>Net benefit / Decision-curve analysis (DCA / DNB)</b></td><td>The star of the study. It turns a model into a single "is this worth acting on?" number by weighing the good of catching outbreaks against the cost of false alarms. This is standard in medicine but rare in dengue research.</td></tr>
+          <tr><td><b>Threshold (p*)</b></td><td>The probability at which you decide to raise an alert. The study mostly uses <code>p* = 0.30</code> (act if risk ≥ 30%).</td></tr>
+          <tr><td><b>DLNM</b></td><td>"Distributed-lag non-linear model" — a well-known statistical way to capture that weather affects mosquitoes with a <i>delay</i> (rain today → mosquitoes in a few weeks).</td></tr>
+          <tr><td><b>Frozen dataset</b></td><td>A dataset locked and fingerprinted (a <b>SHA256</b> checksum) so it can never silently change. Guarantees everyone analyzes exactly the same numbers.</td></tr>
+          <tr><td><b>RDHS</b></td><td>Sri Lanka's health administrative regions ("Regional Director of Health Services" areas). There are 26 of them — the map units for the Sri Lanka data.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 3 -->
+    <section id="models">
+      <h2><span class="num">3</span>The models being compared</h2>
+      <p>The study lines up several models from simplest to most complex — a "ladder." Each rung adds information.
+      The key contest is: <b>can weather-based models beat simply watching recent case counts?</b></p>
+      <table>
+        <thead><tr><th style="width:120px;">Model</th><th>What it uses to predict</th><th>Plain description</th></tr></thead>
+        <tbody>
+          <tr><td><b>M0</b></td><td>Season only</td><td>The "dumb" baseline — just the time of year. A floor to beat.</td></tr>
+          <tr><td><b>M1</b></td><td>Recent case counts</td><td>Watches how many cases happened in recent weeks. Simple, surveillance-only.</td></tr>
+          <tr><td><b>M2</b></td><td>Weather only</td><td>Rain + temperature (with delays). No case data.</td></tr>
+          <tr><td><b>M3</b></td><td>Weather + season + place</td><td>M2 plus seasonal and location adjustments.</td></tr>
+          <tr><td><b>M4</b></td><td>Recent cases + weather</td><td>The <b>hybrid</b>: combines M1 and M2.</td></tr>
+          <tr><td><b>M5</b></td><td>Hybrid + season + place</td><td>The fullest model. Usually the best performer.</td></tr>
+        </tbody>
+      </table>
+      <p>There is also a proper <b>DLNM</b> comparator (a more sophisticated weather model), built in both Python and
+      the gold-standard R package, to make sure the weather models were given a fair, credible shot.</p>
+    </section>
+
+    <!-- 4 -->
+    <section id="findings">
+      <h2><span class="num">4</span>What they found</h2>
+      <p>Here are the accuracy (AUC) scores from the Colombia test data. Remember: <b>0.5 is a useless coin-flip.</b>
+      Watch how the weather-only models (M2, M3) barely rise above chance, while models that use recent cases (M1, M4, M5) do much better.</p>
+
+      <div class="card chart">
+        <div style="font-weight:600; margin-bottom:16px;">Model accuracy (AUC) — Colombia test set, predicting 4 weeks ahead</div>
+        <div style="position:relative; padding-top:22px;">
+          <!-- chance line at 0.5 within a 0.5–0.75 visual scale; bars scaled so width = (auc-0.5)/0.25 *100% -->
+          <div class="bar-row"><div class="bar-label">M0 · season only</div>
+            <div class="bar-track"><div class="chance-line" style="left:0;"></div><span class="chance-cap" style="left:0;">0.50 = coin-flip</span>
+              <div class="bar-fill" style="width:5.2%; background:var(--series-3);">0.513</div></div></div>
+          <div class="bar-row"><div class="bar-label">M2 · weather only</div>
+            <div class="bar-track"><div class="chance-line" style="left:0;"></div>
+              <div class="bar-fill" style="width:22.4%; background:var(--series-3);">0.556</div></div></div>
+          <div class="bar-row"><div class="bar-label">M3 · weather+place</div>
+            <div class="bar-track"><div class="chance-line" style="left:0;"></div>
+              <div class="bar-fill" style="width:25.6%; background:var(--series-3);">0.564</div></div></div>
+          <div class="bar-row"><div class="bar-label">M1 · recent cases</div>
+            <div class="bar-track"><div class="chance-line" style="left:0;"></div>
+              <div class="bar-fill" style="width:74%; background:var(--series-1);">0.685</div></div></div>
+          <div class="bar-row"><div class="bar-label">M4 · hybrid</div>
+            <div class="bar-track"><div class="chance-line" style="left:0;"></div>
+              <div class="bar-fill" style="width:79.6%; background:var(--series-1);">0.699</div></div></div>
+          <div class="bar-row"><div class="bar-label">M5 · full hybrid</div>
+            <div class="bar-track"><div class="chance-line" style="left:0;"></div>
+              <div class="bar-fill" style="width:90.4%; background:var(--series-2);">0.726</div></div></div>
+        </div>
+        <div class="legend">Bars start at 0.50 (pure chance). <span style="color:var(--series-3);">■</span> Red = weather-only, near useless ·
+        <span style="color:var(--series-1);">■</span> Blue = uses recent cases ·
+        <span style="color:var(--series-2);">■</span> Aqua = the best model (full hybrid, M5).</div>
+      </div>
+
+      <h3>The three takeaways</h3>
+      <div class="step"><div class="n">1</div><div class="body"><b>Recent cases beat weather.</b>
+        Just watching case counts (M1) is a strong, hard-to-beat warning signal. Weather-only models (M2, M3) are close to useless for decisions — no better than "always alert."</div></div>
+      <div class="step"><div class="n">2</div><div class="body"><b>Weather helps only as a hybrid, and only a little.</b>
+        Adding weather <i>to</i> recent cases (M5) gives a small but real improvement in Colombia
+        (net-benefit gain <code>+0.018</code>, roughly <b>~1.8 better alert decisions per 100 area-weeks</b>). In Sri Lanka the same gain was too small to confirm.</div></div>
+      <div class="step"><div class="n">3</div><div class="body"><b>Calibration drifts, but is fixable.</b>
+        Over time the models' probabilities became "off" (because case rates rose). A simple <b>recalibration</b> corrects this without changing which model wins.</div></div>
+
+      <div class="callout warn">
+        <span class="lbl">Honest caveat the team itself raises</span>
+        <p style="margin-top:8px;">A popular belief is "weather is most useful for <i>long-range</i> warnings." The study tested horizons
+        from 1 to 12 weeks and did <b>not</b> find that pattern — weather's small edge stayed flat and even shrank further out.
+        The team is careful not to over-claim.</p>
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section id="countries">
+      <h2><span class="num">5</span>Two countries, one story</h2>
+      <p>The study runs in two places to see if the findings hold up. Understanding this split explains why the folder has
+      both "Sri Lanka" files and lots of "Colombia" files.</p>
+      <table>
+        <thead><tr><th>Setting</th><th>Role</th><th>Data</th><th>Map units</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td><b>🇱🇰 Sri Lanka</b></td><td>Primary study</td><td>Hand-built from weekly government PDF reports (WER), 2018–2025</td><td>26 RDHS regions</td><td>Recent cases win; hybrid gain <b>not</b> confirmed</td></tr>
+          <tr><td><b>🇨🇴 Colombia</b></td><td>External check (replication)</td><td>Public "OpenDengue" database, ~1,000 municipalities, 2006–2022</td><td>Municipalities</td><td>Same story, but here the hybrid gain <b>was</b> confirmed (bigger dataset)</td></tr>
+        </tbody>
+      </table>
+      <p>Colombia was added to test whether the Sri Lanka findings were a fluke. They largely held up — which
+      strengthens the paper. (Sri Lanka data had to be built from scratch because no ready-made subnational
+      dataset existed; Colombia's did, via OpenDengue.)</p>
+    </section>
+
+    <hr>
+
+    <!-- 6 -->
+    <section id="map">
+      <h2><span class="num">6</span>Map of the whole folder</h2>
+      <p>Here is every folder and top-level file, and what it holds. <b>Important:</b> the actual data
+      (PDFs, spreadsheets, weather files) is <b>deliberately kept out</b> of this repository — only the
+      <i>code</i> and <i>write-ups</i> live here. That's a privacy/data-integrity choice, not a mistake.</p>
+      <div class="card tree">
+<span class="f">srilanka-dengue-ews-calibration/</span>
+├── <span class="f">README.md</span>            <span class="c"># start here: project summary + hard rules</span>
+├── Final Version.pdf     <span class="c"># the current manuscript (the paper itself)</span>
+├── LICENSE  ·  .gitignore <span class="c"># legal + the "block all data files" rules</span>
+│
+├── <span class="f">docs/</span>                 <span class="c"># ~78 write-ups: plans, specs & result reports (the brain)</span>
+├── <span class="f">scripts/</span>              <span class="c"># 10 Python programs that build data & run analyses</span>
+├── <span class="f">data/</span>                 <span class="c"># EMPTY on purpose — a README says how to get the data</span>
+├── <span class="f">data_dictionary/</span>      <span class="c"># defines every column in the outcome dataset</span>
+├── <span class="f">qc_summaries/</span>         <span class="c"># quality-control reports + the "freeze log"</span>
+└── <span class="f">geomatics_templates/</span>  <span class="c"># templates for the map/population work</span>
+      </div>
+      <div class="callout plain">
+        <span class="lbl">The mental model</span>
+        <p style="margin-top:8px;"><b>docs/</b> = the thinking and the results (read these to understand <i>what</i> and <i>why</i>).
+        <b>scripts/</b> = the doing (the code that produced the results).
+        <b>data/ · qc_summaries/ · data_dictionary/</b> = the ingredients and their quality checks.
+        <b>geomatics_templates/</b> = the maps-and-population side project.</p>
+      </div>
+    </section>
+
+    <!-- 7 -->
+    <section id="docs">
+      <h2><span class="num">7</span>The <code>docs/</code> library — organized by theme</h2>
+      <p>There are about 78 documents. Don't panic — they come in two flavors and five topics.
+      A <b>spec</b> is a plan written <i>before</i> doing something ("here's what we'll do and why").
+      A <b>report</b> is written <i>after</i> ("here's what we found"). They usually come in pairs.</p>
+
+      <h3>Theme A — Orientation (read these first)</h3>
+      <ul class="clean">
+        <li><code>project_overview.md</code> — the one-page summary of the whole project.</li>
+        <li><code>data_access_plan.md</code> — where data comes from and the rules for using it.</li>
+        <li><code>osf_prereg_skeleton.md</code>, <code>preregistration_analysis_plan_v1.md</code> — the "we promise to analyze it this way <i>before</i> looking" plan (a credibility safeguard).</li>
+        <li><code>probast_tripod_self_assessment_v1.md</code>, <code>..._scoring_instrument.md</code> — an honest self-audit of the study's weaknesses using standard checklists.</li>
+      </ul>
+
+      <h3>Theme B — Sri Lanka data pipeline</h3>
+      <p>How the government PDF reports became a clean dataset, and the tricky calendar problems along the way.</p>
+      <ul class="clean">
+        <li><code>wer_2021_calendar_anomaly_decision_memo.md</code> — a fascinating detective story: a duplicated week and a missing week in 2021, and how they decided to handle them.</li>
+        <li><code>opendengue_*.md</code> (several) — checking whether the OpenDengue database could serve Sri Lanka (it can't at region level — that's why the PDFs were needed).</li>
+        <li><code>exposure_freeze_v1.md</code> — locking the weather dataset.</li>
+      </ul>
+
+      <h3>Theme C — Colombia analysis (the biggest cluster)</h3>
+      <p>Many files named <code>colombia_*</code>. Each has a <i>spec</i> + <i>report</i> pair:</p>
+      <ul class="clean">
+        <li><code>colombia_label_*</code> — defining what counts as an "outbreak."</li>
+        <li><code>colombia_lag_feature_assembly_*</code> — building the "weather from N weeks ago" columns.</li>
+        <li><code>colombia_model_ladder_*</code> — running M0→M5 and scoring them (the main results).</li>
+        <li><code>colombia_horizon_sensitivity_*</code> — does the answer change at 1, 2, 8, 12 weeks ahead?</li>
+        <li><code>colombia_outbreak_threshold_sensitivity_*</code> — does it change if "outbreak" means the top 25% vs top 10% of weeks?</li>
+      </ul>
+
+      <h3>Theme D — The decision/evaluation methods (the study's core skill)</h3>
+      <ul class="clean">
+        <li><code>decision_threshold_dnb_robustness_*</code> — does the conclusion survive different alert thresholds (p* from 0.10 to 0.50)?</li>
+        <li><code>auc_dnb_confidence_interval_*</code> — putting error bars on the results (how sure are we?).</li>
+        <li><code>pilot_h4_75pct_calibration_dca_*</code> — the flagship calibration + decision-curve analysis.</li>
+        <li><code>dlnm_climate_comparator_*</code>, <code>canonical_R_dlnm_*</code> — giving the weather model its fairest, gold-standard shot.</li>
+        <li><code>hybrid_model_extension_*</code>, <code>rolling_recalibration_extension_*</code> — the hybrid and the drift-fix.</li>
+        <li><code>biomodel_feasibility_memo_v1.md</code> — a decision <i>not</i> to add a complex mechanistic mosquito model (it wouldn't be reliable here).</li>
+      </ul>
+
+      <h3>Theme E — Geomatics: maps, boundaries &amp; population</h3>
+      <p>Files named <code>rdhs_*</code>, <code>boundary_*</code>, <code>population_*</code>, <code>climate_*</code>, <code>worldpop_*</code>.
+      This is the geography work-stream (see section 10).</p>
+
+      <h3>Theme F — The paper &amp; its review</h3>
+      <ul class="clean">
+        <li><code>manuscript_peer_review_v1.md</code> — a mock peer review by 6 "expert reviewers" and the fixes needed. <b>Very useful to read.</b></li>
+        <li><code>paper_strategy_reframe_memo.md</code>, <code>literature_positioning_v2_2026.md</code> — how to frame and pitch the paper.</li>
+        <li><code>team_writing_handoff_v1.md</code> — notes for whoever writes the next draft (possibly you!).</li>
+      </ul>
+    </section>
+
+    <!-- 8 -->
+    <section id="scripts">
+      <h2><span class="num">8</span>The <code>scripts/</code> folder — the actual code</h2>
+      <p>Ten short Python programs. Three build the Sri Lanka data; the rest run the Colombia analyses.
+      Each is small (85–190 lines) and does one job.</p>
+      <table>
+        <thead><tr><th>Script</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td><code>wer_bulk_harvest.py</code></td><td>Downloads the weekly government PDF reports and records a checksum for each.</td></tr>
+          <tr><td><code>wer_bulk_extract_dengue_v2.py</code></td><td>Reads each PDF's Table 1 and pulls out the dengue count for all 26 regions.</td></tr>
+          <tr><td><code>wer_qc_report_v2.py</code></td><td>Quality-checks the extracted numbers (right shape, no impossible values).</td></tr>
+          <tr><td><code>colombia_label_construction_v1.py</code></td><td>Marks each week as outbreak / not-outbreak.</td></tr>
+          <tr><td><code>colombia_lag_feature_assembly_v1.py</code></td><td>Builds the "weather from a few weeks ago" predictor columns.</td></tr>
+          <tr><td><code>colombia_model_ladder_h4_75pct_v1.py</code></td><td>The main event: trains M0–M5 and scores AUC, calibration, net benefit.</td></tr>
+          <tr><td><code>colombia_horizon_sensitivity_v1.py</code></td><td>Repeats the analysis for different weeks-ahead.</td></tr>
+          <tr><td><code>colombia_outbreak_threshold_sensitivity_v1.py</code></td><td>Repeats it for different outbreak definitions.</td></tr>
+          <tr><td><code>audit_colombia_outbreak_threshold_sensitivity_v1.py</code></td><td>Double-checks the above for errors.</td></tr>
+          <tr><td><code>decision_threshold_dnb_robustness_v1.py</code></td><td>Checks the conclusion across many alert thresholds.</td></tr>
+        </tbody>
+      </table>
+      <div class="callout"><span class="lbl">The 3-step pipeline</span>
+        <p style="margin-top:8px;"><b>harvest → extract → QC.</b> Download the PDFs, pull the numbers out, then check them.
+        This runs entirely from <i>public</i> sources, so anyone can reproduce the dataset and verify it matches the frozen fingerprint.</p>
+      </div>
+    </section>
+
+    <!-- 9 -->
+    <section id="data">
+      <h2><span class="num">9</span>Data, quality-control &amp; "freezing"</h2>
+      <p>A cornerstone of this project is <b>data discipline</b>. The raw data never goes into the shared repository;
+      instead the folder documents exactly what the data is and proves its quality.</p>
+
+      <h3>The frozen Sri Lanka dataset</h3>
+      <table>
+        <tbody>
+          <tr><td style="width:230px;"><b>What</b></td><td>Weekly dengue counts, 2018–2025</td></tr>
+          <tr><td><b>Size</b></td><td>10,790 rows = 415 weekly reports × 26 regions</td></tr>
+          <tr><td><b>Real data cells</b></td><td>10,757 valid; only 33 missing (documented); 0 invalid values</td></tr>
+          <tr><td><b>Main column</b></td><td><code>dengue_current_week</code> (the outcome). <code>dengue_cumulative</code> is <b>QC-only, never analyzed</b>.</td></tr>
+          <tr><td><b>Manual check</b></td><td>33 reports re-typed by hand — <b>0 mismatches</b></td></tr>
+          <tr><td><b>Fingerprint</b></td><td>A SHA256 checksum locks it so it can never silently change</td></tr>
+        </tbody>
+      </table>
+      <p>Read about this in <code>qc_summaries/</code> (the <code>FREEZE_LOG.md</code> and QC reports) and
+      <code>data_dictionary/</code> (defines each column).</p>
+
+      <div class="callout good"><span class="lbl">Why "freezing" matters</span>
+        <p style="margin-top:8px;">Once frozen, everyone on the team analyzes <b>exactly</b> the same numbers, and any accidental change
+        is instantly detectable. This is what makes the research reproducible and trustworthy.</p>
+      </div>
+
+      <div class="callout warn"><span class="lbl">The golden rule (in README &amp; .gitignore)</span>
+        <p style="margin-top:8px;"><b>Never commit raw PDFs, the frozen data files, weather rasters, credentials, or private emails.</b>
+        The <code>.gitignore</code> blocks these automatically, and there's a "forbidden-file guard" to run before saving changes.
+        If you're new: don't drag data files into this folder.</p>
+      </div>
+    </section>
+
+    <!-- 10 -->
+    <section id="geo">
+      <h2><span class="num">10</span>Geomatics — maps, boundaries &amp; population</h2>
+      <p>To turn case counts into <b>rates</b> (cases per person) and to do <b>spatial</b> analysis, you need three things:
+      accurate region boundaries, population numbers, and neighbor relationships between regions. This work-stream ("WP1")
+      is essentially <b>complete</b>.</p>
+      <ul class="clean">
+        <li><b>Boundaries:</b> official Sri Lanka maps, with a tricky case solved — <i>Ampara</i> district is served by <i>two</i> health regions (Ampara + Kalmunai), so 25 districts become 26 regions. The split was resolved using the official health-office list.</li>
+        <li><b>Population:</b> WorldPop satellite estimates, corrected to match the 2024 census (WorldPop was ~5.6% too high, unevenly across regions — exactly the kind of bias that would distort a spatial study).</li>
+        <li><b>Neighbors:</b> a "who-borders-whom" graph (26 regions, 60 borders, no impossible across-sea links) for spatial modeling.</li>
+        <li><b>Weather:</b> temperature/humidity (ERA5-Land) and rainfall (CHIRPS) assembled into a weekly table for 2018–2025.</li>
+      </ul>
+      <p>The <code>geomatics_templates/</code> folder holds the blank templates (CSV files) used to organize this work.</p>
+    </section>
+
+    <hr>
+
+    <!-- 11 -->
+    <section id="status">
+      <h2><span class="num">11</span>Progress dashboard</h2>
+      <table>
+        <thead><tr><th>Work-stream</th><th style="width:150px;">Status</th></tr></thead>
+        <tbody>
+          <tr><td>Sri Lanka dengue dataset — built, checked, frozen</td><td><span class="tag done">✔ Done</span></td></tr>
+          <tr><td>Geomatics: boundaries, population, neighbors</td><td><span class="tag done">✔ Done</span></td></tr>
+          <tr><td>Weather dataset (temperature, rain) built</td><td><span class="tag done">✔ Done</span></td></tr>
+          <tr><td>Colombia external analysis (all models + sensitivity)</td><td><span class="tag done">✔ Done</span></td></tr>
+          <tr><td>DLNM gold-standard comparator (Python + R)</td><td><span class="tag done">✔ Done</span></td></tr>
+          <tr><td>Population-weighted weather + spatial cross-validation</td><td><span class="tag prog">◐ Planned</span></td></tr>
+          <tr><td>Formal preregistration (public DOI)</td><td><span class="tag prog">◐ Unresolved</span></td></tr>
+          <tr><td>Manuscript</td><td><span class="tag prog">◐ Major revision</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 12 -->
+    <section id="issues">
+      <h2><span class="num">12</span>Open problems the paper still needs to fix</h2>
+      <p>The internal mock peer review was refreshingly honest. If you're joining now, these are the live issues —
+      likely exactly what your senior wants help with.</p>
+      <div class="step"><div class="n">1</div><div class="body"><b>The "registered p*=0.30" claim needs proof.</b>
+        The paper calls the 30% alert threshold "preregistered," but there's no public registration document (DOI) to point to — and the team's own analysis found the strongest results at <i>other</i> thresholds. This must be justified or the word "registered" removed.</div></div>
+      <div class="step"><div class="n">2</div><div class="body"><b>Colombia's win overlaps the COVID years (2020–2022).</b>
+        The one confirmed weather-hybrid benefit sits in a pandemic-disrupted period that didn't get the same anomaly check Sri Lanka got. Needs a sensitivity test excluding it.</div></div>
+      <div class="step"><div class="n">3</div><div class="body"><b>"Confirmed vs not confirmed" may be over-stated.</b>
+        Colombia's and Sri Lanka's hybrid gains are statistically similar; calling one a win and the other a null is a classic statistical trap. Better to report both with error bars.</div></div>
+      <div class="step"><div class="n">4</div><div class="body"><b>Missing Data/Code Availability section &amp; the Colombia data citation.</b>
+        For a paper whose selling point is a reusable method, the code and data sources must be formally listed.</div></div>
+      <div class="step"><div class="n">5</div><div class="body"><b>Translate the numbers into plain units.</b>
+        "Net benefit +0.018" sounds tiny; "~1.8 better alert decisions per 100 area-weeks" is what it actually means.</div></div>
+      <p style="margin-top:18px;">The overall plan (see <code>paper_strategy_reframe_memo.md</code>) is to reframe the paper from
+      "a negative result" into <b>"a better way to evaluate dengue warnings, demonstrated in two countries"</b> — a more
+      positive, publishable story. Target journal: <b>PLOS Neglected Tropical Diseases</b>.</p>
+    </section>
+
+    <!-- 13 -->
+    <section id="start">
+      <h2><span class="num">13</span>If you're just starting — a suggested reading order</h2>
+      <div class="card">
+        <div class="toc-mini">
+          <p><b>1.</b> <code>README.md</code> — the ground rules.</p>
+          <p><b>2.</b> <code>docs/project_overview.md</code> — the one-pager.</p>
+          <p><b>3.</b> This guide (you're here) — the plain-language tour.</p>
+          <p><b>4.</b> <code>Final Version.pdf</code> — the actual paper.</p>
+          <p><b>5.</b> <code>docs/manuscript_peer_review_v1.md</code> — what needs fixing.</p>
+          <p><b>6.</b> <code>docs/colombia_model_ladder_report.md</code> — the main results.</p>
+          <p><b>7.</b> <code>docs/pilot_h4_75pct_calibration_dca_report.md</code> — the core method in action.</p>
+          <p><b>8.</b> <code>docs/team_writing_handoff_v1.md</code> — where you can help.</p>
+        </div>
+      </div>
+      <div class="callout plain">
+        <span class="lbl">One sentence to remember</span>
+        <p style="margin-top:8px;">This project's real product is not a model — it's a <b>rigorous, honest way to judge whether a dengue
+        warning system is actually worth acting on</b>, and the finding that <b>recent case counts are a surprisingly
+        strong baseline that weather models only slightly improve upon.</b></p>
+      </div>
+    </section>
+
+    <footer>
+      <p><b>Study Guide</b> for <code>srilanka-dengue-ews-calibration</code> — a plain-language onboarding companion.
+      For exact numbers, methods, and caveats, always defer to the source documents in <code>docs/</code> and the manuscript.
+      Data source for dengue counts: Sri Lanka Epidemiology Unit, Weekly Epidemiological Report.</p>
+    </footer>
+  </main>
+</div>
+</body>
+</html>
