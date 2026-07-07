@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WP4 / WP5 Implementation Plan — MAUP Exposure Sensitivity &amp; Spatially-Honest Cross-Validation</title>
+<style>
+  :root{
+    --bg:#0f1720; --panel:#ffffff; --ink:#1a2430; --muted:#5b6b7b;
+    --accent:#0b6e4f; --accent2:#1d6fa5; --line:#e3e8ee;
+    --strong:#0b6e4f; --moderate:#c98a00; --weak:#b04632; --mixed:#6b57b8;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#eef2f6;color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.55;font-size:16px}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 22px 80px}
+  header.hero{background:linear-gradient(135deg,#0b6e4f 0%,#0e4f6e 100%);color:#fff;
+    padding:46px 22px 40px;margin-bottom:26px}
+  header.hero .inner{max-width:1180px;margin:0 auto}
+  header.hero h1{margin:0 0 8px;font-size:29px;line-height:1.2;font-weight:700}
+  header.hero p{margin:6px 0 0;max-width:920px;color:#e6f2ee;font-size:16px}
+  .tag{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);
+    padding:3px 10px;border-radius:20px;font-size:12.5px;margin:10px 8px 0 0}
+  h2{font-size:22px;margin:38px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--accent);color:#0c3a2c}
+  h3{font-size:17.5px;margin:22px 0 6px;color:var(--accent2)}
+  p{margin:10px 0}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px 24px;
+    box-shadow:0 1px 3px rgba(16,40,60,.05);margin-bottom:18px}
+  .lead{font-size:16.5px;color:#2a3745}
+  table{border-collapse:collapse;width:100%;font-size:13.6px;margin:6px 0 4px}
+  caption{caption-side:top;text-align:left;color:var(--muted);font-size:12.5px;margin-bottom:8px}
+  th,td{border:1px solid var(--line);padding:9px 10px;vertical-align:top;text-align:left}
+  th{background:#f2f6f9;font-weight:700;color:#243444}
+  tbody tr:nth-child(even){background:#f9fbfc}
+  .pill{display:inline-block;padding:2px 9px;border-radius:12px;font-size:11.5px;font-weight:700;color:#fff;white-space:nowrap}
+  .s-strong{background:var(--strong)} .s-mod{background:var(--moderate)}
+  .s-weak{background:var(--weak)} .s-mixed{background:var(--mixed)} .s-blue{background:var(--accent2)}
+  .s-gray{background:#5b6b7b}
+  .callout{border-left:4px solid var(--accent2);background:#f2f8fc;padding:12px 16px;border-radius:0 8px 8px 0;margin:14px 0}
+  .warn{border-left:4px solid #b04632;background:#fdf3f1}
+  .ok{border-left:4px solid var(--accent);background:#f1f8f4}
+  a{color:var(--accent2);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .toc{columns:2;font-size:14px;color:var(--accent2)}
+  @media(max-width:640px){.toc{columns:1}}
+  .toc a{display:block;margin:3px 0}
+  .small{font-size:12.5px;color:var(--muted)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:820px){.grid2{grid-template-columns:1fr}}
+  .tbl-scroll{overflow-x:auto}
+  /* ladder of exposure builds */
+  .ladder{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:6px 0}
+  @media(max-width:820px){.ladder{grid-template-columns:1fr}}
+  .build{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:#fbfdfe}
+  .build .b-h{font-weight:700;font-size:15px;color:#0c3a2c;margin-bottom:4px}
+  .build .b-tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;margin-bottom:8px}
+  .b-exist{background:#e5efe9;color:#0b6e4f} .b-new{background:#e6f0f7;color:#1d6fa5}
+  .build ul{margin:6px 0 0;padding-left:18px;font-size:13.3px;color:#33475b}
+  .build li{margin:3px 0}
+  .arrow{text-align:center;color:var(--accent2);font-weight:700;font-size:13px;margin:2px 0}
+  /* phase cards */
+  .phase{border:1px solid var(--line);border-left:5px solid var(--accent2);border-radius:0 10px 10px 0;
+    padding:14px 18px;margin:12px 0;background:#fff}
+  .phase.blocking{border-left-color:#b04632;background:#fdf6f4}
+  .phase .p-h{font-weight:700;font-size:15.5px;color:#243444;margin:0 0 4px}
+  .phase .p-h .num{display:inline-block;background:var(--accent2);color:#fff;border-radius:6px;
+    padding:1px 8px;font-size:12.5px;margin-right:8px;font-variant-numeric:tabular-nums}
+  .phase.blocking .p-h .num{background:#b04632}
+  .phase p{margin:6px 0 0;font-size:13.6px;color:#33475b}
+  .badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;
+    background:#fbe9e4;color:#b04632;margin-left:8px}
+  .cklist{list-style:none;padding-left:0;margin:8px 0}
+  .cklist li{margin:5px 0;padding-left:24px;position:relative;font-size:13.8px}
+  .cklist li:before{content:"☐";position:absolute;left:0;color:var(--accent2);font-size:15px}
+  .kv{font-size:13.6px}
+  .kv td:first-child{font-weight:700;color:#243444;white-space:nowrap;width:170px}
+  /* plain-language aside */
+  .plain{border-left:4px solid #c98a00;background:#fffaf0;padding:11px 15px;border-radius:0 8px 8px 0;margin:12px 0;font-size:14px;color:#4a3d22}
+  .plain .lbl{display:block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#b07d00;margin-bottom:3px}
+  .plain b{color:#3a3018}
+  /* extra cards */
+  .extra{border:1px solid var(--line);border-top:4px solid var(--accent2);border-radius:8px;padding:15px 17px;background:#fff;margin-bottom:14px}
+  .extra .e-h{font-weight:700;font-size:16px;color:#243444;margin:0 0 6px}
+  .extra .e-h .n{color:var(--accent2);margin-right:6px}
+  .extra .e-h .cost{float:right;font-size:11px;font-weight:700;padding:2px 9px;border-radius:10px;background:#eef3f7;color:#1d6fa5}
+  .extra .e-h .cost.low{background:#fbe9e4;color:#b04632}
+  .extra .row{font-size:13.9px;color:#33475b;margin:7px 0}
+  .extra .row b{color:#243444}
+  .role-in{background:#0b6e4f} .role-f8{background:#1d6fa5} .role-cand{background:#c98a00} .role-p2{background:#5b6b7b} .role-opt{background:#c98a00}
+  .grp td{background:#eaf1f6;font-weight:700;color:#0c3a2c;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+  .add{display:inline-block;font-size:10px;font-weight:700;background:#0b6e4f;color:#fff;border-radius:8px;padding:1px 6px;margin-left:4px;vertical-align:middle}
+  .recipe{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:13px 16px;margin:12px 0;background:#fbfdfc}
+  .recipe .r-h{font-weight:700;color:#0c3a2c;font-size:14.5px;margin-bottom:2px}
+  .recipe .src{font-size:12.3px;color:var(--muted);margin:2px 0 6px}
+  .steps{margin:6px 0 2px;padding-left:20px;font-size:13.8px;color:#33475b}
+  .steps li{margin:4px 0}
+  .steps code,.recipe code{background:#eef3f7;padding:1px 5px;border-radius:4px;font-size:12.4px}
+  footer{color:var(--muted);font-size:12.5px;margin-top:34px;border-top:1px solid var(--line);padding-top:14px}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="inner">
+    <h1>WP4 / WP5 Implementation Plan</h1>
+    <p>MAUP exposure-sensitivity (three-build contrast) and spatially-honest cross-validation for the calibration &amp; net-benefit dengue early-warning study — Sri Lanka (26 RDHS) and Colombia (~1,000 municipalities).</p>
+    <div>
+      <span class="tag">Scope LOCKED · 2026-07-07</span>
+      <span class="tag">Plan-first — no implementation started</span>
+      <span class="tag">Owner: Geospatial Lead</span>
+      <span class="tag">Companion to the plan &amp; decision-log Markdown</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="panel">
+    <p class="lead">This page is the browser-friendly implementation plan for the two geospatial work packages. Scope is now locked (four decisions settled); <strong>nothing has been built yet</strong> — every input still lives outside this repository and must be staged first. The plan below is the execution contract: what gets built, in what order, and the guardrails it runs under.</p>
+    <div class="callout">
+      <strong>Why these two work packages.</strong> They pre-empt the two reviewer attacks that could sink the paper's headline (<em>"two equally accurate warning systems can recommend different actions"</em>): <strong>WP5</strong> proves the calibration difference is real, not an artifact of how weather is averaged over an area; <strong>WP4</strong> proves the out-of-sample claim holds when neighboring areas can't leak the answer.
+    </div>
+    <div class="toc" style="margin-top:12px">
+      <a href="#decisions">1 · Decisions locked (D1–D4)</a>
+      <a href="#builds">2 · The three exposure builds (WP5)</a>
+      <a href="#cv">3 · Two-country cross-validation (WP4)</a>
+      <a href="#extras">4 · The four extras — in plain language</a>
+      <a href="#factors">5 · Which lit-review factors are in (and how)</a>
+      <a href="#stress">6 · Do the geomatics factors actually help predict?</a>
+      <a href="#phases">7 · Phased execution sequence</a>
+      <a href="#guardrails">8 · Guardrails &amp; honest-null</a>
+      <a href="#blockers">9 · Blockers before any build</a>
+    </div>
+  </div>
+
+  <!-- 1 · DECISIONS -->
+  <h2 id="decisions">1 · Decisions locked (2026-07-07)</h2>
+  <p class="small">The four open scope questions are settled by the Geospatial Lead, to be ratified by the PI. Full rationale in <code>maup_sensitivity_and_spatial_cv_plan.md</code> §1a; running record in <code>study_decision_log.md</code>.</p>
+  <div class="panel tbl-scroll">
+    <table>
+      <thead>
+        <tr><th style="width:52px">#</th><th style="min-width:150px">Question</th><th>Decision</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>D1</strong></td>
+          <td><strong>Cross-validation setting</strong></td>
+          <td><span class="pill s-blue">BOTH countries</span> &nbsp;— each scheme sized to the number of areas. Sri Lanka → <strong>buffered leave-one-out (LOOCV)</strong>; Colombia → <strong>spatial block CV</strong> (leave-one-department-out). Colombia carries the well-powered claim; Sri Lanka is the compact-country sensitivity companion.</td>
+        </tr>
+        <tr>
+          <td><strong>D2</strong></td>
+          <td><strong>Number of exposure builds</strong></td>
+          <td><span class="pill s-strong">THREE</span> &nbsp;— nested ladder: <strong>A</strong> area-mean → <strong>B</strong> population-weighted → <strong>C</strong> elevation / lapse-rate–corrected temperature.</td>
+        </tr>
+        <tr>
+          <td><strong>D3</strong></td>
+          <td><strong>Analysis resolution</strong></td>
+          <td><span class="pill s-strong">KEEP 26 RDHS</span> / municipality. No re-extraction to MOH-division (would require rebuilding the frozen outcome table).</td>
+        </tr>
+        <tr>
+          <td><strong>D4</strong></td>
+          <td><strong>Extras in this paper</strong></td>
+          <td><span class="pill s-strong">ALL FOUR IN</span> &nbsp;— per-variable MAUP · spatial-structure-of-miscalibration map (F8) · cross-setting MAUP (Colombia weather contrast) · population-product sensitivity (lowest priority).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 2 · BUILDS -->
+  <h2 id="builds">2 · The three exposure builds (WP5)</h2>
+  <p>A <strong>nested ladder</strong> — each build adds exactly one refinement, so any change in calibration or net benefit is attributable to that single step. All weighting is done in an <strong>equal-area CRS</strong> (SLD99 / Sri Lanka Grid or UTM 44N) — never in WGS84 degrees. Every build is row-aligned to the same 10,842 unit-week keys so they diff cleanly, and each is checksummed + frozen.</p>
+
+  <div class="ladder">
+    <div class="build">
+      <div class="b-h">A · Area-mean</div>
+      <span class="b-tag b-exist">EXISTS — Build A</span>
+      <ul>
+        <li>Naive areal mean (<code>all_touched</code> mask).</li>
+        <li>417 ISO weeks × 26 RDHS = 10,842 rows.</li>
+        <li>The current baseline every downstream result consumes.</li>
+      </ul>
+    </div>
+    <div class="build">
+      <div class="b-h">B · Population-weighted</div>
+      <span class="b-tag b-new">TO BUILD — Build B</span>
+      <ul>
+        <li>Weight each climate cell by WorldPop population in it (fractional-cell overlap, not <code>all_touched</code>).</li>
+        <li>Population vintage matched to the exposure year.</li>
+        <li>Carries within-unit dispersion (SD, IQR) as a WP6 covariate.</li>
+      </ul>
+    </div>
+    <div class="build">
+      <div class="b-h">C · Terrain-corrected</div>
+      <span class="b-tag b-new">TO BUILD — Build C</span>
+      <ul>
+        <li>Lapse-rate correct temperature to a DEM (Copernicus GLO-30, −6.5 °C/km) at the fine grid <em>before</em> aggregation.</li>
+        <li>Aggregated with the <em>same</em> population weighting as B → isolates the terrain effect.</li>
+        <li>Differs from B on <strong>temperature only</strong>; precip/RH carried through unchanged.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="arrow">A &nbsp;→&nbsp; +population weighting &nbsp;→&nbsp; B &nbsp;→&nbsp; +altitude correction &nbsp;→&nbsp; C</div>
+
+  <div class="plain">
+    <span class="lbl">In plain language</span>
+    Each district is a big chunk of land, but the model needs <b>one</b> temperature and rainfall number per district per week. How you squash the whole district into one number is a choice. <b>A</b> just takes a plain average of the whole area. <b>B</b> leans the average toward the spots where people actually live (a highland district's people may sit in a warm valley, not on the cold peaks). <b>C</b> goes further and corrects temperature for altitude before averaging (air gets colder as you go up). We build all three and check whether that choice alone changes who gets a dengue warning.
+  </div>
+
+  <div class="callout" style="margin-top:16px">
+    <strong>Why Build C earns its place.</strong> Elevation is the top-ranked geospatial <em>modifier</em> in the 2026-07-02 literature review, and in Sri Lanka's central highlands (Nuwara Eliya, Kandy, Badulla) altitude correction plausibly moves temperature <em>more</em> than population-weighting does. That makes it the difference between "we weighted by people" and a genuine terrain-vs-population MAUP story.
+  </div>
+  <p class="small" style="margin-top:12px">The <strong>variable set</strong> carried through all three builds is not just temperature/rain/humidity — the screening in <a href="#factors">§5</a> adds three more free, already-in-hand weather variables: <strong>DTR</strong>, <strong>absolute humidity/VPD</strong>, and a <strong>drought index (SPI/SPEI)</strong>. Builds (how you average) and variables (what you average) are separate axes.</p>
+
+  <!-- 3 · CV -->
+  <h2 id="cv">3 · Two-country cross-validation (WP4)</h2>
+  <p>"Spatial cross-validation" stops a held-out area's near neighbors — which share weather and outbreak timing — from leaking the answer through the training set. The two settings are so different in size that they get <strong>different, size-matched schemes</strong>. In both, temporal honesty is preserved inside every fold (lags built from the past only) → spatio-temporal CV.</p>
+  <div class="plain">
+    <span class="lbl">In plain language</span>
+    To prove the model works in places it hasn't seen, we train it on some districts and test it on others it never saw. The catch: next-door districts have almost the same weather and outbreaks, so if a district's neighbor is in the training set the test isn't really "new" — the answer leaks in. So when we test one area, we also <b>hold back its immediate neighbors</b> from training. Sri Lanka has only 26 districts (test them one at a time), Colombia has ~1,000 (test a whole region at a time) — same idea, sized to each country.
+  </div>
+  <div class="grid2">
+    <div class="panel" style="margin:0">
+      <h3 style="margin-top:0">🇱🇰 Sri Lanka — buffered LOOCV</h3>
+      <p class="small">26 RDHS · too few for blocks</p>
+      <ul class="cklist">
+        <li>Hold out one district as the test unit; train on the other 25.</li>
+        <li><strong>Buffer:</strong> also drop the held-out district's within-range neighbors from training.</li>
+        <li>26 folds; record buffer size &amp; train/test counts per fold.</li>
+        <li>Emit fold/buffer definition as a versioned artifact.</li>
+      </ul>
+      <div class="callout warn" style="font-size:13px"><strong>Power caveat:</strong> at n=26 each test fold is a single district and the buffer shrinks it further — report as a <em>sensitivity companion</em>, not the headline test. Flag to PI (SOW §N).</div>
+    </div>
+    <div class="panel" style="margin:0">
+      <h3 style="margin-top:0">🇨🇴 Colombia — spatial block CV</h3>
+      <p class="small">~1,000 municipalities · well-powered</p>
+      <ul class="cklist">
+        <li>Group municipalities into contiguous blocks ≥ the autocorrelation range — or <strong>leave one whole department out</strong> (interpretable default).</li>
+        <li><strong>Buffer strip</strong> so train/test units are never within range.</li>
+        <li>Balance folds on outbreak prevalence &amp; unit-week count.</li>
+        <li>Emit fold-definition files (unit → fold id).</li>
+      </ul>
+      <div class="callout ok" style="font-size:13px"><strong>Carries the claim:</strong> Colombia's size makes this the well-powered external-validation test the paper leans on.</div>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:16px">
+    <strong>Shared step first:</strong> fit the reference model, extract residuals, and estimate the <strong>residual spatial autocorrelation range</strong> (empirical variogram / Moran's I decay) <em>separately per country</em>. That range sets the buffer width (SL) and the minimum block size (Colombia). Then a <strong>leakage-audit memo</strong> confirms zero train/test neighbor pairs fall within range.
+  </div>
+
+  <!-- 4 · EXTRAS (PLAIN LANGUAGE) -->
+  <h2 id="extras">4 · The four extras — in plain language (D4)</h2>
+  <p>The <strong>core</strong> of the paper is Sections 2 + 3 (the three builds and the two-country test). These four "extras" all exist to <strong>strengthen or defend that core</strong> — none of them is a new model. They were all accepted for this paper (decision D4).</p>
+  <div class="plain">
+    <span class="lbl">First, the shared idea — MAUP</span>
+    Three of the four are about <b>MAUP</b> (the "Modifiable Areal Unit Problem"). That's just the fact that <b>your answer can change depending on how you draw and average over areas.</b> Since a district gets squashed into one weather number, the way you do that squashing is a choice — and MAUP is the worry that a result is really about that <em>choice</em>, not about dengue. These extras poke at that worry from different angles.
+  </div>
+
+  <div class="extra">
+    <div class="e-h"><span class="n">1.</span>Per-variable MAUP <span class="cost">cost: cheap</span></div>
+    <div class="row"><b>What it is:</b> report the averaging effect <b>separately for each weather type</b> (temperature vs rainfall vs humidity), instead of pooling them into one number.</div>
+    <div class="row"><b>Why (plain):</b> rain is <em>patchy</em> — a storm soaks one town and skips the next — so how you average it over a district matters a lot. Temperature is <em>smooth</em> — it barely changes across a district. So the averaging choice should matter a lot for rain and hardly at all for temperature. Showing this tells reviewers <em>which</em> weather inputs are fragile.</div>
+    <div class="row"><b>Work:</b> almost free — it's a breakdown of a number we already compute.</div>
+  </div>
+
+  <div class="extra">
+    <div class="e-h"><span class="n">2.</span>Map of where forecasts go wrong — Figure F8 <span class="cost">cost: moderate</span></div>
+    <div class="row"><b>What it is:</b> the model can be <em>miscalibrated</em> — it says "20% chance of outbreak" where outbreaks actually happen 40% of the time. This checks whether those errors <b>cluster in certain kinds of place</b> (dense cities, high altitude, greener land, near water) and maps where warnings would flip.</div>
+    <div class="row"><b>Why (plain):</b> it turns an abstract statistic ("the model is off") into an <b>actionable map</b> — "the model is worst in dense, low-lying areas near water." That's the bridge to the WP6 decision-flip map.</div>
+    <div class="row"><b>Guardrail:</b> geography is used to <em>explain</em> the errors, <b>never</b> added as a new predictor to boost accuracy (the "no new model" rule).</div>
+  </div>
+
+  <div class="extra">
+    <div class="e-h"><span class="n">3.</span>Cross-setting MAUP (do it in Colombia too) <span class="cost">cost: moderate</span></div>
+    <div class="row"><b>What it is:</b> run the same weather-averaging comparison in <b>Colombia</b>, not just Sri Lanka.</div>
+    <div class="row"><b>Why (plain):</b> if the averaging choice changes decisions in <em>both</em> a small compact country and a big varied one, the finding <b>generalizes</b> and is much harder to wave away. Colombia is more varied (Andes, coast, Amazon), so it may matter even more there.</div>
+    <div class="row"><b>Work:</b> Colombia's pipeline already exists — this re-runs it under the three builds.</div>
+  </div>
+
+  <div class="extra">
+    <div class="e-h"><span class="n">4.</span>Different population maps <span class="cost low">lowest priority · trim first</span></div>
+    <div class="row"><b>What it is:</b> Build B leans the weather average toward where people live — using a "population map." There are several (WorldPop, GHSL, census). This swaps them and checks whether the answer moves.</div>
+    <div class="row"><b>Why (plain):</b> a "check on the check" — it makes sure Build B's result isn't an artifact of <em>one particular</em> population dataset. If all three agree, the finding is robust.</div>
+    <div class="row"><b>Priority:</b> a second-order robustness check — the first thing to cut if the timeline gets tight.</div>
+  </div>
+
+  <div class="panel" style="margin-top:18px">
+    <h3 style="margin-top:0">Deliverables checklist</h3>
+    <ul class="cklist">
+      <li><strong>Tables:</strong> Build B <code>…_v2_popweighted.csv</code>, Build C <code>…_v3_terraincorrected.csv</code>, population-product variants — each with the 3 new variable columns (DTR, abs-humidity/VPD, SPI/SPEI).</li>
+      <li><strong>F8 covariate table:</strong> one static row per district (built-up, elevation, NDVI, distance-to-water, healthcare access, wealth index, + optionals).</li>
+      <li><strong>Figures:</strong> F2 exposure contrast (SL + Colombia) · F7 net-benefit sensitivity · F8 decision-flip / miscalibration map.</li>
+      <li><strong>CV artifacts:</strong> SL buffered-LOOCV folds · Colombia block-CV folds · leakage-audit memo.</li>
+      <li><strong>Writing:</strong> Methods subsections for WP4 (two-country CV) and WP5 (three-build MAUP + factor screening).</li>
+    </ul>
+  </div>
+
+  <!-- 5 · LIT-REVIEW FACTORS -->
+  <h2 id="factors">5 · Factor screening — what's in, what's out, and why</h2>
+  <p>The literature review (<a href="dengue_geospatial_risk_factors_review.html"><code>dengue_geospatial_risk_factors_review.html</code></a>) catalogued <strong>23</strong> geospatial dengue risk factors. Below, <strong>every one is screened</strong> against four hard tests. The plan follows an <em>include-then-prune</em> rule: bring in each factor that clears all four tests, then drop it later if it carries no signal in the results.</p>
+
+  <div class="panel">
+    <h3 style="margin-top:0">The four screening tests (a factor must pass all four to be included)</h3>
+    <table class="kv"><tbody>
+      <tr><td>1 · Free &amp; open data</td><td>The source must be freely and practically downloadable. Survey micro-data, gated feeds, and paid imagery fail this test — and are dropped <b>with the access reason stated</b>.</td></tr>
+      <tr><td>2 · Right resolution</td><td>Derivable at <b>district × epi-week</b> (for the exposure layer) or as one static value <b>per district</b> (for the F8 miscalibration map).</td></tr>
+      <tr><td>3 · Allowed role</td><td>Enters only as <b>(A)</b> exposure construction or <b>(B)</b> an F8 miscalibration <em>explainer</em> — <b>never</b> a new accuracy predictor (no-new-model rule).</td></tr>
+      <tr><td>4 · Evidence worth it</td><td>Evidence ≥ moderate, <em>or</em> so cheap (a transform of data we already hold) that testing it costs almost nothing.</td></tr>
+    </tbody></table>
+  </div>
+
+  <h3>5.1 · The full screening table (all 23 + baseline)</h3>
+  <p class="small">Verdicts: <span class="pill role-in">IN — exposure</span> weekly variable · <span class="pill role-f8">IN — F8</span> static explainer · <span class="pill role-opt">OPTIONAL</span> include if cheap, prune if flat · <span class="pill role-p2">DROP → Paper 2</span> (reason given). <span class="add">ADD</span> = newly promoted this round.</p>
+  <div class="panel tbl-scroll">
+    <table>
+      <thead><tr><th style="min-width:140px">Factor (evidence)</th><th style="min-width:150px">Free data source &amp; portal</th><th style="width:120px">Verdict</th><th style="min-width:190px">Reason</th></tr></thead>
+      <tbody>
+        <tr class="grp"><td colspan="4">A · Exposure layer — weekly; all are transforms of data already acquired</td></tr>
+        <tr><td><strong>Temperature · rainfall · humidity</strong> <span class="small">(strong)</span></td><td>ERA5-Land (Copernicus CDS); CHIRPS (UCSB CHC) — free</td><td><span class="pill role-in">IN — exposure</span></td><td>The existing baseline layer; tested under all three builds.</td></tr>
+        <tr><td><strong>Elevation / altitude</strong> <span class="small">(strong)</span></td><td>Copernicus GLO-30 DEM — free</td><td><span class="pill role-in">IN — exposure</span></td><td>Build C altitude-corrects temperature; top-ranked modifier.</td></tr>
+        <tr><td><strong>Population density</strong> <span class="small">(strong)</span></td><td>WorldPop; GHSL-POP — free</td><td><span class="pill role-in">IN — exposure</span></td><td>The Build B weighting itself + Extra 4 population-product check.</td></tr>
+        <tr><td><strong>Diurnal temp range (DTR)</strong> <span class="small">(strong)</span></td><td>ERA5-Land <code>Tmax − Tmin</code> — free</td><td><span class="pill role-in">IN — exposure</span><span class="add">ADD</span></td><td>Strong non-linear driver; zero new data (already-held min/max).</td></tr>
+        <tr><td><strong>Absolute humidity / VPD</strong> <span class="small">(moderate)</span></td><td>ERA5-Land <code>t2m + d2m</code> — free</td><td><span class="pill role-in">IN — exposure</span><span class="add">ADD</span></td><td>Governs mosquito survival &amp; virus incubation better than RH; zero new data.</td></tr>
+        <tr><td><strong>Drought index (SPI/SPEI)</strong> <span class="small">(strong)</span></td><td>From CHIRPS (+ ERA5 PET) — free</td><td><span class="pill role-in">IN — exposure</span><span class="add">ADD</span></td><td>Captures the drought→water-storage→breeding 3–5-month lag; computed from held data.</td></tr>
+
+        <tr class="grp"><td colspan="4">B · F8 miscalibration explainers — one static value per district; explanatory only, never predictors</td></tr>
+        <tr><td><strong>Built-up / urbanisation</strong> <span class="small">(strong)</span></td><td>GHSL built-up; ESA WorldCover — free (GEE)</td><td><span class="pill role-f8">IN — F8</span></td><td>Where transmission concentrates; explains where the model errs.</td></tr>
+        <tr><td><strong>Vegetation greenness (NDVI)</strong> <span class="small">(mixed)</span></td><td>MODIS MOD13; Sentinel-2 — free (GEE)</td><td><span class="pill role-f8">IN — F8</span></td><td>Vector shelter vs dense-urban suppression; sign flips with SES.</td></tr>
+        <tr><td><strong>Distance to surface water</strong> <span class="small">(moderate)</span></td><td>JRC Global Surface Water — free (GEE)</td><td><span class="pill role-f8">IN — F8</span></td><td>Breeding-site proximity; explains local error.</td></tr>
+        <tr><td><strong>Healthcare access</strong> (distance-to-facility) <span class="small">(moderate)</span></td><td>OSM; HDX health-facility sites — free</td><td><span class="pill role-f8">IN — F8</span><span class="add">ADD</span></td><td>Reporting completeness <em>directly</em> drives observed-vs-predicted mismatch — the tightest fit for a calibration paper.</td></tr>
+        <tr><td><strong>Relative Wealth / SES</strong> <span class="small">(mixed)</span></td><td>Meta Relative Wealth Index on HDX — free</td><td><span class="pill role-f8">IN — F8</span><span class="add">ADD</span></td><td>Key confounder for where both risk and reporting differ.</td></tr>
+        <tr class="grp"><td colspan="4">C · Optional — freely downloadable, kept to try &amp; prune (drop later only if it carries no signal)</td></tr>
+        <tr><td>Nighttime lights <span class="small">(moderate)</span></td><td>VIIRS Black Marble — free (GEE)</td><td><span class="pill role-opt">OPTIONAL · F8</span></td><td>Urban/SES proxy; keep if it beats built-up + RWI.</td></tr>
+        <tr><td>Topographic Wetness Index / slope <span class="small">(weak–mod)</span></td><td>GLO-30 DEM-derived — free</td><td><span class="pill role-opt">OPTIONAL · F8</span></td><td>Water-pooling terrain; DEM already in hand for Build C.</td></tr>
+        <tr><td>Flood-proneness (HAND) <span class="small">(moderate)</span></td><td>HAND from DEM; JRC GSW seasonal — free</td><td><span class="pill role-opt">OPTIONAL · F8</span></td><td>Flood-disrupted control; reuses the DEM.</td></tr>
+        <tr><td>Connectivity (static gravity index) <span class="small">(strong)</span></td><td>WorldPop + OSM roads — free</td><td><span class="pill role-opt">OPTIONAL · F8</span></td><td>Static spread proxy (the free stand-in for gated mobility flows).</td></tr>
+        <tr><td>Land-surface temperature (UHI) <span class="small">(strong)</span></td><td>MODIS MOD11 — free (GEE)</td><td><span class="pill role-opt">OPTIONAL · F8</span></td><td>Urban-heat covariate; overlaps ERA5 air temp — keep if it adds signal.</td></tr>
+        <tr><td>Land-cover fragmentation / edge density <span class="small">(mixed)</span></td><td>ESA WorldCover (+ edge metric) — free (GEE)</td><td><span class="pill role-opt">OPTIONAL · F8</span></td><td>WorldCover already loaded; needs a simple edge-density calc.</td></tr>
+        <tr><td>Cropland / rice paddies <span class="small">(mixed)</span></td><td>ESA WorldCover — free (GEE)</td><td><span class="pill role-opt">OPTIONAL · F8</span></td><td>Trivial fraction extract from WorldCover already loaded.</td></tr>
+        <tr><td>Forest cover <span class="small">(weak–mixed)</span></td><td>Hansen GFC / WorldCover — free (GEE)</td><td><span class="pill role-opt">OPTIONAL · F8</span></td><td>Trivial fraction extract; weak evidence but nearly free.</td></tr>
+        <tr><td>Wind speed <span class="small">(weak)</span></td><td>ERA5-Land 10 m wind — free</td><td><span class="pill role-opt">OPTIONAL · exp</span></td><td>Free ERA5 weekly variable; weak evidence, cheap to test.</td></tr>
+        <tr><td>ENSO / IOD (ONI, DMI) <span class="small">(strong, regional)</span></td><td>NOAA CPC — free</td><td><span class="pill role-opt">OPTIONAL · temporal</span></td><td>Freely downloadable, but one national value per week → no district variation. Usable only as a <em>temporal</em> stratifier in a sensitivity check, not a district covariate.</td></tr>
+
+        <tr class="grp"><td colspan="4">D · Dropped — data NOT freely accessible at our resolution (the only three we cut)</td></tr>
+        <tr><td>Human mobility (live weekly flows) <span class="small">(strong)</span></td><td>Meta Data-for-Good / telco CDRs</td><td><span class="pill role-p2">DROP</span></td><td><b>Access:</b> aggregated flows are gated / not freely available weekly. The free static gravity proxy is kept above.</td></tr>
+        <tr><td>Household water storage <span class="small">(strong, field)</span></td><td>DHS / JMP WASH surveys</td><td><span class="pill role-p2">DROP</span></td><td><b>Access:</b> survey micro-data — sparse, not freely mappable at district × week.</td></tr>
+        <tr><td>Housing / roof material <span class="small">(moderate, field)</span></td><td>DHS; commercial very-high-res imagery</td><td><span class="pill role-p2">DROP</span></td><td><b>Access:</b> survey or paid imagery; and it overlaps built-up.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="plain">
+    <span class="lbl">Net effect of the screening</span>
+    We <b>keep 20 of the 23</b> factors — <b>every one whose data is freely downloadable.</b> Core additions: <b>3 weekly exposure variables</b> (DTR, absolute humidity/VPD, drought index) + <b>2 map covariates</b> (healthcare access, wealth index). Then <b>10 optional</b>, all free, kept to try and prune. Only <b>3 are dropped</b>, and only because their data <em>can't be freely obtained</em> at our resolution: mobility live flows (gated), household water storage (survey), housing/roof (survey / paid imagery). <span class="small">Note: "keep" for an exposure variable means it is characterised in the MAUP contrast and offered to the modelling leads within the no-new-model rule — not auto-added as a predictor.</span>
+  </div>
+
+  <h3 id="recipes">5.2 · Step-by-step recipes — the 3 new exposure variables</h3>
+  <p class="small">Each is computed on the fine grid, then aggregated to district under <em>each</em> build (A area-mean · B population-weighted · C same as B) and appended as new columns, row-aligned to the existing exposure tables.</p>
+
+  <div class="recipe">
+    <div class="r-h">DTR — diurnal temperature range</div>
+    <div class="src">Source: ERA5-Land 2 m temperature (Copernicus CDS) — already acquired · free</div>
+    <ol class="steps">
+      <li>Per grid cell per day, take daily <code>Tmax</code> and <code>Tmin</code> from the hourly/daily ERA5-Land temperature.</li>
+      <li>Compute <code>DTR = Tmax − Tmin</code> for each cell-day.</li>
+      <li>Average cell-day DTR to the ISO-week.</li>
+      <li>Zonal-aggregate to each district under builds A / B / C.</li>
+      <li>Append <code>dtr_mean</code> (+ within-unit SD) to each exposure table.</li>
+    </ol>
+  </div>
+  <div class="recipe">
+    <div class="r-h">Absolute humidity / vapour-pressure deficit (VPD)</div>
+    <div class="src">Source: ERA5-Land 2 m temperature + 2 m dewpoint (Copernicus CDS) — already acquired · free</div>
+    <ol class="steps">
+      <li>Per cell, get 2 m temperature <code>t2m</code> and dewpoint <code>d2m</code>.</li>
+      <li>Saturation vapour pressure <code>es(T)</code> via August–Roche–Magnus; actual vapour pressure <code>ea = es(d2m)</code>.</li>
+      <li><code>VPD = es(t2m) − ea</code>; absolute humidity from <code>ea</code> via the ideal-gas relation.</li>
+      <li>Weekly mean → zonal to district under A / B / C.</li>
+      <li>Append <code>vpd_mean</code> and <code>abs_humidity_mean</code>.</li>
+    </ol>
+  </div>
+  <div class="recipe">
+    <div class="r-h">Drought index — SPI (and SPEI)</div>
+    <div class="src">Source: CHIRPS rainfall (UCSB) — already acquired; PET for SPEI from ERA5-Land temperature (Hargreaves) · free</div>
+    <ol class="steps">
+      <li>Build a district monthly rainfall series from CHIRPS (SPI); for SPEI, form <code>precip − PET</code>.</li>
+      <li>Fit the standardized index against the full climatological baseline at <b>1-, 3-, and 6-month</b> scales.</li>
+      <li>Map each month's index onto its ISO-weeks (carry-forward or interpolate).</li>
+      <li>Append <code>spi_1 / spi_3 / spi_6</code> (and SPEI) as lagged drought features.</li>
+    </ol>
+  </div>
+
+  <h3>5.3 · Step-by-step recipe — the F8 map covariate panel</h3>
+  <div class="recipe">
+    <div class="r-h">One static value per district for the miscalibration map</div>
+    <div class="src">Recommended environment: <strong>Google Earth Engine</strong> (free for research) — hosts GLO-30, ESA WorldCover, GHSL, MODIS, VIIRS, JRC Surface Water in one place, so no bulk downloads. Direct-download fallbacks exist for every layer.</div>
+    <ol class="steps">
+      <li>Load the district polygons (26 RDHS / Colombian municipalities).</li>
+      <li>For each covariate, reduce its source raster over each polygon: <em>mean</em> (NDVI, built-up %, nightlights, wealth), <em>fraction</em> (urban cover), or <em>min-distance</em> (surface water, health facility).</li>
+      <li>Export <b>one row per district</b> → join to the per-district calibration results.</li>
+      <li>Regress per-district calibration slope/intercept and ΔNB on the panel; <b>keep covariates that carry signal, drop the flat ones.</b></li>
+      <li>Render the surviving covariates as the F8 decision-flip / miscalibration map.</li>
+    </ol>
+  </div>
+  <div class="callout warn">
+    <strong>Honest handling (pre-registered) — mandatory with a large panel.</strong> Because we deliberately keep a <em>broad</em> optional covariate set, this discipline is not optional: <b>pre-specify every covariate up front</b>, treat the panel as <em>exploratory-explanatory</em>, <b>control the false-discovery rate</b> (report all covariates tried, not just the significant ones), and never re-import a "significant" covariate as an accuracy predictor. Dropping a flat covariate is the expected, clean outcome — not a failed analysis. The bigger the panel, the stricter the multiplicity control.
+  </div>
+
+  <!-- 6 · GEOMATICS STRESS TEST -->
+  <h2 id="stress">6 · Do the geomatics factors actually help predict? (the stress test)</h2>
+  <p>Section 5 picked a good set of geomatics factors. This section <strong>puts them to the test</strong>: do they actually help decide <em>when</em> to warn a district — and if so, which ones? We answer that honestly, <strong>without</strong> turning the paper into a "we built a new predictor" study.</p>
+  <div class="plain">
+    <span class="lbl">The idea in one line</span>
+    Build a model from the geomatics factors, keep only the ones that genuinely earn their place, then check whether adding those to the recent-cases model helps <b>real warning decisions</b>. If they don't help, that's a strong result too — it confirms recent case counts are hard to beat.
+  </div>
+
+  <h3>The approach — three simple steps</h3>
+  <div class="ladder">
+    <div class="build">
+      <div class="b-h">Build broad</div>
+      <span class="b-tag b-new">STEP 1</span>
+      <ul>
+        <li>Make a model that uses <b>geomatics factors only</b>.</li>
+        <li>Include the ones that <b>change week to week</b> (temperature, rain, humidity, drought, surface-water extent, greenness) <em>and</em> the <b>fixed</b> ones (elevation, built-up, wealth, distance to water).</li>
+        <li>The changing factors give it a shot at <em>timing</em>; the fixed ones set each place's baseline risk.</li>
+      </ul>
+    </div>
+    <div class="build">
+      <div class="b-h">Keep only what matters</div>
+      <span class="b-tag b-new">STEP 2</span>
+      <ul>
+        <li>Test many times over <b>different districts</b> and keep the factors that <b>keep proving useful</b> — ignore one-off flukes.</li>
+        <li>Produce the "<b>which factor matters most</b>" ranking you asked for.</li>
+        <li>Keep "matters for <em>which place</em>" separate from "matters for <em>which week</em>" — they'll have different winners.</li>
+      </ul>
+    </div>
+    <div class="build">
+      <div class="b-h">Fold winners into a hybrid</div>
+      <span class="b-tag b-new">STEP 3</span>
+      <ul>
+        <li>Take <b>only the useful factors</b> and add them to the recent-cases model (a hybrid / ensemble).</li>
+        <li>Judge it with the <b>same fair yardsticks</b> as every other model (calibration + net benefit).</li>
+        <li>Ask: does adding geomatics change any <b>real warning decisions</b>?</li>
+      </ul>
+    </div>
+  </div>
+  <div class="arrow">build broad &nbsp;→&nbsp; keep what matters &nbsp;→&nbsp; test the hybrid on real decisions</div>
+
+  <div class="callout warn">
+    <strong>Two rules that keep it honest.</strong>
+    <ul style="margin:6px 0 0;padding-left:20px">
+      <li><b>No cheating (no leakage):</b> pick the factors on one set of districts and test them on <em>different</em> ones — we reuse the leakage-proof spatial folds from §3. Skip this and both the "important" factors <em>and</em> the score come out falsely good — the #1 thing reviewers attack.</li>
+      <li><b>Don't trust a single winner:</b> factors that move together (elevation, temperature, urbanisation, wealth) swap ranks run to run. Keep the ones chosen <em>consistently</em> across folds and show the uncertainty — never a lone "best factor".</li>
+    </ul>
+  </div>
+
+  <div class="callout ok">
+    <strong>Why this is worth including.</strong>
+    <ul style="margin:6px 0 0;padding-left:20px">
+      <li><b>If geomatics doesn't help</b> → it powerfully <em>confirms</em> the paper's headline (recent cases win) and is reviewer-proof: "we gave geomatics every chance and it still didn't beat recent cases."</li>
+      <li><b>If geomatics does help</b> → a genuine new finding, and the seed of a follow-up paper.</li>
+      <li>Either way, it gives an <b>honest answer to "which geomatics factor matters most"</b> — the question you asked.</li>
+      <li>It stays inside the <b>"no new model" promise</b> because it's framed as a <em>test / evaluation</em>, not a proposed new warning system.</li>
+    </ul>
+  </div>
+
+  <div class="callout">
+    <strong>Scope &amp; sign-off.</strong> This adds a model, so it needs a <b>heads-up and sign-off from the PI</b>. Building a <em>full new geomatics predictor as the paper's centerpiece</em> is a different, bigger study — that version is <b>Paper 2</b>. Here it stays a bounded, pre-specified stress test with the honest-null clause in force.
+  </div>
+
+  <!-- 7 · PHASES -->
+  <h2 id="phases">7 · Phased execution sequence</h2>
+  <p class="small">No work has started. Phase 0 is blocking — nothing downstream can run until inputs are staged and scope is ratified.</p>
+
+  <div class="phase blocking">
+    <p class="p-h"><span class="num">0</span>Data staging &amp; sign-off<span class="badge">BLOCKING</span></p>
+    <p>PI ratifies the §1 scope. Stage every input — <em>none are in this checkout</em> (only a README on disk): frozen Build-A exposure CSV · WorldPop rasters · RDHS geometry + adjacency · Colombia municipality boundaries + OpenDengue outcome · DEM (Copernicus GLO-30).</p>
+  </div>
+  <div class="phase">
+    <p class="p-h"><span class="num">1</span>Exposure builds + new variables (WP5.1)</p>
+    <p>Build B (population-weighted) → contrast vs A (F2); Build C (terrain-corrected) on top of B; population-product variants of B. <strong>Derive the 3 new free variables</strong> (DTR, absolute humidity/VPD, drought index — recipes in §5.2) and append them to each build. Freeze + checksum each; FREEZE_LOG entries.</p>
+  </div>
+  <div class="phase">
+    <p class="p-h"><span class="num">2</span>Decision-sensitivity re-run (WP5.2/3/5)</p>
+    <p>Ladder → calibration → net-benefit across builds A/B/C, per-variable + pooled, Sri Lanka + Colombia. Produce F7 and decision-flip counts.</p>
+  </div>
+  <div class="phase">
+    <p class="p-h"><span class="num">3</span>Spatially-honest CV (WP4)</p>
+    <p>Estimate autocorrelation range (both) → SL buffered-LOOCV folds + Colombia block-CV folds → leakage-audit memo → re-validate → compare to the temporal-only split.</p>
+  </div>
+  <div class="phase">
+    <p class="p-h"><span class="num">4</span>Geomatics stress test (§6 · optional · PI sign-off)</p>
+    <p>Build the geomatics-only model (dynamic + static factors); run stability feature-selection <em>inside the spatial folds from Phase 3</em> to rank which factors matter; fold the consistent winners into a hybrid with recent cases; judge it with the same calibration + net-benefit lens. Honest-null accepted.</p>
+  </div>
+  <div class="phase">
+    <p class="p-h"><span class="num">5</span>Miscalibration bridge (WP6 · F8)</p>
+    <p>Extract the static F8 covariate panel — one value per district in Google Earth Engine (recipe in §5.3): built-up, elevation, NDVI, distance-to-water, healthcare access, wealth index, + optionals. Regress per-unit calibration / ΔNB on the panel, prune flat covariates, and produce the decision-flip map.</p>
+  </div>
+  <div class="phase">
+    <p class="p-h"><span class="num">6</span>Write-up</p>
+    <p>Methods + results subsections for WP4/WP5 (+ the §6 stress test if run); operational translation ("≈ N alert decisions per 100 unit-weeks").</p>
+  </div>
+
+  <!-- 6 · GUARDRAILS -->
+  <h2 id="guardrails">8 · Guardrails &amp; honest-null</h2>
+  <div class="panel">
+    <ul class="cklist">
+      <li><strong>No data committed</strong> — code + reports only. New tables and fold definitions are checksummed + FREEZE_LOG'd before any result is quoted; never committed.</li>
+      <li><strong>No-new-model rule</strong> — geospatial modifiers stay <em>explanatory</em> (why calibration varies in space); they are never added as new accuracy predictors.</li>
+      <li><strong>Equal-area CRS invariant</strong> — all weighting in projected coordinates; validate zonal means against station data where available.</li>
+      <li><strong>Honest-null clause (SOW §N)</strong> — if weighting / terrain correction moves neither exposure nor net benefit, report it as a clean null. "Exposure construction does not change the decision" is itself a publishable, reviewer-disarming result — do not manufacture a finding.</li>
+    </ul>
+  </div>
+
+  <!-- 7 · BLOCKERS -->
+  <h2 id="blockers">9 · Blockers before any build</h2>
+  <div class="panel warn callout" style="border-radius:12px">
+    <ol style="margin:2px 0;padding-left:20px">
+      <li><strong>PI ratification</strong> of the locked scope (D1–D4).</li>
+      <li><strong>Data staging</strong> — this checkout holds only code + docs; every input lives outside the repo and must be staged before Phase 1.</li>
+    </ol>
+  </div>
+
+  <footer>
+    WP4 / WP5 Implementation Plan · scope locked 2026-07-07 · owner: Geospatial Lead.
+    Source-of-truth Markdown: <code>docs/maup_sensitivity_and_spatial_cv_plan.md</code> ·
+    running record: <code>docs/study_decision_log.md</code>.
+    This page is a rendering of that plan; if the two ever disagree, the Markdown wins.
+  </footer>
+
+</div>
+</body>
+</html>

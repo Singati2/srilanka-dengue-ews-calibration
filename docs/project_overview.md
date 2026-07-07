@@ -26,8 +26,12 @@ Sri Lanka. Outcome unit: **26 RDHS divisions**, **epidemiological week**, 2018�
 - `wer_qc_report_v2.py` → structural + current-week + cumulative QC.
 
 ## Document map
+- `study_decision_log.md` — **running log of new directions, approaches & decisions** (start here for "what's new / what did we decide").
+- `maup_sensitivity_and_spatial_cv_plan.md` — scope-locked plan for WP5 (MAUP / 3 exposure builds) + WP4 (two-country spatial CV). Source of truth.
+- `wp4_wp5_implementation_plan.html` — browser-friendly rendering of that plan (open locally; Markdown wins if they disagree).
 - `data_access_plan.md` — data sourcing, eligibility, decision rules, freeze rules.
 - `geomatics_scope_of_work.md` — geospatial work-stream (exposure, adjacency, decision-flip mapping).
+- `dengue_geospatial_risk_factors_review.html` — literature review of geomatics dengue risk factors (59 sources).
 - `osf_prereg_skeleton.md` — preregistration skeleton + verified prior-work positioning.
 - `probast_tripod_scoring_instrument.md` — risk-of-bias / reporting QC instrument.
 
