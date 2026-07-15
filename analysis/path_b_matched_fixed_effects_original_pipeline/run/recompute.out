@@ -1,0 +1,20 @@
+SANITY ΔNB(M5-M1) on frozen split = +0.0188  (target +0.0188)  test n=13361 prev=0.375
+
+[A1 PRE-PANDEMIC 2018-2019] test n=12713 prev=0.498
+   M5-M1       +0.0001 (0.0, 0.00028195646385731056)
+   M4-M1       +0.0000 
+   matched-M1  +0.0000 
+   M5-matched  +0.0001 (0.0, 0.00027035126292094316)
+
+[A2 DLNM vs LINEAR, test 2020-2022] (humidity unavailable -> temp+precip only)
+   M4lin-M1    +0.0122 
+   M5lin-M1    +0.0188 
+   M4dlnm-M1   +0.0118 (0.004807861391250159, 0.018176924786894987)
+   M5dlnm-M1   +0.0207 (0.009518660435964157, 0.033305426894672065)
+
+[A3 REPORTING-DELAY] NB M1_full=0.1171 M1_delay1(drop lag0)=0.1122 M1_delay2(drop lag0,1)=0.1076  M5=0.1358
+   M5-M1_full     +0.0188 
+   M5-M1_delay1   +0.0237 
+   M5-M1_delay2   +0.0282 (0.012528510141614766, 0.04431973974293235)
+
+DONE

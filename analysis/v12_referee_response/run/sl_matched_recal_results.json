@@ -1,0 +1,86 @@
+{
+  "validation": {
+    "M1": 8.881784197001252e-16,
+    "M4": 1.1102230246251565e-16,
+    "M5": 1.1102230246251565e-16
+  },
+  "A_matched_decomp": {
+    "NB": {
+      "cases": 0.08977,
+      "matched": 0.13602,
+      "M4": 0.12837,
+      "M5": 0.14471,
+      "M1_frozen": 0.13663
+    },
+    "M5_minus_matched(climate)": {
+      "point": 0.0087,
+      "ci": [
+        -0.00149,
+        0.01878
+      ]
+    },
+    "matched_minus_cases(structure)": {
+      "point": 0.04625,
+      "ci": [
+        0.01986,
+        0.07406
+      ]
+    },
+    "M4_minus_cases": {
+      "point": 0.03861,
+      "ci": [
+        0.01812,
+        0.06216
+      ]
+    },
+    "M5_minus_cases(compound)": {
+      "point": 0.05495,
+      "ci": [
+        0.02692,
+        0.0864
+      ]
+    },
+    "M5_minus_M1frozen": {
+      "point": 0.00808,
+      "ci": [
+        -0.0016,
+        0.01707
+      ]
+    }
+  },
+  "B_pastonly_recal": {
+    "M1": {
+      "raw_NB30": 0.13663,
+      "recal_NB30": 0.12437,
+      "recal_CITL": 0.0196,
+      "recal_slope": 0.9404,
+      "recal_Brier": 0.1865
+    },
+    "M4": {
+      "raw_NB30": 0.12837,
+      "recal_NB30": 0.13449,
+      "recal_CITL": 0.0476,
+      "recal_slope": 0.9983,
+      "recal_Brier": 0.1842
+    },
+    "M5": {
+      "raw_NB30": 0.14471,
+      "recal_NB30": 0.13976,
+      "recal_CITL": 0.033,
+      "recal_slope": 0.8721,
+      "recal_Brier": 0.1787
+    },
+    "dNB_M4_M1_raw": -0.00826,
+    "dNB_M4_M1_recal": 0.01012,
+    "dNB_M5_M1_raw": 0.00808,
+    "dNB_M5_M1_recal": 0.01539,
+    "dNB_M4_M1_recal_ci": [
+      -0.01077,
+      0.03014
+    ],
+    "dNB_M5_M1_recal_ci": [
+      0.006,
+      0.02504
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "unweighted_matched": 0.007848001111978364,
+  "ipw_matched": 0.007871897443487708,
+  "ipw_ci": [
+    0.003938070750719229,
+    0.011823664128642577
+  ],
+  "inclusion_auc_note": "inclusion modeled from dept+year+seasonality (observed for all rows); reporting-density completeness not fully captured",
+  "weight_range": [
+    0.7958642733171384,
+    1.5297501119421955
+  ]
+}

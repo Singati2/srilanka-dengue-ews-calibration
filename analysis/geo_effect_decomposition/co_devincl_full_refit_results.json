@@ -1,0 +1,41 @@
+{
+  "analysis": "colombia_development_inclusive_department_refit_REPRODUCIBLE",
+  "B": 1000,
+  "replicates_used": 1000,
+  "failures": 0,
+  "seed": 20260612,
+  "resampling_unit": "department (31 test depts)",
+  "fixed_dept_columns": 32,
+  "reproduce_gate": {
+    "matched_point": 0.00783,
+    "m5m1_point": 0.01878,
+    "matched_target": 0.00786,
+    "m5m1_target": 0.018775,
+    "passed": true
+  },
+  "point_estimates": {
+    "matched": 0.00783,
+    "m5m1": 0.01878
+  },
+  "development_inclusive": {
+    "matched": {
+      "point": 0.00783,
+      "ci": [
+        0.00075,
+        0.02089
+      ],
+      "median": 0.00836
+    }
+  },
+  "external_reported_matched_ci": [
+    -0.0001,
+    0.0244
+  ],
+  "dept_dropout": {
+    "mean_unique_depts_per_resample": 19.85,
+    "min": 14,
+    "max": 25,
+    "total_test_depts": 31
+  },
+  "seconds": 17571.9
+}

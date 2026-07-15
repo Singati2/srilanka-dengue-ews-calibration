@@ -1,0 +1,5 @@
+[inclusion model] mean P(incl) among included=0.628, excluded=0.599; overall inclusion rate=0.617
+[weights] range 0.80-1.53, mean 1.00
+
+[RESULT] matched increment: unweighted +0.0078  |  IPW-weighted +0.0079  95% CI [0.003938070750719229, 0.011823664128642577]
+DONE

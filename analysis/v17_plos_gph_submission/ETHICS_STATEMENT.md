@@ -1,0 +1,5 @@
+# Ethics Statement (draft — AUTHOR/INSTITUTION VERIFICATION REQUIRED)
+
+This study used only aggregate, de-identified, publicly available routine surveillance and environmental data (OpenDengue, CHIRPS, ERA5-Land, WorldPop, and the published Sri Lanka Weekly Epidemiological Reports). No individually identifiable information or human participants were involved, and no clinical intervention was undertaken. [AUTHOR/INSTITUTION VERIFICATION REQUIRED: confirm the determination of the Florida Atlantic University (and/or UT Dallas) Institutional Review Board that this secondary analysis of aggregate public data does not constitute human-subjects research / is exempt, and provide the determination reference — [IRB NUMBER REQUIRED] — or the documented exemption. Confirm any data-governance permissions required for the Sri Lanka WER and Colombia OpenDengue extracts.] Informed consent was not applicable (aggregate secondary data).
+
+SUBMISSION-BLOCKING until the institutional determination is documented.
