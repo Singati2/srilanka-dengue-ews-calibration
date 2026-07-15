@@ -1,0 +1,11 @@
+{
+  "seed": 20260612,
+  "eps_primary": 1e-15,
+  "eps_sensitivity": 1e-12,
+  "failure_rates": {
+    "SriLanka_recal": 0.0,
+    "SriLanka_raw": 0.0,
+    "Colombia_recal": 0.0,
+    "Colombia_raw": 0.0
+  }
+}
