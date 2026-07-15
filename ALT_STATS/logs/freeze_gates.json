@@ -1,0 +1,10 @@
+{
+  "colombia_gate_point": 0.007826616912763151,
+  "colombia_fidelity_M5recal": 1.1102230246251565e-16,
+  "srilanka_gate_M1": 8.881784197001252e-16,
+  "srilanka_gate_M4": 1.1102230246251565e-16,
+  "srilanka_gate_M5": 1.1102230246251565e-16,
+  "srilanka_matched_recal_dNB": 0.015646605050578577,
+  "colombia_prevalence": 0.37534615672479604,
+  "srilanka_prevalence": 0.33647478349465104
+}

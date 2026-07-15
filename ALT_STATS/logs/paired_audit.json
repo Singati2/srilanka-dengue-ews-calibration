@@ -1,0 +1,47 @@
+{
+  "Colombia_raw": {
+    "n": 13361,
+    "events": 5015,
+    "prevalence": 0.3753,
+    "clusters": 475,
+    "dup_keys": 0,
+    "missing_full": 0,
+    "missing_noclim": 0,
+    "ordered_rowkey_sha256": "962291b084218aa88cfaf90c40c4ac86d061878cdb5d037739f276a799d12289",
+    "unordered_rowkey_sha256": "962291b084218aa88cfaf90c40c4ac86d061878cdb5d037739f276a799d12289"
+  },
+  "Colombia_recal": {
+    "n": 13361,
+    "events": 5015,
+    "prevalence": 0.3753,
+    "clusters": 475,
+    "dup_keys": 0,
+    "missing_full": 0,
+    "missing_noclim": 0,
+    "ordered_rowkey_sha256": "59cae913f180f46514ffe5082acc2b402ffbaca0899018230025e98a5de17d42",
+    "unordered_rowkey_sha256": "59cae913f180f46514ffe5082acc2b402ffbaca0899018230025e98a5de17d42"
+  },
+  "SriLanka_raw": {
+    "n": 3926,
+    "events": 1321,
+    "prevalence": 0.3365,
+    "clusters": 26,
+    "dup_keys": 0,
+    "missing_full": 0,
+    "missing_noclim": 0,
+    "ordered_rowkey_sha256": "601069ed06e30174c2543b2a909ca68197602c9e518e3269a57b1c140f43b818",
+    "unordered_rowkey_sha256": "601069ed06e30174c2543b2a909ca68197602c9e518e3269a57b1c140f43b818"
+  },
+  "SriLanka_recal": {
+    "n": 3926,
+    "events": 1321,
+    "prevalence": 0.3365,
+    "clusters": 26,
+    "dup_keys": 0,
+    "missing_full": 0,
+    "missing_noclim": 0,
+    "ordered_rowkey_sha256": "b3b2182177f0c3f026608004474fef400d6b8b2eaf660f951ad5153deb243c26",
+    "unordered_rowkey_sha256": "b3b2182177f0c3f026608004474fef400d6b8b2eaf660f951ad5153deb243c26"
+  },
+  "canonical_table_sha256": "b7e3d5796a1a61a08e880bcab3f238244fdca8614ea48fa64d69face5f194382"
+}

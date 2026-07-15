@@ -1,0 +1,9 @@
+=== COLOMBIA: regenerate matched pair (verbatim co_devincl pipeline) ===
+COLOMBIA reproduce-gate: matched dNB(recal)@0.30 = +0.00783 (target +0.00786)  -> PASS
+COLOMBIA fidelity: max|regen M5_recal - frozen M5_recal| = 1.11e-16  (n=13361)
+COLOMBIA frozen: 13361 rows, prevalence 0.3753, 31 depts, 475 munis
+
+=== SRI LANKA: regenerate matched pair (verbatim sl pipeline) ===
+SRI LANKA reproduce-gate max|Δ|: M1=8.88e-16 M4=1.11e-16 M5=1.11e-16  -> PASS
+SRI LANKA matched climate dNB(recal)@0.30 = +0.01565 (manuscript +0.0157)
+SRI LANKA frozen: 3926 rows, prevalence 0.3365, 26 RDHS units
