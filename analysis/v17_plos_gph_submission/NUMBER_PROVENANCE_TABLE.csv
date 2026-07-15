@@ -1,0 +1,5 @@
+value,point,ci,model_pair,threshold,raw_or_recal,bootstrap,seed,clusters,n_rows,recal_window,eligibility,source_file,field
+raw_matched,+0.0087,[-0.0015;+0.0188],M5 - M5_no-climate,0.30,raw,conditional cluster percentile,20260612,26 RDHS,3926,NA,NA,recal_matched_results.json,raw.matched_M5_minus_M5noclimate
+recal_matched,+0.0157,[+0.0066;+0.0257],recal(M5) - recal(M5_no-climate),0.30,past-only rolling-52 recal,conditional cluster percentile,20260612,26 RDHS,3926,52 weeks rolling,target_week < prediction_week,recal_matched_results.json,past_only_recal.MATCHED_recalM5_minus_recalM5noclimate
+recal_unmatched_sensitivity,+0.0154,[+0.0064;+0.0255],recal(M5) - recal(M1),0.30,past-only rolling-52 recal,conditional cluster percentile,20260612,26 RDHS,3926,52 weeks rolling,target_week < prediction_week,recal_matched_results.json,past_only_recal.UNMATCHED_recalM5_minus_recalM1
+raw_unmatched_sensitivity,+0.0081,[-0.0025;+0.0180],M5 - M1,0.30,raw,conditional cluster percentile,20260612,26 RDHS,3926,NA,NA,recal_matched_results.json,raw.frozen_M5_minus_M1

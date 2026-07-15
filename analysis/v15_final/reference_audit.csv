@@ -1,0 +1,46 @@
+ref_key,in_text_cited,has_bibitem,issue_type,detail,status
+Mordecai2017,yes,yes,none,"Cited line 84 for climate influence on mosquito ecology; plausible",OK
+Huber2018,yes,yes,none,"Cited line 84 for seasonal temperature climate suitability; plausible",OK
+Johansson2019,yes,yes,none,"Cited line 86 for forecast-accuracy evaluation; plausible",OK
+Baharom2022,yes,yes,none,"Cited line 86; dengue EWS systematic review; plausible",OK
+HussainAlkhateeb2021,yes,yes,none,"Cited twice (lines 86,90); EWS scoping review; plausible",OK
+Lowe2021,yes,yes,none,"Cited line 86; spatiotemporal dengue modelling Brazil; plausible",OK
+VanCalster2019,yes,yes,claim_plausibility,"Cited twice; line 291 net-benefit-grid claim leans mainly on Vickers2016; calibration paper; loose but defensible",NEEDS-EXTERNAL-CHECK
+VanCalster2023,yes,yes,none,"Cited line 86; no validated model; plausible",OK
+SteyerbergVergouwe2014,yes,yes,none,"Cited line 86; prediction-model development/validation; plausible",OK
+Vickers2006,yes,yes,none,"Cited twice (88,125); DCA foundational; plausible",OK
+Vickers2016,yes,yes,none,"Cited twice (88,291); net benefit approaches; plausible",OK
+Vickers2019,yes,yes,none,"Cited line 88; DCA interpretation guide; plausible",OK
+Murphy1985,yes,yes,none,"Cited twice (88,125); cost-loss ratio; plausible",OK
+Tozan2023,yes,yes,none,"Cited twice (88,125); economic evaluation EWS; plausible",OK
+EWARScsd,yes,yes,claim_plausibility,"Cited twice (88,389); operational DLNM/INLA/Colombia detail attributed; title/venue consistent; specifics unverifiable offline",NEEDS-EXTERNAL-CHECK
+Johansson2016,yes,yes,none,"Cited line 90; climate vs seasonal dengue forecasts Mexico; strong match",OK
+Leung2022,yes,yes,"key_year_mismatch;missing_period","Key says 2022 but entry printed 2023; DOI line lacks trailing period (only such entry)",NEEDS-EXTERNAL-CHECK
+Lowe2013,yes,yes,none,"Cited line 90; EWS mirroring surveillance Brazil; plausible",OK
+Benedum2020,yes,yes,none,"Cited line 90; weather-only vs surveillance; plausible",OK
+Sangkaew2026,yes,yes,"author_list_style;claim_plausibility","Single author + et al. (against stated six-author rule); individual clinical prognosis vs alerting; confirm DCA/calibration use",NEEDS-EXTERNAL-CHECK
+vonElm2007,yes,yes,none,"Cited line 98; STROBE; match",OK
+Collins2024TRIPODAI,yes,yes,none,"Cited line 98; TRIPOD+AI; match",OK
+Wolff2019,yes,yes,none,"Cited line 98; PROBAST tool; match",OK
+Moons2019,yes,yes,none,"Cited line 98; PROBAST E&E; match",OK
+HDXCODABSriLanka,yes,yes,"key_naming;no_doi","Descriptive key; dataset entry no DOI (expected for gray data)",OK
+SriLankaWER,yes,yes,no_doi,"WER surveillance source; no DOI (expected)",OK
+Clarke2024OpenDengue,yes,yes,none,"Cited line 104; OpenDengue dataset paper; match",OK
+OpenDengue2024,yes,yes,key_year_mismatch,"Key says 2024 but entry says figshare 2025; figshare version/year unverifiable offline",NEEDS-EXTERNAL-CHECK
+Tatem2017,yes,yes,none,"Cited line 107; WorldPop; match",OK
+WorldPop2025,yes,yes,no_doi,"WorldPop dataset; no DOI (expected)",OK
+SriLankaCensus2025,yes,yes,no_doi,"Sri Lanka census; no DOI (expected)",OK
+MunozSabater2021,yes,yes,none,"Cited line 109; ERA5-Land paper; match",OK
+ERA5LandCDS,yes,yes,none,"Cited line 109; ERA5-Land CDS dataset; match",OK
+Funk2015,yes,yes,none,"Cited line 110; CHIRPS paper; match",OK
+CHIRPS,yes,yes,"key_naming;no_doi","Descriptive key; CHIRPS dataset entry no DOI (expected)",OK
+Gasparrini2010,yes,yes,none,"Cited line 113; DLNM methods; match",OK
+Gasparrini2011,yes,yes,none,"Cited twice (113,115); dlnm R package; match",OK
+RCoreTeam2026,yes,yes,no_doi,"Cited line 115; R 4.6.0 software; no DOI (expected)",OK
+SaitoRehmsmeier2015,yes,yes,none,"Cited line 125; PR vs ROC; match",OK
+CameronGelbachMiller2008,yes,yes,none,"Cited line 128; cluster bootstrap; match",OK
+PAHO2023,yes,yes,"date_granularity;no_doi;claim_plausibility","Full date '14 December 2023' vs year-only elsewhere; no DOI; 4.2M-cases figure unverifiable offline",NEEDS-EXTERNAL-CHECK
+ValleDelCauca2024,yes,yes,"author_list_style;key_naming;claim_plausibility","Single author (Grubaugh) + et al.; place-name key does not match author/title; DENV-3/El Nino specifics unverifiable",NEEDS-EXTERNAL-CHECK
+Beal2025,yes,yes,claim_plausibility,"Cited twice (343); hydroclimate 3-6mo skill Colombian cities; plausible; specifics unverifiable offline",NEEDS-EXTERNAL-CHECK
+ColonGonzalez2021,yes,yes,none,"Cited line 343; seasonal dengue forecasting Vietnam; plausible",OK
+Campbell2026,yes,yes,"author_list_style;claim_plausibility","Single author + et al.; D-MOSS 4-6mo value-add claim; plausible; specifics unverifiable offline",NEEDS-EXTERNAL-CHECK

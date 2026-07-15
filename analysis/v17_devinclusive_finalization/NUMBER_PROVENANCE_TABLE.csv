@@ -1,0 +1,11 @@
+value,point,ci_lo,ci_hi,estimand,raw_or_recal,interval_type,clusters,B,source_file
+SL_raw_matched,0.0087,-0.0015,0.0188,M5 - M5_no-climate,raw,conditional cluster bootstrap,26,1000,sl_matched_recal_results.json
+SL_raw_matched_devincl,0.0087,-0.00736,0.02231,M5 - M5_no-climate,raw,development-inclusive refit bootstrap,26,300,SL_devinclusive_results.json
+SL_recal_matched,0.01565,0.0066,0.0257,recal(M5) - recal(M5_no-climate),past-only recal,conditional cluster bootstrap,26,1000,recal_matched_results.json
+SL_recal_matched_devincl,0.01565,0.00152,0.02839,recal(M5) - recal(M5_no-climate),past-only recal,development-inclusive refit bootstrap,26,300,SL_devinclusive_results.json
+SL_M5_M1_raw_frozen_manuscript,0.0081,-0.0012,0.0181,M5 - M1 (frozen),raw,frozen committed CI (canonical),26,1000,manuscript/hybrid_model_ci_v1
+SL_M5_M1_raw_reconstruction,0.00808,-0.00248,0.01798,M5 - M1 (frozen),raw,reconstruction bootstrap (implementation differs; immaterial; both incl 0),26,1000,recal_matched_results.json
+SL_recal_M5_M1_unmatched,0.01539,0.0064,0.0255,recal(M5) - recal(M1),past-only recal,operational sensitivity (NOT matched),26,1000,recal_matched_results.json
+SL_structure,0.0462,0.0199,0.0741,M5_no-climate - cases,raw,conditional cluster bootstrap,26,1000,sl_matched_recal_results.json
+CO_matched,0.0078,0.0039,0.0119,M5 - M5_no-climate,validation-recal,conditional cluster bootstrap,~475,1000,manuscript Table (original submission)
+CO_matched_devincl,0.0078,-0.0001,0.0244,M5 - M5_no-climate,validation-recal,development-inclusive refit bootstrap,~475,,manuscript
