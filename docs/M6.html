@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M6 — The Geomatics-Only Model, in Plain Language</title>
+<style>
+  :root{
+    --bg:#ffffff; --fg:#1b1f24; --muted:#5c6570; --card:#f6f8fa; --line:#e3e8ee;
+    --accent:#0b7285; --accent2:#087f5b; --warn:#a5620a; --chip:#eef2f6;
+    --static:#0b7285; --dynamic:#c2410c;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --bg:#0f1419; --fg:#e6edf3; --muted:#9aa7b4; --card:#161b22; --line:#2a323c;
+      --accent:#38bec9; --accent2:#4cc38a; --warn:#e8a13a; --chip:#1c232b;
+      --static:#38bec9; --dynamic:#f0873f; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);
+    font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{max-width:920px;margin:0 auto;padding:32px 20px 80px;}
+  header h1{font-size:1.9rem;margin:.2em 0 .1em;letter-spacing:-.02em;}
+  header p.sub{color:var(--muted);margin:.2em 0 1.4em;font-size:1.05rem;}
+  .callout{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--warn);
+    border-radius:10px;padding:14px 18px;margin:18px 0 26px;}
+  .callout b{color:var(--warn);}
+  h2{font-size:1.25rem;margin:34px 0 6px;border-bottom:1px solid var(--line);padding-bottom:6px;}
+  .lead{color:var(--muted);margin:.2em 0 1em;}
+  .grid{display:grid;gap:14px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;}
+  .card h3{margin:0 0 6px;font-size:1.06rem;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .num{display:inline-flex;width:26px;height:26px;flex:0 0 26px;align-items:center;justify-content:center;
+    background:var(--accent);color:#fff;border-radius:50%;font-size:.85rem;font-weight:700;}
+  .card p{margin:.4em 0;}
+  .why{color:var(--fg);} .why b{color:var(--accent2);}
+  .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;}
+  .tag{font-size:.76rem;padding:3px 10px;border-radius:999px;background:var(--chip);color:var(--muted);
+    border:1px solid var(--line);white-space:nowrap;}
+  .tag.s{color:var(--static);border-color:var(--static);}
+  .tag.d{color:var(--dynamic);border-color:var(--dynamic);}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:.9rem;margin:6px 0 0;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:11px;height:11px;border-radius:50%;display:inline-block;}
+  footer{margin-top:40px;color:var(--muted);font-size:.9rem;border-top:1px solid var(--line);padding-top:16px;}
+  code{background:var(--chip);padding:1px 6px;border-radius:5px;font-size:.86em;}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>M6 — The Geomatics-Only Model</h1>
+  <p class="sub">Why each landscape variable might matter for dengue — in plain language.</p>
+</header>
+
+<div class="callout">
+  <b>What M6 is (and isn't).</b> M6 is a <b>curiosity / safety-check model</b> built only from
+  <b>maps of the land</b> — terrain, cities, vegetation, water — with <b>no case counts and no
+  weather data</b>. It asks one honest question: <i>can the shape of a place, on its own, warn us
+  about dengue?</i> The likely answer is “barely,” and that’s a useful finding, not a failure. M6
+  is a comparison model, <b>never the headline</b>. It is measured against the existing M0–M5
+  models on the <b>exact same weeks</b>, so the comparison is fair.
+</div>
+
+<div class="legend">
+  <span><span class="dot" style="background:var(--static)"></span> <b style="color:var(--static)">Static</b> — barely changes over years (terrain, city footprint)</span>
+  <span><span class="dot" style="background:var(--dynamic)"></span> <b style="color:var(--dynamic)">Dynamic</b> — changes week to week (heat, greenness)</span>
+</div>
+
+<h2>Terrain &amp; water — the shape of the ground</h2>
+<p class="lead">Where mosquitoes can live and breed is set partly by the land itself.</p>
+<div class="grid">
+  <div class="card">
+    <h3><span class="num">1</span> Elevation</h3>
+    <p class="why"><b>Why it matters:</b> Mosquitoes and the virus struggle in the cold air of high
+    ground. Above roughly 1,500&nbsp;m dengue mostly disappears — this single layer explains why
+    Colombia’s Andes and highlands stay pale on our maps. The clearest, strongest spatial signal we have.</p>
+    <div class="tags"><span class="tag s">Static</span><span class="tag">Download: trivial</span><span class="tag">Free (Copernicus/SRTM)</span></div>
+  </div>
+  <div class="card">
+    <h3><span class="num">2</span> Slope</h3>
+    <p class="why"><b>Why it matters:</b> Flat land lets water sit still in puddles and containers —
+    perfect nurseries. Steep slopes drain fast and offer fewer breeding spots.</p>
+    <div class="tags"><span class="tag s">Static</span><span class="tag">Download: trivial</span><span class="tag">From the same elevation map</span></div>
+  </div>
+  <div class="card">
+    <h3><span class="num">3</span> Topographic Wetness Index (TWI)</h3>
+    <p class="why"><b>Why it matters:</b> A calculation of <b>where water naturally collects</b> after
+    rain. High-wetness pockets hold standing water longer — more breeding. Rarely tested in Sri
+    Lanka, so it’s a possible original contribution.</p>
+    <div class="tags"><span class="tag s">Static</span><span class="tag">Download: low</span><span class="tag">Computed from elevation</span></div>
+  </div>
+  <div class="card">
+    <h3><span class="num">4</span> HAND — flood-proneness</h3>
+    <p class="why"><b>Why it matters:</b> Measures how far above the nearest stream a place sits — a
+    clean way to spot <b>flood-prone ground</b>. Floods first wash breeding sites away, then leave
+    pooled water and disrupt mosquito control, raising risk weeks later.</p>
+    <div class="tags"><span class="tag s">Static</span><span class="tag">Download: low</span><span class="tag">Computed from elevation</span></div>
+  </div>
+  <div class="card">
+    <h3><span class="num">11</span> Surface water &amp; distance to water</h3>
+    <p class="why"><b>Why it matters:</b> Ponds, rivers and marsh edges can shelter mosquitoes — yet
+    wide open water often does the opposite. Proximity to water bodies is a classic, if mixed, risk clue.</p>
+    <div class="tags"><span class="tag s">Static</span><span class="tag">Download: easy</span><span class="tag">Free (JRC Global Surface Water)</span></div>
+  </div>
+</div>
+
+<h2>Cities &amp; people — where dengue thrives</h2>
+<p class="lead">Dengue’s mosquito loves dense, built-up, human places.</p>
+<div class="grid">
+  <div class="card">
+    <h3><span class="num">5</span> Built-up / impervious surface</h3>
+    <p class="why"><b>Why it matters:</b> <i>Aedes aegypti</i> is a city mosquito. Concrete, roofs and
+    dense housing mean more water containers and more people to bite — a strong, consistent driver.</p>
+    <div class="tags"><span class="tag s">Static-ish</span><span class="tag">Download: easy</span><span class="tag">Free (GHSL / WorldCover)</span></div>
+  </div>
+  <div class="card">
+    <h3><span class="num">6</span> Population density</h3>
+    <p class="why"><b>Why it matters:</b> More people packed together means the virus jumps between
+    hosts more easily. Matters most in low-lying, warm areas where the mosquito already thrives.</p>
+    <div class="tags"><span class="tag s">Static-ish</span><span class="tag">Download: easy</span><span class="tag">Free (WorldPop)</span></div>
+  </div>
+  <div class="card">
+    <h3><span class="num">7</span> Nighttime lights</h3>
+    <p class="why"><b>Why it matters:</b> Satellite photos of city lights are a handy stand-in for
+    wealth, roads, and how built-up and active a place is. Updated monthly, so it can also track change.</p>
+    <div class="tags"><span class="tag d">Dynamic (monthly)</span><span class="tag">Download: easy</span><span class="tag">Free (VIIRS)</span></div>
+  </div>
+  <div class="card">
+    <h3><span class="num">8</span> Land-cover fragmentation</h3>
+    <p class="why"><b>Why it matters:</b> It’s not just <i>how much</i> green or city, but how it’s
+    <b>patterned</b>. Broken-up patches with many edges create the mixed habitats where mosquitoes
+    and people meet. An under-explored angle.</p>
+    <div class="tags"><span class="tag s">Static</span><span class="tag">Download: easy + some computing</span></div>
+  </div>
+  <div class="card">
+    <h3><span class="num">14</span> Socioeconomic status / wealth</h3>
+    <p class="why"><b>Why it matters:</b> Poorer areas may have less reliable water and more open
+    storage (breeding sites) — but the pattern flips in some places, so it’s a context clue, not a rule.</p>
+    <div class="tags"><span class="tag s">Static</span><span class="tag">Download: moderate</span><span class="tag">Free (Meta Relative Wealth Index)</span></div>
+  </div>
+  <div class="card">
+    <h3><span class="num">15</span> Healthcare access</h3>
+    <p class="why"><b>Why it matters:</b> Travel time to clinics mostly shapes <b>whether cases get
+    counted</b>, not whether they happen. We include it to stay honest about reporting — it is a
+    <b>detection clue, not a true driver</b>.</p>
+    <div class="tags"><span class="tag s">Static</span><span class="tag">Download: moderate</span><span class="tag">Surveillance confounder</span></div>
+  </div>
+  <div class="card">
+    <h3><span class="num">13</span> Human mobility / connectivity</h3>
+    <p class="why"><b>Why it matters:</b> Dengue travels with people. Well-connected hubs seed
+    outbreaks in the places they link to. We <b>build this from population and roads</b> (a “gravity”
+    model) — no private phone data needed.</p>
+    <div class="tags"><span class="tag s">Static (structural)</span><span class="tag">Build it ourselves</span><span class="tag">No restricted data</span></div>
+  </div>
+</div>
+
+<h2>Living surface — heat &amp; greenness that change weekly</h2>
+<p class="lead">These are the “alive,” week-to-week layers, treated with time-lags like the weather.</p>
+<div class="grid">
+  <div class="card">
+    <h3><span class="num">9</span> Land-surface temperature / urban heat</h3>
+    <p class="why"><b>Why it matters:</b> Warmth speeds up the mosquito’s life and the virus inside it —
+    up to about 29&nbsp;°C, after which extreme heat becomes harmful. Satellite heat maps reveal
+    <b>hot spots inside cities</b> that coarse weather data misses.</p>
+    <div class="tags"><span class="tag d">Dynamic (8-day)</span><span class="tag">Download: moderate</span><span class="tag">Free (MODIS)</span></div>
+  </div>
+  <div class="card">
+    <h3><span class="num">10</span> Vegetation greenness (NDVI / EVI)</h3>
+    <p class="why"><b>Why it matters:</b> Green cover can shelter mosquitoes — or, in dense cities, mark
+    the leafier wealthy areas with <i>fewer</i> cases. The signal flips by setting, so we treat it as a
+    <b>modifier</b>, not a simple up-or-down driver.</p>
+    <div class="tags"><span class="tag d">Dynamic (16-day)</span><span class="tag">Download: moderate</span><span class="tag">Free (MODIS)</span></div>
+  </div>
+  <div class="card">
+    <h3><span class="num">12</span> Forest cover</h3>
+    <p class="why"><b>Why it matters:</b> Dense forest usually means <b>fewer</b> of the city-loving
+    dengue mosquito — though plantations can favour a different, related species. A useful negative marker.</p>
+    <div class="tags"><span class="tag s">Static-ish</span><span class="tag">Download: easy</span><span class="tag">Free (WorldCover / Hansen)</span></div>
+  </div>
+  <div class="card">
+    <h3><span class="num">16</span> Rice paddy / cropland</h3>
+    <p class="why"><b>Why it matters:</b> Flooded paddies and marshy field edges create breeding water,
+    especially in the countryside and city fringes. Its rhythm follows the growing season, so we track
+    <b>how strongly greenness cycles</b> through the year.</p>
+    <div class="tags"><span class="tag d">Seasonal</span><span class="tag">Download: moderate</span><span class="tag">Free (WorldCover + MODIS)</span></div>
+  </div>
+</div>
+
+<h2>How we’ll judge M6 — fairly</h2>
+<p class="lead">The whole point is a clean, apples-to-apples comparison.</p>
+<div class="card">
+  <p class="why">We do <b>not</b> re-run the existing models. M6 is scored on the <b>exact same weeks
+  and places</b> as M0–M5, using the <b>same scoring code and settings</b>. Then we ask three plain
+  questions:</p>
+  <p class="why">• Does landscape alone beat <b>just knowing the season</b> (M0)?<br>
+     • Does it match <b>weather-only</b> (M2)?<br>
+     • Can it approach <b>recent case counts</b> (M1), the tough baseline to beat?</p>
+  <p class="why">And critically — not just “is it accurate,” but <b>does it change the right public-health
+  decision</b> (net benefit). A model can look sharper yet help no one. If M6 quietly adds nothing,
+  that honest result <b>supports</b> this study’s central message: don’t overclaim.</p>
+</div>
+
+<footer>
+  Geospatial Lead work-stream · companion to <code>docs/M6.md</code> (full technical plan).
+  M6 is an exploratory / sensitivity comparator, not a headline model. Built for the Sri Lanka &amp;
+  Colombia dengue early-warning calibration study.
+</footer>
+</div>
+</body>
+</html>
