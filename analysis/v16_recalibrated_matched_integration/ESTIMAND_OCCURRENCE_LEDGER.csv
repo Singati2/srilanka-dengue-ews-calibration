@@ -1,0 +1,223 @@
+line,term,excerpt,classification
+52,matched,"e for dengue alerting: a matched-baseline, decision-curve reanalysis i",correct
+74,M4-M1,w predictions $\Delta$NB(M4$-$M1) $=-0.008$ (95\% CI $-0.028$ to $+0.0,correct
+74,+0.0157,"$, including zero) and $+0.0157$ after past-only recalibration of both",correct-recal-matched
+74,matched, sensitivity (three-week matched $+0.0049$); its robustness to period ,correct
+74,matched,A post hoc specification-matched decomposition in Sri Lanka (frozen pi,correct
+74,matched,ly recalibration of both matched models (95\% CI $+0.0066$ to $+0.0257,correct
+74,design-locked,"ecision metrics, and the design-locked primary hybrid contrast in Sri ",historical-ladder-only(check)
+74,post hoc,erval to include zero. A post hoc specification-matched decomposition ,correct
+76,+0.0157,"st-only recalibration ($+0.0157$, and then only marginally, resting on",correct-recal-matched
+76,matched, non-climate structure unmatched can overstate the decision value of c,correct
+76,matched,"nst recent surveillance, matched for structure, and judged by calibrat",correct
+76,matched,"ne value. A structurally matched decomposition gave a small, consisten",correct
+76,matched,nitude; in Sri Lanka the matched increment separates from zero only af,correct
+76,matched,"ng), and in Colombia the matched increment includes zero once model-de",correct
+90,matched,---using a specification-matched baseline to separate any climate cont,correct
+90,matched,inely novel piece is the matched-baseline attribution separating any c,correct
+113,matched,---see the specification-matched decompositions); M2 a climate-only mo,correct
+115,prespecif,ion were checked against prespecified stop rules (no stop triggered). ,historical-ladder-only(check)
+118,prespecif,ere also evaluated under prespecified minimum-sample and convergence r,historical-ladder-only(check)
+118,prespecif,k was required under the prespecified recalibration rules. This rollin,historical-ladder-only(check)
+118,post hoc,re produced only for the post hoc recalibration sensitivity (Figs~\ref,correct
+128,M5-M1,"d sensitivity model. The M5$-$M1 threshold, horizon and train-defined ",correct
+128,design-locked, project repository: the design-lock specification designating M4 as t,historical-ladder-only(check)
+128,design-locked,t results predating this design-lock. No prospective public registrati,historical-ladder-only(check)
+132,M4-M1,"ontrast is the Sri Lanka M4$-$M1 net benefit at $p^*=0.30$ ($h=4$, 75t",correct
+132,post hoc,"condary, sensitivity, or post hoc.}",correct
+138,M4-M1,"Sri Lanka M4$-$M1 ($h=4$, 75th pct, $p^*=0.30$) & Plann",correct
+139,M5-M1,Sri Lanka M5$-$M1 & Pre-computation expanded sensitivit,correct
+140,matched,5$_{\text{no-climate}}$ (matched) & Post hoc specification diagnostic ,correct
+141,M5-M1,Colombia M5$-$M1 & Secondary compound contrast \\,correct
+142,matched,5$_{\text{no-climate}}$ (matched) & Post hoc specification diagnostic ,correct
+148,matched,*{Post hoc specification-matched decomposition (Colombia)},correct
+149,M5-M1,ecting that the Colombia M5$-$M1 contrast was structurally unmatched--,correct-unmatched-labeled
+149,matched,"trast was structurally unmatched---M5 contains climate, seasonal terms",correct
+149,matched,a post hoc specification-matched decomposition. We defined a matched b,correct
+149,matched,"omposition. We defined a matched baseline, M5$_{\text{no-climate}}$, c",correct
+149,post hoc,-case terms---we added a post hoc specification-matched decomposition.,correct
+149,post hoc,puted. This analysis was post hoc and is reported as a specification-m,correct
+153,matched,"e Colombia specification-matched decomposition contrasts, all at $h=4$",correct
+159,M4-M1,M4$-$M1 & Does climate improve on cases alone,correct
+162,M5-M1,M5$-$M1 & What is the total gain from the ful,correct
+168,matched,hy and the specification-matched climate contrast},correct
+169,matched,The specification-matched climate comparison contrasts the full,correct
+169,design-locked,"not part of the original design-locked model ladder in either setting,",historical-ladder-only(check)
+169,prespecif,y analysis rather than a prespecified confirmatory estimand.,historical-ladder-only(check)
+169,post hoc,composition was reported post hoc for Colombia in the original submiss,correct
+169,post hoc,"ing, it is reported as a post hoc, exploratory analysis rather than a ",correct
+171,M4-M1,The prespecified M4$-$M1 comparison is retained for transparen,correct
+171,design-locked,ed for transparency as a design-locked secondary analysis. Because M4 ,historical-ladder-only(check)
+171,prespecif,The prespecified M4$-$M1 comparison is retained f,historical-ladder-only(check)
+173,M5-M1,ate}}$ contrast. Neither M5$-$M1 nor M4$-$M1 is described as a matched,correct-unmatched-labeled
+173,M5-M1,"dels are non-nested, and M5$-$M1 because the frozen M1 was fit under a",correct-unmatched-labeled
+173,M4-M1,ast. Neither M5$-$M1 nor M4$-$M1 is described as a matched climate com,correct
+173,M4-M1,"hed climate comparison---M4$-$M1 because the models are non-nested, an",correct
+173,matched,ely on the specification-matched M5$-$M5$_{\text{no-climate}}$ contras,correct
+173,matched,4$-$M1 is described as a matched climate comparison---M4$-$M1 because ,correct
+173,matched, so is not specification-matched despite sharing the same structural t,correct
+173,matched,ot to the revision-stage matched estimand.,correct
+173,prespecif, terms. Any reference to prespecification or design locking applies on,historical-ladder-only(check)
+175,post hoc,\subsection{Additional post hoc analyses (methods)},correct
+176,matched,the primary compound and matched estimates were reproduced exactly (to,correct
+176,matched,esholds (Colombia)}: the matched contrast re-evaluated on subsets of t,correct
+176,matched,latt recalibration); the matched and compound contrasts are reported p,correct
+176,matched,e fitted primary model's matched increment computed within each depart,correct
+176,matched, (v) \emph{Horizon}: the matched and compound contrasts recomputed for,correct
+176,post hoc,"e reported in Results as post hoc sensitivity, selection, and validati",correct
+243,M5-M1,(M4$-$M1) and $\Delta$NB(M5$-$M1) are internally consistent raw-vs-raw,correct
+243,M4-M1,the Sri Lanka $\Delta$NB(M4$-$M1) and $\Delta$NB(M5$-$M1) are internal,correct
+263,M5-M1,".652, 0.191, 0.137); the M5$-$M1 net-benefit estimate at $p^*=0.30$ wa",correct
+263,M5-M1,"ffects, so the Sri Lanka M5$-$M1 contrast is closer to a climate-speci",correct-unmatched-labeled
+263,M5-M1,"than Colombia's compound M5$-$M1; however, because the frozen M1 was f",correct-unmatched-labeled
+263,M5-M1,"R-only standardization), M5$-$M1 is not specification-matched. To isol",correct-unmatched-labeled
+263,M5-M1,frozen-pipeline contrast M5$-$M1 ($+0.0081$) and the specification-mat,correct-unmatched-labeled
+263,M5-M1,"e not identical fits, so M5$-$M1 is reported as the frozen-pipeline co",correct-unmatched-labeled
+263,M5-M1,"ned M4$-$M1 and expanded M5$-$M1 contrasts (Supporting Information, S1",correct
+263,M4-M1,"primary hybrid (M4), the M4$-$M1 net-benefit estimate at $p^*=0.30$ wa",correct
+263,M4-M1,stimate) and $\Delta$AUC(M4$-$M1) was $+0.013$ (95\% CI $-0.020$ to $+,correct
+263,M4-M1,als for both the planned M4$-$M1 and expanded M5$-$M1 contrasts (Suppo,correct
+263,matched,"$M1 is not specification-matched. To isolate climate cleanly, we ran t",correct
+263,matched,"we ran the specification-matched decomposition for Sri Lanka, reconstr",correct
+263,matched,<10^{-6}$) and fitting a matched no-climate baseline (recent cases $+$,correct
+263,matched, the same procedure. The matched climate increment was $\Delta$NB(M5$-,correct
+263,matched,"re contributed far more (matched$-$cases $=+0.0462$, 95\% CI $+0.0199$",correct
+263,matched,$) and the specification-matched contrast M5$-$M5$_{\text{no-climate}},correct
+263,matched,}}$ as the specification-matched estimand used for interpretation. A s,correct
+286,M5-M1,mbia}). This full-hybrid M5$-$M1 contrast combined climate with season,correct
+286,matched,a post hoc specification-matched decomposition of this compound differ,correct
+286,matched,low (see ``Specification-matched decomposition of the full hybrid cont,correct
+286,post hoc, climate contribution; a post hoc specification-matched decomposition ,correct
+288,matched,ubsection*{Specification-matched decomposition of the full hybrid cont,correct
+289,M5-M1,"ture inside the compound M5$-$M1 difference, we conducted a post hoc s",correct
+289,matched,a post hoc specification-matched decomposition in the original Colombi,correct
+289,matched," bootstrap. We defined a matched baseline, M5$_{\text{no-climate}}$, c",correct
+289,matched,^*=0.30$ (Table~\ref{tab:matcheddecomp}).,correct
+289,post hoc,"fference, we conducted a post hoc specification-matched decomposition ",correct
+291,M5-M1, the compound $\Delta$NB(M5$-$M1) averaged $+0.0118$ and rose with the,correct
+291,M4-M1,baseline gave $\Delta$NB(M4$-$M1) $=+0.0122$ (95\% CI $+0.0073$ to $+0,correct
+291,matched,Adding climate to the matched baseline contributed $\Delta$NB(M5$-$,correct
+291,matched,"n added to the structure-matched baseline (difference $+0.0044$, 95\% ",correct
+291,post hoc,This decomposition was a post hoc specification-matching diagnostic; t,correct
+294,M5-M1,"mph{compound} $\Delta$NB(M5$-$M1) instead grew under censoring, but th",correct
+294,M4-M1," equal to the cases-only M4$-$M1 point estimate, though the two are di",correct
+294,+0.0157,"ro on raw predictions; $+0.0157$ after past-only recalibration, exclud",correct-recal-matched
+294,matched,"ether the residual \emph{matched} climate increment, $\Delta$NB(M5$-$M",correct
+294,matched,", re-computing that same matched contrast in each test (the primary co",correct
+294,matched,y compound $+0.0188$ and matched increment ($+0.0079$ as a full-precis,correct
+294,matched,e rounded Table~\ref{tab:matcheddecomp} difference) were reproduced to,correct
+294,matched,r finalized values---the matched increment \emph{decayed monotonically,correct
+294,matched," and recalibration), the matched increment was $+0.0199$ (95\% CI $+0.",correct
+294,matched,bed by re-evaluating the matched contrast on \emph{post-pandemic} 2023,correct
+294,matched," sensitivity, three-week matched $+0.0049$, 95\% CI $+0.0001$ to $+0.0",correct
+294,matched,"two settings tested, the matched climate increment was small and not r",correct
+294,matched, best-case vintages) the matched increment's estimated decision value ,correct
+298,matched,"n{Colombia specification-matched decomposition (post hoc diagnostic), ",correct
+298,matched,ibrated predictions. The matched baseline (M5$_{\text{no-climate}}$) d,correct
+298,matched,or confirmatory one. The matched climate contrast $\Delta$NB(M5$-$M5$_,correct
+298,design-locked,"post hoc analysis, not a design-locked or confirmatory one. The matche",historical-ladder-only(check)
+298,post hoc,"n-matched decomposition (post hoc diagnostic), $h=4$, 75th-percentile ",correct
+298,post hoc,"). This is an additional post hoc analysis, not a design-locked or con",correct
+299,matched,\label{tab:matcheddecomp},correct
+305,matched,5$_{\text{no-climate}}$ (matched) & cases $+$ season $+$ dept.\ FE & 4,correct
+314,M5-M1,mpleteness. The compound M5$-$M1 contrast combines climate with season,correct
+314,M4-M1,ecific increment and the M4$-$M1 contrast are reported in the specific,correct
+314,matched,ted in the specification-matched decomposition below (Table~\ref{tab:m,correct
+314,matched,on below (Table~\ref{tab:matcheddecomp}). Per-model mean predicted pro,correct
+343,M5-M1,"d Colombia horizons, the M5$-$M1 net-benefit increment was approximate",correct
+343,M5-M1,th lead time: $\Delta$NB(M5$-$M1) was approximately $+0.015$ to $+0.01,correct
+343,+0.015 ,$-$M1) was approximately $+0.015$ to $+0.019$ across $h=1$--8 and appr,correct
+346,M5-M1, the all-test $\Delta$NB(M5$-$M1) at $p^*=0.30$ was $+0.0081$ (95\% CI,correct
+346,M5-M1, the all-test $\Delta$NB(M5$-$M1) estimate was $+0.0241$ (95\% CI $+0.,correct
+346,M5-M1, labels) gave $\Delta$NB(M5$-$M1) at $p^*=0.30$ of $+0.0188$ (95\% CI ,correct
+346,+0.0157,"0.0117$ to $+0.0260$), $+0.0157$ (95\% CI $+0.0082$ to $+0.0236$), and",correct-recal-matched
+348,M5-M1,"ons from 2020--2021, the M5$-$M1 net-benefit estimate at $p^*=0.30$ wa",correct
+348,M5-M1,evels; the within-subset M5$-$M1 contrast is the comparable quantity. ,correct
+348,M4-M1,"l per-model metrics, the M4$-$M1 subset estimate, and the origin/targe",correct
+351,M5-M1,"tion). In Sri Lanka, the M5$-$M1 net-benefit estimate was $+0.0081$, w",correct
+351,M5-M1,".0181$. In Colombia, the M5$-$M1 estimate was $+0.0188$, with a 95\% C",correct
+351,matched,ned to the specification-matched climate estimand (M5$-$M5$_{\text{no-,correct
+351,matched,"all, consistently-signed matched climate increment appeared in both se",correct
+357,M5-M1,"ng zero), and $\Delta$NB(M5$-$M1) from $+0.0081$ to $+0.0099$ (95\% CI",correct
+357,M5-M1,"ng zero), and $\Delta$NB(M5$-$M1) from $+0.008$ to $+0.015$ (95\% CI $",correct
+357,M5-M1,lar frozen (non-matched) M5$-$M1 contrast rose to $+0.0154$ under the ,correct-unmatched-labeled
+357,M4-M1, then closed: $\Delta$NB(M4$-$M1) moved from $-0.0083$ (raw) to $+0.00,correct
+357,M4-M1,"al procedure, $\Delta$NB(M4$-$M1) moved from $-0.008$ (raw) to $+0.010",correct
+357,M4-M1,"he design-locked primary M4$-$M1---a non-nested, structurally mismatch",correct
+357,+0.0157,"{\text{no-climate}}$) $=+0.0157$ (95\% CI $+0.0066$ to $+0.0257$, excl",correct-recal-matched
+357,+0.0157,ntity of $+0.0154$ and $+0.0157$ is coincidental---same-direction fitt,correct-recal-matched
+357,+0.0154,$-$M1 contrast rose to $+0.0154$ under the same procedure and is repor,correct-operational-sensitivity
+357,+0.0154,. The near-identity of $+0.0154$ and $+0.0157$ is coincidental---same-,correct-operational-sensitivity
+357,+0.015 ,"5$-$M1) from $+0.008$ to $+0.015$ (95\% CI $+0.006$ to $+0.025$, exclu",correct
+357,matched,zero). The specification-matched raw increment is $\Delta$NB(M5$-$M5$_,correct
+357,matched,"calibrated specification-matched increment was $\Delta$NB(recal\,M5$-$",correct
+357,matched,ally similar frozen (non-matched) M5$-$M1 contrast rose to $+0.0154$ u,correct
+357,matched," sensitivity, not as the matched estimand. The near-identity of $+0.01",correct
+357,matched, estimand. The Sri Lanka matched climate increment is thus not disting,correct
+357,matched,"-nested, structurally mismatched contrast that does not isolate the in",correct
+357,design-locked,"libration-dependent. The design-locked primary M4$-$M1---a non-nested,",historical-ladder-only(check)
+366,matched,cluded units)---left the matched increment essentially unchanged (IPW ,correct
+372,M5-M1, lead time; the compound M5$-$M1 horizon profile (frozen tuned pipelin,correct-unmatched-labeled
+372,matched,lling-origin windows the matched climate increment $\Delta$NB(M5$-$M5$,correct
+372,matched,ating the fitted model's matched increment separately within each depa,correct
+372,matched,rizons ($h=1$--$12$) the matched increment was approximately flat ($\a,correct
+372,matched,~\ref{fig:cohoriz}). The matched increment did not grow with lead time,correct
+375,matched,"ds for M1, the structure-matched no-climate model, M4, and M5.}\label{",correct
+378,matched,"ing to the specification-matched decomposition, Table~\ref{tab:matched",correct
+378,matched,"position, Table~\ref{tab:matcheddecomp}). Blue markers/bars are condit",correct
+378,matched,-specific contrast (M5$-$matched) the orange bar is the development-in,correct
+378,post hoc,"fferences at $p^*=0.30$ (post hoc reanalysis forest, corresponding to ",correct
+381,M5-M1,h=4$ only); the compound M5$-$M1 horizon profile is reported in the Re,correct-unmatched-labeled
+381,matched,\emph{climate-specific} (matched) increment $\Delta$NB(M5$-$M5$_{\text,correct
+381,matched, $n$ and prevalence. The matched decomposition is available only in th,correct
+389,M5-M1,"n Colombia, the compound M5$-$M1 net-benefit increment remained approx",correct
+389,M4-M1,"e---was null ($\Delta$NB(M4$-$M1) $=-0.008$, 95\% CI $-0.028$ to $+0.0",correct
+389,M4-M1,he design-locked primary M4$-$M1 contrast did not exceed recent survei,correct
+389,M4-M1,"Sri Lanka M1 carries, so M4$-$M1 does not isolate the incremental cont",correct
+389,M4-M1,t-only) moved $\Delta$NB(M4$-$M1) to $+0.009$ (95\% CI including zero),correct
+389,matched,"-nested, structurally mismatched contrast---M4 omits the seasonal and ",correct
+389,matched,and the climate-specific matched increment was flat through $h=8$ befo,correct
+389,design-locked,The design-locked primary contrast---the planned ,historical-ladder-only(check)
+389,design-locked,"8$ to $+0.013$), and the design-locked primary M4$-$M1 contrast did no",historical-ladder-only(check)
+391,M5-M1,"13$), while the expanded M5$-$M1 sensitivity estimate was $+0.0081$ (9",correct
+391,M5-M1,"nal and RDHS terms, this M5$-$M1 is closer to a climate-specific contr",correct-unmatched-labeled
+391,M5-M1,"mbia, the locally fitted M5$-$M1 estimate was $+0.0188$ (95\% CI $+0.0",correct
+391,M5-M1,"$+0.0249$). The Colombia M5$-$M1 contrast, however, combined climate w",correct
+391,M4-M1,"nka, the planned primary M4$-$M1 estimate was $-0.008$ (95\% CI $-0.02",correct
+391,M4-M1,s-only climate contrast (M4$-$M1 $=+0.0122$) exceeded the matched clim,correct
+391,matched, it is not specification-matched (the frozen M1 differs from M5 in pen,correct
+391,matched,tion); the specification-matched increment is $\Delta$NB(M5$-$M5$_{\te,correct
+391,matched,"a post hoc specification-matched decomposition, adding climate to an o",correct
+391,matched, climate to an otherwise matched baseline contributed a smaller $\Delt,correct
+391,matched,$=+0.0122$) exceeded the matched climate increment; the estimated clim,correct
+391,post hoc,"cts absent from M1; in a post hoc specification-matched decomposition,",correct
+393,M5-M1,mph{compound} $\Delta$NB(M5$-$M1) reached $+0.0241$ (95\% CI $+0.0090$,correct
+393,M4-M1,locked primary contrast (M4$-$M1 at $p^*=0.30$) did not establish a be,correct
+393,+0.0157,"i Lanka $+0.0087$ raw, $+0.0157$ under past-only recalibration---the l",correct-recal-matched
+393,matched,"n sign: re-computing the matched contrast, sensitivity analyses (Resul",correct
+393,matched," sensitivity (three-week matched $+0.0049$, 95\% CI $+0.0001$ to $+0.0",correct
+393,matched," in Sri Lanka ($+0.0087$ matched, of uncertain magnitude), and no clea",correct
+393,matched,onfound. A specification-matched decomposition (Results) shows a small,correct
+393,matched," toward the null, so the matched increment could underestimate a finer",correct
+393,design-locked,"$p^*=0.40$, although the design-locked primary contrast (M4$-$M1 at $p",historical-ladder-only(check)
+393,post hoc,This decomposition was a post hoc diagnostic evaluated at a single dec,correct
+399,M5-M1,"nment, and the estimated M5$-$M1 contrast. The direction and magnitude",correct
+401,M5-M1,"HS fixed effects, so its M5$-$M1 contrast is closer to climate-specifi",correct-unmatched-labeled
+401,M5-M1,c than compound; because M5$-$M1 is not specification-matched (the fro,correct-unmatched-labeled
+401,matched, evaluation of the \emph{matched} climate increment on the fitted prim,correct
+401,matched,ility. The specification-matched decomposition was performed in both s,correct
+401,matched,$M1 is not specification-matched (the frozen M1 differs from M5 in pen,correct
+401,matched,"andardization), we fit a matched no-climate baseline, which gave a sma",correct
+401,matched,ve a small specification-matched climate increment ($\Delta$NB(M5$-$M5,correct
+401,post hoc," Both decompositions are post hoc. Colombia is a second, differently-c",correct
+405,matched,"a post hoc specification-matched analysis, adding climate to an otherw",correct
+405,matched, climate to an otherwise matched baseline produced a small positive ne,correct
+405,matched,record-epidemic year); a matched decomposition in Sri Lanka showed a s,correct
+405,matched,ance with a structurally matched baseline and report calibration and d,correct
+405,post hoc,"cent-case baseline. In a post hoc specification-matched analysis, addi",correct
+417,prespecif,"analysis code, executing prespecified computational workflows, organiz",historical-ladder-only(check)
+532,post hoc,re produced only for the post hoc recalibration sensitivity).\\,correct
+541,M5-M1,vity for the M4$-$M1 and M5$-$M1 net-benefit contrasts (with an attach,correct
+541,M4-M1,ap-t sensitivity for the M4$-$M1 and M5$-$M1 net-benefit contrasts (wi,correct
+543,M5-M1,"rid estimates $\Delta$NB(M5$-$M1) (Sri Lanka $+0.0081$, 95\% CI $-0.00",correct
+544,matched,otstrap interval for the matched increment.,correct

@@ -1,0 +1,2 @@
+D3 code-fix note
+D3: bootstrap NLL/Brier scored full-array probs instead of resampled subset (pf->pf[idx]); pure code bug, plan unchanged (plan specified scoring resampled observations); point estimates unaffected. Fixed before any results committed.

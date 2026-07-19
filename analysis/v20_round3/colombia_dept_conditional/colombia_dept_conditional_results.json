@@ -1,0 +1,19 @@
+{
+  "dNB_climate_point": 0.00783,
+  "municipality_conditional": [
+    0.0039,
+    0.01194,
+    0.00767,
+    475
+  ],
+  "department_conditional": [
+    0.00384,
+    0.01146,
+    0.00777,
+    31
+  ],
+  "department_refit_reported": [
+    -0.0001,
+    0.0244
+  ]
+}

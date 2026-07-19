@@ -1,0 +1,9 @@
+# Supplementary Reproducibility Note (provenance forensics, moved out of the response letter)
+
+**Reproduction.** The frozen Sri Lanka M1/M4/M5 test predictions were reconstructed from the base linked dataset and committed scripts and reproduced to max|Δ| ≤ 1.1×10⁻¹⁶ over all 3,926 test rows (row-identity verified). The recalibrated matched contrast was computed by the same validated reconstruction (`recal_matched.py`), which refuses to report unless the <1e-6 gate passes.
+
+**Design-lock provenance (high, non-cryptographic standard).** The dated specification defining the structured Sri Lanka M1 (commit `1d8e268`, 2026-06-14 13:24) is a DAG ancestor of the results report (`02f986e`, 14:33) on `main`; the specification line defining M1 was never edited after introduction (`git log -L`); no history-rewrite fingerprint (1/83 commits with ad≠cd; no clustered committer dates; no squashed root; 87-entry reflog in the original working repo). Filesystem timestamps corroborate the sequence (spec written 13:15 < frozen prediction CSV generated 13:32), and the results report hash-pins the specification ("executed per the locked spec … commit 1d8e268 … exact row match").
+
+**Qualification.** Because the frozen prediction files were stored outside version control, this is **strong but non-cryptographic** evidence of the analysis sequence, not tamper-proof. A coauthor attestation (`COAUTHOR_SIGNOFF.md`) and a permanent checksummed archive (Zenodo/OSF) are provided/recommended to close the gap.
+
+**Scope.** Prespecification / design-locking applies to the **model ladder and the structured Sri Lanka M1 only**, not to the revision-stage specification-matched estimand (M5 − M5_no-climate), which is post hoc / exploratory. We do not frame prespecification as strengthening the climate claim, since the prespecified primary contrast (M4 − M1) is non-nested and does not isolate climate.

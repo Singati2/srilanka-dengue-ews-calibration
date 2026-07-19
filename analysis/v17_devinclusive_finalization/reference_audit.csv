@@ -1,0 +1,11 @@
+issue_type,detail,status
+mapping,45 bibitems / 45 cited keys / 1:1,OK
+orphan_citations,0,OK
+uncited_entries,0,OK
+duplicate_keys,0,OK
+author_list_format,"Sangkaew2026/ValleDelCauca2024/Campbell2026 truncate after 1 author",author-polish
+key_year_mismatch,"Leung2022 (2022/2023); OpenDengue2024 (2024/2025)",NEEDS-EXTERNAL-CHECK
+terminal_period,Leung2022 missing period,author-polish
+casing,PLoS vs PLOS,NEEDS-EXTERNAL-CHECK
+doi_resolution,all DOIs,NEEDS-EXTERNAL-CHECK
+bibliographic_correctness,volume/issue/pages/years,NEEDS-EXTERNAL-CHECK

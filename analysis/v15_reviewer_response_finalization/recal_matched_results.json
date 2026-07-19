@@ -1,0 +1,47 @@
+{
+  "validation_maxabsdiff": {
+    "M1": 8.881784197001252e-16,
+    "M4": 1.1102230246251565e-16,
+    "M5": 1.1102230246251565e-16
+  },
+  "selected_C": {
+    "M5": 10.0,
+    "matched": 10.0
+  },
+  "raw": {
+    "matched_M5_minus_M5noclimate": {
+      "point": 0.0087,
+      "ci": [
+        -0.00149,
+        0.01878
+      ]
+    },
+    "frozen_M5_minus_M1": {
+      "point": 0.00808,
+      "ci": [
+        -0.00248,
+        0.01798
+      ]
+    }
+  },
+  "past_only_recal": {
+    "NB_recal_M5": 0.13976,
+    "NB_recal_matched": 0.12412,
+    "NB_recal_M1": 0.12437,
+    "MATCHED_recalM5_minus_recalM5noclimate": {
+      "point": 0.01565,
+      "ci": [
+        0.00655,
+        0.02569
+      ]
+    },
+    "UNMATCHED_recalM5_minus_recalM1": {
+      "point": 0.01539,
+      "ci": [
+        0.0064,
+        0.02547
+      ]
+    }
+  },
+  "n_test": 3926
+}

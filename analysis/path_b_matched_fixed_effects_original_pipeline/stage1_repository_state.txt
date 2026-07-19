@@ -1,0 +1,20 @@
+# Path B Stage 1 — repository state
+captured: 2026-07-08 (session)
+git status --short:
+?? docs/analysis_hierarchy_verification_latest.md
+?? docs/claim_to_evidence_matrix_v1.md
+?? docs/controlled_revision_plans_latest.md
+?? docs/experiment_results_and_reframe_v1.md
+?? docs/external_claim_verification_latest.md
+?? docs/mathematical_biomodel_feasibility_memo_v1.md
+?? docs/multi_agent_review_response_matrix_latest.md
+?? docs/plos_ntd_submission_requirements_audit_v1.md
+?? docs/reference_audit_v1.md
+?? docs/review_reframe_assessment_latest.md
+?? docs/single_paper_integrated_plan_v1.md
+?? docs/zenodo_release_plan_v1.md
+?? manuscript/
+HEAD: 05f235ee82754806e8b08884254f4b1d8ff849df
+origin/main: 05f235ee82754806e8b08884254f4b1d8ff849df
+python: Python 3.10.12
+R: R version 4.6.0 (2026-04-24) -- "Because it was There"

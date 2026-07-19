@@ -1,0 +1,19 @@
+VALIDATION max|Δ|: M1=8.88e-16 M4=1.11e-16 M5=1.11e-16  (n_test=3926)
+RECONSTRUCTION VALIDATED (<1e-6). Proceeding.
+
+=== (A) SL MATCHED DECOMPOSITION (NB@0.30, RDHS cluster bootstrap) ===
+  NB: {'cases': 0.08977, 'matched': 0.13602, 'M4': 0.12837, 'M5': 0.14471, 'M1_frozen': 0.13663}
+  M5_minus_matched(climate): +0.0087 CI [-0.00149, 0.01878]
+  matched_minus_cases(structure): +0.0462 CI [0.01986, 0.07406]
+  M4_minus_cases: +0.0386 CI [0.01812, 0.06216]
+  M5_minus_cases(compound): +0.0549 CI [0.02692, 0.0864]
+  M5_minus_M1frozen: +0.0081 CI [-0.0016, 0.01707]
+
+=== (B) PAST-ONLY ROLLING-52 RECALIBRATION (SL M1/M4/M5) ===
+  M1: raw NB 0.13663 -> recal NB 0.12437 (CITL 0.0196, slope 0.9404)
+  M4: raw NB 0.12837 -> recal NB 0.13449 (CITL 0.0476, slope 0.9983)
+  M5: raw NB 0.14471 -> recal NB 0.13976 (CITL 0.033, slope 0.8721)
+  dNB(M4-M1): raw -0.0083 -> past-only recal +0.0101 CI [-0.01077, 0.03014]
+  dNB(M5-M1): raw +0.0081 -> past-only recal +0.0154 CI [0.006, 0.02504]
+
+DONE

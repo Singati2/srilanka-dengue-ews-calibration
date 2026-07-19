@@ -1,0 +1,43 @@
+{
+  "analysis": "colombia_GEO_FIXED_PARTIAL_REFIT_diagnostic",
+  "B": 1000,
+  "seed": 20260612,
+  "replicates_used": 1000,
+  "failures": 0,
+  "fixed_C": {
+    "M5": 0.01,
+    "matched": 0.03
+  },
+  "reproduce_gate": {
+    "free_point": 0.00813,
+    "target": 0.00786,
+    "passed": true
+  },
+  "free_refit_dept": {
+    "point": 0.00813,
+    "ci": [
+      0.00074,
+      0.02037
+    ],
+    "width": 0.01963,
+    "median": 0.00816
+  },
+  "frozen_dept_partial_refit": {
+    "point": 0.00813,
+    "ci": [
+      0.00059,
+      0.01945
+    ],
+    "width": 0.01886,
+    "median": 0.00817
+  },
+  "width_reduction_frozen_vs_free": 0.00077,
+  "width_ratio_frozen_over_free": 0.961,
+  "dept_dropout": {
+    "mean_unique_depts_per_resample": 19.85,
+    "min": 14,
+    "max": 25,
+    "total_test_depts": 31
+  },
+  "seconds": 9416.4
+}

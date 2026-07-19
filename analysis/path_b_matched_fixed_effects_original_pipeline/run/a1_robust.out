@@ -1,0 +1,5 @@
+A train<=2016/val2017 recal=True: M5-M1=+0.0001 M4-M1=+0.0000 M5-matched=+0.0001 prev=0.498
+A train<=2016/val2017 recal=False: M5-M1=+0.0116 M4-M1=+0.0118 M5-matched=+0.0164 prev=0.498
+B train<=2015/val2016-17 recal=True: M5-M1=+0.0334 M4-M1=+0.0244 M5-matched=+0.0193 prev=0.498
+B train<=2015/val2016-17 recal=False: M5-M1=+0.0167 M4-M1=+0.0163 M5-matched=+0.0195 prev=0.498
+DONE

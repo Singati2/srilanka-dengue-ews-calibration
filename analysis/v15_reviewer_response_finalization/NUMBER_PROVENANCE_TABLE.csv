@@ -1,0 +1,10 @@
+value,point,ci_lo,ci_hi,model_pair,raw_or_recal,threshold,ci_method,source_file,field
+SL matched raw,0.0087,-0.0015,0.0188,M5 - M5_no-climate,raw,0.30,conditional 26-RDHS cluster bootstrap seed20260612,sl_matched_recal_results.json,A_matched_decomp.M5_minus_matched(climate)
+SL matched recalibrated,0.0157,0.0066,0.0257,recal(M5) - recal(M5_no-climate),past-only rolling-52 recal,0.30,conditional 26-RDHS cluster bootstrap seed20260612,recal_matched_results.json,past_only_recal.MATCHED_recalM5_minus_recalM5noclimate
+SL frozen M5-M1 raw,0.0081,-0.0025,0.0180,M5 - M1(frozen),raw,0.30,conditional cluster bootstrap,recal_matched_results.json,raw.frozen_M5_minus_M1
+SL unmatched M5-M1 recal (operational sensitivity),0.0154,0.0064,0.0255,recal(M5) - recal(M1),past-only rolling-52 recal,0.30,conditional cluster bootstrap,recal_matched_results.json,past_only_recal.UNMATCHED_recalM5_minus_recalM1
+SL non-climate structure,0.0462,0.0199,0.0741,M5_no-climate - cases,raw,0.30,conditional cluster bootstrap,sl_matched_recal_results.json,A_matched_decomp.matched_minus_cases(structure)
+SL M4-M1 raw,-0.008,-0.028,0.013,M4 - M1,raw,0.30,conditional cluster bootstrap,sl_matched_recal_results.json,B_pastonly_recal.dNB_M4_M1_raw
+SL M4-M1 recal,0.010,-0.011,0.030,recal(M4) - recal(M1),past-only rolling-52 recal,0.30,conditional cluster bootstrap,sl_matched_recal_results.json,B_pastonly_recal.dNB_M4_M1_recal(_ci)
+CO matched,0.0078,0.0039,0.0119,M5 - M5_no-climate,validation-recalibrated,0.30,conditional municipality cluster bootstrap,manuscript Table (matcheddecomp),original submission
+CO matched development-inclusive,NA,-0.0001,0.0244,M5 - M5_no-climate,development-inclusive refit bootstrap,0.30,refit bootstrap,manuscript discussion,original submission

@@ -1,0 +1,33 @@
+{
+  "B": 300,
+  "replicates_used": 300,
+  "failures": 0,
+  "reproduce_gate": {
+    "maxabsdiff_M5_vs_frozen": 1.1102230246251565e-16,
+    "conditional_recal_matched": 0.01565,
+    "conditional_raw_matched": 0.0087
+  },
+  "conditional": {
+    "raw_matched": 0.0087,
+    "recal_matched": 0.01565
+  },
+  "development_inclusive": {
+    "raw_matched": {
+      "point": 0.0087,
+      "ci": [
+        -0.00736,
+        0.02231
+      ],
+      "median": 0.00779
+    },
+    "recal_matched": {
+      "point": 0.01565,
+      "ci": [
+        0.00152,
+        0.02839
+      ],
+      "median": 0.01425
+    }
+  },
+  "seconds": 1570.7
+}

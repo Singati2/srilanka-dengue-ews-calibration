@@ -1,0 +1,10 @@
+SANITY M5-M1=+0.0188
+frozen-split matched climate M5-matched=+0.0079
+[A2 matched, DLNM] M5dlnm-matched = +0.0122 (0.007765313014509513, 0.015963775606992532) (linear matched was +0.0078)
+[A3 matched delay curve]
+   full      NB_M1=0.1171  M5-M1=+0.0188  M5-matched=+0.0079 
+   drop0     NB_M1=0.1122  M5-M1=+0.0180  M5-matched=+0.0079 
+   drop0_1   NB_M1=0.1076  M5-M1=+0.0141  M5-matched=+0.0075 (0.002854305435842064, 0.013346968738267326)
+   drop0_1_2 NB_M1=0.1076  M5-M1=+0.0070  M5-matched=+0.0051 
+[A1 matched, single pre-pandemic split] M5-matched = +0.0199 (0.0011599636766801682, 0.04004798329671285)  (M5-M1 +0.0339; test prev 0.498)
+DONE
