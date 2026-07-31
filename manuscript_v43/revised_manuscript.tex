@@ -1,0 +1,631 @@
+\documentclass[11pt,a4paper]{article}
+% =====================================================================
+% Version 25 (submission closeout). PLOS Global Public Health candidate.
+% Corrected cross-setting interpretation: Sri Lanka development-inclusive
+% intervals include zero; Colombia's reproducible development-inclusive
+% interval (+0.0008 to +0.0209); V27 framing de-emphasizes zero-crossing. No new analysis;
+% every number traces to the frozen v23 tables/results.
+% Secondary diagnostics, ladders, and provenance are in the Supporting
+% Information section at the end of this file.
+% =====================================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\setkeys{Gin}{draft=false}
+\usepackage{threeparttable}
+\usepackage{geometry}
+\usepackage{microtype}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{xcolor}
+\usepackage{setspace}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black]{hyperref}
+\usepackage{lineno}
+\renewcommand{\figurename}{Fig}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\geometry{margin=1in}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[R]{\scriptsize Climate information beyond recent dengue surveillance}
+\fancyfoot[R]{\footnotesize\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\doublespacing
+% Line numbers OFF by default (author standing preference for review/reading copies).
+% The PLOS submission build defines \linenumberedcopy on the command line.
+\ifdefined\linenumberedcopy \linenumbers \fi
+
+\begin{document}
+
+% =====================================================================
+% TITLE PAGE
+% =====================================================================
+\thispagestyle{fancy}
+\begin{center}
+{\Large \textbf{Matched-comparator evaluation of climate information in short-lead dengue elevated-activity forecasting}}\\[1.0em]
+
+{\normalsize \textbf{Short title:} Climate information beyond recent dengue surveillance}\\[1.2em]
+
+Ganesh Shiwakoti\textsuperscript{1,\,$\ast$}, Bhimsen Khadka\textsuperscript{2}, and Ajay Kumar Thapa\textsuperscript{3}\\[0.6em]
+
+\footnotesize
+\textsuperscript{1}Department of Mathematics and Statistics, Florida Atlantic University, Boca Raton, Florida, USA\\
+\textsuperscript{2}Department of Mathematical Sciences, The University of Texas at Dallas, Richardson, Texas, USA\\
+\textsuperscript{3}Department of Civil, Environmental and Geomatics Engineering, Florida Atlantic University, Boca Raton, Florida, USA\\[0.3em]
+$\ast$\,Corresponding author: ganshiwakoti@gmail.com
+\end{center}
+
+\newpage
+
+% =====================================================================
+% ABSTRACT (unstructured; no citations)
+% =====================================================================
+\begin{abstract}
+\noindent Climate-enhanced dengue forecasts are usually judged against weak baselines and by discrimination alone, which can credit climate with signal that recent surveillance already carries. We asked whether adding climate improves calibrated, threshold-based decision value once the comparator is a recent-surveillance model with matched non-climate structure.
+
+\noindent We ran two retrospective case studies: Sri Lanka (primary; RDHS division-week, 2018 to 2025) and a selected complete-case Colombian municipality-week subset (2020 to 2022). In each we compared a full climate model with an otherwise identical, independently refitted no-climate model, judged by calibration, decision-curve net benefit, and threshold-free proper scores, with conditional and refit-both-models resampling. The matched comparison was post hoc and exploratory.
+
+\noindent Neither setting showed a robust climate benefit. In Sri Lanka the matched increments ($+0.0087$ raw, $+0.0157$ recalibrated) had refit intervals spanning zero, and fell to $+0.0034$ at the stricter 90th-percentile outcome, still spanning zero. In Colombia the increment was small ($+0.0078$; refit interval $+0.0008$ to $+0.0209$), specific to the selected higher-incidence subset, and fragile: a mean-calibration intercept shift cut it to $+0.0042$, and at the 90th-percentile outcome it was $+0.0081$ (development-inclusive $+0.0009$ to $+0.0188$), a boundary-adjacent lower bound similar in magnitude to the Sri Lanka estimate (no formal between-setting comparison was performed) and not a firm exclusion of zero. Proper scores modestly favored climate (recalibrated $\Delta$NLL $-0.0207$ Sri Lanka, $-0.0089$ Colombia), but under the development-inclusive refit stress test they crossed zero in Sri Lanka and stayed marginally below zero in Colombia, matching the decision-curve pattern.
+
+\noindent Climate modestly improved average probability accuracy, but matched decision-curve gains were small and not shown to be redevelopment-robust, transportable, or operationally meaningful. Climate-enhanced forecasts should be judged against strong, structurally matched surveillance baselines using calibration, proper scores, and decision-curve net benefit; otherwise apparent climate value may reflect a weak comparator.
+\end{abstract}
+
+% =====================================================================
+% INTRODUCTION
+% =====================================================================
+\section{Introduction}
+
+Dengue is a major public-health challenge across tropical and subtropical regions, and early-warning systems are widely promoted to anticipate periods of elevated transmission. Because climate variables such as temperature, humidity, and rainfall shape mosquito abundance, survival, biting, and viral replication, climate-informed early warning is conceptually attractive~\cite{Mordecai2017,Huber2018}.
+
+Most dengue early-warning studies evaluate prediction models using discrimination or forecast-accuracy metrics~\cite{Johansson2019,Baharom2022,HussainAlkhateeb2021,Lowe2021}. Discrimination describes whether a model ranks high-risk periods above low-risk periods, but it is incomplete for decision-making. A public-health alert system must support threshold-based action, and a model with acceptable discrimination may still be poorly calibrated or may fail to improve net benefit relative to simpler alert strategies. Calibration is therefore central, because decisions depend on predicted probabilities and calibration can drift when the deployment period differs in baseline incidence from the training period~\cite{VanCalster2019,VanCalster2023,SteyerbergVergouwe2014}.
+
+Decision-curve analysis offers a complementary way to judge whether a model improves threshold-based decisions~\cite{Vickers2006,Vickers2016,Vickers2019}. Net benefit weighs true-positive gains against the false-positive cost implied by a decision threshold, which connects to cost-loss reasoning in which the threshold encodes the trade-off between unnecessary response and missed transmission~\cite{Murphy1985,Tozan2023}. We use net benefit throughout in this decision-curve sense of Vickers and colleagues, distinct from the health-economic net benefit of cost-benefit analysis and the meteorological cost-loss value of a forecast~\cite{Tozan2023,Murphy1985}. The demanding benchmark is often overlooked. Recent dengue surveillance is itself a strong comparator: because incidence is temporally autocorrelated, recent case counts carry strong short-term information, so a climate model that looks useful against a climatological or null baseline may add little beyond what agencies already hold. Deployed systems such as EWARS-csd are instead climate-driven, using a distributed-lag nonlinear model of temperature and rainfall in a Bayesian INLA framework validated across endemicity in Colombian municipalities, our second setting~\cite{EWARScsd}. Its case term is a seasonal endemic-channel structure, not the short-lag autoregression our baseline exploits, and it is not benchmarked against a recent-case model or evaluated by decision-curve net benefit, the gap this study addresses.
+
+The question is therefore not whether climate carries predictive signal beyond chance, but whether it adds value beyond recent cases, and whether any such value survives calibration and decision-curve evaluation rather than discrimination alone. Our primary analysis uses Sri Lanka RDHS-week surveillance linked to climate and population data, with a date-aligned join between weekly reports and ISO climate weeks; we apply the same logic to Colombia as a second, differently constructed case study, refitting all models locally rather than transporting coefficients. That recent-case autocorrelation can dominate climate for short-term dengue prediction is not new: in Mexico, climate did not significantly improve seasonal autoregressive forecasts out of sample~\cite{Johansson2016}. Yet dengue early-warning models remain mostly climate-driven and are usually judged by discrimination against weak comparators, with external validation rare (5.2\% of models in one review) and decision-analytic evaluation essentially absent~\cite{Leung2022,HussainAlkhateeb2021}. Benchmarking against a surveillance-mirroring model is not itself new~\cite{Lowe2013}, and weather-only models add no practical advantage over surveillance~\cite{Benedum2020}. Our recent-case baseline is a stronger autoregressive comparator, and the result refines this: the value attributed to climate depended on how much seasonal and spatial structure the comparator already carried, roughly halving under matching in Colombia, whose baseline is bare recent-case lags, while remaining essentially unchanged in Sri Lanka, whose baseline already carried seasonal and RDHS structure. The evaluation components are individually established (calibration and time-updated recalibration, strictly proper scoring, decision-curve net benefit, cluster-bootstrap inference), and decision-curve analysis has recently reached dengue clinical prognosis~\cite{Sangkaew2026,Vickers2006,Binuya2022}. Our contribution is to combine them as a matched-comparator framework: a climate-enhanced model and an independently refitted no-climate model share case-history, seasonal, geographic, preprocessing, and development structure, compared by calibration, proper scores, decision-curve net benefit, and conditional versus development-aware uncertainty. We ask how much decision value remains attributable to climate once models are calibrated, evaluated across a decision-relevant threshold range, and compared against that matched baseline, in two retrospective settings treated as parallel case studies rather than replications. To our knowledge this is the first application of decision-curve net benefit to population-level dengue elevated-activity forecasting, distinct from its recent use in individual dengue clinical prognosis~\cite{Sangkaew2026}, paired with a matched climate-block ablation. We do not claim a validated or transportable instrument: no simulation, formal theory, prospective testing, external validation, independent replication, or standardized software release supports that stronger claim.
+
+% =====================================================================
+% METHODS
+% =====================================================================
+\section{Materials and methods}
+
+\subsection{Study design and identity}
+We conducted an exploratory retrospective decision-analytic evaluation in two differently constructed dengue case studies. The aim was not to propose a deployable forecasting system but to evaluate whether climate-informed models add decision value beyond recent dengue surveillance, judged by discrimination, calibration, time-updated recalibration, and decision-curve net benefit. The primary analysis was Sri Lanka, with one Regional Director of Health Services (RDHS) division and one epidemiological week as the unit. Colombia was a second, differently-constructed case study using the same evaluation logic with local refitting. Reporting was guided by an observational-study checklist (STROBE) and, as reporting and risk-of-bias aids, a prediction-model reporting and risk-of-bias self-assessment (TRIPOD+AI and PROBAST)~\cite{vonElm2007,Collins2024TRIPODAI,Wolff2019,Moons2019}, with the completed PROBAST self-assessment reported in S11 Table as an author reporting aid rather than a definitive risk-of-bias adjudication. PROBAST+AI (2025) now supersedes PROBAST (2019) and applies to prediction models regardless of whether they use regression or machine-learning methods; a full item-level PROBAST+AI assessment was not undertaken.
+
+\subsection{Settings, spatial units, and data sources}
+For Sri Lanka the spatial frame contained 26 RDHS units built from public administrative boundary data~\cite{HDXCODABSriLanka}; 24 corresponded one-to-one with administrative districts, and Ampara was split into Ampara and Kalmunai along divisional-secretariat boundaries. Geometry was quality-controlled for unit count, validity, name matching to the surveillance crosswalk, and area conservation (Supporting Information). Current-week dengue case counts were taken from the Weekly Epidemiological Report (WER)~\cite{SriLankaWER} and converted to weekly incidence using annual RDHS population denominators built from WorldPop rasters~\cite{Tatem2017,WorldPop2025} and anchored to the 2024 Census~\cite{SriLankaCensus2025}. Weekly RDHS temperature and humidity were derived from ERA5-Land~\cite{MunozSabater2021,ERA5LandCDS} and precipitation from CHIRPS~\cite{Funk2015,CHIRPS}. Temperature used the ERA5-Land 2\,m temperature field (\texttt{t2m}, native kelvin, converted to $^{\circ}$C); relative humidity was derived from 2\,m temperature and 2\,m dewpoint (\texttt{d2m}) per grid cell per hour using the Alduchov--Eskridge Magnus approximation; precipitation used CHIRPS v2.0 Final daily data at 0.05$^{\circ}$ (mm\,day$^{-1}$). Hourly ERA5-Land and daily CHIRPS fields were aggregated to ISO weeks and reduced to per-RDHS means by zonal aggregation over public administrative boundaries (unweighted administrative-unit means; no population weighting). A key linkage issue was that the stored WER week label was the issue number, not the ISO climate week; the primary linkage mapped each issue to its ISO week using reporting-date information, and a naive week-number linkage was retained as a sensitivity (Supporting Information).
+
+For Colombia, weekly municipality-level (Admin-2 / GID\_2) dengue counts were obtained from the OpenDengue database Temporal extract version~1.3~\cite{Clarke2024OpenDengue,OpenDengue2024}, acquired from the OpenDengue repository rather than directly from the upstream national surveillance system and curated/finalized rather than real-time (version-record provenance in the Data-availability declaration). Colombia used the same conceptual model ladder with all models refit locally, but the climate exposure was constructed differently, linear temperature and precipitation lags without humidity, versus a distributed-lag nonlinear cross-basis in temperature, precipitation, and humidity in Sri Lanka, so the two settings are best read as two differently-constructed case studies rather than a like-for-like replication or geographic transport.
+
+\subsection{Alert labels, horizon, and the model ladder}
+The outcome was a per-unit weekly \emph{elevated dengue activity} label: a future week was flagged if its incidence exceeded the unit's training-period 75th percentile. This is a statistical activity classification, not a validated operational alert (no endemic-channel or Ministry-of-Health threshold was available), and test-period prevalence ($\approx$0.34--0.38) far exceeds an outbreak-rare event. The primary horizon was $h=4$ weeks (date-based join, not a positional shift); a 90th-percentile label and horizons $h=1,2,8,12$ were sensitivities. ``Alert-all'' and ``alert-none'' denote the two default decision-curve reference strategies, not the outcome. The model ladder spanned recent-case surveillance, climate-only, and hybrid information: M0, a seasonal climatological baseline; M1, a recent-case surveillance baseline (Colombia: recent-incidence lags only; Sri Lanka: the frozen M1 additionally carried seasonal harmonics and RDHS fixed effects, so the two M1s differ); M2, climate-only; M3, structured climate; M4, the planned primary hybrid; and M5, an expanded-hybrid sensitivity adding seasonality and geographic fixed effects. These conceptual labels do not guarantee identical feature implementation across countries (per-country implementation and software versions in S9 Table). Sri Lanka models were fit on 2018--2022 and evaluated on 2023--2025, with no test-period use for fitting, scaling, penalty selection, or threshold construction; Colombia used the same logic with local refitting (training 2006--2017, validation 2018--2019, test 2020--2022). A canonical R \texttt{dlnm} comparator tested whether a standard distributed-lag nonlinear specification changed the Sri Lanka climate-only conclusion~\cite{Gasparrini2010,Gasparrini2011}; penalized logistic models were fit in Python.
+
+\subsection{Calibration and time-updated recalibration}
+Calibration was assessed on held-out predictions by calibration-in-the-large (CITL), calibration slope, Brier score, and observed versus predicted prevalence, interpreted jointly with discrimination and net benefit. Because the Sri Lanka test period had higher alert prevalence than training, a time-updated recalibration was applied on the logit of the raw prediction; the primary method was rolling 52-week intercept-only recalibration using only forecast--outcome pairs observable before each prediction week, with rolling-104 and expanding-window variants as sensitivities (Supporting Information). In Colombia, recalibration used Platt scaling fit on the validation period. We treat the past-only rolling recalibration as the primary recalibrated evaluation, and the cross-fitted ISO-week-parity recalibration, which borrows concurrent test-period weeks and therefore is an optimistic, non-deployable upper bound (it cannot be applied prospectively), reported in Supporting Information. The past-only recalibration avoided look-ahead within the retrospective data structure.
+
+\subsection{Decision-curve analysis and the reference threshold}
+For a threshold probability $p^*$, net benefit was
+\[
+\mathrm{NB}(p^*)=\frac{\mathrm{TP}}{N}-\frac{\mathrm{FP}}{N}\,\frac{p^*}{1-p^*},
+\]
+with TP and FP the true- and false-positive alerts and $N$ the number of observations~\cite{Vickers2006,Murphy1985,Tozan2023}. A model has decision value at $p^*$ if its net benefit exceeds the default alert-all and alert-none strategies. We used $p^*=0.30$ as an illustrative reference value: it was not elicited from stakeholders and was not derived from an empirical response-cost analysis, and it encodes one particular trade-off between the cost of an unnecessary alert and the loss from a missed alert. We therefore report net benefit across a threshold grid rather than relying on a single point; the cost--loss interpretation of $p^*$ is given in Supporting Information. Discrimination (AUC, PR-AUC)~\cite{SaitoRehmsmeier2015} was reported but not treated as sufficient evidence of decision value.
+
+\subsection{Uncertainty, multiplicity, and analysis status}
+Uncertainty used nonparametric cluster bootstrap resampling with the cluster unit named explicitly for each procedure, resampling units with replacement and retaining all weeks within a sampled unit~\cite{CameronGelbachMiller2008}. \emph{Conditional} intervals recompute metrics on the frozen, already-fitted test-set predictions without refitting, and therefore reflect test-set sampling uncertainty only; \emph{development-inclusive} intervals refit both models within each resample and therefore address a broader uncertainty target. In Sri Lanka both procedures resampled the 26 RDHS units. In Colombia the two procedures used different units: conditional intervals resampled municipalities while retaining the frozen predictions, whereas the development-inclusive interval resampled departments and refitted both models within each replicate. The Colombia conditional analysis resampled the 475 included municipalities; the development-inclusive analysis resampled the 31 departments present in the analyzed test subset (28 with both outcome classes). Unless otherwise stated, the primary decision-curve conditional and development-inclusive percentile intervals used $B=1000$ replicates and seed 20260612 (wild-cluster-t used $B=1999$; the secondary proper-score analysis used $B=10{,}000$ for NLL/Brier and $B=5000$ for discrimination) with no resampling failures recorded; resamples containing a degenerate single-outcome-class unit were handled under the frozen protocol. Within each development-inclusive replicate both models were refit (scaling, penalty selection, recalibration, predictions, and the decision-curve increment recomputed) while the department fixed-effect column set was held fixed, so the procedure is development-inclusive for the case-history, seasonal, and climate blocks but not for the fixed effects (S10 Table). Department-level small-cluster sensitivities (wild-cluster-bootstrap-t and a leave-one-department-out jackknife) were close to the municipality-clustered conditional interval (S15 Table, S16 Text); the development-inclusive interval remains the primary basis for robustness to refitting. Analysis status is summarized in Supporting Information: the planned primary Sri Lanka contrast was $\Delta\mathrm{NB}(\text{M4}-\text{M1})$ at $p^*=0.30$ under the $h=4$, 75th-percentile definition; threshold, horizon, and regime analyses were secondary or exploratory, pointwise, and unadjusted for multiplicity. Colombia is a second case study rather than external validation, and its counts are finalized rather than real-time. No prospective public registration is claimed.
+
+\subsection{Post-result, design-locked threshold-free secondary reanalysis}
+As a secondary robustness analysis we evaluated the same frozen matched predictions with strictly proper, threshold-free probability scores. Its metrics were locked before computation but after the primary (Version~6) findings were known, so it is a post-hoc secondary reanalysis, not a preregistration or confirmatory reanalysis. The frozen full-model and regenerated matched no-climate predictions were checksum-frozen and verified for identical observation keys before scoring. The primary metric was the paired difference in mean negative log loss, $\Delta$NLL $=\overline{\mathrm{NLL}}_{\text{full}}-\overline{\mathrm{NLL}}_{\text{no-climate}}$ (negative favors climate), with the paired Brier-score difference $\Delta$Brier as the key secondary and AUC and PR-AUC as secondary discrimination measures. All proper-score intervals are pointwise and exploratory, with no multiplicity adjustment across settings, prediction states, or metrics, and multiple zero-excluding intervals are not treated as independent confirmatory evidence. Uncertainty used paired cluster bootstrap resampling of clusters (not individual observations): RDHS units for Sri Lanka and municipalities for Colombia (primary), $B=10{,}000$ replicates, seed 20260719, with a $B=1000$ (seed 20260612) parity run. These intervals are conditional on the frozen predictions; because the refit-both-models pipeline was not re-executed, development-inclusive proper-score intervals were gated and not computed. No minimum worthwhile score increment was elicited. Full implementation, checksums, and the design-lock record are in Supporting Information (S18 Text).
+
+\subsection{The matched climate ablation and its status}
+The principal climate-specific contrast is a pipeline-matched, independently refitted feature-block ablation: it compares the full model (M5) with an otherwise identical model from which the climate feature block was removed, with both models independently fit under the same development protocol (so the selected penalty may differ). For brevity, we refer to this as the \emph{matched climate ablation}, $\Delta$NB(M5$-$M5$_{\text{no-climate}}$). The no-climate model retains the same case-history, seasonal, and geographic terms, preprocessing, model family, and rows as M5. The ablation estimates the incremental contribution attributed to climate under the matched development protocol; it is a predictive feature-block contrast, not a causal climate-effect estimand, because climate overlaps with seasonal and geographic structure. It is applied to both settings. All cross-setting statements about the incremental value of climate rest exclusively on this matched contrast. Because it is not part of the design-locked ladder, it is reported throughout as a \emph{post-hoc, exploratory} analysis, never as prespecified, primary, confirmatory, or prospectively registered. The original design-locked comparison, M4$-$M1 (not registered), does not isolate climate because M4 and M1 are structurally non-nested; it is retained for transparency but is not the basis for the climate interpretation.
+
+The original internally design-locked comparison contrasted the hybrid model with the recent-surveillance model. We subsequently recognized that this non-nested contrast differed in structural components beyond climate and therefore did not isolate the climate feature block. We retained the original analysis for transparency and conducted a post-hoc matched climate ablation as the principal interpretable exploratory analysis. The detailed analysis chronology and development history are in Supporting Information.
+
+Table~\ref{tab:spec} summarizes the two settings' specifications; secondary post-hoc sensitivity, selection, and validation analyses (cross-fitted recalibration, completeness-threshold and rolling-origin evaluations, functional-form and reporting-delay checks, and horizon sweeps) are reported in Results with full specifications in Supporting Information.
+
+\begin{table}[htbp]
+\centering
+\caption{Setting and model specification for the two case studies. The two settings differ in period, spatial unit, sample construction, climate-feature implementation, and recalibration, and are complementary evaluations rather than a comparative experiment.}
+\label{tab:spec}
+\footnotesize\setstretch{1.0}
+\begin{tabularx}{\textwidth}{@{}p{3.3cm}YY@{}}
+\toprule
+Attribute & Sri Lanka (primary) & Colombia (second case study) \\
+\midrule
+Spatial unit & RDHS division (26 units) & Municipality / GID\_2 (department = bootstrap cluster) \\
+Study period & 2018--2025 (test 2023--2025) & 2006--2022 (test 2020--2022) \\
+Outcome / alert label & Unit-specific 75th-percentile weekly-incidence exceedance & Unit-specific 75th-percentile weekly-incidence exceedance \\
+Forecast horizon & $h=4$ weeks (primary); $h=1,2,8,12$ sensitivity & $h=4$ weeks (primary); $h=1$--$12$ sensitivity \\
+Recent-surveillance features & Recent-incidence lags $+$ seasonal harmonics $+$ RDHS fixed effects & Recent-incidence lags only \\
+Climate features & DLNM-style cross-basis: temperature, precipitation, humidity (lags 0--8) & Linear temperature and precipitation lags 0--8 (no humidity) \\
+Seasonal / geographic structure & Seasonal harmonics, RDHS fixed effects & Seasonal terms, 32 department fixed effects (in M5) \\
+Recalibration & Rolling 52-week intercept-only, past-only (primary) & Platt scaling fit on validation period \\
+Bootstrap unit & RDHS cluster ($B=1000$) & Municipality cluster; department cluster for development-inclusive refit ($B=1000$) \\
+Analyzed-sample limitation & Single temporal holdout; administrative-unit aggregation & Common-complete subset selected toward higher-incidence, better-reporting municipalities \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+% =====================================================================
+% RESULTS
+% =====================================================================
+\section{Results}
+
+\subsection{Cohort, data alignment, and the surveillance benchmark}
+Each Sri Lanka observation was one RDHS division and one epidemiological week, with the four-week-ahead 75th-percentile alert as the target. Because the WER issue number led the ISO climate week, the primary analysis used the date-aligned linkage (Supporting Information pipeline figure, S6 Fig). The two settings differ markedly in scale (Sri Lanka $65{,}610$ versus Colombia $1{,}141{,}748$~km$^2$); the study design, spatial and bootstrap units, Colombia complete-case selection, and analysis flow are summarized in Fig~\ref{fig:design}. After filtering and target construction the analysis contained 10{,}516 RDHS-week rows; training (2018--2022) had 6{,}590 observations and 1{,}593 alert events and the test period (2023--2025) had 3{,}926 observations and 1{,}321 events, with alert prevalence rising from 24.2\% to 33.6\%. In the held-out period the recent-case surveillance model M1 had the highest discrimination (AUC 0.752), lowest Brier score, and highest net benefit at $p^*=0.30$ (0.137, versus 0.069 for the climate-only M2 and 0.078 for the structured-climate M3; alert-all lower, alert-none zero). Decision value was threshold-dependent, but across the mid-to-high threshold range M1 was consistently highest among M0--M3 (S1 Table, S1 Fig). All M0--M3 models under-predicted in the higher-prevalence test period (CITL $+0.48$ to $+0.60$); rolling 52-week intercept-only recalibration reduced calibration-in-the-large substantially (residual CITL $+0.02$ to $+0.09$) but did not change the model ranking or make climate-only models exceed surveillance (S2 Table).
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{submission_figs/Fig1.pdf}
+\caption{Study design and sample selection. (A) Sri Lanka analytic frame: the 26 Regional Director of Health Services (RDHS) units (the bootstrap cluster for both conditional and development-inclusive intervals); the Ampara district is split into Ampara and Kalmunai RDHS along divisional-secretariat boundaries (highlighted). Boundaries from HDX COD-AB (Survey Department of Sri Lanka); conformal projection (EPSG:32644, UTM zone 44N; transverse Mercator, used for display, not an equal-area projection). (B) Colombia analytic coverage and selection over the 2020--2022 test period: each municipality is classified as included in the common-complete analysis ($n=475$), observed but excluded for incomplete predictors ($n=167$), or with no usable test-period data ($n=477$); these three categories partition Colombia's 1{,}119 municipalities ($475+167+477=1{,}119$). Of the 864 municipalities with any test-period presence, 475 were analyzed, 167 were observed but excluded, and 222 were present but had no usable week ($475+167+222=864$); the remaining 255 never appeared in the test period, so the ``no usable'' class totals $222+255=477$. Department outlines overlaid. Boundaries from GADM v4.1 admin-2 (departments dissolved from GID\_1); conformal projection (EPSG:3116, MAGNA-SIRGAS / Colombia Bogot\'a; transverse Mercator, used for display, not an equal-area projection). The analysed subset is higher-incidence and better-reporting (mean recent cases 11.1 versus 1.9; elevated-activity prevalence 0.375 versus 0.180 for included versus excluded units), so inference does not extend to all Colombian municipalities. Of 21{,}646 test-period municipality-weeks, 13{,}361 (62\%) were common-complete. The conditional bootstrap resamples municipalities; the development-inclusive bootstrap resamples the 31 test departments. (C) Study timelines: Sri Lanka training 2018--2022 / test 2023--2025; Colombia training 2006--2017 / validation 2018--2019 / test 2020--2022; primary horizon $h=4$ weeks.}
+\label{fig:design}
+\end{figure}
+
+\subsection{Sri Lanka: matched climate increment}
+The Python DLNM-style and canonical R \texttt{dlnm} climate specifications performed nearly identically, and both remained below the recent-surveillance benchmark M1 (S3 Table). For the planned primary hybrid, $\Delta$NB(M4$-$M1) at $p^*=0.30$ was $-0.008$ (95\% CI $-0.028$ to $+0.013$); the expanded sensitivity hybrid M5 gave $\Delta$NB(M5$-$M1)$=+0.0081$ (95\% CI $-0.0012$ to $+0.0181$), but because the frozen M1 already carries seasonal harmonics and RDHS fixed effects fit under a different penalization, this contrast is not a matched ablation. To estimate the incremental climate contribution under the matched development protocol we ran the matched climate ablation, reconstructing the frozen pipeline (reproducing the committed M1/M4/M5 predictions to $<10^{-6}$) and fitting a matched no-climate baseline with the same procedure. The matched climate ablation increment was $\Delta$NB(M5$-$M5$_{\text{no-climate}}$)$=+0.0087$ (conditional 95\% RDHS-cluster CI $-0.0015$ to $+0.0188$; development-inclusive $-0.0079$ to $+0.0245$), while adding seasonal and geographic structure to a cases-only baseline contributed a larger $+0.0462$ (95\% CI $+0.0199$ to $+0.0741$). Refitting both matched models under a single identical penalty left the increment essentially unchanged ($+0.0087$ to $+0.0099$), so it is not an artifact of differential regularization. At the stricter 90th-percentile label the recalibrated increment fell to $+0.0034$, with both the conditional and development-inclusive intervals spanning zero (S14 Table).
+
+Because rolling recalibration in the frozen run was applied only to M0--M3, we assessed recalibrating the hybrids. Under the leakage-free past-only rolling-52-week recalibration, the matched climate ablation increment rose to $+0.0157$ (conditional $+0.0066$ to $+0.0257$; development-inclusive, refitting both models within each of $B=1000$ RDHS resamples, $-0.0002$ to $+0.0302$); an optimistic cross-fitted recalibration, which borrows concurrent test-period weeks and therefore cannot be used prospectively (not deployable), gave a similar picture. Both Sri Lanka development-inclusive intervals, raw and past-only recalibrated, included zero, so the Sri Lanka estimates were small and imprecise once model-development uncertainty was included (Fig~\ref{fig:sldca}; headline values in Table~\ref{tab:headline}).
+
+\begin{figure}[htbp]\centering\includegraphics[width=0.98\textwidth]{submission_figs/Fig4.pdf}
+\caption{Sri Lanka matched climate ablation decision curves (test period, $h=4$, $p^*=0.05$--$0.50$). (A) Net benefit of the full model M5 and the independently refit no-climate comparator M5$_{\text{no-climate}}$, under raw and past-only-recalibrated predictions, with the alert-all reference and $p^*=0.30$ marked. (B) The matched climate ablation increment $\Delta$NB(M5$-$M5$_{\text{no-climate}}$) across thresholds. Bold vertical bars at $p^*=0.30$ are the development-inclusive 95\% cluster-bootstrap (RDHS) intervals (both models refit within each resample); both the raw ($-0.0079$ to $+0.0245$) and past-only-recalibrated ($-0.0002$ to $+0.0302$) intervals include zero. Faint shaded bands are the conditional intervals (frozen predictions), which omit model-development uncertainty. The cross-fitted (optimistic) recalibration curves are in Supporting Information.}\label{fig:sldca}\end{figure}
+
+\subsection{Colombia: a second, differently-constructed case study}
+On a common-complete test set ($n=13{,}361$; test prevalence 0.375), climate-only models were again weak (M2 AUC 0.556, M3 0.564) relative to M1 (0.685). These Colombia climate-only models used a linear temperature and precipitation lag specification (lags 0--8, no humidity) rather than the distributed-lag nonlinear cross-basis used in Sri Lanka, so their near-chance discrimination partly reflects an under-specified climate representation and is not comparable to a DLNM-based operational system such as EWARS-csd~\cite{EWARScsd}; in Sri Lanka the same linear-to-DLNM change raised climate-only AUC from 0.643 to 0.714. The matched climate ablation nonetheless refit climate as a distributed-lag nonlinear cross-basis and still found only a small increment (Section~\ref{sec:robustness}), so the matched-comparator conclusion does not depend on the weak linear climate-only fit. The full hybrid exceeded M1: M5 AUC 0.726 and net benefit 0.136 at $p^*=0.30$, giving a compound $\Delta$NB(M5$-$M1)$=+0.0188$ (95\% CI $+0.0117$ to $+0.0260$; S4 Table, S4 Fig). This compound contrast combined climate with seasonal terms and 32 department fixed effects that M1 lacks and therefore did not isolate the climate contribution. Despite validation-fit Platt recalibration, all models over-predicted in the test period (CITL $-0.45$ to $-0.54$), though the models carrying the net-benefit comparison had calibration slopes near 1.
+
+To estimate the incremental climate contribution under the matched protocol, we ran the post-hoc matched climate ablation in the original Colombia pipeline (identical rows, model family, tuning, recalibration, and municipality-cluster bootstrap), with M5$_{\text{no-climate}}$ removing only M5's 18 climate columns. Adding climate contributed $\Delta$NB(M5$-$M5$_{\text{no-climate}}$)$=+0.0078$ (conditional 95\% CI $+0.0039$ to $+0.0119$). A partial development-inclusive bootstrap, refitting both models (scaling, tuning, recalibration, predictions) in each of $B=1000$ department resamples while holding the department fixed-effect column basis frozen, gave $+0.0008$ to $+0.0209$. Under a calibration sensitivity, shifting both models by up to $\pm 1$ logit left the increment positive throughout; Colombia over-predicted (mean predicted risk $0.485$ versus observed prevalence $0.375$), and at the offsetting $-0.5$-logit shift, a mean-calibration intercept-shift sensitivity that restores calibration-in-the-large (mean predicted risk $0.376$; slope and nonlinear miscalibration uncorrected), the increment was $+0.0042$ (conditional 95\% CI $-0.0015$ to $+0.0099$): its conditional interval crossed zero, so it is only partly separable from the shared over-prediction and this conditional check does not address development-inclusive robustness (S3 Fig). Its practical importance was unresolved, limited by post-hoc status, complete-case selection, calibration, and interval widening under refitting. Under the assumed illustrative threshold $p^*=0.30$, the increment corresponds to about $0.78$ decision-analytic true-positive equivalents per 100 observations (not observed events prevented). The matched ablation increment ($+0.0078$) is the primary climate estimand and is about $42\%$ of the compound $+0.0188$, so the compound, which bundles climate with seasonal and department structure, is not a climate-specific effect.
+
+\begin{table}[htbp]
+\centering
+\caption{Headline matched climate ablation increments $\Delta$NB(M5$-$M5$_{\text{no-climate}}$) at $p^*=0.30$ ($h=4$, 75th-percentile label). Post-hoc, exploratory analyses. Conditional intervals resample frozen predictions; development-inclusive (DI) intervals refit both models within each cluster resample ($B=1000$, seed 20260612). Sri Lanka uses RDHS clusters; Colombia uses department clusters for the DI refit. The Colombia DI lower bound ($+0.0008$) is boundary-adjacent under 31 clusters and is not a firm exclusion of zero (S17 Text). Paired differences are computed at full precision and may differ slightly from differences of rounded components.}
+\label{tab:headline}
+\footnotesize\setstretch{1.0}
+\begin{tabularx}{\textwidth}{@{}p{3.5cm}rrrY@{}}
+\toprule
+Setting / state & Point $\Delta$NB & Conditional 95\% CI & DI 95\% CI & Interpretation \\
+\midrule
+Sri Lanka, raw & $+0.0087$ & $-0.0015$ to $+0.0188$ & $-0.0079$ to $+0.0245$ & Small; imprecise \\
+Sri Lanka, recalibrated & $+0.0157$ & $+0.0066$ to $+0.0257$ & $-0.0002$ to $+0.0302$ & Small; imprecise \\
+Colombia, recalibrated & $+0.0078$ & $+0.0039$ to $+0.0119$ & $+0.0008$ to $+0.0209$ & Small; selected subset; widens under refitting \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Robustness, selection, and horizon}\label{sec:robustness}
+We examined whether the Colombia matched increment is stable (primary compound $+0.0188$ and matched $+0.0078$ reproduced to $<0.0001$ beforehand); the evidence was mixed. Refitting the climate terms as a distributed-lag nonlinear cross-basis moved the point increment to $+0.0122$ (reported without a bootstrap interval), so the estimate is sensitive to the climate-block specification rather than invariant. Censoring the most recent case lags to emulate reporting delay, while holding outcome and climate at finalized values, decayed the increment to $+0.0049$ at a three-week lag; this one-sided censoring does not reconstruct real-time vintages, so we read it as a limitation, not a bound. The increment was positive but variable across four rolling-origin windows and across departments (median $+0.0052$, positive in 75\% of the 28 departments with sufficient test size), approximately flat across horizons ($\approx+0.008$ through $h=8$, $+0.002$ at $h=12$; S5 Fig), and did not grow with lead time. The only pre-pandemic split (test 2018--19) gave $+0.0199$ but is confounded by the 2016 dengue-Zika year and the 2019 record epidemic, and no clean post-pandemic test was available~\cite{PAHO2023,ValleDelCauca2024}. At the stricter 90th-percentile label it was $+0.0081$ (development-inclusive $+0.0009$ to $+0.0188$); this and the Sri Lanka 90th estimate were similar in magnitude (no formal between-setting comparison was performed) and both are compatible with zero (S14 Table).
+
+The Colombia common-complete sample was selected: of the 2020--2022 test-period municipality-weeks, 62\% were common-complete, spanning 475 of 864 municipalities, and included units differed systematically from excluded ones (mean recent cases 11.1 versus 1.9; elevated-activity prevalence 0.375 versus 0.180). Inference therefore applies to that analyzed higher-incidence, better-reporting subset rather than to all Colombian municipalities. An inverse-probability-weighted sensitivity left the matched increment essentially unchanged (IPW $+0.0079$ versus unweighted $+0.0078$), but the modelled inclusion covariates only weakly predicted inclusion, so the estimand remains the analysed common-complete subset (the inclusion-versus-exclusion comparison is shown in S2 Fig; the IPW estimate is reported here in text).
+
+
+\subsection{Threshold-free proper-score reanalysis}
+Evaluating the frozen matched predictions with strictly proper, threshold-free scores, adding climate improved overall out-of-sample probability accuracy in both settings and both prediction states (Table~\ref{tab:properscore}). Under the primary past-only recalibrated state, the paired negative-log-loss difference was $\Delta$NLL $=-0.0207$ (conditional 95\% cluster-bootstrap interval $-0.0346$ to $-0.0067$) in Sri Lanka and $-0.0089$ ($-0.0165$ to $-0.0011$) in Colombia (on the analyzed common-complete subset), corresponding to modest incremental predictive information of about $+0.030$ and $+0.013$ bits per forecast; raw-state estimates were similar ($-0.0256$ and $-0.0085$). The paired Brier-score difference was likewise negative in every cell (recalibrated $-0.0079$ and $-0.0043$; Brier skill score $\approx0.02$--$0.06$, descriptive). Conditional intervals excluded zero for both proper scores in all four states, with zero of 10{,}000 bootstrap replicates failing. Discrimination also favored climate (recalibrated $\Delta$AUC $+0.027$ and $+0.012$, intervals excluding zero; $\Delta$PR-AUC $+0.016$ [$-0.002$ to $+0.036$] in Sri Lanka and $+0.011$ [$-0.002$ to $+0.026$] in Colombia, both conditional intervals including zero; these secondary discrimination intervals use the $B=5000$ conditional bootstrap). The climate-enhanced model was slightly better calibrated than the matched comparator in both primary states (integrated calibration index $0.027$ versus $0.045$ in Sri Lanka; $0.109$ versus $0.113$ in Colombia), although substantial residual calibration error remained in Colombia. The conditional intervals above resample the frozen predictions. Applying the same development-inclusive refit-both-models bootstrap used for the decision curves ($B=1000$, seed 20260612, 0 failures), the proper-score advantage crossed zero in Sri Lanka ($\Delta$NLL $-0.0403$ to $+0.0040$; $\Delta$Brier $-0.0153$ to $+0.0013$) but remained below zero in Colombia ($\Delta$NLL $-0.0224$ to $-0.0002$; $\Delta$Brier $-0.0102$ to $-0.0004$, the NLL upper bound boundary-adjacent). Under redevelopment, then, the proper-score and decision-curve evidence agree within each setting: compatible with zero in Sri Lanka, small and boundary-adjacent in the selected Colombia subset. Full per-model metrics are in Supporting Information (S19 Table).
+
+\begin{table}[htbp]
+\centering
+\caption{Threshold-free proper-score reanalysis: paired differences (full climate $-$ matched no-climate) on the frozen matched predictions. Negative favors climate. Conditional paired cluster-bootstrap 95\% intervals ($B=10{,}000$, seed 20260719, with a $B=1000$ seed-20260612 parity run; RDHS units for Sri Lanka, municipalities for Colombia). Development-inclusive (refit-both-models) proper-score intervals are reported in S18 Text: Sri Lanka crosses zero, Colombia remains marginally below zero. Post-hoc, exploratory; locked before computation but after the primary findings were known. Paired differences are computed at full precision and may differ slightly from the difference of the rounded per-model components in S19 Table.}
+\label{tab:properscore}
+\footnotesize\setstretch{1.0}
+\begin{tabularx}{\textwidth}{@{}llrrrr@{}}
+\toprule
+Setting & State & $\Delta$NLL & Conditional 95\% CI & Info.\ gain (bits) & $\Delta$Brier (95\% CI) \\
+\midrule
+Sri Lanka & recalibrated & $-0.0207$ & $-0.0346$ to $-0.0067$ & $+0.030$ & $-0.0079$ ($-0.0129$ to $-0.0030$) \\
+Sri Lanka & raw & $-0.0256$ & $-0.0390$ to $-0.0122$ & $+0.037$ & $-0.0107$ ($-0.0157$ to $-0.0058$) \\
+Colombia & recalibrated & $-0.0089$ & $-0.0165$ to $-0.0011$ & $+0.013$ & $-0.0043$ ($-0.0076$ to $-0.0009$) \\
+Colombia & raw & $-0.0085$ & $-0.0139$ to $-0.0031$ & $+0.012$ & $-0.0036$ ($-0.0059$ to $-0.0013$) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+% =====================================================================
+% DISCUSSION
+% =====================================================================
+\section{Discussion}
+
+\subsection*{Principal findings}
+Adding climate under the matched climate ablation produced small increments in both settings. In Sri Lanka the increment was $+0.0087$ (raw) and $+0.0157$ (past-only recalibrated); the estimates were small and imprecise after model-development uncertainty was included. The Colombia estimate was small, obtained in a selected higher-incidence subset, and subject to interval widening under development-inclusive refitting, with practical importance unresolved. Because no formal heterogeneity test was performed and the settings differ in period, unit, sample, and climate implementation, we make no pooled or comparative claim. These findings show no robust evidence of operationally meaningful incremental climate value. This is not proof of a zero climate contribution, not proof that climate is irrelevant to transmission, and not evidence of national generalizability in Colombia.
+
+\subsection*{Why the comparator matters}
+Recent dengue surveillance was a demanding short-horizon benchmark in both settings, and climate-only models (including a canonical distributed-lag nonlinear specification) added limited standalone decision value, consistent with prior reports that recent-case autocorrelation can dominate climate for short-term prediction~\cite{Johansson2016,Benedum2020,Sesay2026} and that surveillance-mirroring baselines are strong comparators~\cite{Lowe2013}. The design-locked primary Sri Lanka contrast, M4$-$M1, was null ($-0.008$; $+0.009$ after an optimistic recalibration), but because M4 omits the seasonal and RDHS structure M1 carries, it does not isolate climate. How much is attributable to climate depends on how much non-climate structure the comparator omits. In Colombia, where M1 carries only recent-case lags, matching the seasonal and department structure cut the attributed increment by more than half, to about 42\% of its unmatched value ($+0.0188 \to +0.0078$); in Sri Lanka, where M1 already carries that structure, matching left it essentially unchanged ($+0.0081 \to +0.0087$). The shrinkage is a property of the comparator-model gap, not an automatic effect of matching. Recent case counts may already summarize upstream climate and transmission over short horizons. Climate-ablation findings are not new; we show how the value attributed to climate changes under a matched development protocol judged by calibration and net benefit. Throughout, M1 is a locally refit statistical baseline, not the deployed climate-driven system we cite as motivation~\cite{EWARScsd}.
+
+\subsection*{Calibration and uncertainty}
+Calibration mattered throughout: models under- or over-predicted materially in the test periods, recalibration changed decision-curve performance, and intercept-only recalibration did not correct calibration slope or nonlinear miscalibration, which argues for ongoing calibration monitoring in any use. Conditional intervals, which resample frozen predictions, were narrower than development-inclusive intervals, which refit both models within each resample; the development-inclusive intervals are the more appropriate basis for judging stability, and under them the Sri Lanka increments were compatible with no increment. Cluster counts were modest (26 RDHS units; 31 Colombian departments), so finite-sample interval coverage is uncertain despite a wild-cluster-bootstrap-t sensitivity (Supporting Information).
+
+\subsection*{Selection and generalizability}
+The Colombia estimate applies to a selected higher-incidence, better-reporting complete-case subset: 62\% of test-period municipality-weeks were common-complete, spanning 475 of 864 municipalities, and included units differed systematically from excluded ones (mean recent cases 11.1 versus 1.9; elevated-activity prevalence 0.375 versus 0.180). An inverse-probability-weighted sensitivity left the increment essentially unchanged, but the inclusion covariates predicted inclusion only weakly, so the estimand remains the analysed subset. Transportability to all Colombian municipalities is not established.
+
+\subsection*{Operational relevance}
+We did not conduct a cost analysis or stakeholder elicitation. Net-benefit estimates are quantitatively interpretable under the assumed threshold, but their operational importance cannot be established without elicited response costs, implementation burdens, and a minimum worthwhile increment; and because different response actions may imply different thresholds, the appropriate threshold cannot be fixed from the present data. The matched increment did not increase with forecast lead over the evaluated horizons, so longer lead times do not rescue the present result; longer seasonal-horizon forecasting, where autoregressive signal decays, is a separate problem for which climate carries skill~\cite{Beal2025,ColonGonzalez2021,Campbell2026} and does not bear on this short-lead evaluation.
+
+\subsection*{Probability accuracy versus decision value}
+The proper-score and decision-curve analyses addressed different questions. Negative log loss and Brier score evaluate average probability accuracy across all forecasts, whereas net benefit evaluates a threshold-specific alert trade-off. Under the matched specification, adding climate improved overall probability accuracy in both settings, but its net-benefit increment remained small, threshold-dependent, and operationally uncosted. There is no contradiction here: a small, broadly distributed improvement in predicted probabilities can raise a proper score while altering few classifications at a single alert threshold, and calibration affects the two metrics differently. The proper-score improvements were modest. We subsequently applied to them the same development-inclusive refit-both-models bootstrap used for the decision curves, so the two metric families are held to one standard. Under that test the Sri Lanka proper-score intervals crossed zero and the Colombia intervals remained marginally below zero, agreeing within each setting with the decision-curve result rather than conflicting with it. We therefore read the proper scores as, at most, weak incremental predictive information at short horizons, not confirmatory evidence of operational or transportable benefit.
+
+\subsection*{Limitations}
+The matched analysis was post hoc and exploratory, not prespecified; the proper-score plan was locked before computation but after the primary findings were known; its primary intervals are conditional on the frozen predictions, and development-inclusive proper-score intervals were subsequently computed under the same refit-both-models bootstrap (Sri Lanka crossing zero; Colombia marginally below zero). The no-climate matched predictions were regenerated through Version~6 pipelines (fidelity to the frozen full-model predictions $<10^{-6}$), and a post-lock correction to the bootstrap code left the plan and point estimates unchanged (no uncorrected interval is reported). The reference threshold $p^*=0.30$ was illustrative, not stakeholder-elicited. The study used finalized rather than real-time counts (the reporting-delay analysis was a feature-censoring emulation only), and the Colombia test period spanned the COVID-19 years 2020--2022. The two settings differed in period, spatial unit, sample size, climate-feature implementation, and validation design, and Python modeling-stack versions were not fully preserved (Supporting Information). A residual spatial-autocorrelation diagnostic (Moran's $I$ on per-unit mean residuals, adjacency reconstructed from public boundaries) was inconclusive: Sri Lanka $I=-0.12$ ($p=0.33$; matched $-0.07$, $p=0.63$) and Colombia a borderline positive $I=+0.20$ ($p=0.10$; matched $+0.22$, $p=0.06$). These are underpowered (26--31 units) and cannot establish absence of clustering; the borderline Colombia signal is consistent with real positive dependence, which would widen the development-inclusive interval, so the $+0.0008$ lower bound should not be read as a firm exclusion of zero. A spatial-block bootstrap widened the Colombia conditional interval to $+0.0018$ to $+0.0119$ while keeping it above zero. Climate was summarized by administrative-unit means rather than population-weighted exposure (change-of-support and modifiable-areal-unit concerns). We claim no deployment readiness, transportability, causal climate effects, cost-effectiveness, rare-epidemic prediction, or universal hybrid benefit.
+
+
+\subsection*{Conclusion}
+In two retrospective case studies, climate modestly improved average probability accuracy on frozen predictions, but matched decision-curve increments were small, sensitive to calibration and comparator structure, and not established as robust under the reported refit procedures, transportable across settings, or operationally meaningful. The findings support stronger structurally comparable surveillance baselines, calibration assessment, proper scores, and model-development-aware uncertainty in future dengue forecasting evaluations. Prospective evaluation with real-time data vintages and stakeholder-defined decisions is needed.
+
+% =====================================================================
+% DECLARATIONS
+% =====================================================================
+\section*{Declarations}
+\textbf{Ethics approval and consent.} \textbf{[AUTHOR INPUT REQUIRED: institutional ethics determination or exemption.]} The study used aggregate, publicly accessible, de-identified surveillance data and did not involve human-subjects identifiers; a formal institutional determination of exemption is to be confirmed by the authors and their institution. Consent to participate is not applicable to aggregate secondary surveillance data.\\
+\textbf{Data availability.} All source datasets are publicly available and cited: the OpenDengue Temporal extract (Figshare, doi:10.6084/m9.figshare.24259573)~\cite{Clarke2024OpenDengue,OpenDengue2024}, CHIRPS~\cite{Funk2015,CHIRPS}, ERA5-Land~\cite{MunozSabater2021,ERA5LandCDS}, WorldPop~\cite{Tatem2017,WorldPop2025}, the Sri Lanka WER~\cite{SriLankaWER}, and administrative boundaries~\cite{HDXCODABSriLanka}. The Colombia analysis used the OpenDengue Temporal extract version~1.3 (the OpenDengue Figshare record states a CC BY 4.0 license, while the OpenDengue data descriptor and website state CC BY-SA; users should confirm the applicable terms before redistributing derived tables); the derived, climate-linked analysis table archived with the code has SHA-256 checksum \texttt{5d4d646e9d8f756c8122533b6b088bff0fb0a8983eb46572a0f655e774a9ad2a} (acquired 2026-06). \textbf{[AUTHOR INPUT REQUIRED: confirm the exact OpenDengue v1.3 Figshare version-record identifier.]}\\
+\textbf{Code availability.} The analysis code and frozen outputs are archived at \url{https://github.com/Singati2/srilanka-dengue-ews-calibration} under four tags: \texttt{v6-analysis-frozen} (decision-curve and matched-ablation pipelines, frozen outputs, and the reconstruction environment lockfile), \texttt{alt-stats-plan-v1} (the threshold-free proper-score pre-computation design lock), \texttt{alt-stats-results-v1} (the proper-score scoring generator \texttt{score\_route\_a.py} and committed results matching Table~\ref{tab:properscore}), and \texttt{alt-stats-results-v2} (commit \texttt{e14ae31}; the calibration-robustness sensitivity generator \texttt{calibration\_sensitivity.py}, which reproduces the published conditional point estimates as gates before producing the Colombia intercept-shift results). All tags reproduce the reported numbers under seed 20260612; the original Python versions were not preserved, so the numbers are reproducible under the committed reconstruction environment (\texttt{analysis/environment/requirements-lock.txt}) rather than bit-identical to the original run. \textbf{[AUTHOR INPUT REQUIRED: archival DOI (e.g.\ Zenodo) and OSI code license.]}\\
+\textbf{Funding.} \textbf{[AUTHOR INPUT REQUIRED: funding sources and grant numbers, or an explicit ``no specific funding'' statement.]}\\
+\textbf{Competing interests.} \textbf{[AUTHOR INPUT REQUIRED: competing-interests statement for all authors.]}\\
+\textbf{Author contributions (CRediT).} \textbf{[AUTHOR INPUT REQUIRED: assign CRediT roles per author.]} Suggested template for author confirmation, G.\,Shiwakoti: Conceptualization, Methodology, Software, Formal analysis, Writing, original draft. B.\,Khadka: Methodology, Validation, Writing, review \& editing. A.\,K.\,Thapa: Data curation, Investigation, Writing, review \& editing. All authors reviewed and approved the final manuscript \textbf{[AUTHOR INPUT REQUIRED: confirm]}.\\
+\textbf{Acknowledgments.} \textbf{[AUTHOR INPUT REQUIRED: acknowledgments, or ``none''.]}\\
+\textbf{ORCID.} \textbf{[AUTHOR INPUT REQUIRED: ORCID iDs for each author, if available.]}\\
+\textbf{Use of AI assistance.} During preparation of this study, the authors used Anthropic Claude through the Claude Code interface under author supervision to assist with drafting and reviewing analysis code, executing author-specified computational workflows, including both planned and transparently labeled post-hoc analyses, organizing and checking outputs against frozen analysis reports, auditing references, preparing documentation, and editing manuscript language and structure. The authors determined the study questions and analysis decisions, reviewed the code, outputs, reported results, and citations, and take full responsibility for the accuracy and integrity of the work. The AI system was not listed as an author and did not independently make final scientific or publication decisions.
+
+% =====================================================================
+% REFERENCES
+% =====================================================================
+\begingroup
+\setstretch{1.0}
+\begin{thebibliography}{99}
+\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+
+\bibitem{Mordecai2017} Mordecai EA, Cohen JM, Evans MV, Gudapati P, Johnson LR, Lippi CA, et al. Detecting the impact of temperature on transmission of Zika, dengue, and chikungunya using mechanistic models. PLoS Negl Trop Dis. 2017;11(4):e0005568. doi:\,10.1371/journal.pntd.0005568.
+
+\bibitem{Huber2018} Huber JH, Childs ML, Caldwell JM, Mordecai EA. Seasonal temperature variation influences climate suitability for dengue, chikungunya, and Zika transmission. PLoS Negl Trop Dis. 2018;12(5):e0006451. doi:\,10.1371/journal.pntd.0006451.
+
+\bibitem{Johansson2019} Johansson MA, Apfeldorf KM, Dobson S, Devita J, Buczak AL, Baugher B, et al. An open challenge to advance probabilistic forecasting for dengue epidemics. Proc Natl Acad Sci U S A. 2019;116(48):24268--24274. doi:\,10.1073/pnas.1909865116.
+
+\bibitem{Baharom2022} Baharom M, Ahmad N, Hod R, Abdul Manaf MR. Dengue early warning system as outbreak prediction tool: a systematic review. Risk Manag Healthc Policy. 2022;15:871--886. doi:\,10.2147/RMHP.S361106.
+
+\bibitem{HussainAlkhateeb2021} Hussain-Alkhateeb L, Rivera Ramirez T, Kroeger A, Gozzer E, Runge-Ranzinger S. Early warning systems (EWSs) for chikungunya, dengue, malaria, yellow fever, and Zika outbreaks: what is the evidence? A scoping review. PLoS Negl Trop Dis. 2021;15(9):e0009686. doi:\,10.1371/journal.pntd.0009686.
+
+\bibitem{Lowe2021} Lowe R, Lee SA, O'Reilly KM, Brady OJ, Bastos L, Carrasco-Escobar G, et al. Combined effects of hydrometeorological hazards and urbanisation on dengue risk in Brazil: a spatiotemporal modelling study. Lancet Planet Health. 2021;5(4):e209--e219. doi:\,10.1016/S2542-5196(20)30292-8.
+
+\bibitem{VanCalster2019} Van Calster B, McLernon DJ, van Smeden M, Wynants L, Steyerberg EW. Calibration: the Achilles heel of predictive analytics. BMC Med. 2019;17:230. doi:\,10.1186/s12916-019-1466-7.
+
+\bibitem{VanCalster2023} Van Calster B, Steyerberg EW, Wynants L, van Smeden M. There is no such thing as a validated prediction model. BMC Med. 2023;21:70. doi:\,10.1186/s12916-023-02779-w.
+
+\bibitem{SteyerbergVergouwe2014} Steyerberg EW, Vergouwe Y. Towards better clinical prediction models: seven steps for development and an ABCD for validation. Eur Heart J. 2014;35(29):1925--1931. doi:\,10.1093/eurheartj/ehu207.
+
+\bibitem{Vickers2006} Vickers AJ, Elkin EB. Decision curve analysis: a novel method for evaluating prediction models. Med Decis Making. 2006;26(6):565--574. doi:\,10.1177/0272989X06295361.
+
+\bibitem{Vickers2016} Vickers AJ, Van Calster B, Steyerberg EW. Net benefit approaches to the evaluation of prediction models, molecular markers, and diagnostic tests. BMJ. 2016;352:i6. doi:\,10.1136/bmj.i6.
+
+\bibitem{Vickers2019} Vickers AJ, van Calster B, Steyerberg EW. A simple, step-by-step guide to interpreting decision curve analysis. Diagn Progn Res. 2019;3:18. doi:\,10.1186/s41512-019-0064-7.
+
+\bibitem{Murphy1985} Murphy AH. Decision making and the value of forecasts in a generalized model of the cost-loss ratio situation. Mon Weather Rev. 1985;113(3):362--369. doi:\,10.1175/1520-0493(1985)113\textless0362:DMATVO\textgreater2.0.CO;2.
+
+\bibitem{Tozan2023} Tozan Y, Sewe MO, Kim S, Rockl\"ov J. A methodological framework for economic evaluation of operational response to vector-borne diseases based on early warning systems. Am J Trop Med Hyg. 2023;108(3):627--633. doi:\,10.4269/ajtmh.22-0471.
+
+\bibitem{EWARScsd} Schlesinger M, Prieto Alvarado FE, Borb\'on Ramos ME, Sewe MO, Merle CS, Kroeger A, et al. Enabling countries to manage outbreaks: statistical, operational, and contextual analysis of the early warning and response system (EWARS-csd) for dengue outbreaks. Front Public Health. 2024;12:1323618. doi:\,10.3389/fpubh.2024.1323618.
+
+\bibitem{Johansson2016} Johansson MA, Reich NG, Hota A, Brownstein JS, Santillana M. Evaluating the performance of infectious disease forecasts: a comparison of climate-driven and seasonal dengue forecasts for Mexico. Sci Rep. 2016;6:33707. doi:\,10.1038/srep33707.
+
+\bibitem{Leung2022} Leung XY, Islam RM, Adhami M, Ilic D, McDonald L, Palawaththa S, et al. A systematic review of dengue outbreak prediction models: current scenario and future directions. PLoS Negl Trop Dis. 2023;17(2):e0010631. doi:\,10.1371/journal.pntd.0010631.
+
+\bibitem{Lowe2013} Lowe R, Bailey TC, Stephenson DB, Jupp TE, Graham RJ, Barcellos C, et al. The development of an early warning system for climate-sensitive disease risk with a focus on dengue epidemics in Southeast Brazil. Stat Med. 2013;32(5):864--883. doi:\,10.1002/sim.5549.
+
+\bibitem{Benedum2020} Benedum CM, Shea KM, Jenkins HE, Kim LY, Markuzon N. Weekly dengue forecasts in Iquitos, Peru; San Juan, Puerto Rico; and Singapore. PLoS Negl Trop Dis. 2020;14(10):e0008710. doi:\,10.1371/journal.pntd.0008710.
+
+\bibitem{Sangkaew2026} Sangkaew S, Cracknell Daniels B, Ming DK, Hernandez B, Herrero P, Suntarattiwong P, et al. Early individualized risk prediction using clinical data for children during the febrile phase of dengue in outpatient settings in Vietnam and Thailand. PLOS Digit Health. 2026;5(2):e0001171. doi:\,10.1371/journal.pdig.0001171.
+
+\bibitem{vonElm2007} von Elm E, Altman DG, Egger M, Pocock SJ, G\o tzsche PC, Vandenbroucke JP. The Strengthening the Reporting of Observational Studies in Epidemiology (STROBE) statement: guidelines for reporting observational studies. Lancet. 2007;370(9596):1453--1457. doi:\,10.1016/S0140-6736(07)61602-X.
+
+\bibitem{Collins2024TRIPODAI} Collins GS, Moons KGM, Dhiman P, Riley RD, Beam AL, Van Calster B, et al. TRIPOD+AI statement: updated guidance for reporting clinical prediction models that use regression or machine learning methods. BMJ. 2024;385:e078378. doi:\,10.1136/bmj-2023-078378.
+
+\bibitem{Wolff2019} Wolff RF, Moons KGM, Riley RD, Whiting PF, Westwood M, Collins GS, et al. PROBAST: a tool to assess the risk of bias and applicability of prediction model studies. Ann Intern Med. 2019;170(1):51--58. doi:\,10.7326/M18-1376.
+
+\bibitem{Moons2019} Moons KGM, Wolff RF, Riley RD, Whiting PF, Westwood M, Collins GS, et al. PROBAST: a tool to assess risk of bias and applicability of prediction model studies: explanation and elaboration. Ann Intern Med. 2019;170(1):W1--W33. doi:\,10.7326/M18-1377.
+
+\bibitem{HDXCODABSriLanka} Humanitarian Data Exchange, OCHA, Survey Department of Sri Lanka. Sri Lanka administrative boundaries (COD-AB) [dataset]. Humanitarian Data Exchange; 2022.
+
+\bibitem{SriLankaWER} Epidemiology Unit, Ministry of Health, Sri Lanka. Weekly Epidemiological Report: dengue current-week case tables [Internet]. Colombo: Ministry of Health; 2018--2025.
+
+\bibitem{Clarke2024OpenDengue} Clarke J, Lim A, Gupte P, Pigott DM, van Panhuis WG, Brady OJ. A global dataset of publicly available dengue case count data. Sci Data. 2024;11:296. doi:\,10.1038/s41597-024-03120-7.
+
+\bibitem{OpenDengue2024} OpenDengue. Global dengue data, Temporal extract [dataset]. figshare; 2025. doi:\,10.6084/m9.figshare.24259573.
+
+\bibitem{Tatem2017} Tatem AJ. WorldPop, open data for spatial demography. Sci Data. 2017;4:170004. doi:\,10.1038/sdata.2017.4.
+
+\bibitem{WorldPop2025} WorldPop. Global 2015--2030 population data, R2025A, 100\,m [dataset]. Southampton: University of Southampton; 2025.
+
+\bibitem{SriLankaCensus2025} Department of Census and Statistics, Sri Lanka. Census of Population and Housing 2024: basic population information by districts and DS divisions. Battaramulla: Department of Census and Statistics; 2025.
+
+\bibitem{MunozSabater2021} Mu\~noz-Sabater J, Dutra E, Agust\'i-Panareda A, Albergel C, Arduini G, Balsamo G, et al. ERA5-Land: a state-of-the-art global reanalysis dataset for land applications. Earth Syst Sci Data. 2021;13:4349--4383. doi:\,10.5194/essd-13-4349-2021.
+
+\bibitem{ERA5LandCDS} Copernicus Climate Change Service. ERA5-Land hourly data from 1950 to present [dataset]. Copernicus Climate Data Store; 2019. doi:\,10.24381/cds.e2161bac.
+
+\bibitem{Funk2015} Funk C, Peterson P, Landsfeld M, Pedreros D, Verdin J, Shukla S, et al. The climate hazards infrared precipitation with stations, a new environmental record for monitoring extremes. Sci Data. 2015;2:150066. doi:\,10.1038/sdata.2015.66.
+
+\bibitem{CHIRPS} Climate Hazards Center, University of California Santa Barbara. CHIRPS: Climate Hazards Group InfraRed Precipitation with Station data [dataset]. Santa Barbara: University of California; 2015.
+
+\bibitem{Gasparrini2010} Gasparrini A, Armstrong B, Kenward MG. Distributed lag non-linear models. Stat Med. 2010;29(21):2224--2234. doi:\,10.1002/sim.3940.
+
+\bibitem{Gasparrini2011} Gasparrini A. Distributed lag linear and non-linear models in R: the package dlnm. J Stat Softw. 2011;43(8):1--20. doi:\,10.18637/jss.v043.i08.
+
+\bibitem{SaitoRehmsmeier2015} Saito T, Rehmsmeier M. The precision-recall plot is more informative than the ROC plot when evaluating binary classifiers on imbalanced datasets. PLoS One. 2015;10(3):e0118432. doi:\,10.1371/journal.pone.0118432.
+
+\bibitem{CameronGelbachMiller2008} Cameron AC, Gelbach JB, Miller DL. Bootstrap-based improvements for inference with clustered errors. Rev Econ Stat. 2008;90(3):414--427. doi:\,10.1162/rest.90.3.414.
+
+\bibitem{PAHO2023} Pan American Health Organization / World Health Organization. Situation Report No.\,1: Dengue Epidemiological Situation in the Americas. PAHO/WHO; 14 December 2023.
+
+\bibitem{ValleDelCauca2024} Grubaugh ND, Torres-Hern\'andez D, Murillo-Ortiz MA, D\'avalos DM, Lopez P, Hurtado IC, et al. Dengue outbreak caused by multiple virus serotypes and lineages, Colombia, 2023--2024. Emerg Infect Dis. 2024;30(11):2391--2395. doi:\,10.3201/eid3011.241031.
+
+\bibitem{Beal2025} Beal MRW, Osorio J, Ciuoderis K, Hernandez-Ortiz JP, Block P. Forecasting dengue: evaluating the role of hydroclimate information in subseasonal to seasonal prediction. GeoHealth. 2025;9(9):e2024GH001325. doi:\,10.1029/2024GH001325.
+
+\bibitem{ColonGonzalez2021} Col\'{o}n-Gonz\'{a}lez FJ, Bastos LS, Hofmann B, et al. Probabilistic seasonal dengue forecasting in Vietnam: a modelling study using superensembles. PLoS Med. 2021;18(3):e1003542. doi:\,10.1371/journal.pmed.1003542.
+
+\bibitem{Campbell2026} Campbell AM, Col\'on-Gonz\'alez F, Quoc DK, Tuan NH, Dong NT, Trang TT, et al. Performance evaluation of an operational dengue forecasting system (D-MOSS) in Vietnam. PLOS Glob Public Health. 2026;6(3):e0005867. doi:\,10.1371/journal.pgph.0005867.
+
+\bibitem{Sesay2026} Sesay MM, Ngunyi A, Imboga H. Probabilistic forecasting of monthly dengue cases using epidemiological and climate signals: a BiLSTM--negative binomial model versus mechanistic and count-model baselines. PLOS Glob Public Health. 2026;6:e0005404. doi:\,10.1371/journal.pgph.0005404.
+
+\bibitem{Binuya2022} Binuya MAE, Engelhardt EG, Schats W, Schmidt MK, Steyerberg EW. Methodological guidance for the evaluation and updating of clinical prediction models: a systematic review. BMC Med Res Methodol. 2022;22:316. doi:\,10.1186/s12874-022-01801-8.
+
+\end{thebibliography}
+\endgroup
+
+% =====================================================================
+% SUPPORTING INFORMATION
+% =====================================================================
+\clearpage
+\section*{Supporting information}
+\begingroup\setstretch{1.0}\sloppy
+\noindent Secondary diagnostics, model-ladder detail, provenance, and extended sensitivities are collected here. For journal submission these items are to be split into separate S-files; they are retained in one document in this closeout candidate. The two secondary Sri Lanka sensitivity analyses (wild-cluster-bootstrap-t and targeted-value regimes) are pointwise, multiplicity-unadjusted robustness checks, not primary analyses.
+
+\subsection*{S1 Table. Sri Lanka M0--M3 benchmark and net benefit by threshold}
+\noindent Sri Lanka M0--M3 benchmark ($h=4$, RDHS 75th-percentile label, 2023--2025 test period; source \texttt{route\_a\_primary.csv}). Descriptive.\\[0.3em]
+{\footnotesize\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+Model & AUC & PR-AUC & Brier & CITL & Slope & NB@$0.30$ \\
+\midrule
+M0 (seasonal climatological) & 0.629 & 0.459 & 0.222 & $+0.530$ & 0.664 & 0.084 \\
+M1 (recent-case surveillance) & 0.752 & 0.652 & 0.191 & $+0.513$ & 1.246 & 0.137 \\
+M2 (climate-only) & 0.643 & 0.460 & 0.220 & $+0.479$ & 1.027 & 0.069 \\
+M3 (structured climate) & 0.652 & 0.476 & 0.220 & $+0.596$ & 0.738 & 0.078 \\
+\bottomrule
+\end{tabular}\\[0.4em]
+Net benefit by threshold $p^*$:\\
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Strategy & $0.20$ & $0.30$ & $0.34$ & $0.40$ \\
+\midrule
+Alert-all & 0.171 & 0.052 & $-0.005$ & $-0.106$ \\
+M0 & 0.161 & 0.084 & 0.059 & 0.025 \\
+M1 & 0.185 & 0.137 & 0.111 & 0.083 \\
+M2 & 0.164 & 0.069 & 0.032 & 0.012 \\
+M3 & 0.147 & 0.078 & 0.060 & 0.039 \\
+\bottomrule
+\end{tabular}}
+
+\subsection*{S2 Table. Sri Lanka calibration before and after recalibration}
+\noindent Sri Lanka calibration-in-the-large by recalibration scheme. Rolling-52 intercept-only recalibration outperformed the expanding window and did not change the model ranking.\\[0.3em]
+{\footnotesize\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Model & Raw & Rolling-52 & Rolling-104 & Expanding \\
+\midrule
+M0 & $+0.530$ & $+0.029$ & $+0.137$ & $+0.338$ \\
+M1 & $+0.513$ & $+0.020$ & $+0.111$ & $+0.325$ \\
+M2 & $+0.479$ & $+0.046$ & $+0.155$ & $+0.314$ \\
+M3 & $+0.596$ & $+0.087$ & $+0.204$ & $+0.394$ \\
+M4 (raw) & $+0.449$ &, &, &, \\
+M5 (raw) & $+0.440$ &, &, &, \\
+\bottomrule
+\end{tabular}}
+
+\subsection*{S3 Table. Sri Lanka climate, distributed-lag, and hybrid comparison}
+\noindent Sri Lanka test-period discrimination and net benefit across the model ladder ($h=4$, 75th-percentile label).\\[0.3em]
+{\footnotesize\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Model & AUC & NB@$0.20$ & NB@$0.30$ & NB@$0.40$ \\
+\midrule
+M1 (recent-case surveillance) & 0.752 & 0.185 & 0.137 & 0.083 \\
+M2 (climate-only) & 0.643 & 0.164 & 0.069 & 0.012 \\
+M3 (climate $+$ season/RDHS) & 0.652 & 0.147 & 0.078 & 0.039 \\
+Python DLNM-style climate & 0.714 & 0.179 & 0.111 & 0.057 \\
+Canonical R DLNM climate & 0.714 & 0.181 & 0.112 & 0.053 \\
+M4 (planned primary hybrid) & 0.764 & 0.193 & 0.128 & 0.087 \\
+M5 (expanded sensitivity hybrid) & 0.772 & 0.194 & 0.145 & 0.107 \\
+M5$_{\text{no-climate}}$ (matched comparator) & 0.751 & 0.185 & 0.136 & 0.083 \\
+\bottomrule
+\end{tabular}}\\[0.3em]
+Canonical R-DLNM$-$M1: $\Delta$AUC $-0.038$ (95\% CI $-0.066$ to $-0.008$); $\Delta$NB at $p^*=0.30$ $-0.025$ (95\% CI $-0.041$ to $-0.006$). Sri Lanka matched climate ablation (per-setting detail): matched climate raw $+0.0087$ (conditional $-0.0015$ to $+0.0188$; DI $-0.0079$ to $+0.0245$); matched climate recalibrated $+0.0157$ (conditional $+0.0066$ to $+0.0257$; DI $-0.0002$ to $+0.0302$); non-climate structure (M5$_{\text{no-climate}}-$cases) $+0.0462$ (95\% CI $+0.0199$ to $+0.0741$). Development-inclusive intervals were prioritized because they repeat the model-fitting process and address a broader uncertainty target than frozen-prediction resampling; they were interpreted jointly with effect magnitude, calibration, threshold dependence, analysis status, and data-selection limitations. A secondary wild-cluster-bootstrap-t analysis using all 26 RDHS clusters produced intervals similar to the percentile cluster-bootstrap intervals for the M4$-$M1 and M5$-$M1 contrasts (S15 Table, S16 Text).
+
+\subsection*{S4 Table. Colombia $h=4$ primary common-complete performance}
+\noindent Colombia $h=4$ common-complete performance ($p^*=0.30$; test prevalence 0.375; alert-all $\approx$0.107). Compound $\Delta$NB(M5$-$M1)$=+0.0188$ (95\% CI $+0.0117$ to $+0.0260$); $\Delta$AUC $+0.040$ ($+0.024$ to $+0.058$). In a separate larger climate-only row set, M2/M3 net benefit was $\approx$0.001 (AUC $\approx$0.532/0.546), confirming climate-only weakness was not an artifact of the common-complete subset. Paired differences are computed at full precision and may differ slightly from differences of the rounded per-model components below (e.g., $0.1358-0.1171=0.0187$ versus the full-precision compound $\Delta$NB(M5$-$M1)$=+0.0188$).\\[0.3em]
+{\footnotesize\begin{tabular}{@{}lrr@{}}
+\toprule
+Model & AUC & NB@$0.30$ \\
+\midrule
+M0 & 0.513 & 0.108 \\
+M1 & 0.685 & 0.117 \\
+M2 & 0.556 & 0.108 \\
+M3 & 0.564 & 0.108 \\
+M4 & 0.699 & 0.129 \\
+M5 & 0.726 & 0.136 \\
+\bottomrule
+\end{tabular}\qquad
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Spec.-matched decomposition & NB@$0.30$ & \# feat. \\
+\midrule
+M1 & 0.1171 & 4 \\
+M5$_{\text{no-climate}}$ (matched) & 0.1280 & 40 \\
+M4 & 0.1293 & 22 \\
+M5 & 0.1358 & 58 \\
+\bottomrule
+\end{tabular}}
+
+\subsection*{S1 Fig. Sri Lanka net benefit by threshold}
+\noindent\includegraphics[width=0.8\textwidth]{submission_figs/S1_Fig.pdf}\\
+Net benefit at four representative thresholds (S1 Table); the recent-case surveillance model M1 had the highest net benefit at $p^*=0.30$ and across the mid-to-high threshold range. Colorblind-safe (Okabe--Ito) palette.
+
+\subsection*{S2 Fig. Colombia data completeness and selection}
+\noindent\includegraphics[width=0.9\textwidth]{submission_figs/S2_Fig.pdf}\\
+Fraction of observed municipality-weeks meeting the common-complete criterion by year; and included versus excluded test-period municipality-weeks on mean recent cases, elevated-activity prevalence, and median common-complete weeks per municipality, showing selection toward higher-incidence, better-reporting units.
+
+\subsection*{S3 Fig. Colombia calibration}
+\noindent\includegraphics[width=0.55\textwidth]{submission_figs/S3_Fig.pdf}\\
+Colombia calibration on the test period: decile bins with 95\% Wilson intervals (descriptive and independence-assuming, not cluster-adjusted, and therefore likely anti-conservative under within-unit correlation) and CITL/slope/Brier annotations for M1, the structure-matched no-climate model, M4, and M5.
+
+
+\subsection*{S4 Fig. Colombia model-ladder discrimination and net benefit}
+\noindent\includegraphics[width=0.9\textwidth]{submission_figs/Fig2.pdf}\\
+Colombia model-ladder AUC (A) and net benefit at $p^*=0.30$ (B) for M0--M5 ($h=4$, common-complete test set, $n=13{,}361$). Panel A uses a dashed no-skill reference (AUC${}=0.5$); Panel B uses a zero-based axis with the alert-all reference ($\approx$0.107) marked. Climate-only models (M2, M3) had net benefit close to alert-all and below M1; M5 had the highest AUC and net benefit. Values transcribed from S4 Table.
+
+\subsection*{S5 Fig. Colombia matched increment versus horizon}
+\noindent\includegraphics[width=0.7\textwidth]{submission_figs/S4_Fig.pdf}\\
+Colombia matched climate ablation increment $\Delta$NB(M5$-$M5$_{\text{no-climate}}$) at $p^*=0.30$ versus horizon ($h=1$--12), with 95\% cluster-bootstrap intervals and per-horizon $n$ and prevalence. The matched increment did not grow with lead time ($\approx+0.008$ through $h=8$, $+0.002$ at $h=12$). Horizons use different cohorts, so cross-horizon increments are not on a fixed sample.
+
+
+\subsection*{S6 Fig. Study pipeline and WER-to-ISO week alignment}
+\noindent\includegraphics[width=0.86\textwidth]{submission_figs/Fig1_pipeline.pdf}\\
+Reporting dates were used to map WER issues to ISO epidemiological weeks before joining dengue, climate, population, and spatial data. This processing-pipeline schematic was the former main-text Figure 1 and is retained here for reference.
+
+\subsection*{S9 Table. Per-country model specification and software}
+\noindent Feature blocks and counts per model (Colombia design-matrix widths;
+Sri Lanka analogous). Software: R~4.6.0 with \texttt{dlnm}~2.4.10, \texttt{mgcv}~1.9.4,
+\texttt{tsModel}~0.6-2 (canonical DLNM comparator); penalized logistic ladder in
+Python (modeling-stack versions not preserved, recorded as a limitation).
+\\[0.3em]
+\begin{tabularx}{\textwidth}{@{}lXrX@{}}
+\toprule
+Model & Feature blocks & \# features & Notes \\
+\midrule
+M1 & recent-case lags & 4 & surveillance baseline \\
+M4 & cases $+$ climate lags & 22 & cases $+$ 18 climate columns \\
+M5$_{\text{no-climate}}$ (matched) & cases $+$ season $+$ 32 dept FE & 40 & matched baseline \\
+M5 & cases $+$ climate $+$ season $+$ 32 dept FE & 58 & full model; 58$-$40$=$18 climate cols \\
+\bottomrule
+\end{tabularx}\\[0.2em]
+\noindent Climate: Sri Lanka DLNM-style cross-basis in temperature, precipitation,
+humidity (lags 0--8, df${=}3$); Colombia linear temperature/precipitation lags 0--8
+(no humidity). L2 penalty $C$ selected per model on training data.
+
+\subsection*{S10 Table. Per-analysis bootstrap protocol}
+\noindent Percentile intervals throughout except the wild-cluster-t row, which is percentile-t; seed 20260612; verified against committed outputs.\\[0.3em]
+\begin{tabularx}{\textwidth}{@{}XlrlXc@{}}
+\toprule
+Analysis & Resampling unit & $B$ & Refit? & Degenerate handling & Fail. \\
+\midrule
+SL conditional & RDHS (26) & 1000 & no (frozen) &, & 0 \\
+SL development-inclusive & RDHS (26) & 1000 & both models & fixed design & 0 \\
+CO conditional (muni) & municipality (475) & 1000 & no &, & 0 \\
+CO conditional (dept) & department (31) & 1000 & no &, & 0 \\
+CO development-inclusive & department (31) & 1000 & both models & fixed 32-col FE, all-zero absent depts & 0 \\
+GEO partial-refit diag.\ & department (31) & 1000 & free vs frozen-FE & fixed design & 0 \\
+Wild-cluster-t (M4$-$M1, M5$-$M1; percentile-t) & RDHS (26) & 1999 & no (frozen) &, & 0 \\
+\bottomrule
+\end{tabularx}
+
+\subsection*{S11 Table. PROBAST risk-of-bias assessment}
+\begin{tabularx}{\textwidth}{@{}llX@{}}
+\toprule
+Domain & Rating & Rationale \\
+\midrule
+Participants & Low (SL) / High (CO) & CO restricted to a selected common-complete subset \\
+Predictors & Low & assessed without knowledge of outcome; frozen pipeline \\
+Outcome & High & percentile elevated-activity classification, not an official/endemic-channel threshold \\
+Analysis & High & modest cluster counts; matched ablation post hoc; boundary-adjacent subset intervals \\
+\midrule
+Overall (RoB) & High & PROBAST: any domain at high risk implies overall high risk of bias \\
+Applicability & High concern (CO) & inference restricted to a selected higher-incidence complete-case subset \\
+\bottomrule
+\end{tabularx}\\[0.2em]
+\noindent Filled STROBE and TRIPOD+AI checklists accompany the submission as
+separate S-files. The Sri Lanka linkage/climate-lag/anomaly grid, the targeted-value
+regime analysis, and the Colombia threshold/horizon/2022-only results are given in
+S12--S14 Table below. A checksummed reproducibility-artifact inventory accompanies the
+code archive.
+
+
+\subsection*{S14 Table. Colombia threshold, horizon, and 2022-only subset results}
+\noindent Colombia sensitivity of the compound $\Delta$NB(M5$-$M1) at $p^*=0.30$.\\[0.3em]
+{\footnotesize\begin{tabular}{@{}lrl@{}}
+\toprule
+Sensitivity & $\Delta$NB(M5$-$M1) & 95\% CI \\
+\midrule
+75th-percentile ($h=4$, primary) & $+0.0188$ & $+0.0117$ to $+0.0260$ \\
+80th-percentile & $+0.0157$ &, \\
+90th-percentile & $+0.0092$ &, \\
+Horizon $h\le 8$ & $\approx+0.008$ &, \\
+Horizon $h=12$ & $+0.002$ &, \\
+2022-only subset & $+0.0150$ & $+0.0067$ to $+0.0249$ \\
+\bottomrule
+\end{tabular}}\\[0.3em]
+These are pointwise and multiplicity-unadjusted; the 75th-percentile $h=4$ contrast
+remains primary. The stricter-threshold compound values above bundle climate with seasonal and
+department structure; the specification-matched, climate-specific ablation
+$\Delta$NB(M5$-$M5$_{\text{no-climate}}$) was recomputed at the 90th-percentile outcome in both
+settings (development-inclusive refit bootstrap, $B=1000$, seed 20260612; 0 failures):\\[0.3em]
+{\footnotesize\begin{tabular}{@{}llrll@{}}
+\toprule
+Setting & Threshold & Matched $\Delta$NB & Conditional 95\% CI & Dev.-inclusive 95\% CI \\
+\midrule
+Sri Lanka & 75th (recal) & $+0.0157$ & $+0.0066$ to $+0.0257$ & $-0.0002$ to $+0.0302$ \\
+ & 90th (recal) & $+0.0034$ & $-0.0070$ to $+0.0138$ & $-0.0105$ to $+0.0185$ \\
+Colombia & 75th & $+0.0078$ & $+0.0039$ to $+0.0119$ & $+0.0008$ to $+0.0209$ \\
+ & 90th & $+0.0081$ & $+0.0029$ to $+0.0138$ & $+0.0009$ to $+0.0188$ \\
+\bottomrule
+\end{tabular}}\\[0.3em]
+At the stricter 90th-percentile label (Sri Lanka test prevalence $0.106$, 417 events; Colombia
+$0.235$, 3{,}136 events, rarer, but at $0.106$--$0.235$ not an epidemic-rare event), the recalibrated
+climate-specific increment was $+0.0034$ in Sri Lanka (both intervals spanning zero) and $+0.0081$ in
+Colombia (development-inclusive lower bound $+0.0009$). We do \emph{not} read this as a setting effect.
+The two development-inclusive intervals overlap substantially and each point estimate lies within the
+other's interval; the estimates were similar in magnitude, but no formal between-setting or
+setting-by-threshold heterogeneity comparison was performed. Several confounds preclude a structural
+interpretation: Sri Lanka contributed far fewer positive-label weeks (417 versus 3{,}136), widening
+its intervals; net benefit at the fixed reference $p^*=0.30$ is prevalence-dependent, and prevalence
+fell more steeply in Sri Lanka ($0.336\to0.106$, below $p^*$) than in Colombia ($0.375\to0.235$); and
+the settings differ in period, spatial unit, and climate-feature implementation. The Colombia lower
+bound ($+0.0009$) is inferentially indistinguishable from the 75th-percentile value ($+0.0008$), which
+is itself not a firm exclusion of zero (S17 Text). The earlier open limitation is thus addressed rather
+than resolved: at the stricter threshold the matched climate increment is small and compatible with
+zero in both settings, and the numerical difference between them should be read as hypothesis-generating
+at most.
+
+\subsection*{S15 Table / S16 Text. Sri Lanka wild-cluster-bootstrap-t}
+Wild-cluster-bootstrap-t sensitivity for the M4$-$M1 and M5$-$M1 net-benefit contrasts (all 26 RDHS clusters), with method, single-implementation disclosure, weight-sensitivity $p$-values, and reproducibility record; intervals similar to the percentile cluster-bootstrap intervals. For the \emph{matched climate ablation} $\Delta$NB(M5$-$M5$_{\text{no-climate}}$) we additionally computed a department-clustered small-cluster sensitivity on the frozen recalibrated predictions (31 test departments; the per-observation net-benefit contribution difference $\delta_i=\mathbf{1}(p_i\!\ge\!p^*)\,[y_i-\tfrac{p^*}{1-p^*}(1-y_i)]$ differenced between M5 and the matched no-climate model; $\Delta$NB$=\bar\delta$; frozen point $+0.00783$, reproducing the committed $+0.00786$). A wild-cluster bootstrap-t (Rademacher cluster weights, CR1 cluster-robust SEs, $B=1999$, seed 20260612, percentile-$t$) and a leave-one-department-out cluster jackknife (Student-$t$, 30 df; CR1 SE $0.00196$) gave:\\[0.3em]
+{\footnotesize\begin{tabular}{@{}lr@{}}
+\toprule
+Method (matched ablation, 31 test departments) & 95\% interval \\
+\midrule
+Wild-cluster bootstrap-t (department) & $+0.0036$ to $+0.0124$ \\
+Leave-one-department-out jackknife & $+0.0036$ to $+0.0120$ \\
+Municipality-clustered conditional (reference) & $+0.0039$ to $+0.0119$ \\
+Development-inclusive (refit-both; primary) & $+0.0008$ to $+0.0209$ \\
+\bottomrule
+\end{tabular}}\\[0.3em]
+The department-clustered intervals are close to the municipality-clustered conditional interval, so the modest department count does not materially change the conditional inference; the development-inclusive interval remains the primary basis for robustness to model refitting. Generator: \texttt{matched\_ablation\_wildcluster.py} (helpers copied verbatim from the frozen Colombia pipeline).
+
+
+\subsection*{S17 Text. Reproducibility of the Colombia development-inclusive interval}
+The interval reported throughout the manuscript for $\Delta$NB(M5$-$M5$_{\text{no-climate}}$) is the development-inclusive interval $+0.0008$ to $+0.0209$, generated from the verified pipeline. We first verified that the reconstructed pipeline reproduced the frozen matched point estimate within the prespecified numerical tolerance ($<0.0001$): the reconstructed point was $+0.00783$ against the frozen $+0.00786$, a difference of $0.00003$. We then ran a new department-resampling bootstrap in the exact original pipeline ($B=1000$, seed 20260612; $\approx$19.9 of 31 departments unique per resample) with both models refitted in each replicate; bootstrap replicates were not conditioned on the point estimate. The Monte-Carlo error of the lower bound at $B=1000$, estimated by resampling the committed replicate distribution (5000 resamples, seed 20260612), was small (standard error $0.00016$), so finite-$B$ variability was small relative to the reported endpoint. This is a bootstrap-convergence check only; it does not address model, sampling, spatial, or analytic-selection uncertainty, and the marginal lower bound should not be read as a firm exclusion of zero. An earlier draft reported a different interval ($-0.0001$ to $+0.0244$) that could not be reproduced from the archived analysis code (it originated in an external run resampling municipalities while refitting department fixed effects); the corrected interval generated from the verified pipeline is $+0.0008$ to $+0.0209$ and is used throughout the manuscript. A geographic-effect decomposition (\texttt{GEO\_FIXED\_PARTIAL\_REFIT}) freezing only the department coefficients and refitting the remaining terms in both models left the width essentially unchanged (frozen-effect 95\% CI $+0.0006$ to $+0.0195$, width 0.0189, versus free-refit width 0.0196; ratio 0.96), indicating that department fixed-effect re-estimation explained little of the full-refit interval width. Because the full-refit and fixed-effect diagnostics were separate bootstrap runs rather than paired draws, this width comparison is descriptive rather than a formal (paired-draw) variance decomposition. A random-intercept (mixed-model) sensitivity was not computed and no such interval is reported.
+
+\subsection*{S18 Text. Post-result, design-locked threshold-free proper-score reanalysis, methods and reproducibility}
+Design-lock chronology: the secondary proper-score analysis was specified after the primary findings were known; all metric, prediction-state, clustering, bootstrap, seed, calibration, and interpretation choices were committed and Git-tagged (\texttt{alt-stats-plan-v1}) before any score was computed. Frozen inputs: the frozen full-model predictions and the regenerated matched no-climate predictions (regenerated by the verbatim Version~6 pipelines; Colombia regenerated M5 matched the committed frozen file to $1.1\times10^{-16}$; Sri Lanka M1/M4/M5 reproduced to $<10^{-6}$) were SHA-256 checksum-frozen. Canonical paired rows were verified for identical keys and outcomes across models (Colombia 13{,}361 municipality-weeks, 5{,}015 events, 475 municipalities, 31 departments; Sri Lanka 3{,}926 RDHS-weeks, 1{,}321 events, 26 RDHS units; 0 duplicate keys, 0 missing probabilities). Scores: $\mathrm{NLL}_i=-[y_i\log p_i+(1-y_i)\log(1-p_i)]$, mean per model, differenced (full $-$ no-climate); Brier $=\frac1N\sum(p_i-y_i)^2$, differenced; information gain $=-\Delta\mathrm{NLL}$ (nats), or $-\Delta\mathrm{NLL}/\log 2$ (bits). Probabilities clipped to $[\varepsilon,1-\varepsilon]$ with $\varepsilon=10^{-15}$; a locked $\varepsilon=10^{-12}$ sensitivity did not materially change $\Delta$NLL. Calibration: logistic recalibration with a restricted cubic spline of the clipped prediction logit (4 knots at quantiles 0.05/0.35/0.65/0.95) for the integrated calibration index, plus calibration-in-the-large and intercept/slope. Discrimination: AUC and PR-AUC computed whole-sample within each bootstrap replicate. Bootstrap: paired cluster resampling (RDHS for Sri Lanka; municipality primary and department sensitivity for Colombia), $B=10{,}000$, seed 20260719 (with a $B=1000$ seed-20260612 parity run), PCG64; 0 of 10{,}000 replicates failed in every cell (secondary AUC/PR-AUC intervals retained at $B=5000$). Development-inclusive intervals: the refit-both-models bootstrap was subsequently executed for the proper scores ($B=1000$, seed 20260612, 0 of 1000 replicates failed; \texttt{analysis/devincl\_proper\_scores\_v1}), giving Sri Lanka $\Delta$NLL $-0.0403$ to $+0.0040$ and $\Delta$Brier $-0.0153$ to $+0.0013$ (both crossing zero), and Colombia $\Delta$NLL $-0.0224$ to $-0.0002$ and $\Delta$Brier $-0.0102$ to $-0.0004$ (both below zero, the NLL bound boundary-adjacent). Post-lock correction: the bootstrap code initially indexed the full prediction array rather than the resampled array; the statistical plan was unchanged, point estimates were unaffected, all reported intervals were regenerated after correction, and no interval from the uncorrected implementation is reported (documented in \texttt{deviations.md}). Environment: Python 3.10.12 with numpy 1.26.4, pandas 2.1.3, scikit-learn 1.7.2, scipy 1.11.4, statsmodels 0.14.6, patsy 1.0.2 (a reconstruction; original Version-6 Python versions were not preserved). Reproduction: \texttt{freeze\_matched\_predictions.py} $\to$ \texttt{score\_route\_a.py} $\to$ \texttt{make\_figures.py} under the locked commit and tag.
+
+\subsection*{S19 Table. Full threshold-free proper-score results}
+\noindent Full threshold-free proper-score results (primary past-only recalibrated state); conditional 95\% cluster-bootstrap intervals. Raw-state and full per-metric values in \texttt{route\_a\_primary.csv} / \texttt{calibration\_metrics.csv}. The AUC column here is the past-only recalibrated state, whereas S3 Table reports raw-state discrimination; because rolling intercept recalibration is not globally monotone across windows it can shift whole-sample AUC, so the recalibrated full-model AUC ($0.751$) coinciding with the raw no-climate AUC ($0.751$) is not a transcription error.\\[0.3em]
+{\footnotesize\begin{tabular}{@{}llrrrr@{}}
+\toprule
+Setting & Model & NLL & Brier & ICI & AUC \\
+\midrule
+Sri Lanka & full climate & 0.5406 & 0.1787 & 0.027 & 0.751 \\
+ & matched no-climate & 0.5613 & 0.1865 & 0.045 & 0.724 \\
+ & $\Delta$ (full $-$ no-climate) & $-0.0207$ & $-0.0079$ &, & $+0.027$ \\
+Colombia & full climate & 0.6162 & 0.2127 & 0.109 & 0.7255 \\
+ & matched no-climate & 0.6251 & 0.2169 & 0.113 & 0.7134 \\
+ & $\Delta$ (full $-$ no-climate) & $-0.0089$ & $-0.0043$ &, & $+0.012$ \\
+\bottomrule
+\end{tabular}}
+
+\endgroup
+
+\end{document}
