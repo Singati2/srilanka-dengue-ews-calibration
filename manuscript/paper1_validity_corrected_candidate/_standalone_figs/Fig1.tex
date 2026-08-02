@@ -1,0 +1,50 @@
+\documentclass[border=3pt]{standalone}
+\usepackage{lmodern}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\pgfplotsset{every axis/.append style={scaled y ticks=false, yticklabel style={/pgf/number format/.cd, fixed, precision=2, /tikz/.cd}}}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric, patterns}
+\usepackage{xcolor}
+\definecolor{okBlue}{RGB}{0,114,178}
+\definecolor{okOrange}{RGB}{230,159,0}
+\definecolor{okGreen}{RGB}{0,158,115}
+\definecolor{okVermillion}{RGB}{213,94,0}
+\definecolor{okPurple}{RGB}{204,121,167}
+\definecolor{okSky}{RGB}{86,180,233}
+\definecolor{okYellow}{RGB}{240,228,66}
+\definecolor{okGray}{RGB}{120,120,120}
+\begin{document}
+\begin{tikzpicture}[
+    node distance=1.25cm and 1.1cm,
+    every node/.style={font=\small},
+    src/.style   ={rectangle, rounded corners, draw=okBlue!80!black, fill=okBlue!12, line width=0.8pt, align=center, minimum width=3.1cm, minimum height=1.0cm},
+    pre/.style   ={rectangle, rounded corners, draw=okOrange!85!black, fill=okOrange!15, line width=0.8pt, align=center, minimum width=3.1cm, minimum height=1.0cm},
+    integ/.style ={rectangle, rounded corners, draw=okGray, fill=okGray!12, line width=0.8pt, align=center, minimum width=4.6cm, minimum height=1.0cm},
+    mod/.style   ={rectangle, rounded corners, draw=okGreen!75!black, fill=okGreen!12, line width=0.8pt, align=center, minimum width=2.9cm, minimum height=0.95cm},
+    evaln/.style ={rectangle, rounded corners, draw=okPurple!85!black, fill=okPurple!14, line width=0.8pt, align=center, minimum width=2.9cm, minimum height=0.95cm},
+    outnode/.style={rectangle, rounded corners, draw=okVermillion!85!black, fill=okVermillion!12, line width=0.8pt, align=center, minimum width=2.9cm, minimum height=0.95cm},
+    arrow/.style ={-{Latex[length=2.4mm]}, line width=0.7pt, draw=okGray!90!black}
+]
+\node[src] (wer) {WER dengue\\current-week cases};
+\node[pre, right=of wer] (date) {WER reporting-date\\audit};
+\node[pre, right=of date] (iso) {Issue-to-ISO\\week mapping};
+\node[src, below=of iso] (climate) {ERA5-Land / CHIRPS\\weekly climate};
+\node[src, below=of date] (pop) {RDHS population\\denominators};
+\node[src, below=of wer] (geom) {26 RDHS geometry\\and crosswalk};
+\node[integ, below=2.0cm of pop] (linked) {Date-aligned RDHS-week\\dengue--climate--population table};
+\node[mod, below=of linked] (models) {Model ladder\\M0--M5};
+\node[evaln, right=of models] (eval) {Calibration /\\AUC, PR-AUC /\\DCA net benefit};
+\node[outnode, right=of eval] (synth) {Sri Lanka--Colombia\\synthesis};
+\draw[arrow] (wer) -- (date);
+\draw[arrow] (date) -- (iso);
+\draw[arrow] (iso) -- (linked);
+\draw[arrow] (climate) -- (linked);
+\draw[arrow] (pop) -- (linked);
+\draw[arrow] (geom) -- (linked);
+\draw[arrow] (linked) -- (models);
+\draw[arrow] (models) -- (eval);
+\draw[arrow] (eval) -- (synth);
+\end{tikzpicture}
+\end{document}

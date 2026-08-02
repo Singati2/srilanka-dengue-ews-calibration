@@ -1,0 +1,27 @@
+# Page-by-page corrections — v3 (against the 17-page review PDF and the v2 source)
+
+Rendered every page (pdftoppm 150 dpi, `/tmp/dengue_v3_pages/`) before and after editing. Pages below refer to the corrected v3 PDF (21 pp). Type: W = writing-only, F = formatting/layout, N = numerical transcription.
+
+| Page/region | Problem | Correction | Source verified | Type |
+|---|---|---|---|---|
+| Build (all) | `Dengue.pdf` had `[?]` citations + empty References | Bundled `references_v3.bib`; fail-fast build (no `bibtex \|\| true`); `unsrtnat` numeric order-of-appearance | `reference_resolution_report_v3.md` | F |
+| 1 — title block | Draft/provisional/ORCID/Khadka-email/"DRAFT…not for submission" lines crowding the page | Removed; kept names + affiliations + Ganesh email + one discreet "Administrative metadata pending — not for submission"; unresolved items → `submission_blockers_v3.md` | n/a | W/F |
+| 1 — Abstract | "equivalently, not additionally" awkward; 308 words | Concise translation ("equivalent to … or, equivalently …"); 95% CI notation; trimmed to 298 | model-ladder report | W |
+| 2 — Author Summary | "anticipate outbreaks"; "size and certainty differed between the two settings"; 204 words | "anticipate weeks of elevated dengue activity"; added "not an official outbreak declaration"; "magnitude and precision varied across the two evaluated datasets"; trimmed to 198 | n/a | W |
+| 2–3 — Introduction | unresolved citations (in the broken PDF) | resolve in source; build verified 0 undefined | bib | F |
+| 4–7 — Methods | OpenDengue access-date instruction + software-version placeholder printed in body | removed from body → blockers; report only verified OpenDengue provenance (V1.3, Admin-2 weekly, from OpenDengue not SIVIGILA, finalized, through 2023) | model-ladder/opendengue reports | W |
+| 7 — Methods (leakage) | "test period was not used for … recalibration" contradicted the recalibration subsection | "held-out test period not used for fitting, scaling, penalty selection, or threshold construction; time-updated recalibration evaluated sequentially using only outcomes observed before each prediction time (no look-ahead)" | recalibration report | W |
+| 7 — recalibration fallback | placeholder "[exact fallback fraction]" contradicting later "no fallbacks" | "No fallback was required under the prespecified recalibration rules." | recalibration report §5 ("Zero fallbacks") | W/N |
+| 8 — Figure 1 | unclear labels "PDF date audit (returns cutoff)", "Date-derived ISO epi-week" | "WER reporting-date audit", "Issue-to-ISO week mapping"; colorblind-safe, grayscale-legible | n/a | F |
+| 9 — SL Table 1 + claim | "M1 was the strongest" (contradicted by later M5); "All primary models under-predicted" | "Among the initial M0–M3 benchmark comparison, M1 had the highest …"; Table 1 → "Initial Sri Lanka M0–M3 benchmark comparison"; "All M0–M3 models in the initial comparison under-predicted" | pilot/hybrid reports | W |
+| 10 — Figure 2 | y-axis scientific notation (5·10⁻²) | global fixed-point ticks; caption labels representative thresholds (not a continuous curve) | decision-threshold report | F |
+| 10–11 — SL DLNM/hybrid | combined R-vs-Python equivalence and climate-vs-M1 in one clause | separated: R≈Python (CIs include zero) vs both below M1 (ΔAUC −0.038, ΔNB −0.025, CIs exclude zero) | DLNM/canonical-R reports | W |
+| 11–12 — Colombia | "treat-all" vs "alert-all" mixed; "a table row" note | standardized to alert-all/alert-none (defined once); rewrote the secondary-row note ("not combined"), removing the stranded-fragment risk | model-ladder report | W |
+| 12 — Figure 3 | title "Colombia discrimination and decision value" but plots only AUC | retitled "Colombia model-ladder discrimination"; NB stated to be in Table 5 | model-ladder report | F |
+| 13 — cross-setting Table 6 | subjective "Small/Modest positive" Interpretation column implying a country contrast | removed the Interpretation column; caveat ("intervals overlap; no heterogeneity test; do not establish a difference") moved to the caption | targeted-value/model-ladder | W |
+| 15 — Discussion | "Two methodological contributions" contradicted the no-novelty claim; over-long recalibration sentence; "reviewer-contingent work" | "Two practical evaluation lessons"; split into 3 sentences; "A pandemic-period exclusion analysis was not performed …, so its effect on the M5−M1 contrast cannot be inferred" | n/a | W |
+| 16 — Declarations | multi-line "[AUTHOR CONFIRMATION REQUIRED]" instructions printed in body; AI "DRAFT" marker | neutral "Pending author confirmation" markers; AI-disclosure substance kept, DRAFT marker → blockers | n/a | W/F |
+| 17 — model table / SI / References | technical model table after Declarations; SI listed before References | model table removed from after Declarations (country detail kept in S5; prose ladder in Methods); order fixed to References → Supporting Information; References fully populated | n/a | F |
+| whole doc | British spellings; blue hyperlinks; "95% interval" vs "CI" | American English throughout; black hyperlinks; standardized to "95% CI" | n/a | W/F |
+
+**Hard-stops (spec §20):** zero `[?]` citations ✓; References populated ✓; no orphaned "a table row." fragment ✓ (rewritten); test-period/recalibration contradiction fixed ✓; fallback placeholder removed ✓; Figure 3 no longer claims decision value ✓; no unresolved administrative instructions embedded in the scientific text ✓ (0 `AUTHOR CONFIRMATION REQUIRED` in body PDF).

@@ -1,0 +1,38 @@
+\documentclass[border=3pt]{standalone}
+\usepackage{lmodern}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\pgfplotsset{every axis/.append style={scaled y ticks=false, yticklabel style={/pgf/number format/.cd, fixed, precision=2, /tikz/.cd}}}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric, patterns}
+\usepackage{xcolor}
+\definecolor{okBlue}{RGB}{0,114,178}
+\definecolor{okOrange}{RGB}{230,159,0}
+\definecolor{okGreen}{RGB}{0,158,115}
+\definecolor{okVermillion}{RGB}{213,94,0}
+\definecolor{okPurple}{RGB}{204,121,167}
+\definecolor{okSky}{RGB}{86,180,233}
+\definecolor{okYellow}{RGB}{240,228,66}
+\definecolor{okGray}{RGB}{120,120,120}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+    width=0.85\textwidth, height=0.46\textwidth,
+    xlabel={Decision threshold probability $p^*$}, ylabel={Net benefit},
+    xmin=0.18, xmax=0.42, ymin=-0.12, ymax=0.20,
+    xtick={0.20,0.30,0.34,0.40}, ytick={-0.10,-0.05,0,0.05,0.10,0.15,0.20},
+    grid=both, tick label style={font=\small}, label style={font=\small},
+    legend style={at={(0.5,-0.30)}, anchor=north, legend columns=3, font=\small},
+    title={Sri Lanka net benefit at representative thresholds}, title style={font=\small\bfseries}]
+\addplot+[mark=o, thick, color=okGray] coordinates {(0.20,0.171)(0.30,0.052)(0.34,-0.005)(0.40,-0.106)}; \addlegendentry{Alert-all}
+\addplot+[mark=square, thick, color=black] coordinates {(0.20,0)(0.30,0)(0.34,0)(0.40,0)}; \addlegendentry{Alert-none}
+\addplot+[mark=triangle, thick, color=okOrange] coordinates {(0.20,0.161)(0.30,0.084)(0.34,0.059)(0.40,0.025)}; \addlegendentry{M0 climatology}
+\addplot+[mark=*, very thick, color=okBlue] coordinates {(0.20,0.185)(0.30,0.137)(0.34,0.111)(0.40,0.083)}; \addlegendentry{M1 surveillance}
+\addplot+[mark=diamond, thick, color=okGreen] coordinates {(0.20,0.164)(0.30,0.069)(0.34,0.032)(0.40,0.012)}; \addlegendentry{M2 climate-only}
+\addplot+[mark=pentagon, thick, color=okPurple] coordinates {(0.20,0.147)(0.30,0.078)(0.34,0.060)(0.40,0.039)}; \addlegendentry{M3 climate + FE}
+\addplot[dashed, thick, color=okGray] coordinates {(0.30,-0.12)(0.30,0.20)};
+\node[anchor=west, font=\small] at (axis cs:0.305,0.175) {$p^*=0.30$};
+\end{axis}
+\end{tikzpicture}
+\end{document}
