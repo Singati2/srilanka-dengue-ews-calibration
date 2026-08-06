@@ -8,6 +8,56 @@
 
 ---
 
+## 2026-08-06 — Correctness pass over the M6 notebooks: one real defect, two stale statements
+
+**Context.** Audited the four executed notebooks for silent defects. All four already ran clean —
+74 cells, zero exceptions — so nothing here was visible as a failure; each of these returns
+plausible numbers either way. Fixes kept deliberately small, and **no feature value changed**:
+notebook 03's `output_sha256_16` is byte-identical before and after (`716844d268e349f9`), which is
+the evidence that the corrections touched reporting only.
+
+**`DECISION` — the vintage carry-forward number in notebook 03 §11 was wrong by 25×, and is
+corrected.** The audit loop used `years` as its loop variable, clobbering the land-cover year
+array set in §4. After the loop it held HREA's `[2018, 2019]`, so the drift was measured over
+2018→2019 rather than 2018→2023. The cell reported *"+1.01 pp over 1 years"* and *"carrying 2019
+forward to 2025 (6 yr) implies a bias of order 6.08 pp"*. Correct values: **+0.61 pp over 5
+years, carrying 2023 forward 2 years, bias of order 0.24 pp.** The printed conclusion was also
+self-contradicting — it selected *"larger than"* and then asserted *"so it is not the dominant
+uncertainty"*. Both now follow from the same quantity, and the corrected reading is that the
+carry-forward bias (0.24 pp) is genuinely **smaller** than the product's own year-to-year noise
+(0.76 pp). This strengthens the §11 carry-forward argument rather than weakening it; the
+2026-08-05 `DIRECTION` on single-epoch land cover is unaffected, as it rests on §4, not §11.
+
+**`DECISION` — the leakage rule is now stated one way only.** Notebook 02 §2 said the epi-week
+join would key on the composite's **start** date, while §16 and the design notes said **end**.
+Start-date keying *is* the leak — an 8-day composite starting 2020-06-01 still contains
+observations through 06-08. §2 corrected to match. Recorded because notebook 04 is next and this
+is the rule it has to implement.
+
+**`DECISION` — fragmentation's vintage was misreported in notebook 03 §2** as 2020 (it had been
+given the surface-water epoch as a placeholder) while §11 correctly showed 2023. §2 now derives
+it from the land-cover years, so the two tables agree.
+
+**`DECISION` — land-cover fractions keep their existing denominator; the definition is documented
+instead.** The class fractions divide by *all* district pixels, so nodata/snow/cloud leave them
+summing to 0.979–1.000 rather than 1. Measured before deciding: the unclassified share is
+**flat across years** (0.234 / 0.224 / 0.226 / 0.235 / 0.237 / 0.261 % for 2018–2023), and the
+per-district maximum (~2.06%) is the same district every year — a granule-edge effect, not
+weather. Renormalising would shift every year by a near-uniform +0.03 pp, leave the 0.76 pp
+year-to-year movement untouched, change no conclusion, and cost a re-stream plus a new checksum on
+a frozen table. So the raw definition is kept and stated in §4 with the measured share.
+
+**`DECISION` — notebook 00's forward-reference was stale and is corrected.** It named
+`01_static_geomatics_gee.ipynb` and **Google Earth Engine** as the derivation environment,
+superseded by the 2026-08-05 no-GEE decision, and described nightlights and surface water as
+dynamic layers in notebook 02 when both ended up static in notebook 03.
+
+**Scope boundary held.** This pass covered the M6 notebooks only — new work. `scripts/` and
+`analysis/` carry the frozen v6 pipeline the manuscript's reproducibility claim rests on and were
+deliberately not touched.
+
+---
+
 ## 2026-08-05 (b) — M6 notebooks handed off for review; PI sign-off formally requested
 
 **`DELIVERABLE` — the four executed notebooks are pushed and under review.** Branch
