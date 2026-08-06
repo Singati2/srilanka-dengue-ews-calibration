@@ -57,15 +57,21 @@ signal". The dynamic layers in notebook 02 are what make M6 a real test.
 | # | Notebook | Needs | Status |
 |---|---|---|---|
 | 00 | `00_setup_and_geometry.ipynb` — frame, CRS, adjacency | geometry only | ✅ executed |
-| 01 | `01_terrain_batchA.ipynb` — elevation, slope, TWI, HAND | geometry + internet | ✅ executed |
-| 02 | dynamic layers — MODIS LST, NDVI, surface water | internet | planned |
-| 03 | feature assembly + QC | 01, 02 | planned |
-| 04 | label + row mask | **outcome table (unstaged)** | blocked |
-| 05 | M6 fit + calibration | 04 | blocked |
-| 06 | evaluation — AUC, calibration, net benefit, bootstrap | 05 | blocked |
-| 07 | results figures and infographics | 06 | blocked |
+| 01 | `01_terrain_batchA.ipynb` — batch A: elevation, slope, TWI, HAND | geometry + internet | ✅ executed |
+| 02 | `02_dynamic_modis.ipynb` — batch C: MODIS LST, NDVI/EVI | internet | ✅ executed |
+| 03 | `03_batchB_statics.ipynb` — batch B: land cover, fragmentation, water, population, nightlights | internet | ✅ executed |
+| 04 | feature assembly + QC — epi-week join, lags 0–8 | 01, 02, 03 | planned |
+| 05 | label + row mask | **outcome table (unstaged)** | blocked |
+| 06 | M6 fit + calibration | 05 | blocked |
+| 07 | evaluation — AUC, calibration, net benefit, bootstrap | 06 | blocked |
+| 08 | results figures and infographics | 07 | blocked |
 
-Notebooks 05–06 will **port the fitting, Platt recalibration, net-benefit and cluster-bootstrap
+Batch C (dynamic) was built before batch B (static) deliberately: the dynamic layers are the ones
+that decide whether M6 is answerable at all (see *Static predictors* above), so they were worth
+settling first. Notebook 02 §15 confirms they carry the temporal variance the static layers
+cannot.
+
+Notebooks 06–07 will **port the fitting, Platt recalibration, net-benefit and cluster-bootstrap
 code verbatim** from `scripts/colombia_model_ladder_h4_75pct_M6_v1.py` rather than
 reimplementing it — that is how M6 stays scored by identical machinery.
 
@@ -74,16 +80,26 @@ reimplementing it — that is how M6 stays scored by identical machinery.
 Deliberately avoids Google Earth Engine. Pinned granule IDs plus checksummed local rasters are
 more reproducible than an Earth Engine run, whose collections can be revised underneath you.
 
-| Layer | Source | Auth |
-|---|---|---|
-| Elevation → slope, TWI, HAND | Copernicus GLO-30 (AWS Open Data) | none |
-| Land cover, built-up, cropland | ESA WorldCover 10 m (AWS) | none |
-| Surface water | JRC Global Surface Water | none |
-| Forest cover | Hansen GFC | none |
-| Population | WorldPop | none |
-| Wealth / SES | Meta Relative Wealth Index (HDX) | none |
-| Healthcare access | OSM via Geofabrik | none |
-| LST, NDVI/EVI | MODIS via Microsoft Planetary Computer STAC | none |
+| Layer | Source | Auth | Used in |
+|---|---|---|---|
+| Elevation → slope, TWI, HAND | Copernicus GLO-30 (AWS Open Data) | none | 01 |
+| LST, NDVI/EVI | MODIS MOD11A2 / MOD13Q1 via Planetary Computer | none | 02 |
+| Land cover → built-up, forest, cropland, fragmentation | Impact Observatory `io-lulc-annual-v02` 10 m, annual | none | 03 |
+| Surface water | JRC Global Surface Water v1.4 | none | 03 |
+| Population | WorldPop UN-adjusted 100 m | none | 03 |
+| Nighttime lights | HREA (VIIRS-derived) — *substitute, see below* | none | 03 |
+| Wealth / SES | Meta Relative Wealth Index (HDX) | none | batch D |
+| Healthcare access | OSM via Geofabrik | none | batch D |
+
+**Two deliberate substitutions**, both recorded in the notebooks and in `docs/M6.md`'s terms:
+
+- **`io-lulc-annual-v02` instead of ESA WorldCover.** WorldCover exists only for 2020 and 2021;
+  Impact Observatory's is annual, and vintage is the binding constraint (notebook 03 §2). It also
+  supplies built-up, forest and cropland from one mutually consistent classification.
+- **HREA instead of monthly VIIRS DNB.** The monthly composites require a registered Earth
+  Observation Group account — a genuine access barrier, the one condition under which the
+  2026-07-07 decision permits substitution. HREA is built from the same sensor and is anonymous,
+  at the cost of being annual rather than monthly.
 
 ## Running them
 
@@ -106,6 +122,34 @@ only, per `docs/maup_sensitivity_and_spatial_cv_plan.md` §5.
 
 Each notebook writes a `nbNN_provenance.json` with input checksums, parameters and the seed, so
 any feature table can be traced to the exact bytes that produced it.
+
+## Traps found along the way
+
+Recorded because each one is silent — the code runs and returns plausible numbers either way.
+
+- **`modis-11A2-061` and `modis-13Q1-061` each contain two platforms.** Terra (`MOD*`, ~10:30
+  overpass) *and* Aqua (`MYD*`, ~13:30). Grouping granules by date and tile without checking gives
+  you whichever the catalogue listed first, so a series can switch platform mid-record and the
+  step change looks like climate. Notebook 02 selects on the **product id prefix** — not the STAC
+  `platform` field, which is empty for some items.
+- **A few (composite, tile) pairs appear twice** as reprocessing versions. Resolved to the newest
+  `created`, so the selection is deterministic rather than arrival-ordered.
+- **Mandatory-QA-0 only is not a usable LST filter here.** It retains 14–42% of land pixels on the
+  composites measured and empties whole districts. Worse, the pixels it drops are the cloudy, wet
+  weeks — exactly the ones a dengue model cares about, so the series would be biased warm and dry.
+  Notebook 02 §8 measures the options and adopts mandatory QA ≤ 1 with LST error ≤ 2 K.
+- **Uncovered mosaic pixels read as 0**, which is a legal NDVI DN (≈ bare ground) and a legal QC
+  byte. Tiles are therefore placed by their true extent with an explicit coverage mask, not by a
+  sentinel fill value.
+- **A bbox search on `io-lulc-annual-v02` returns a UTM *zone 1* granule** (`01N`, the Pacific)
+  alongside Sri Lanka's `44N`/`44P`. Because MGRS tiles share a local coordinate frame, `01N`'s
+  bounds are *numerically identical* to `44N`'s — so any window computed from coordinates alone
+  overlaps it and pastes ocean nodata over the island, silently. Notebook 03 keeps only granules
+  whose real extent contains the island **in their own CRS**, then filters by that EPSG.
+- **WorldPop totals inside the district mask fall ~3.5% short of the national raster.** Pixels go
+  whole to the unit containing their centre, and Sri Lanka is all coastline. Notebook 03 reports
+  the capture fraction rather than absorbing it, because WP5's population-weighted build divides
+  by that same denominator.
 
 ## Known environment notes
 
