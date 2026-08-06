@@ -8,6 +8,40 @@
 
 ---
 
+## 2026-08-05 (b) — M6 notebooks handed off for review; PI sign-off formally requested
+
+**`DELIVERABLE` — the four executed notebooks are pushed and under review.** Branch
+`m6-geomatics-notebooks` pushed to **both** remotes (spatial-py `origin`, Singati2 `upstream`),
+and **PR #1** opened in Singati2:
+<https://github.com/Singati2/srilanka-dengue-ews-calibration/pull/1>. Seven files, code + docs
+only, no data. The PR body carries the four plan-changing findings and the two plan corrections
+(spec conflict, CRS) so they are reviewed as decisions rather than buried in notebook prose.
+
+**`OPEN` — three asks put to the PI in writing,** which starts the clock on items that had been
+open without an owner since 2026-07-07: (1) sign-off on the M6 framing, given extraction is ~60%
+done and §7 marks the rung optional pending ratification; (2) outcome-table staging, the single
+hard blocker on notebooks 05–08; (3) a decision on the WorldPop coastal shortfall *before* WP5's
+Build B is founded on the same denominator.
+
+**`DECISION` — collaboration topology corrected in `M6.md` §12.** The documented handoff
+(`gh pr create --head spatial-py:<branch>`) **cannot work**: spatial-py's repo is *not* a GitHub
+fork of Singati2's (`isFork: false`, no parent), just an independent repo sharing the history, and
+GitHub restricts cross-repo PRs to a single fork network. The spatial-py account holds WRITE on
+Singati2, so the working route — now written into §12 — is to push the branch to `upstream` as a
+**review branch** (never to its `main`) and open a same-repo PR. Recorded because the failure mode
+is confusing: the error reads *"No commits between…"* even when the branch is pushed and ahead.
+
+**Note on sequencing, flagged for the PI.** This work is Phase **4** of
+`maup_sensitivity_and_spatial_cv_plan.md` §7 — the rung tagged *optional*. Phases 1–3, which carry
+the two *mandated* deliverables (WP5 Build B population-weighted exposure, a designated primary
+result; and WP4 spatial CV), still have **no code written**. The order was forced rather than
+chosen: M6 feature extraction needs only geometry and internet, so it was the only work runnable
+while Phase 0 data staging stalled. It also de-risked Phase 1 in passing — WorldPop 2018–2020
+rasters are now staged locally and the equal-area zonal pipeline works, which are Build B's two
+main ingredients.
+
+---
+
 ## 2026-08-05 — M6 moved from plan to build: Python notebook workflow, batches A and C extracted
 
 **Context.** Started implementing the M6 geomatics-only model (`docs/M6.md`) as a step-by-step Jupyter workflow rather than a script, so every intermediate is inspectable. This is **new work only** — it does not touch, port or re-run the frozen v6 pipeline the manuscript's reproducibility claim rests on (`v6-analysis-frozen`, `alt-stats-results-v1/v2`, seed 20260612).
