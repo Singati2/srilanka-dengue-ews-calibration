@@ -8,6 +8,402 @@
 
 ---
 
+## 2026-08-07 (d) — WP4 §4.1: no residual spatial autocorrelation; PI note issued
+
+**`DELIVERABLE` — `notebooks_wp45/wp4_01_autocorrelation_range.ipynb`, executed.** Moran's I per week
+across the 151 test weeks (26 districts each), permutation-tested (999 shuffles, seed 20260612), plus
+an empirical variogram, on raw residuals of M5-full, M5-no-climate and M6.
+
+**`DECISION` — the range is effectively zero, so the buffered scheme is cheap.** Moran's I is
+indistinguishable from its null at **every** distance band for all three models (permutation
+p 0.53–0.99); the variogram is flat 25–400 km. Selected radius: the **minimum buffer** (drop
+immediately-adjacent districts), retaining **21 of 25** training districts in the median fold and 16
+in the worst — against 9 and 5 at 100 km. The reviewer concern motivating WP4 is answered directly
+rather than by an expensive scheme.
+
+**Why this is not an artifact.** M5 carries district fixed effects, which absorb time-invariant
+spatial structure, so a near-zero residual Moran's I could be a property of the model. **M6 carries
+no fixed effects** (`M6.md` §0) and returns the same answer — I = 0.001 among adjacent districts,
+p = 0.99. Honest bound: with 26 units the permutation null has sd ≈ 0.02, so this rules out residual
+correlation above roughly |I| = 0.04; it does not prove zero.
+
+**`OPEN` — first estimate only.** §4.1 specifies the *reference* model's residuals; M5-full as frozen
+is the closest available here. Re-run if the registered reference model differs — only the residual
+column changes.
+
+**`DELIVERABLE` — PI note issued:** `docs/pi_note_2026_08_07_srilanka_status_and_decisions.md`.
+Carries the M6 honest null, the WP5 1.8 °C exposure finding, this WP4 result, and **four decisions
+requested**: (1) M6 framing sign-off; (2) a ruling on §10's contrast set, which cannot be answered as
+registered because M0/M1/M2 predictions do not exist on these rows; (3) confirmation of the WP4
+buffer radius; (4) a free CDS API key so ERA5-Land can be staged for Build B.
+
+---
+
+## 2026-08-07 (c) — WP4 fold geometry built: the power caveat is now a curve
+
+**`DELIVERABLE` — `notebooks_wp45/wp4_00_loocv_folds_and_power.ipynb`, executed.** §4.2's buffered
+LOOCV built as a **function of buffer radius**, so when §4.1 returns the autocorrelation range it
+selects a row from a table that already exists. Adjacency re-derived and checked against notebook
+00 (26 nodes / 60 edges, connected). 260 fold definitions frozen to `data_quarantine/wp4_cv/`.
+
+**`DECISION` — distance is boundary-to-boundary, not centroid-to-centroid.** Adjacent districts here
+sit **28–119 km** apart by centroid while sharing a border, so a centroid buffer would be wildly
+uneven across the island. Boundary distance in the equal-area CRS is the primary; centroids reported
+for visibility only.
+
+**`DELIVERABLE` — §4.6's power caveat is quantified.** Training districts available, of 25:
+
+| buffer | median fold | worst fold | median train district-weeks | degenerate folds |
+|---|---|---|---|---|
+| adjacency only | 21 | 16 | 5,481 | 0 |
+| 25 km | 19 | 14 | 4,959 | 0 |
+| 50 km | 15 | 10 | 4,045 | 0 |
+| 75 km | 12 | 6 | 3,132 | 0 |
+| 100 km | 9 | 5 | 2,349 | 0 |
+| 150 km | 5 | 0 | 1,435 | **12** |
+
+Sri Lanka is ~430 km end to end, so a buffer is a large fraction of the country by construction. At
+100 km the median fold trains on 9 of 25 districts, the worst on 5; at 150 km the scheme collapses.
+**This is the number to put to the PI** — §4.6's "low-powered even with LOOCV" was previously an
+assertion.
+
+**`DECISION` — hop and kilometre buffers are NOT interchangeable.** One hop removes 2–7 districts
+depending on position, so it applies an uneven buffer while looking uniform. Kilometre buffers are
+the defensible primary; hops reported because the plan mentions them.
+
+**`DELIVERABLE` — §4.4 spatial leakage audit passes.** Zero train/test pairs within the buffer, every
+radius, every fold, asserted rather than assumed. Temporal leakage is enforced upstream in M6
+notebook 04; the two constraints are orthogonal and together make the scheme spatio-temporal.
+
+**`OPEN` — the operative radius (§4.1).** Needs an empirical variogram or Moran's I decay on model
+residuals. M6's predictions now exist on the 3,926 test rows so a first estimate is available
+immediately; the registered version should use the reference model's residuals. Per §4.6 this stays
+the **compact-country companion** — the well-powered claim rests on Colombia's block CV (§4.3), out
+of scope while the work is Sri Lanka-only.
+
+---
+
+## 2026-08-07 (b) — M6 is FITTED AND SCORED: thresholds recovered exactly, honest null confirmed
+
+**`DELIVERABLE` — the label thresholds are recovered to the last row.** Route 3 of the 08-07 entry,
+executed. WorldPop **G2 R2025A constrained** 2018–2025 pulled (public, no account) and zonal-summed
+per RDHS. Confirmation the release is identical to the frozen build's: computed 2024 national
+**23,008,641** against the build report's *"raw WorldPop was 23,008,642"* — one person apart.
+
+Method: the threshold is a fixed incidence, so in count space it scales with population,
+`thr_count(d,y) = K(d) × WP(d,y)`. Solving the frozen test outcomes for a feasible `K(d)` gives
+**26 of 26 districts a non-empty interval** — 78 constraints satisfied by 26 free parameters, which
+is not trivially satisfiable and is itself the validation. `K` is set to the empirical 75th
+percentile of train `cases/WP` where that lands inside the interval (21 of 26) and clamped to the
+interval otherwise (5 of 26, where this repo's train rows differ slightly — the lost 2018 wk4 plus
+their `exposure_missing_flag` filter). **This sidesteps the 08-07 open item entirely: the recovered
+thresholds are the values actually used, not a re-execution of the procedure.**
+
+Frozen to `m6_label_thresholds_srilanka_v1.csv` (208 rows = 26 × 8 years) and
+`m6_worldpop_r2025a_by_district_year.csv`.
+
+**`DECISION` — acceptance test passes exactly: 3,926 / 3,926 = 1.000000** against the frozen
+outcomes; reconstructed test prevalence **0.3365** with **1,321** events, matching
+`PAIRED_ROW_AUDIT.md` exactly. Notebook 06 asserts this before fitting, so the gate is permanent.
+
+**`DELIVERABLE` — notebooks 06, 07, 08 re-run non-provisionally.** `quotable: true`. Superseded
+`_PROVISIONAL` artifacts deleted so a stale figure cannot be picked up later.
+
+**`RESULT` — the honest null, on identical rows.** M6 (geomatics-only) on the 3,926 frozen test rows,
+raw predictions, RDHS cluster bootstrap B=1000 seed 20260612:
+
+| model | AUC [95% CI] | PR-AUC | Brier | NB@0.30 [95% CI] |
+|---|---|---|---|---|
+| **M6 (geomatics only)** | **0.601 [0.568, 0.638]** | 0.442 | 0.223 | **0.058 [0.033, 0.085]** |
+| M5 full hybrid | 0.771 [0.741, 0.804] | 0.667 | 0.180 | 0.145 [0.106, 0.184] |
+| M5 no-climate | 0.751 [0.721, 0.782] | 0.652 | 0.191 | 0.135 [0.100, 0.176] |
+
+- ΔAUC(M6 − M5full) **−0.170 [−0.203, −0.135]**; ΔNB **−0.087 [−0.112, −0.062]**
+- ΔAUC(M6 − M5noclim) **−0.150 [−0.182, −0.115]**; ΔNB **−0.078 [−0.104, −0.054]**
+- Fraction of bootstrap replicates favouring M6: **0.000** in all four contrasts.
+
+M6's NB (0.058) barely exceeds treat-all (0.052). Per the pre-specified §10 rules this is the
+**expected honest null**: a purely spatial landscape model carries little standalone decision value,
+which strengthens the paper's caution rather than contradicting it. **No headline changes.**
+
+**`OPEN` — caveats that stand.** (1) Contrasts are against M5-full and M5-no-climate; M0/M1/M2 are
+absent, so §10's "beats season / climate-only" remains unanswerable. (2) 11.3% of test rows carry
+forward-filled MODIS features from the 2025 gap; the fresh-MODIS subset moves M6 to AUC 0.612 /
+NB 0.065 — same conclusion, reported as sensitivity only. (3) M6 is Platt-recalibrated while the
+comparators are rolling-52, so the **raw** columns are the primary comparison. (4) Result is
+EXPLORATORY per §0 and needs PI framing sign-off before any use.
+
+---
+
+## 2026-08-07 — The M6 label definition is recovered from a committed artifact; the blocker changes shape
+
+**Context.** Searched the repo for any frozen artifact carrying the Sri Lanka label thresholds. Found
+something better: the label *construction* itself.
+
+**`DECISION` — the 2026-08-06(d) statement that "the SL analogue of
+`colombia_label_construction_v1.py` is not in this repo" was WRONG, and is corrected.** It is
+committed at **`analysis/v12_referee_response/run/sl_matched_and_recal.py`** — inside an analysis run
+directory rather than `scripts/`, which is why it was missed. Lines 26–30 are the definition:
+
+```python
+fut['week_start'] = fut['week_start'] - pd.Timedelta(days=28)          # h = 4 weeks
+f['split'] = np.where(f.epi_year <= 2022, 'train', 'test')
+g = f[f.split=='train'].groupby('geometry_id')['dengue_incidence_per_100k']
+f = f.merge(g.quantile(0.75).rename('thr75').reset_index(), ...)
+f['y'] = (f['inc_future'] > f['thr75']).astype(int)
+```
+
+**`DECISION` — the 1.7% residual in notebook 05 is fully explained: the label is on INCIDENCE, not
+case counts.** `dengue_incidence_per_100k`, thresholded at the per-district 75th percentile of
+**train** (`epi_year ≤ 2022`) incidence, strict `>`. Notebook 05 reconstructed on raw counts. Within
+a district the population factor nearly cancels — hence 98.3% agreement — but it varies by *year*,
+so no single count threshold exists, which is exactly why 3 of 26 districts came back
+`CONTRADICTION` under a one-threshold-per-district model.
+
+**`DELIVERABLE` — empirical confirmation.** Re-solving the implied thresholds **per (district,
+target-year)** instead of per district takes consistency from **23/26 districts to 75/78
+district-years**. The implied year-on-year threshold ratios are **~1.01** (2024/2023 median 1.0115,
+2025/2023 median 1.0061) — i.e. plausible population growth, exactly as a count threshold scaling
+with the denominator should behave. The rule is confirmed to the last detail.
+
+**`DIRECTION` — the outstanding ask is no longer "26 numbers we cannot derive".** The threshold is a
+fixed incidence per district, so `thr_count(d,y) = thr75(d) × pop(d,y) / 1e5` — linear in
+population. And the rescale formula `pop_adj(d,y) = Census2024(d) × WP(d,y)/WP(d,2024)`
+(`docs/population_denominator_rescaled_build_report.md`) means **the census anchor cancels in year
+ratios**. So exact labels need only *one* of:
+
+1. the 208-row denominator table (`…population_denominator_district_rescaled_2018_2025.csv`), or
+2. the frozen `dengue_climate_population_linked_2018_2025_v2_date_aligned.csv`, or
+3. **the WorldPop G2 R2025A constrained annual series 2018–2025 — a public download**, combined with
+   the thresholds already recovered from the frozen outcomes for 2023–2025.
+
+Route 3 needs nothing from a collaborator. That is a materially better position than 08-06(d).
+
+**`OPEN` — one subtlety before claiming exactness.** The train quantile is computed over rows
+surviving `outcome_missing_flag==0 & exposure_missing_flag==0 & population_missing_flag==0`. The
+**exposure** flag drops district-weeks lacking climate, so the quantile is taken over a row set this
+repo cannot fully reconstruct without the climate table. Effect is likely small but must be measured,
+not assumed — the acceptance intervals in `m6_implied_thresholds_srilanka_v1.csv` (now extensible to
+per-district-year) remain the test.
+
+---
+
+## 2026-08-06 (d) — M6 pushed to its stop rule: outcome restaged, time axis resolved, blocker reduced to 26 numbers
+
+**Context.** Instruction was to complete M6. It cannot be completed here, and the reason is a rule
+this project wrote for itself — but the attempt moved the blocker a long way and closed two open
+items.
+
+**`DELIVERABLE` — the WER outcome table is restaged from source on this machine.** 415 of 416 issues
+harvested (2022 wk44 absent from the archive, as documented), extracted and QC'd: 10,790 rows,
+415/415 issues structurally complete at 26 rows, 0 invalid current-week values. Frozen as
+**`wer_dengue_currentweek_rdhs_2018_2025_v2.1-refresh.csv`**, SHA256 `0ccde961…`.
+
+**`DECISION` — v2.1 does NOT supersede the v2.0 freeze, and the delta is fully explained.** It is
+not byte-identical (59 NA cells vs the documented 33). The 26 extra are one whole issue: **2018
+week 4 (`Vol_45_no_04.pdf`) is now served as an image-only PDF with a zero-length text layer**,
+where it had extractable text at the 2026-06-10 harvest. OCR is out of scope by standing policy, so
+those district-weeks are NA-flagged. They fall in the **training** period, not the test set. The
+manuscript's v2.0 freeze (`99f0b9b1…`) is untouched; this is a parallel artifact.
+
+**`DECISION` — `wer_bulk_harvest.py` repaired (bitrot, not logic).** `epid.gov.lk` now returns HTTP
+403 to curl's default user-agent and 200 to a browser one, so the harvester silently retrieved an
+empty listing and reported "0 downloads" rather than failing. A browser agent is now sent; same
+URLs, same parsing, same logic.
+
+**`OPEN` → `DECISION` — the WER issue-number ↔ ISO-week question is settled, empirically.** Logged
+open on 2026-08-05 and again in 08-06(b). Measured against the 3,926 frozen labels by sweeping
+candidate offsets: **WER issue *N* covers the epidemiological week beginning ISO-Monday(*N*) − 7
+days.** Agreement is **98.3%** at that offset against **82.4%** at the nominal one. The horizon is
+unchanged at 4 weeks; it is the outcome table's own time axis that is shifted one week from ISO —
+the publication lag showing up in the data. **Joining WER to an ISO-Monday spine without this shift
+trains every model one week off, and still yields entirely plausible metrics.**
+
+**`DIRECTION` — the panel blocker recorded in 08-06(b) was too pessimistic and is corrected.**
+`ALT_STATS/frozen/srilanka_matched_pairs.csv` is committed in this repo and **is** the complete Sri
+Lanka test panel: 26 districts × 151 consecutive weeks = 3,926 rows, no subsetting, carrying the
+outcome *and* frozen comparator predictions. "Matched pairs" refers to the two *models* being paired
+on identical rows, not to observation matching. All 3,926 rows have complete M6 features from
+notebook 04 (0 nulls).
+
+**`DELIVERABLE` — `notebooks/05_label_and_row_mask.ipynb`, executed, ending at a STOP.** The label
+*rule* is confirmed in form: **23 of 26 districts admit a single threshold that reproduces every
+frozen label**, and all 68 residual disagreements sit within a case or two of the threshold (median
+gap 1 vs 12 on agreements). So the rule, the join and the case series are right; only the threshold
+*values* are unknown. Their per-district acceptance intervals are recovered from the frozen outputs
+and frozen to `m6_implied_thresholds_srilanka_v1.csv`.
+
+**`DECISION` — STOP per `M6.md` §11 ("labels/thresholds get recomputed").** No training window ×
+percentile-method combination reproduces the thresholds (best 14 of 23). Fitting M6 against a label
+that is 98.3% the frozen one, then comparing it to predictions made under the real one, would look
+rigorous and would not be — precisely what §0's comparability rule exists to prevent. **The
+outstanding ask is now 26 numbers:** the Sri Lanka label/threshold table, or the SL analogue of
+`scripts/colombia_label_construction_v1.py`, which is not in this repo. The recovered intervals are
+a one-look acceptance test for whoever holds it.
+
+**`OPEN` — §10's contrasts must be restated or supplemented.** The frozen artifact carries **M5-full**
+and **M5-no-climate** predictions on the test rows — not M0, M1 or M2 separately. So "does landscape
+beat season (M0) or climate-only (M2)" is unanswerable from this repo; "does landscape add against
+the full hybrid, and against it stripped of climate" is answerable. Goes to the PI with the framing
+sign-off already outstanding.
+
+**`OPEN` — a validation-split decision is owed.** §9.4 says tune `C` on the committed validation
+split, but Sri Lanka's design is train/test with past-only rolling-52 recalibration
+(`ALT_STATS/PREANALYSIS_ALT_STATS.md` §3), not Colombia's train/val/test with Platt-on-validation.
+Carving a validation slice from the tail of training preserves the committed train/test boundary and
+is the least-worst option — but it is a documented deviation, not a free choice.
+
+**`DIRECTION` — the 2025 MODIS backfill is now on the critical path, not optional.** The frozen test
+panel runs to 2025-11-17, so **442 test rows (11.3%)** fall inside the MODIS gap and carry
+forward-filled features. They **cannot be dropped** without breaking identical-rows comparability
+(§11). The LP DAAC backfill from 08-06's entry is therefore required for a defensible evaluation.
+
+---
+
+## 2026-08-06 (c) — WP5 Build B started: the weight field is built, and A→B is not a null
+
+**Context.** Deliberate move off M6 (Phase 4, *optional*) onto the plan's **mandated** rungs. M6 is
+now blocked on the M1/M2/M5 panel spine, which is someone else's to supply; Phases 1–3 are blocked
+on nobody and still had zero code. Sri Lanka only.
+
+**`DIRECTION` — Build B's weight field can be built before any climate data exists.** Builds A and B
+differ *only* in `w` — the climate fields are identical — so the weight field is the whole of Build
+B. WorldPop and the DEM were already staged locally by M6 notebooks 01/03, so the work is runnable
+today and the exposure table becomes a join plus a weighted sum once ERA5-Land and CHIRPS land.
+New series `notebooks_wp45/`, kept separate from the M6 `notebooks/` sequence.
+
+**`DELIVERABLE` — `notebooks_wp45/wp5_00_population_weight_field.ipynb`, executed.** Weight tables
+for both climate grids (ERA5-Land 965 and CHIRPS 3,044 (district, cell) pairs), plus displacement
+and predicted-shift tables, in gitignored `data_quarantine/wp5_exposure/`.
+
+**`DECISION` — the honest-null clause (§3.4) can be pre-empted, and it does not fire.** Using the
+staged DEM and the standard lapse rate, population-weighting alone moves district temperature
+exposure by **−1.75 °C (Badulla) to +0.83 °C (Ratnapura)**. Badulla's population lives ~270 m
+*above* its areal mean elevation — highland towns and tea estates, with the sparsely-settled Uva
+basin dragging the area-mean down — so weighting by people *cools* its exposure. For a model whose
+transmission terms move steeply over this range, that is not a rounding correction. Precipitation
+remains open: CHIRPS is patchy and convective and has no elevation shortcut, so it must wait.
+
+**`DIRECTION` — Build C's acceptance target should be lowered, on evidence.** Build B alone reaches
+**92%** of the total elevation displacement at ERA5-Land resolution. The within-cell residual that
+Build C's lapse correction would add tops out at ~56 m ≈ **0.36 °C** (Matale), and is not reliably
+additive — `corr(|between|,|within|) = 0.33`, same sign in only 65% of districts, and in Badulla the
+two carry *opposite* signs, so the residual partly offsets rather than compounds. Build C stays in
+scope per 2026-07-07, but its target is a few tenths of a degree, not something comparable to B.
+Re-check in Colombia, which spans far more relief.
+
+**`DECISION` — Build A's `all_touched` mask is quantified, without an arbitrary threshold.** Against
+fractional overlap, a uniform (`all_touched`) weighting misplaces a median **31%** of a district's
+weight (total-variation distance, ERA5-Land). Half of a typical ERA5-Land cell lies outside the
+district it is credited to (median `cell_frac` 0.51); for Colombo and Jaffna it is under a third.
+This is the mechanism behind whatever A→B divergence the exposure table eventually shows.
+
+**`OPEN` — population-weighting halves the effective spatial support.** A median district's exposure
+is drawn from ~12 effective ERA5-Land cells under population weighting against ~21 under area
+weighting. This is the *correct* answer to "what weather did these people experience", but it is the
+cost side of the trade and belongs in the Methods rather than being discovered at review.
+
+**`DECISION` — a trap recorded before it bites: the two climate grids are not co-aligned.** CHIRPS
+ships a GeoTIFF stating its upper-left *edge*; ERA5-Land is distributed on grid *points* at exact
+multiples of 0.1°, which are cell *centres*, so its edges sit at 0.05°, 0.15°, … Treating them alike
+displaces every person by up to ~5.5 km into the wrong cell, raises nothing, and yields entirely
+plausible weights. CHIRPS is verified against a real granule; **ERA5-Land's convention is declared
+and flagged `verified=False` — assert it against the first staged granule.** Also confirmed on that
+granule: CHIRPS carries **no nodata tag**, so −9999 must be masked explicitly or it enters the
+weighted mean as rainfall.
+
+**`OPEN` — the vintage requirement cannot be met, so it is sized instead.** §3.1 requires the
+population vintage to match the exposure year; WorldPop UN-adj stops at **2020** against a window
+ending 2025. Measured: the weight field moves ~**1.1%** of a typical weight over 2018→2020, so
+carrying 2020 forward is a bounded extrapolation. Same resolution as notebook 03's carry-forward
+table — report it, don't hide it.
+
+**Still blocked for WP5:** ERA5-Land (free CDS API key) and CHIRPS (open HTTP) acquisition, per
+`docs/climate_bulk_acquisition_and_exposure_table_plan.md`. **Next unblocked rung:** WP4 §4.2 fold
+geometry — buffered-LOOCV folds and their power cost can be characterised across candidate buffer
+radii from the adjacency graph alone; only the *autocorrelation range* that picks the radius needs
+model residuals. That is precisely what §4.6 asks be flagged to the PI.
+
+---
+
+## 2026-08-06 (b) — Notebook 04: the epi-week join is built, and the leakage rule is enforced mechanically
+
+**Context.** Sri Lanka only, by request. Batches A, B and C sit on three clocks (one row per
+district; 8-day; 16-day) and the model needs one district × epi-week matrix. This is the step where
+a leakage bug gets in, so it is the subject of the notebook rather than a line inside it.
+
+**`DELIVERABLE` — `notebooks/04_feature_assembly.ipynb`, executed.** Output
+`m6_features_weekly_srilanka_v1.csv` (quarantined): **10,868 rows** (26 districts × 418 weeks,
+2018-01-01 → 2025-12-29) × 101 columns — 6 keys, 38 static predictors, 54 dynamic (6 layers ×
+lags 0–8), 3 QC. Carries `geometry_id` (`LK11`…) beside `rdhs_id` so notebook 05 can join the
+frozen panel.
+
+**`DECISION` — the join keys on `composite_end`, strictly.** A composite is admissible for week *W*
+only if it ended **before** *W* began; lag *k* takes the last admissible composite ending before
+*W* − 7*k* days (`merge_asof`, `allow_exact_matches=False`). Closes the 2026-08-05 `OPEN` item.
+Measured cost of the alternative: the naive start-date join puts future observations inside
+**91.4%** of district-weeks, a median of 3 days each. Gap-fill is past-only by construction —
+nulls are dropped before the merge, so the search walks further back instead of interpolating
+forward. Lags are 0–8 weeks to match M2, so the contrast M6 exists to make stays like-for-like.
+
+**`DECISION` — week key is the Monday start date,** verified rather than assumed: every week in
+`ALT_STATS/frozen/srilanka_matched_pairs.csv` is a Monday and falls inside this spine.
+
+**`OPEN` — the WER issue-number ↔ ISO-week mapping is unresolved.** The outcome is keyed
+`(year, week)` where `week` is the *WER issue number*; the spine is keyed by date. The two can
+differ by one at year boundaries, which would misalign the label by a week precisely at the
+December–January transition when dengue peaks. Notebook 05 must reconcile against the outcome
+table, not against an assumption.
+
+**`OPEN` — both MODIS products are absent 2025-07-04 → 2025-11-17, and the fix is a backfill, not a
+truncation.** ~4.5 months missing from LST *and* VI. Flagged in notebook 04 as `stale_flag` (4.78%
+of rows; 34.6% of 2025) rather than filled quietly. Four checks, run 2026-08-06, settle what to do:
+
+1. **Not a notebook-02 search bug.** Re-querying Planetary Computer today returns the same hole —
+   Terra composites stop at 2025-06-26 and resume 2025-11-25 (LST) / 2025-11-17 (VI).
+2. **Aqua is not a fallback.** MYD11A2/MYD13Q1 are absent over the same window, so the gap is in
+   the collection, not the platform. This retires the "add Aqua as a sensitivity" option for 2025.
+3. **Truncating the window is not available.** 520 rows — **13.2%** — of
+   `ALT_STATS/frozen/srilanka_matched_pairs.csv` have predictor weeks inside the gap (the frozen
+   artifact runs to 2025-11-17). Ending M6's window at 2025-06-26 would drop rows M1/M2/M5 are
+   scored on, which is `M6.md` §11's first **STOP** condition, not a judgement call.
+4. **The data exists at the authoritative source.** NASA CMR returns **76 MOD11A2.061 granules**
+   over Sri Lanka for 2025-07-01→11-20. Planetary Computer simply has not ingested mid-2025.
+
+**`DIRECTION` — backfill batch C for 2025-07 → 2025-11 from LP DAAC, then re-run notebook 04.**
+This is not a substitution under the 2026-08-05 rule — it is the *same* product (MOD11A2.061 /
+MOD13Q1.061) from its primary archive, so the pinned-granule provenance model is unchanged. It
+needs a free NASA Earthdata login, which is a registration, not a paywall; weighed against 13.2%
+of scored rows resting on a five-month forward-fill, registering is clearly the cheaper cost. If
+the backfill is refused, the only remaining option is to keep the rows and report `stale_flag` as
+a covariate-quality limitation — the honest version of a result that is weaker than it looks.
+
+**`DECISION` — a trap worth the repo's memory: `pandas.merge_asof` does not preserve the left
+index.** It returns a fresh `RangeIndex` in join-key order, so `df[col] = joined[col].values`
+scrambles every value across districts and weeks. The first run of notebook 04 did exactly that.
+Nothing caught it: the column stayed full, seasonal and correctly ranged, and *every* leakage and
+monotonicity check passed, because each re-derives its own frame and is self-consistent within it.
+What caught it was the cross-check against notebook 02 §15 — scrambling destroys between-district
+variance, so NDVI's within-district share read **93%** against 29% at source, i.e. the error moved
+the number in the direction that flatters the argument. Notebook 04 now joins on the keys, asserts
+alignment against the spine, and re-derives a stored column to compare. The corrected weekly splits
+reproduce §15 to within **1.5 pp** on all six layers, which is the evidence the join is sound.
+
+**`DIRECTION` — `M6.md` §9.5's interim A+B gate needs restating, for a second reason.** Beyond
+being unable to express *when* (2026-08-05), the static block is **38 features measured on 26
+districts**: its correlation matrix has rank **25**, the districts−1 ceiling, and 7 components
+carry 95% of its variance. 135 of 703 pairs exceed |r| > 0.8. A 38-predictor fit on A+B is
+saturated before it starts; the honest gate is cross-sectional.
+
+**Scope note.** The row set remains provisional and this is still the binding constraint. `M6.md`
+§8 defines M6's rows as the M1/M2/M5 panel spine with its committed split flags; those artifacts
+are not on this machine and `scripts/` holds no Sri Lanka ladder, only the Colombia one. §11 makes
+a locally-constructed split a **stop** condition, so notebook 05 cannot proceed past the join
+without them. Separately, the frozen WER outcome CSV is regenerable here from public PDFs
+(`data/README.md`; SHA256 `99f0b9b1…`) — that half of the block is a job, not a dependency.
+
+---
+
 ## 2026-08-06 — Correctness pass over the M6 notebooks: one real defect, two stale statements
 
 **Context.** Audited the four executed notebooks for silent defects. All four already ran clean —
