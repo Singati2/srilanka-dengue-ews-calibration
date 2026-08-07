@@ -30,6 +30,26 @@ def _read(path):
         return ""
 
 
+def normalize_latex(tex):
+    """v44 R2 s2.2: deterministic LaTeX -> semantic text. Preserves scientific meaning
+    (numbers, minus signs, 'development-inclusive', 'not computed', 'NLL', 'Brier') while
+    removing formatting noise ($...$, \\Delta, ~, braces, \\texttt{}) that breaks matching.
+    Not a full TeX parser."""
+    t = tex
+    # unwrap simple text-formatting commands, keep their content
+    for _ in range(3):
+        t = re.sub(r'\\(?:texttt|emph|textbf|textit|textsc|mathrm|text|mathbf|mathit|underline)\s*\{([^{}]*)\}', r'\1', t)
+    t = t.replace(r'$-$', '-').replace(r'$+$', '+').replace(r'\,', ' ')
+    t = re.sub(r'\\\((.*?)\\\)', r'\1', t)          # \( ... \) inline math
+    t = re.sub(r'\$([^$]*)\$', r'\1', t)            # $ ... $ inline math -> keep content
+    t = t.replace(r'\Delta', ' Delta ').replace('~', ' ').replace(r'\%', '%')
+    t = re.sub(r'\\[a-zA-Z]+', ' ', t)              # remaining TeX commands -> space
+    t = t.replace('{', ' ').replace('}', ' ')
+    t = re.sub(r'[ \t]*\n[ \t]*', ' ', t)           # join wrapped lines
+    t = re.sub(r'\s+', ' ', t)
+    return t
+
+
 def new_graph():
     return {"nodes": {}, "edges": [], "meta": {}}
 
@@ -62,21 +82,32 @@ def ingest_git(g, repo):
             add_node(g, f"GitCommit:{h}", "GitCommit", author=an, date=ci, subject=subj)
 
 
-def ingest_manuscript(g, repo):
+def ingest_manuscript(g, repo, manuscript_path=None):
+    """R2 s3: explicit manuscript targeting. If manuscript_path is given it is authoritative;
+    otherwise fall back to the known candidates. The exact path + SHA-256 are recorded so v43
+    and v44 are separately auditable and SUBMISSION READY refers to a named file."""
     tex = None
-    for cand in ["manuscript_v43/revised_manuscript.tex",
-                 "manuscript/revised_manuscript.tex",
-                 "manuscript/dengue_ews_manuscript.tex"]:
-        p = os.path.join(repo, cand)
-        if os.path.exists(p):
-            tex = p; break
+    if manuscript_path:
+        p = manuscript_path if os.path.isabs(manuscript_path) else os.path.join(repo, manuscript_path)
+        tex = p if os.path.exists(p) else None
     if not tex:
-        add_node(g, "Manuscript:none", "Manuscript", found=False)
+        for cand in ["manuscript_v44/revised_manuscript.tex",
+                     "manuscript_v43/revised_manuscript.tex",
+                     "manuscript/revised_manuscript.tex",
+                     "manuscript/dengue_ews_manuscript.tex"]:
+            p = os.path.join(repo, cand)
+            if os.path.exists(p):
+                tex = p; break
+    if not tex:
+        add_node(g, "Manuscript:none", "Manuscript", found=False, requested=manuscript_path)
         return None
     src = _read(tex)
     rel = os.path.relpath(tex, repo)
+    sha = hashlib.sha256(src.encode("utf-8", "ignore")).hexdigest()[:16]
+    g["meta"]["manuscript_path"] = rel
+    g["meta"]["manuscript_sha256_16"] = sha
     mid = add_node(g, f"Manuscript:{rel}", "Manuscript", path=rel, found=True,
-                   n_chars=len(src), abstract_words=_abstract_words(src))
+                   sha256_16=sha, n_chars=len(src), abstract_words=_abstract_words(src))
     # sections
     for m in SECTION_RE.finditer(src):
         add_node(g, f"Section:{m.group(1)[:60]}", "ManuscriptSection", title=m.group(1)[:120])
@@ -212,10 +243,10 @@ def ingest_analyses(g, repo):
     add_edge(g, "Analysis:matched_climate_ablation", "ABLATES", "Model:M5_no_climate", why="climate block removed, independently refit")
 
 
-def build_graph(repo):
+def build_graph(repo, manuscript_path=None):
     g = new_graph()
     ingest_git(g, repo)
-    ingest_manuscript(g, repo)
+    ingest_manuscript(g, repo, manuscript_path=manuscript_path)
     ingest_results(g, repo)
     ingest_scripts(g, repo)
     ingest_audit_docs(g, repo)

@@ -11,8 +11,8 @@ from knowledge_graph import ingest
 from agent_graph import agents
 
 
-def run(repo):
-    g = ingest.build_graph(repo)
+def run(repo, manuscript_path=None):
+    g = ingest.build_graph(repo, manuscript_path=manuscript_path)
     ingest.save_graph(g, repo)
     results = [fn(g, repo) for fn in agents.ALL_AGENTS]
     # SUBMISSION READY only if no FAIL gate. NOT_VERIFIED/PARTIAL do not FAIL the build but
@@ -22,6 +22,8 @@ def run(repo):
     report = {
         "repo": os.path.abspath(repo),
         "generated": datetime.datetime.utcnow().isoformat() + "Z",
+        "manuscript_audited": g["meta"].get("manuscript_path"),
+        "manuscript_sha256_16": g["meta"].get("manuscript_sha256_16"),
         "graph": g["meta"]["counts"],
         "gates": [{"name": r["name"], "status": r["status"],
                    "n_findings": len(r["findings"]), "findings": r["findings"]} for r in results],
@@ -84,9 +86,13 @@ def print_summary(results, report):
 def main(argv=None):
     ap = argparse.ArgumentParser(description="Deterministic KG+Agent audit")
     ap.add_argument("--repo", default=".")
+    ap.add_argument("--manuscript", default=None,
+                    help="explicit manuscript .tex to audit (R2 s3); e.g. manuscript_v43/revised_manuscript.tex")
     ap.add_argument("--json", action="store_true", help="print full JSON report")
     a = ap.parse_args(argv)
-    g, results, report = run(a.repo)
+    g, results, report = run(a.repo, manuscript_path=a.manuscript)
+    if report.get("manuscript_audited"):
+        print(f"manuscript audited: {report['manuscript_audited']} (sha {report['manuscript_sha256_16']})")
     write_outputs(a.repo, g, results, report)
     if a.json:
         print(json.dumps(report, indent=2, default=str))

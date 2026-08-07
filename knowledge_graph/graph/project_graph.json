@@ -3,8 +3,8 @@
   "Project:srilanka-dengue-ews-calibration": {
    "id": "Project:srilanka-dengue-ews-calibration",
    "type": "Project",
-   "branch": "agent/v44-geomatics-integration",
-   "head": "6c6f1b6",
+   "branch": "agent/v44-round2-impl",
+   "head": "87b569d",
    "dirty": true
   },
   "GitTag:alt-stats-plan-v1": {
@@ -30,6 +30,20 @@
    "type": "GitTag",
    "commit": "8d76cd6",
    "date": "2026-07-16 15:33:43 -0400"
+  },
+  "GitCommit:87b569d": {
+   "id": "GitCommit:87b569d",
+   "type": "GitCommit",
+   "author": "Ganesh Shiwakoti",
+   "date": "2026-08-07 00:35:08 -0400",
+   "subject": "Add Claude v44 round-2 real-LaTeX audit and M6 execution prompt"
+  },
+  "GitCommit:9a9bd5e": {
+   "id": "GitCommit:9a9bd5e",
+   "type": "GitCommit",
+   "author": "Ganesh Shiwakoti",
+   "date": "2026-08-07 00:20:14 -0400",
+   "subject": "v44 s2-s3: harden KG+Agent (semantic contradiction detector, honest NOT_VERIFIED statuses, 6 regression tests)"
   },
   "GitCommit:6c6f1b6": {
    "id": "GitCommit:6c6f1b6",
@@ -297,25 +311,12 @@
    "date": "2026-06-18 20:07:06 -0400",
    "subject": "Add paper strategy reframe memo"
   },
-  "GitCommit:2c7c095": {
-   "id": "GitCommit:2c7c095",
-   "type": "GitCommit",
-   "author": "Ganesh Shiwakoti",
-   "date": "2026-06-18 19:49:21 -0400",
-   "subject": "Add Colombia horizon sensitivity analysis"
-  },
-  "GitCommit:04346fa": {
-   "id": "GitCommit:04346fa",
-   "type": "GitCommit",
-   "author": "Ganesh Shiwakoti",
-   "date": "2026-06-18 19:17:23 -0400",
-   "subject": "Add Colombia horizon sensitivity specification"
-  },
   "Manuscript:manuscript_v43/revised_manuscript.tex": {
    "id": "Manuscript:manuscript_v43/revised_manuscript.tex",
    "type": "Manuscript",
    "path": "manuscript_v43/revised_manuscript.tex",
    "found": true,
+   "sha256_16": "60fa9b3632ad5c0d",
    "n_chars": 95638,
    "abstract_words": 299,
    "cited_keys": [
@@ -652,148 +653,180 @@
    "type": "ManuscriptSection",
    "title": "S19 Table. Full threshold-free proper-score results"
   },
-  "Reference:Lowe2021": {
-   "id": "Reference:Lowe2021",
-   "type": "Reference"
-  },
-  "Reference:Wolff2019": {
-   "id": "Reference:Wolff2019",
-   "type": "Reference"
-  },
-  "Reference:Baharom2022": {
-   "id": "Reference:Baharom2022",
-   "type": "Reference"
-  },
-  "Reference:Gasparrini2011": {
-   "id": "Reference:Gasparrini2011",
-   "type": "Reference"
-  },
-  "Reference:Gasparrini2010": {
-   "id": "Reference:Gasparrini2010",
-   "type": "Reference"
-  },
-  "Reference:Huber2018": {
-   "id": "Reference:Huber2018",
-   "type": "Reference"
-  },
-  "Reference:Beal2025": {
-   "id": "Reference:Beal2025",
-   "type": "Reference"
-  },
-  "Reference:ValleDelCauca2024": {
-   "id": "Reference:ValleDelCauca2024",
-   "type": "Reference"
-  },
-  "Reference:Campbell2026": {
-   "id": "Reference:Campbell2026",
-   "type": "Reference"
-  },
-  "Reference:ColonGonzalez2021": {
-   "id": "Reference:ColonGonzalez2021",
-   "type": "Reference"
-  },
-  "Reference:CameronGelbachMiller2008": {
-   "id": "Reference:CameronGelbachMiller2008",
-   "type": "Reference"
-  },
-  "Reference:Funk2015": {
-   "id": "Reference:Funk2015",
-   "type": "Reference"
-  },
-  "Reference:OpenDengue2024": {
-   "id": "Reference:OpenDengue2024",
-   "type": "Reference"
-  },
-  "Reference:ERA5LandCDS": {
-   "id": "Reference:ERA5LandCDS",
-   "type": "Reference"
-  },
-  "Reference:Collins2024TRIPODAI": {
-   "id": "Reference:Collins2024TRIPODAI",
-   "type": "Reference"
-  },
-  "Reference:HussainAlkhateeb2021": {
-   "id": "Reference:HussainAlkhateeb2021",
-   "type": "Reference"
-  },
   "Reference:Moons2019": {
    "id": "Reference:Moons2019",
-   "type": "Reference"
-  },
-  "Reference:HDXCODABSriLanka": {
-   "id": "Reference:HDXCODABSriLanka",
-   "type": "Reference"
-  },
-  "Reference:Vickers2023": {
-   "id": "Reference:Vickers2023",
-   "type": "Reference"
-  },
-  "Reference:Sangkaew2026": {
-   "id": "Reference:Sangkaew2026",
-   "type": "Reference"
-  },
-  "Reference:Vickers2016": {
-   "id": "Reference:Vickers2016",
-   "type": "Reference"
-  },
-  "Reference:Leung2022": {
-   "id": "Reference:Leung2022",
-   "type": "Reference"
-  },
-  "Reference:Lowe2013": {
-   "id": "Reference:Lowe2013",
-   "type": "Reference"
-  },
-  "Reference:VanCalster2023": {
-   "id": "Reference:VanCalster2023",
-   "type": "Reference"
-  },
-  "Reference:Tatem2017": {
-   "id": "Reference:Tatem2017",
-   "type": "Reference"
-  },
-  "Reference:SriLankaWER": {
-   "id": "Reference:SriLankaWER",
-   "type": "Reference"
-  },
-  "Reference:Johansson2016": {
-   "id": "Reference:Johansson2016",
-   "type": "Reference"
-  },
-  "Reference:Murphy1985": {
-   "id": "Reference:Murphy1985",
-   "type": "Reference"
-  },
-  "Reference:MunozSabater2021": {
-   "id": "Reference:MunozSabater2021",
-   "type": "Reference"
-  },
-  "Reference:PAHO2023": {
-   "id": "Reference:PAHO2023",
-   "type": "Reference"
-  },
-  "Reference:VanCalster2019": {
-   "id": "Reference:VanCalster2019",
-   "type": "Reference"
-  },
-  "Reference:Benedum2020": {
-   "id": "Reference:Benedum2020",
-   "type": "Reference"
-  },
-  "Reference:Vickers2019": {
-   "id": "Reference:Vickers2019",
    "type": "Reference"
   },
   "Reference:SriLankaCensus2025": {
    "id": "Reference:SriLankaCensus2025",
    "type": "Reference"
   },
-  "Reference:CHIRPS": {
-   "id": "Reference:CHIRPS",
+  "Reference:CameronGelbachMiller2008": {
+   "id": "Reference:CameronGelbachMiller2008",
+   "type": "Reference"
+  },
+  "Reference:Sesay2026": {
+   "id": "Reference:Sesay2026",
+   "type": "Reference"
+  },
+  "Reference:VanCalster2019": {
+   "id": "Reference:VanCalster2019",
+   "type": "Reference"
+  },
+  "Reference:Gasparrini2010": {
+   "id": "Reference:Gasparrini2010",
+   "type": "Reference"
+  },
+  "Reference:HussainAlkhateeb2021": {
+   "id": "Reference:HussainAlkhateeb2021",
+   "type": "Reference"
+  },
+  "Reference:SriLankaWER": {
+   "id": "Reference:SriLankaWER",
+   "type": "Reference"
+  },
+  "Reference:Huber2018": {
+   "id": "Reference:Huber2018",
+   "type": "Reference"
+  },
+  "Reference:Funk2015": {
+   "id": "Reference:Funk2015",
+   "type": "Reference"
+  },
+  "Reference:Collins2024TRIPODAI": {
+   "id": "Reference:Collins2024TRIPODAI",
+   "type": "Reference"
+  },
+  "Reference:EWARScsd": {
+   "id": "Reference:EWARScsd",
+   "type": "Reference"
+  },
+  "Reference:vonElm2007": {
+   "id": "Reference:vonElm2007",
    "type": "Reference"
   },
   "Reference:Mordecai2017": {
    "id": "Reference:Mordecai2017",
+   "type": "Reference"
+  },
+  "Reference:Beal2025": {
+   "id": "Reference:Beal2025",
+   "type": "Reference"
+  },
+  "Reference:Leung2022": {
+   "id": "Reference:Leung2022",
+   "type": "Reference"
+  },
+  "Reference:SteyerbergVergouwe2014": {
+   "id": "Reference:SteyerbergVergouwe2014",
+   "type": "Reference"
+  },
+  "Reference:Tatem2017": {
+   "id": "Reference:Tatem2017",
+   "type": "Reference"
+  },
+  "Reference:Binuya2022": {
+   "id": "Reference:Binuya2022",
+   "type": "Reference"
+  },
+  "Reference:Lowe2021": {
+   "id": "Reference:Lowe2021",
+   "type": "Reference"
+  },
+  "Reference:ColonGonzalez2021": {
+   "id": "Reference:ColonGonzalez2021",
+   "type": "Reference"
+  },
+  "Reference:Sangkaew2026": {
+   "id": "Reference:Sangkaew2026",
+   "type": "Reference"
+  },
+  "Reference:Johansson2016": {
+   "id": "Reference:Johansson2016",
+   "type": "Reference"
+  },
+  "Reference:WorldPop2025": {
+   "id": "Reference:WorldPop2025",
+   "type": "Reference"
+  },
+  "Reference:Murphy1985": {
+   "id": "Reference:Murphy1985",
+   "type": "Reference"
+  },
+  "Reference:PAHO2023": {
+   "id": "Reference:PAHO2023",
+   "type": "Reference"
+  },
+  "Reference:Vickers2023": {
+   "id": "Reference:Vickers2023",
+   "type": "Reference"
+  },
+  "Reference:SaitoRehmsmeier2015": {
+   "id": "Reference:SaitoRehmsmeier2015",
+   "type": "Reference"
+  },
+  "Reference:VanCalster2023": {
+   "id": "Reference:VanCalster2023",
+   "type": "Reference"
+  },
+  "Reference:ERA5LandCDS": {
+   "id": "Reference:ERA5LandCDS",
+   "type": "Reference"
+  },
+  "Reference:HDXCODABSriLanka": {
+   "id": "Reference:HDXCODABSriLanka",
+   "type": "Reference"
+  },
+  "Reference:Benedum2020": {
+   "id": "Reference:Benedum2020",
+   "type": "Reference"
+  },
+  "Reference:CHIRPS": {
+   "id": "Reference:CHIRPS",
+   "type": "Reference"
+  },
+  "Reference:Gasparrini2011": {
+   "id": "Reference:Gasparrini2011",
+   "type": "Reference"
+  },
+  "Reference:Campbell2026": {
+   "id": "Reference:Campbell2026",
+   "type": "Reference"
+  },
+  "Reference:Vickers2016": {
+   "id": "Reference:Vickers2016",
+   "type": "Reference"
+  },
+  "Reference:Vickers2019": {
+   "id": "Reference:Vickers2019",
+   "type": "Reference"
+  },
+  "Reference:Lowe2013": {
+   "id": "Reference:Lowe2013",
+   "type": "Reference"
+  },
+  "Reference:Tozan2023": {
+   "id": "Reference:Tozan2023",
+   "type": "Reference"
+  },
+  "Reference:Wolff2019": {
+   "id": "Reference:Wolff2019",
+   "type": "Reference"
+  },
+  "Reference:OpenDengue2024": {
+   "id": "Reference:OpenDengue2024",
+   "type": "Reference"
+  },
+  "Reference:MunozSabater2021": {
+   "id": "Reference:MunozSabater2021",
+   "type": "Reference"
+  },
+  "Reference:Vickers2006": {
+   "id": "Reference:Vickers2006",
+   "type": "Reference"
+  },
+  "Reference:Baharom2022": {
+   "id": "Reference:Baharom2022",
    "type": "Reference"
   },
   "Reference:Johansson2019": {
@@ -804,251 +837,219 @@
    "id": "Reference:Clarke2024OpenDengue",
    "type": "Reference"
   },
-  "Reference:EWARScsd": {
-   "id": "Reference:EWARScsd",
+  "Reference:ValleDelCauca2024": {
+   "id": "Reference:ValleDelCauca2024",
    "type": "Reference"
   },
-  "Reference:Vickers2006": {
-   "id": "Reference:Vickers2006",
-   "type": "Reference"
-  },
-  "Reference:Sesay2026": {
-   "id": "Reference:Sesay2026",
-   "type": "Reference"
-  },
-  "Reference:WorldPop2025": {
-   "id": "Reference:WorldPop2025",
-   "type": "Reference"
-  },
-  "Reference:SteyerbergVergouwe2014": {
-   "id": "Reference:SteyerbergVergouwe2014",
-   "type": "Reference"
-  },
-  "Reference:SaitoRehmsmeier2015": {
-   "id": "Reference:SaitoRehmsmeier2015",
-   "type": "Reference"
-  },
-  "Reference:Tozan2023": {
-   "id": "Reference:Tozan2023",
-   "type": "Reference"
-  },
-  "Reference:vonElm2007": {
-   "id": "Reference:vonElm2007",
-   "type": "Reference"
-  },
-  "Reference:Binuya2022": {
-   "id": "Reference:Binuya2022",
-   "type": "Reference"
-  },
-  "DOI:10.6084/m9.figshare.24259573)": {
-   "id": "DOI:10.6084/m9.figshare.24259573)",
+  "DOI:10.5194/essd-13-4349-2021.": {
+   "id": "DOI:10.5194/essd-13-4349-2021.",
    "type": "DOI",
-   "value": "10.6084/m9.figshare.24259573)"
-  },
-  "DOI:10.6084/m9.figshare.24259573.": {
-   "id": "DOI:10.6084/m9.figshare.24259573.",
-   "type": "DOI",
-   "value": "10.6084/m9.figshare.24259573."
-  },
-  "DOI:10.18637/jss.v043.i08.": {
-   "id": "DOI:10.18637/jss.v043.i08.",
-   "type": "DOI",
-   "value": "10.18637/jss.v043.i08."
-  },
-  "DOI:10.4269/ajtmh.22-0471.": {
-   "id": "DOI:10.4269/ajtmh.22-0471.",
-   "type": "DOI",
-   "value": "10.4269/ajtmh.22-0471."
-  },
-  "DOI:10.1371/journal.pone.0118432.": {
-   "id": "DOI:10.1371/journal.pone.0118432.",
-   "type": "DOI",
-   "value": "10.1371/journal.pone.0118432."
-  },
-  "DOI:10.1162/rest.90.3.414.": {
-   "id": "DOI:10.1162/rest.90.3.414.",
-   "type": "DOI",
-   "value": "10.1162/rest.90.3.414."
-  },
-  "DOI:10.1371/journal.pntd.0008710.": {
-   "id": "DOI:10.1371/journal.pntd.0008710.",
-   "type": "DOI",
-   "value": "10.1371/journal.pntd.0008710."
-  },
-  "DOI:10.24381/cds.e2161bac.": {
-   "id": "DOI:10.24381/cds.e2161bac.",
-   "type": "DOI",
-   "value": "10.24381/cds.e2161bac."
-  },
-  "DOI:10.1371/journal.pntd.0009686.": {
-   "id": "DOI:10.1371/journal.pntd.0009686.",
-   "type": "DOI",
-   "value": "10.1371/journal.pntd.0009686."
-  },
-  "DOI:10.3389/fpubh.2024.1323618.": {
-   "id": "DOI:10.3389/fpubh.2024.1323618.",
-   "type": "DOI",
-   "value": "10.3389/fpubh.2024.1323618."
-  },
-  "DOI:10.1016/S2542-5196(20)30292-8.": {
-   "id": "DOI:10.1016/S2542-5196(20)30292-8.",
-   "type": "DOI",
-   "value": "10.1016/S2542-5196(20)30292-8."
-  },
-  "DOI:10.2147/RMHP.S361106.": {
-   "id": "DOI:10.2147/RMHP.S361106.",
-   "type": "DOI",
-   "value": "10.2147/RMHP.S361106."
-  },
-  "DOI:10.1029/2024GH001325.": {
-   "id": "DOI:10.1029/2024GH001325.",
-   "type": "DOI",
-   "value": "10.1029/2024GH001325."
-  },
-  "DOI:10.1175/1520-0493(1985)113": {
-   "id": "DOI:10.1175/1520-0493(1985)113",
-   "type": "DOI",
-   "value": "10.1175/1520-0493(1985)113"
-  },
-  "DOI:10.1002/sim.5549.": {
-   "id": "DOI:10.1002/sim.5549.",
-   "type": "DOI",
-   "value": "10.1002/sim.5549."
-  },
-  "DOI:10.1038/srep33707.": {
-   "id": "DOI:10.1038/srep33707.",
-   "type": "DOI",
-   "value": "10.1038/srep33707."
-  },
-  "DOI:10.1038/s41597-024-03120-7.": {
-   "id": "DOI:10.1038/s41597-024-03120-7.",
-   "type": "DOI",
-   "value": "10.1038/s41597-024-03120-7."
-  },
-  "DOI:10.1136/bmj.i6.": {
-   "id": "DOI:10.1136/bmj.i6.",
-   "type": "DOI",
-   "value": "10.1136/bmj.i6."
+   "value": "10.5194/essd-13-4349-2021."
   },
   "DOI:10.1038/sdata.2015.66.": {
    "id": "DOI:10.1038/sdata.2015.66.",
    "type": "DOI",
    "value": "10.1038/sdata.2015.66."
   },
-  "DOI:10.7326/M18-1376.": {
-   "id": "DOI:10.7326/M18-1376.",
+  "DOI:10.6084/m9.figshare.24259573.": {
+   "id": "DOI:10.6084/m9.figshare.24259573.",
    "type": "DOI",
-   "value": "10.7326/M18-1376."
+   "value": "10.6084/m9.figshare.24259573."
   },
-  "DOI:10.1371/journal.pgph.0005404.": {
-   "id": "DOI:10.1371/journal.pgph.0005404.",
+  "DOI:10.1016/S2542-5196(20)30292-8.": {
+   "id": "DOI:10.1016/S2542-5196(20)30292-8.",
    "type": "DOI",
-   "value": "10.1371/journal.pgph.0005404."
+   "value": "10.1016/S2542-5196(20)30292-8."
   },
-  "DOI:10.1371/journal.pntd.0010631.": {
-   "id": "DOI:10.1371/journal.pntd.0010631.",
+  "DOI:10.1175/1520-0493(1985)113": {
+   "id": "DOI:10.1175/1520-0493(1985)113",
    "type": "DOI",
-   "value": "10.1371/journal.pntd.0010631."
-  },
-  "DOI:10.1371/journal.pntd.0005568.": {
-   "id": "DOI:10.1371/journal.pntd.0005568.",
-   "type": "DOI",
-   "value": "10.1371/journal.pntd.0005568."
-  },
-  "DOI:10.1016/S0140-6736(07)61602-X.": {
-   "id": "DOI:10.1016/S0140-6736(07)61602-X.",
-   "type": "DOI",
-   "value": "10.1016/S0140-6736(07)61602-X."
-  },
-  "DOI:10.3201/eid3011.241031.": {
-   "id": "DOI:10.3201/eid3011.241031.",
-   "type": "DOI",
-   "value": "10.3201/eid3011.241031."
+   "value": "10.1175/1520-0493(1985)113"
   },
   "DOI:10.1186/s41512-019-0064-7.": {
    "id": "DOI:10.1186/s41512-019-0064-7.",
    "type": "DOI",
    "value": "10.1186/s41512-019-0064-7."
   },
-  "DOI:10.1186/s12916-023-02779-w.": {
-   "id": "DOI:10.1186/s12916-023-02779-w.",
+  "DOI:10.1371/journal.pntd.0009686.": {
+   "id": "DOI:10.1371/journal.pntd.0009686.",
    "type": "DOI",
-   "value": "10.1186/s12916-023-02779-w."
+   "value": "10.1371/journal.pntd.0009686."
   },
-  "DOI:10.1002/sim.3940.": {
-   "id": "DOI:10.1002/sim.3940.",
+  "DOI:10.4269/ajtmh.22-0471.": {
+   "id": "DOI:10.4269/ajtmh.22-0471.",
    "type": "DOI",
-   "value": "10.1002/sim.3940."
+   "value": "10.4269/ajtmh.22-0471."
   },
-  "DOI:10.1371/journal.pdig.0001171.": {
-   "id": "DOI:10.1371/journal.pdig.0001171.",
+  "DOI:10.2147/RMHP.S361106.": {
+   "id": "DOI:10.2147/RMHP.S361106.",
    "type": "DOI",
-   "value": "10.1371/journal.pdig.0001171."
+   "value": "10.2147/RMHP.S361106."
   },
-  "DOI:10.1186/s41512-023-00148-y.": {
-   "id": "DOI:10.1186/s41512-023-00148-y.",
+  "DOI:10.1162/rest.90.3.414.": {
+   "id": "DOI:10.1162/rest.90.3.414.",
    "type": "DOI",
-   "value": "10.1186/s41512-023-00148-y."
-  },
-  "DOI:10.7326/M18-1377.": {
-   "id": "DOI:10.7326/M18-1377.",
-   "type": "DOI",
-   "value": "10.7326/M18-1377."
-  },
-  "DOI:10.1073/pnas.1909865116.": {
-   "id": "DOI:10.1073/pnas.1909865116.",
-   "type": "DOI",
-   "value": "10.1073/pnas.1909865116."
-  },
-  "DOI:10.1177/0272989X06295361.": {
-   "id": "DOI:10.1177/0272989X06295361.",
-   "type": "DOI",
-   "value": "10.1177/0272989X06295361."
-  },
-  "DOI:10.1186/s12874-022-01801-8.": {
-   "id": "DOI:10.1186/s12874-022-01801-8.",
-   "type": "DOI",
-   "value": "10.1186/s12874-022-01801-8."
-  },
-  "DOI:10.1371/journal.pntd.0006451.": {
-   "id": "DOI:10.1371/journal.pntd.0006451.",
-   "type": "DOI",
-   "value": "10.1371/journal.pntd.0006451."
-  },
-  "DOI:10.1136/bmj-2023-078378.": {
-   "id": "DOI:10.1136/bmj-2023-078378.",
-   "type": "DOI",
-   "value": "10.1136/bmj-2023-078378."
-  },
-  "DOI:10.1093/eurheartj/ehu207.": {
-   "id": "DOI:10.1093/eurheartj/ehu207.",
-   "type": "DOI",
-   "value": "10.1093/eurheartj/ehu207."
-  },
-  "DOI:10.1038/sdata.2017.4.": {
-   "id": "DOI:10.1038/sdata.2017.4.",
-   "type": "DOI",
-   "value": "10.1038/sdata.2017.4."
+   "value": "10.1162/rest.90.3.414."
   },
   "DOI:10.1371/journal.pmed.1003542.": {
    "id": "DOI:10.1371/journal.pmed.1003542.",
    "type": "DOI",
    "value": "10.1371/journal.pmed.1003542."
   },
-  "DOI:10.1186/s12916-019-1466-7.": {
-   "id": "DOI:10.1186/s12916-019-1466-7.",
+  "DOI:10.1371/journal.pntd.0008710.": {
+   "id": "DOI:10.1371/journal.pntd.0008710.",
    "type": "DOI",
-   "value": "10.1186/s12916-019-1466-7."
+   "value": "10.1371/journal.pntd.0008710."
+  },
+  "DOI:10.7326/M18-1376.": {
+   "id": "DOI:10.7326/M18-1376.",
+   "type": "DOI",
+   "value": "10.7326/M18-1376."
+  },
+  "DOI:10.1038/s41597-024-03120-7.": {
+   "id": "DOI:10.1038/s41597-024-03120-7.",
+   "type": "DOI",
+   "value": "10.1038/s41597-024-03120-7."
+  },
+  "DOI:10.1002/sim.3940.": {
+   "id": "DOI:10.1002/sim.3940.",
+   "type": "DOI",
+   "value": "10.1002/sim.3940."
+  },
+  "DOI:10.1371/journal.pgph.0005404.": {
+   "id": "DOI:10.1371/journal.pgph.0005404.",
+   "type": "DOI",
+   "value": "10.1371/journal.pgph.0005404."
+  },
+  "DOI:10.1038/srep33707.": {
+   "id": "DOI:10.1038/srep33707.",
+   "type": "DOI",
+   "value": "10.1038/srep33707."
+  },
+  "DOI:10.1002/sim.5549.": {
+   "id": "DOI:10.1002/sim.5549.",
+   "type": "DOI",
+   "value": "10.1002/sim.5549."
+  },
+  "DOI:10.1136/bmj-2023-078378.": {
+   "id": "DOI:10.1136/bmj-2023-078378.",
+   "type": "DOI",
+   "value": "10.1136/bmj-2023-078378."
+  },
+  "DOI:10.1371/journal.pone.0118432.": {
+   "id": "DOI:10.1371/journal.pone.0118432.",
+   "type": "DOI",
+   "value": "10.1371/journal.pone.0118432."
+  },
+  "DOI:10.1186/s41512-023-00148-y.": {
+   "id": "DOI:10.1186/s41512-023-00148-y.",
+   "type": "DOI",
+   "value": "10.1186/s41512-023-00148-y."
+  },
+  "DOI:10.18637/jss.v043.i08.": {
+   "id": "DOI:10.18637/jss.v043.i08.",
+   "type": "DOI",
+   "value": "10.18637/jss.v043.i08."
+  },
+  "DOI:10.1186/s12874-022-01801-8.": {
+   "id": "DOI:10.1186/s12874-022-01801-8.",
+   "type": "DOI",
+   "value": "10.1186/s12874-022-01801-8."
+  },
+  "DOI:10.1016/S0140-6736(07)61602-X.": {
+   "id": "DOI:10.1016/S0140-6736(07)61602-X.",
+   "type": "DOI",
+   "value": "10.1016/S0140-6736(07)61602-X."
+  },
+  "DOI:10.1073/pnas.1909865116.": {
+   "id": "DOI:10.1073/pnas.1909865116.",
+   "type": "DOI",
+   "value": "10.1073/pnas.1909865116."
   },
   "DOI:10.1371/journal.pgph.0005867.": {
    "id": "DOI:10.1371/journal.pgph.0005867.",
    "type": "DOI",
    "value": "10.1371/journal.pgph.0005867."
   },
-  "DOI:10.5194/essd-13-4349-2021.": {
-   "id": "DOI:10.5194/essd-13-4349-2021.",
+  "DOI:10.7326/M18-1377.": {
+   "id": "DOI:10.7326/M18-1377.",
    "type": "DOI",
-   "value": "10.5194/essd-13-4349-2021."
+   "value": "10.7326/M18-1377."
+  },
+  "DOI:10.6084/m9.figshare.24259573)": {
+   "id": "DOI:10.6084/m9.figshare.24259573)",
+   "type": "DOI",
+   "value": "10.6084/m9.figshare.24259573)"
+  },
+  "DOI:10.1177/0272989X06295361.": {
+   "id": "DOI:10.1177/0272989X06295361.",
+   "type": "DOI",
+   "value": "10.1177/0272989X06295361."
+  },
+  "DOI:10.1186/s12916-023-02779-w.": {
+   "id": "DOI:10.1186/s12916-023-02779-w.",
+   "type": "DOI",
+   "value": "10.1186/s12916-023-02779-w."
+  },
+  "DOI:10.24381/cds.e2161bac.": {
+   "id": "DOI:10.24381/cds.e2161bac.",
+   "type": "DOI",
+   "value": "10.24381/cds.e2161bac."
+  },
+  "DOI:10.3201/eid3011.241031.": {
+   "id": "DOI:10.3201/eid3011.241031.",
+   "type": "DOI",
+   "value": "10.3201/eid3011.241031."
+  },
+  "DOI:10.1371/journal.pdig.0001171.": {
+   "id": "DOI:10.1371/journal.pdig.0001171.",
+   "type": "DOI",
+   "value": "10.1371/journal.pdig.0001171."
+  },
+  "DOI:10.1029/2024GH001325.": {
+   "id": "DOI:10.1029/2024GH001325.",
+   "type": "DOI",
+   "value": "10.1029/2024GH001325."
+  },
+  "DOI:10.1093/eurheartj/ehu207.": {
+   "id": "DOI:10.1093/eurheartj/ehu207.",
+   "type": "DOI",
+   "value": "10.1093/eurheartj/ehu207."
+  },
+  "DOI:10.1371/journal.pntd.0005568.": {
+   "id": "DOI:10.1371/journal.pntd.0005568.",
+   "type": "DOI",
+   "value": "10.1371/journal.pntd.0005568."
+  },
+  "DOI:10.3389/fpubh.2024.1323618.": {
+   "id": "DOI:10.3389/fpubh.2024.1323618.",
+   "type": "DOI",
+   "value": "10.3389/fpubh.2024.1323618."
+  },
+  "DOI:10.1371/journal.pntd.0006451.": {
+   "id": "DOI:10.1371/journal.pntd.0006451.",
+   "type": "DOI",
+   "value": "10.1371/journal.pntd.0006451."
+  },
+  "DOI:10.1371/journal.pntd.0010631.": {
+   "id": "DOI:10.1371/journal.pntd.0010631.",
+   "type": "DOI",
+   "value": "10.1371/journal.pntd.0010631."
+  },
+  "DOI:10.1038/sdata.2017.4.": {
+   "id": "DOI:10.1038/sdata.2017.4.",
+   "type": "DOI",
+   "value": "10.1038/sdata.2017.4."
+  },
+  "DOI:10.1136/bmj.i6.": {
+   "id": "DOI:10.1136/bmj.i6.",
+   "type": "DOI",
+   "value": "10.1136/bmj.i6."
+  },
+  "DOI:10.1186/s12916-019-1466-7.": {
+   "id": "DOI:10.1186/s12916-019-1466-7.",
+   "type": "DOI",
+   "value": "10.1186/s12916-019-1466-7."
   },
   "NumericClaim:manuscript_v43/revised_manuscript.tex:6:12:+0.0008": {
    "id": "NumericClaim:manuscript_v43/revised_manuscript.tex:6:12:+0.0008",
@@ -5477,601 +5478,601 @@
    "id": "AuditDoc:audit_v42/01_colombia_climate_specification_resolution.md",
    "type": "AuditFinding",
    "path": "audit_v42/01_colombia_climate_specification_resolution.md",
-   "mtime": 1786075819.940678
+   "mtime": 1786077577.1357195
   },
   "AuditDoc:audit_v42/03_analysis_chronology.md": {
    "id": "AuditDoc:audit_v42/03_analysis_chronology.md",
    "type": "AuditFinding",
    "path": "audit_v42/03_analysis_chronology.md",
-   "mtime": 1786075819.940678
+   "mtime": 1786077577.1367195
   },
   "AuditDoc:audit_v42/00_inventory.md": {
    "id": "AuditDoc:audit_v42/00_inventory.md",
    "type": "AuditFinding",
    "path": "audit_v42/00_inventory.md",
-   "mtime": 1786075819.939678
+   "mtime": 1786077577.1357195
   },
   "AuditDoc:audit_v42/02_headline_results_matrix.md": {
    "id": "AuditDoc:audit_v42/02_headline_results_matrix.md",
    "type": "AuditFinding",
    "path": "audit_v42/02_headline_results_matrix.md",
-   "mtime": 1786075819.940678
+   "mtime": 1786077577.1367195
   },
   "AuditDoc:docs/study_decision_log.md": {
    "id": "AuditDoc:docs/study_decision_log.md",
    "type": "AuditFinding",
    "path": "docs/study_decision_log.md",
-   "mtime": 1786075820.381688
+   "mtime": 1786077577.501728
   },
   "AuditDoc:docs/osf_prereg_skeleton.md": {
    "id": "AuditDoc:docs/osf_prereg_skeleton.md",
    "type": "AuditFinding",
    "path": "docs/osf_prereg_skeleton.md",
-   "mtime": 1786075820.3676877
+   "mtime": 1786077577.4917278
   },
   "AuditDoc:docs/pilot_h4_75pct_calibration_dca_report.md": {
    "id": "AuditDoc:docs/pilot_h4_75pct_calibration_dca_report.md",
    "type": "AuditFinding",
    "path": "docs/pilot_h4_75pct_calibration_dca_report.md",
-   "mtime": 1786075820.3696878
+   "mtime": 1786077577.493728
   },
   "AuditDoc:docs/colombia_chirps_full_precipitation_report.md": {
    "id": "AuditDoc:docs/colombia_chirps_full_precipitation_report.md",
    "type": "AuditFinding",
    "path": "docs/colombia_chirps_full_precipitation_report.md",
-   "mtime": 1786075820.334687
+   "mtime": 1786077577.4677272
   },
   "AuditDoc:docs/M6.md": {
    "id": "AuditDoc:docs/M6.md",
    "type": "AuditFinding",
    "path": "docs/M6.md",
-   "mtime": 1786075820.3246868
+   "mtime": 1786077577.457727
   },
   "AuditDoc:docs/colombia_outbreak_threshold_sensitivity_spec.md": {
    "id": "AuditDoc:docs/colombia_outbreak_threshold_sensitivity_spec.md",
    "type": "AuditFinding",
    "path": "docs/colombia_outbreak_threshold_sensitivity_spec.md",
-   "mtime": 1786075820.3406873
+   "mtime": 1786077577.4747274
   },
   "AuditDoc:docs/colombia_era5_temperature_smoke_report.md": {
    "id": "AuditDoc:docs/colombia_era5_temperature_smoke_report.md",
    "type": "AuditFinding",
    "path": "docs/colombia_era5_temperature_smoke_report.md",
-   "mtime": 1786075820.3356872
+   "mtime": 1786077577.4687274
   },
   "AuditDoc:docs/analysis_table_linkage_v2_date_aligned_report.md": {
    "id": "AuditDoc:docs/analysis_table_linkage_v2_date_aligned_report.md",
    "type": "AuditFinding",
    "path": "docs/analysis_table_linkage_v2_date_aligned_report.md",
-   "mtime": 1786075820.3266869
+   "mtime": 1786077577.459727
   },
   "AuditDoc:docs/colombia_boundary_climate_feasibility_report.md": {
    "id": "AuditDoc:docs/colombia_boundary_climate_feasibility_report.md",
    "type": "AuditFinding",
    "path": "docs/colombia_boundary_climate_feasibility_report.md",
-   "mtime": 1786075820.333687
+   "mtime": 1786077577.4667273
   },
   "AuditDoc:docs/pilot_existing_model_calibration_dca_spec.md": {
    "id": "AuditDoc:docs/pilot_existing_model_calibration_dca_spec.md",
    "type": "AuditFinding",
    "path": "docs/pilot_existing_model_calibration_dca_spec.md",
-   "mtime": 1786075820.3696878
+   "mtime": 1786077577.492728
   },
   "AuditDoc:docs/team_writing_handoff_v1.md": {
    "id": "AuditDoc:docs/team_writing_handoff_v1.md",
    "type": "AuditFinding",
    "path": "docs/team_writing_handoff_v1.md",
-   "mtime": 1786075820.3906884
+   "mtime": 1786077577.5037282
   },
   "AuditDoc:docs/colombia_label_specification.md": {
    "id": "AuditDoc:docs/colombia_label_specification.md",
    "type": "AuditFinding",
    "path": "docs/colombia_label_specification.md",
-   "mtime": 1786075820.337687
+   "mtime": 1786077577.4717274
   },
   "AuditDoc:docs/label_horizon_robustness_spec.md": {
    "id": "AuditDoc:docs/label_horizon_robustness_spec.md",
    "type": "AuditFinding",
    "path": "docs/label_horizon_robustness_spec.md",
-   "mtime": 1786075820.3576875
+   "mtime": 1786077577.4827278
   },
   "AuditDoc:docs/hybrid_model_extension_report.md": {
    "id": "AuditDoc:docs/hybrid_model_extension_report.md",
    "type": "AuditFinding",
    "path": "docs/hybrid_model_extension_report.md",
-   "mtime": 1786075820.3556876
+   "mtime": 1786077577.4817276
   },
   "AuditDoc:docs/rdhs_geometry_build_report.md": {
    "id": "AuditDoc:docs/rdhs_geometry_build_report.md",
    "type": "AuditFinding",
    "path": "docs/rdhs_geometry_build_report.md",
-   "mtime": 1786075820.376688
+   "mtime": 1786077577.498728
   },
   "AuditDoc:docs/matched_ablation_90th_percentile_report.md": {
    "id": "AuditDoc:docs/matched_ablation_90th_percentile_report.md",
    "type": "AuditFinding",
    "path": "docs/matched_ablation_90th_percentile_report.md",
-   "mtime": 1786075820.3606877
+   "mtime": 1786077577.4857278
   },
   "AuditDoc:docs/multi_agent_review_response_matrix_latest.md": {
    "id": "AuditDoc:docs/multi_agent_review_response_matrix_latest.md",
    "type": "AuditFinding",
    "path": "docs/multi_agent_review_response_matrix_latest.md",
-   "mtime": 1786075820.3646877
+   "mtime": 1786077577.4887278
   },
   "AuditDoc:docs/hybrid_model_extension_spec.md": {
    "id": "AuditDoc:docs/hybrid_model_extension_spec.md",
    "type": "AuditFinding",
    "path": "docs/hybrid_model_extension_spec.md",
-   "mtime": 1786075820.3566875
+   "mtime": 1786077577.4817276
   },
   "AuditDoc:docs/population_denominator_rescaled_build_report.md": {
    "id": "AuditDoc:docs/population_denominator_rescaled_build_report.md",
    "type": "AuditFinding",
    "path": "docs/population_denominator_rescaled_build_report.md",
-   "mtime": 1786075820.3726878
+   "mtime": 1786077577.495728
   },
   "AuditDoc:docs/mathematical_biomodel_feasibility_memo_v1.md": {
    "id": "AuditDoc:docs/mathematical_biomodel_feasibility_memo_v1.md",
    "type": "AuditFinding",
    "path": "docs/mathematical_biomodel_feasibility_memo_v1.md",
-   "mtime": 1786075820.3626876
+   "mtime": 1786077577.4877279
   },
   "AuditDoc:docs/auc_dnb_confidence_interval_report.md": {
    "id": "AuditDoc:docs/auc_dnb_confidence_interval_report.md",
    "type": "AuditFinding",
    "path": "docs/auc_dnb_confidence_interval_report.md",
-   "mtime": 1786075820.3266869
+   "mtime": 1786077577.4607272
   },
   "AuditDoc:docs/maup_sensitivity_and_spatial_cv_plan.md": {
    "id": "AuditDoc:docs/maup_sensitivity_and_spatial_cv_plan.md",
    "type": "AuditFinding",
    "path": "docs/maup_sensitivity_and_spatial_cv_plan.md",
-   "mtime": 1786075820.3636878
+   "mtime": 1786077577.4887278
   },
   "AuditDoc:docs/colombia_era5_full_temperature_report.md": {
    "id": "AuditDoc:docs/colombia_era5_full_temperature_report.md",
    "type": "AuditFinding",
    "path": "docs/colombia_era5_full_temperature_report.md",
-   "mtime": 1786075820.334687
+   "mtime": 1786077577.4687274
   },
   "AuditDoc:docs/analysis_plan_v2.md": {
    "id": "AuditDoc:docs/analysis_plan_v2.md",
    "type": "AuditFinding",
    "path": "docs/analysis_plan_v2.md",
-   "mtime": 1786075820.325687
+   "mtime": 1786077577.4587271
   },
   "AuditDoc:docs/plos_ntd_submission_requirements_audit_v1.md": {
    "id": "AuditDoc:docs/plos_ntd_submission_requirements_audit_v1.md",
    "type": "AuditFinding",
    "path": "docs/plos_ntd_submission_requirements_audit_v1.md",
-   "mtime": 1786075820.371688
+   "mtime": 1786077577.4947278
   },
   "AuditDoc:docs/climate_data_extraction_handoff_v1.md": {
    "id": "AuditDoc:docs/climate_data_extraction_handoff_v1.md",
    "type": "AuditFinding",
    "path": "docs/climate_data_extraction_handoff_v1.md",
-   "mtime": 1786075820.331687
+   "mtime": 1786077577.4657273
   },
   "AuditDoc:docs/colombia_climate_linkage_smoke_report.md": {
    "id": "AuditDoc:docs/colombia_climate_linkage_smoke_report.md",
    "type": "AuditFinding",
    "path": "docs/colombia_climate_linkage_smoke_report.md",
-   "mtime": 1786075820.334687
+   "mtime": 1786077577.4677272
   },
   "AuditDoc:docs/reference_audit_v1.md": {
    "id": "AuditDoc:docs/reference_audit_v1.md",
    "type": "AuditFinding",
    "path": "docs/reference_audit_v1.md",
-   "mtime": 1786075820.377688
+   "mtime": 1786077577.498728
   },
   "AuditDoc:docs/canonical_R_dlnm_report.md": {
    "id": "AuditDoc:docs/canonical_R_dlnm_report.md",
    "type": "AuditFinding",
    "path": "docs/canonical_R_dlnm_report.md",
-   "mtime": 1786075820.3296869
+   "mtime": 1786077577.462727
   },
   "AuditDoc:docs/probast_tripod_scoring_instrument.md": {
    "id": "AuditDoc:docs/probast_tripod_scoring_instrument.md",
    "type": "AuditFinding",
    "path": "docs/probast_tripod_scoring_instrument.md",
-   "mtime": 1786075820.374688
+   "mtime": 1786077577.496728
   },
   "AuditDoc:docs/climate_exposure_2018_2025_full_build_report.md": {
    "id": "AuditDoc:docs/climate_exposure_2018_2025_full_build_report.md",
    "type": "AuditFinding",
    "path": "docs/climate_exposure_2018_2025_full_build_report.md",
-   "mtime": 1786075820.331687
+   "mtime": 1786077577.4657273
   },
   "AuditDoc:docs/probast_tripod_self_assessment_v1.md": {
    "id": "AuditDoc:docs/probast_tripod_self_assessment_v1.md",
    "type": "AuditFinding",
    "path": "docs/probast_tripod_self_assessment_v1.md",
-   "mtime": 1786075820.374688
+   "mtime": 1786077577.496728
   },
   "AuditDoc:docs/decision_threshold_dnb_robustness_spec.md": {
    "id": "AuditDoc:docs/decision_threshold_dnb_robustness_spec.md",
    "type": "AuditFinding",
    "path": "docs/decision_threshold_dnb_robustness_spec.md",
-   "mtime": 1786075820.3496873
+   "mtime": 1786077577.4777277
   },
   "AuditDoc:docs/opendengue_external_validation_feasibility_spec.md": {
    "id": "AuditDoc:docs/opendengue_external_validation_feasibility_spec.md",
    "type": "AuditFinding",
    "path": "docs/opendengue_external_validation_feasibility_spec.md",
-   "mtime": 1786075820.3656878
+   "mtime": 1786077577.490728
   },
   "AuditDoc:docs/claim_to_evidence_matrix_v1.md": {
    "id": "AuditDoc:docs/claim_to_evidence_matrix_v1.md",
    "type": "AuditFinding",
    "path": "docs/claim_to_evidence_matrix_v1.md",
-   "mtime": 1786075820.330687
+   "mtime": 1786077577.4637272
   },
   "AuditDoc:docs/single_paper_integrated_plan_v1.md": {
    "id": "AuditDoc:docs/single_paper_integrated_plan_v1.md",
    "type": "AuditFinding",
    "path": "docs/single_paper_integrated_plan_v1.md",
-   "mtime": 1786075820.3806882
+   "mtime": 1786077577.5007281
   },
   "AuditDoc:docs/manuscript_peer_review_v1.md": {
    "id": "AuditDoc:docs/manuscript_peer_review_v1.md",
    "type": "AuditFinding",
    "path": "docs/manuscript_peer_review_v1.md",
-   "mtime": 1786075820.3596876
+   "mtime": 1786077577.4847276
   },
   "AuditDoc:docs/rolling_recalibration_extension_spec.md": {
    "id": "AuditDoc:docs/rolling_recalibration_extension_spec.md",
    "type": "AuditFinding",
    "path": "docs/rolling_recalibration_extension_spec.md",
-   "mtime": 1786075820.379688
+   "mtime": 1786077577.499728
   },
   "AuditDoc:docs/population_denominator_dcs_validation_plan.md": {
    "id": "AuditDoc:docs/population_denominator_dcs_validation_plan.md",
    "type": "AuditFinding",
    "path": "docs/population_denominator_dcs_validation_plan.md",
-   "mtime": 1786075820.371688
+   "mtime": 1786077577.4947278
   },
   "AuditDoc:docs/auc_dnb_confidence_interval_spec.md": {
    "id": "AuditDoc:docs/auc_dnb_confidence_interval_spec.md",
    "type": "AuditFinding",
    "path": "docs/auc_dnb_confidence_interval_spec.md",
-   "mtime": 1786075820.3276868
+   "mtime": 1786077577.4607272
   },
   "AuditDoc:docs/colombia_external_replication_build_spec.md": {
    "id": "AuditDoc:docs/colombia_external_replication_build_spec.md",
    "type": "AuditFinding",
    "path": "docs/colombia_external_replication_build_spec.md",
-   "mtime": 1786075820.3356872
+   "mtime": 1786077577.4697273
   },
   "AuditDoc:docs/map_context_and_plan.md": {
    "id": "AuditDoc:docs/map_context_and_plan.md",
    "type": "AuditFinding",
    "path": "docs/map_context_and_plan.md",
-   "mtime": 1786075820.3606877
+   "mtime": 1786077577.4857278
   },
   "AuditDoc:docs/colombia_outbreak_threshold_sensitivity_report.md": {
    "id": "AuditDoc:docs/colombia_outbreak_threshold_sensitivity_report.md",
    "type": "AuditFinding",
    "path": "docs/colombia_outbreak_threshold_sensitivity_report.md",
-   "mtime": 1786075820.3406873
+   "mtime": 1786077577.4747274
   },
   "AuditDoc:docs/decision_threshold_dnb_robustness_report.md": {
    "id": "AuditDoc:docs/decision_threshold_dnb_robustness_report.md",
    "type": "AuditFinding",
    "path": "docs/decision_threshold_dnb_robustness_report.md",
-   "mtime": 1786075820.3496873
+   "mtime": 1786077577.4767275
   },
   "AuditDoc:docs/worldpop_population_denominator_build_report.md": {
    "id": "AuditDoc:docs/worldpop_population_denominator_build_report.md",
    "type": "AuditFinding",
    "path": "docs/worldpop_population_denominator_build_report.md",
-   "mtime": 1786075820.3916883
+   "mtime": 1786077577.5037282
   },
   "AuditDoc:docs/climate_exposure_boundary_week_resolution_report.md": {
    "id": "AuditDoc:docs/climate_exposure_boundary_week_resolution_report.md",
    "type": "AuditFinding",
    "path": "docs/climate_exposure_boundary_week_resolution_report.md",
-   "mtime": 1786075820.332687
+   "mtime": 1786077577.4667273
   },
   "AuditDoc:docs/boundary_hdx_codab_inspection.md": {
    "id": "AuditDoc:docs/boundary_hdx_codab_inspection.md",
    "type": "AuditFinding",
    "path": "docs/boundary_hdx_codab_inspection.md",
-   "mtime": 1786075820.3276868
+   "mtime": 1786077577.4617271
   },
   "AuditDoc:docs/era5land_temperature_humidity_pilot_report.md": {
    "id": "AuditDoc:docs/era5land_temperature_humidity_pilot_report.md",
    "type": "AuditFinding",
    "path": "docs/era5land_temperature_humidity_pilot_report.md",
-   "mtime": 1786075820.3536875
+   "mtime": 1786077577.4797275
   },
   "AuditDoc:docs/kalmunai_rdhs_ds_assignment.md": {
    "id": "AuditDoc:docs/kalmunai_rdhs_ds_assignment.md",
    "type": "AuditFinding",
    "path": "docs/kalmunai_rdhs_ds_assignment.md",
-   "mtime": 1786075820.3566875
+   "mtime": 1786077577.4827278
   },
   "AuditDoc:docs/colombia_horizon_sensitivity_spec.md": {
    "id": "AuditDoc:docs/colombia_horizon_sensitivity_spec.md",
    "type": "AuditFinding",
    "path": "docs/colombia_horizon_sensitivity_spec.md",
-   "mtime": 1786075820.336687
+   "mtime": 1786077577.4707274
   },
   "AuditDoc:docs/climate_bulk_acquisition_and_exposure_table_plan.md": {
    "id": "AuditDoc:docs/climate_bulk_acquisition_and_exposure_table_plan.md",
    "type": "AuditFinding",
    "path": "docs/climate_bulk_acquisition_and_exposure_table_plan.md",
-   "mtime": 1786075820.331687
+   "mtime": 1786077577.4647272
   },
   "AuditDoc:docs/rdhs_adjacency_graph_build_report.md": {
    "id": "AuditDoc:docs/rdhs_adjacency_graph_build_report.md",
    "type": "AuditFinding",
    "path": "docs/rdhs_adjacency_graph_build_report.md",
-   "mtime": 1786075820.375688
+   "mtime": 1786077577.497728
   },
   "AuditDoc:docs/colombia_lag_feature_assembly_report.md": {
    "id": "AuditDoc:docs/colombia_lag_feature_assembly_report.md",
    "type": "AuditFinding",
    "path": "docs/colombia_lag_feature_assembly_report.md",
-   "mtime": 1786075820.337687
+   "mtime": 1786077577.4717274
   },
   "AuditDoc:docs/paper_strategy_reframe_memo.md": {
    "id": "AuditDoc:docs/paper_strategy_reframe_memo.md",
    "type": "AuditFinding",
    "path": "docs/paper_strategy_reframe_memo.md",
-   "mtime": 1786075820.3686879
+   "mtime": 1786077577.492728
   },
   "AuditDoc:docs/external_claim_verification_latest.md": {
    "id": "AuditDoc:docs/external_claim_verification_latest.md",
    "type": "AuditFinding",
    "path": "docs/external_claim_verification_latest.md",
-   "mtime": 1786075820.3546875
+   "mtime": 1786077577.4807277
   },
   "AuditDoc:docs/preregistration_analysis_plan_v1.md": {
    "id": "AuditDoc:docs/preregistration_analysis_plan_v1.md",
    "type": "AuditFinding",
    "path": "docs/preregistration_analysis_plan_v1.md",
-   "mtime": 1786075820.373688
+   "mtime": 1786077577.495728
   },
   "AuditDoc:docs/literature_landscape_repositioning_v1.md": {
    "id": "AuditDoc:docs/literature_landscape_repositioning_v1.md",
    "type": "AuditFinding",
    "path": "docs/literature_landscape_repositioning_v1.md",
-   "mtime": 1786075820.3586876
+   "mtime": 1786077577.4837277
   },
   "AuditDoc:docs/analysis_hierarchy_verification_latest.md": {
    "id": "AuditDoc:docs/analysis_hierarchy_verification_latest.md",
    "type": "AuditFinding",
    "path": "docs/analysis_hierarchy_verification_latest.md",
-   "mtime": 1786075820.3246868
+   "mtime": 1786077577.457727
   },
   "AuditDoc:docs/rdhs_boundary_denominator_plan.md": {
    "id": "AuditDoc:docs/rdhs_boundary_denominator_plan.md",
    "type": "AuditFinding",
    "path": "docs/rdhs_boundary_denominator_plan.md",
-   "mtime": 1786075820.376688
+   "mtime": 1786077577.497728
   },
   "AuditDoc:docs/experiment_results_and_reframe_v1.md": {
    "id": "AuditDoc:docs/experiment_results_and_reframe_v1.md",
    "type": "AuditFinding",
    "path": "docs/experiment_results_and_reframe_v1.md",
-   "mtime": 1786075820.3536875
+   "mtime": 1786077577.4797275
   },
   "AuditDoc:docs/colombia_manual_alias_crosswalk_report.md": {
    "id": "AuditDoc:docs/colombia_manual_alias_crosswalk_report.md",
    "type": "AuditFinding",
    "path": "docs/colombia_manual_alias_crosswalk_report.md",
-   "mtime": 1786075820.3386872
+   "mtime": 1786077577.4727275
   },
   "AuditDoc:docs/project_overview.md": {
    "id": "AuditDoc:docs/project_overview.md",
    "type": "AuditFinding",
    "path": "docs/project_overview.md",
-   "mtime": 1786075820.375688
+   "mtime": 1786077577.497728
   },
   "AuditDoc:docs/targeted_value_climate_stage1a_h4_report.md": {
    "id": "AuditDoc:docs/targeted_value_climate_stage1a_h4_report.md",
    "type": "AuditFinding",
    "path": "docs/targeted_value_climate_stage1a_h4_report.md",
-   "mtime": 1786075820.3896883
+   "mtime": 1786077577.5027282
   },
   "AuditDoc:docs/controlled_revision_plans_latest.md": {
    "id": "AuditDoc:docs/controlled_revision_plans_latest.md",
    "type": "AuditFinding",
    "path": "docs/controlled_revision_plans_latest.md",
-   "mtime": 1786075820.3416872
+   "mtime": 1786077577.4757276
   },
   "AuditDoc:docs/matched_ablation_90th_percentile_spec.md": {
    "id": "AuditDoc:docs/matched_ablation_90th_percentile_spec.md",
    "type": "AuditFinding",
    "path": "docs/matched_ablation_90th_percentile_spec.md",
-   "mtime": 1786075820.3616877
+   "mtime": 1786077577.4867277
   },
   "AuditDoc:docs/dlnm_climate_comparator_report.md": {
    "id": "AuditDoc:docs/dlnm_climate_comparator_report.md",
    "type": "AuditFinding",
    "path": "docs/dlnm_climate_comparator_report.md",
-   "mtime": 1786075820.3526874
+   "mtime": 1786077577.4787276
   },
   "AuditDoc:docs/boundary_source_reconnaissance.md": {
    "id": "AuditDoc:docs/boundary_source_reconnaissance.md",
    "type": "AuditFinding",
    "path": "docs/boundary_source_reconnaissance.md",
-   "mtime": 1786075820.328687
+   "mtime": 1786077577.4617271
   },
   "AuditDoc:docs/review_reframe_assessment_latest.md": {
    "id": "AuditDoc:docs/review_reframe_assessment_latest.md",
    "type": "AuditFinding",
    "path": "docs/review_reframe_assessment_latest.md",
-   "mtime": 1786075820.377688
+   "mtime": 1786077577.499728
   },
   "AuditDoc:docs/data_access_plan.md": {
    "id": "AuditDoc:docs/data_access_plan.md",
    "type": "AuditFinding",
    "path": "docs/data_access_plan.md",
-   "mtime": 1786075820.3426871
+   "mtime": 1786077577.4767275
   },
   "AuditDoc:docs/biomodel_feasibility_memo_v1.md": {
    "id": "AuditDoc:docs/biomodel_feasibility_memo_v1.md",
    "type": "AuditFinding",
    "path": "docs/biomodel_feasibility_memo_v1.md",
-   "mtime": 1786075820.3276868
+   "mtime": 1786077577.4617271
   },
   "AuditDoc:docs/colombia_label_construction_report.md": {
    "id": "AuditDoc:docs/colombia_label_construction_report.md",
    "type": "AuditFinding",
    "path": "docs/colombia_label_construction_report.md",
-   "mtime": 1786075820.337687
+   "mtime": 1786077577.4707274
   },
   "AuditDoc:docs/analysis_table_linkage_v1_report.md": {
    "id": "AuditDoc:docs/analysis_table_linkage_v1_report.md",
    "type": "AuditFinding",
    "path": "docs/analysis_table_linkage_v1_report.md",
-   "mtime": 1786075820.325687
+   "mtime": 1786077577.459727
   },
   "AuditDoc:docs/cross_country_interpretation_memo.md": {
    "id": "AuditDoc:docs/cross_country_interpretation_memo.md",
    "type": "AuditFinding",
    "path": "docs/cross_country_interpretation_memo.md",
-   "mtime": 1786075820.3416872
+   "mtime": 1786077577.4757276
   },
   "AuditDoc:docs/colombia_horizon_sensitivity_report.md": {
    "id": "AuditDoc:docs/colombia_horizon_sensitivity_report.md",
    "type": "AuditFinding",
    "path": "docs/colombia_horizon_sensitivity_report.md",
-   "mtime": 1786075820.336687
+   "mtime": 1786077577.4697273
   },
   "AuditDoc:docs/climate_acquisition_pilot_plan.md": {
    "id": "AuditDoc:docs/climate_acquisition_pilot_plan.md",
    "type": "AuditFinding",
    "path": "docs/climate_acquisition_pilot_plan.md",
-   "mtime": 1786075820.330687
+   "mtime": 1786077577.4647272
   },
   "AuditDoc:docs/opendengue_catalog_inspection_report.md": {
    "id": "AuditDoc:docs/opendengue_catalog_inspection_report.md",
    "type": "AuditFinding",
    "path": "docs/opendengue_catalog_inspection_report.md",
-   "mtime": 1786075820.3656878
+   "mtime": 1786077577.4897277
   },
   "AuditDoc:docs/novel_contribution_targeted_value_of_climate_spec.md": {
    "id": "AuditDoc:docs/novel_contribution_targeted_value_of_climate_spec.md",
    "type": "AuditFinding",
    "path": "docs/novel_contribution_targeted_value_of_climate_spec.md",
-   "mtime": 1786075820.3646877
+   "mtime": 1786077577.4897277
   },
   "AuditDoc:docs/population_denominator_source_reconnaissance.md": {
    "id": "AuditDoc:docs/population_denominator_source_reconnaissance.md",
    "type": "AuditFinding",
    "path": "docs/population_denominator_source_reconnaissance.md",
-   "mtime": 1786075820.3726878
+   "mtime": 1786077577.495728
   },
   "AuditDoc:docs/climate_exposure_2019_slice_build_report.md": {
    "id": "AuditDoc:docs/climate_exposure_2019_slice_build_report.md",
    "type": "AuditFinding",
    "path": "docs/climate_exposure_2019_slice_build_report.md",
-   "mtime": 1786075820.332687
+   "mtime": 1786077577.4657273
   },
   "AuditDoc:docs/climate_source_reconnaissance.md": {
    "id": "AuditDoc:docs/climate_source_reconnaissance.md",
    "type": "AuditFinding",
    "path": "docs/climate_source_reconnaissance.md",
-   "mtime": 1786075820.333687
+   "mtime": 1786077577.4667273
   },
   "AuditDoc:docs/literature_positioning_v2_2026.md": {
    "id": "AuditDoc:docs/literature_positioning_v2_2026.md",
    "type": "AuditFinding",
    "path": "docs/literature_positioning_v2_2026.md",
-   "mtime": 1786075820.3586876
+   "mtime": 1786077577.4837277
   },
   "AuditDoc:docs/rdhs_crosswalk_geometry_id_update.md": {
    "id": "AuditDoc:docs/rdhs_crosswalk_geometry_id_update.md",
    "type": "AuditFinding",
    "path": "docs/rdhs_crosswalk_geometry_id_update.md",
-   "mtime": 1786075820.376688
+   "mtime": 1786077577.498728
   },
   "AuditDoc:docs/colombia_lag_feature_assembly_spec.md": {
    "id": "AuditDoc:docs/colombia_lag_feature_assembly_spec.md",
    "type": "AuditFinding",
    "path": "docs/colombia_lag_feature_assembly_spec.md",
-   "mtime": 1786075820.3386872
+   "mtime": 1786077577.4727275
   },
   "AuditDoc:docs/geomatics_scope_of_work.md": {
    "id": "AuditDoc:docs/geomatics_scope_of_work.md",
    "type": "AuditFinding",
    "path": "docs/geomatics_scope_of_work.md",
-   "mtime": 1786075820.3556876
+   "mtime": 1786077577.4817276
   },
   "AuditDoc:docs/opendengue_extract_coverage_inspection_report.md": {
    "id": "AuditDoc:docs/opendengue_extract_coverage_inspection_report.md",
    "type": "AuditFinding",
    "path": "docs/opendengue_extract_coverage_inspection_report.md",
-   "mtime": 1786075820.3666878
+   "mtime": 1786077577.490728
   },
   "AuditDoc:docs/exposure_freeze_v1.md": {
    "id": "AuditDoc:docs/exposure_freeze_v1.md",
    "type": "AuditFinding",
    "path": "docs/exposure_freeze_v1.md",
-   "mtime": 1786075820.3546875
+   "mtime": 1786077577.4807277
   },
   "AuditDoc:docs/colombia_model_ladder_report.md": {
    "id": "AuditDoc:docs/colombia_model_ladder_report.md",
    "type": "AuditFinding",
    "path": "docs/colombia_model_ladder_report.md",
-   "mtime": 1786075820.339687
+   "mtime": 1786077577.4737275
   },
   "AuditDoc:docs/wer_2021_calendar_anomaly_decision_memo.md": {
    "id": "AuditDoc:docs/wer_2021_calendar_anomaly_decision_memo.md",
    "type": "AuditFinding",
    "path": "docs/wer_2021_calendar_anomaly_decision_memo.md",
-   "mtime": 1786075820.3906884
+   "mtime": 1786077577.5037282
   },
   "AuditDoc:docs/rolling_recalibration_extension_report.md": {
    "id": "AuditDoc:docs/rolling_recalibration_extension_report.md",
    "type": "AuditFinding",
    "path": "docs/rolling_recalibration_extension_report.md",
-   "mtime": 1786075820.378688
+   "mtime": 1786077577.499728
   },
   "AuditDoc:docs/label_horizon_robustness_report.md": {
    "id": "AuditDoc:docs/label_horizon_robustness_report.md",
    "type": "AuditFinding",
    "path": "docs/label_horizon_robustness_report.md",
-   "mtime": 1786075820.3576875
+   "mtime": 1786077577.4827278
   },
   "AuditDoc:docs/dlnm_climate_comparator_spec.md": {
    "id": "AuditDoc:docs/dlnm_climate_comparator_spec.md",
    "type": "AuditFinding",
    "path": "docs/dlnm_climate_comparator_spec.md",
-   "mtime": 1786075820.3526874
+   "mtime": 1786077577.4797275
   },
   "AuditDoc:docs/canonical_R_dlnm_install_and_run_spec.md": {
    "id": "AuditDoc:docs/canonical_R_dlnm_install_and_run_spec.md",
    "type": "AuditFinding",
    "path": "docs/canonical_R_dlnm_install_and_run_spec.md",
-   "mtime": 1786075820.328687
+   "mtime": 1786077577.462727
   },
   "AuditDoc:docs/colombia_model_ladder_spec.md": {
    "id": "AuditDoc:docs/colombia_model_ladder_spec.md",
    "type": "AuditFinding",
    "path": "docs/colombia_model_ladder_spec.md",
-   "mtime": 1786075820.339687
+   "mtime": 1786077577.4737275
   },
   "AuditDoc:docs/zenodo_release_plan_v1.md": {
    "id": "AuditDoc:docs/zenodo_release_plan_v1.md",
    "type": "AuditFinding",
    "path": "docs/zenodo_release_plan_v1.md",
-   "mtime": 1786075820.3926883
+   "mtime": 1786077577.5057282
   },
   "AuditDoc:docs/pilot_h4_75pct_sensitivity_report.md": {
    "id": "AuditDoc:docs/pilot_h4_75pct_sensitivity_report.md",
    "type": "AuditFinding",
    "path": "docs/pilot_h4_75pct_sensitivity_report.md",
-   "mtime": 1786075820.370688
+   "mtime": 1786077577.493728
   },
   "AuditDoc:docs/chirps_precipitation_pilot_report.md": {
    "id": "AuditDoc:docs/chirps_precipitation_pilot_report.md",
    "type": "AuditFinding",
    "path": "docs/chirps_precipitation_pilot_report.md",
-   "mtime": 1786075820.3296869
+   "mtime": 1786077577.4637272
   },
   "Analysis:M4_M1_primary": {
    "id": "Analysis:M4_M1_primary",
@@ -6165,199 +6166,7 @@
   {
    "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
    "rel": "CITES",
-   "dst": "Reference:Lowe2021",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:Wolff2019",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:Baharom2022",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:Gasparrini2011",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:Gasparrini2010",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:Huber2018",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:Beal2025",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:ValleDelCauca2024",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:Campbell2026",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:ColonGonzalez2021",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:CameronGelbachMiller2008",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:Funk2015",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:OpenDengue2024",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:ERA5LandCDS",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:Collins2024TRIPODAI",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:HussainAlkhateeb2021",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
    "dst": "Reference:Moons2019",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:HDXCODABSriLanka",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:Vickers2023",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:Sangkaew2026",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:Vickers2016",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:Leung2022",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:Lowe2013",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:VanCalster2023",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:Tatem2017",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:SriLankaWER",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:Johansson2016",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:Murphy1985",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:MunozSabater2021",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:PAHO2023",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:VanCalster2019",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:Benedum2020",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:Vickers2019",
    "why": "bibitem in reference list"
   },
   {
@@ -6369,13 +6178,253 @@
   {
    "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
    "rel": "CITES",
-   "dst": "Reference:CHIRPS",
+   "dst": "Reference:CameronGelbachMiller2008",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:Sesay2026",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:VanCalster2019",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:Gasparrini2010",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:HussainAlkhateeb2021",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:SriLankaWER",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:Huber2018",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:Funk2015",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:Collins2024TRIPODAI",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:EWARScsd",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:vonElm2007",
    "why": "bibitem in reference list"
   },
   {
    "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
    "rel": "CITES",
    "dst": "Reference:Mordecai2017",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:Beal2025",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:Leung2022",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:SteyerbergVergouwe2014",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:Tatem2017",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:Binuya2022",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:Lowe2021",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:ColonGonzalez2021",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:Sangkaew2026",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:Johansson2016",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:WorldPop2025",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:Murphy1985",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:PAHO2023",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:Vickers2023",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:SaitoRehmsmeier2015",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:VanCalster2023",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:ERA5LandCDS",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:HDXCODABSriLanka",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:Benedum2020",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:CHIRPS",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:Gasparrini2011",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:Campbell2026",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:Vickers2016",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:Vickers2019",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:Lowe2013",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:Tozan2023",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:Wolff2019",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:OpenDengue2024",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:MunozSabater2021",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:Vickers2006",
+   "why": "bibitem in reference list"
+  },
+  {
+   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
+   "rel": "CITES",
+   "dst": "Reference:Baharom2022",
    "why": "bibitem in reference list"
   },
   {
@@ -6393,55 +6442,7 @@
   {
    "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
    "rel": "CITES",
-   "dst": "Reference:EWARScsd",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:Vickers2006",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:Sesay2026",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:WorldPop2025",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:SteyerbergVergouwe2014",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:SaitoRehmsmeier2015",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:Tozan2023",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:vonElm2007",
-   "why": "bibitem in reference list"
-  },
-  {
-   "src": "Manuscript:manuscript_v43/revised_manuscript.tex",
-   "rel": "CITES",
-   "dst": "Reference:Binuya2022",
+   "dst": "Reference:ValleDelCauca2024",
    "why": "bibitem in reference list"
   },
   {
@@ -9692,6 +9693,8 @@
   }
  ],
  "meta": {
+  "manuscript_path": "manuscript_v43/revised_manuscript.tex",
+  "manuscript_sha256_16": "60fa9b3632ad5c0d",
   "result_values": {
    "+300.0000": [
     "analysis/v17_devinclusive_finalization/SL_devinclusive_results.json",

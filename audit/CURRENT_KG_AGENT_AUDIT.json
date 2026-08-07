@@ -1,6 +1,8 @@
 {
-  "repo": "/tmp/claude-1000/-home-mpcrlab/af40ce96-d2d5-4f3c-9d5a-4c9cb2ee3ec8/scratchpad/v44_build",
-  "generated": "2026-08-07T04:19:48.733702Z",
+  "repo": "/tmp/claude-1000/-home-mpcrlab/af40ce96-d2d5-4f3c-9d5a-4c9cb2ee3ec8/scratchpad/v44r2_build",
+  "generated": "2026-08-07T04:44:56.509121Z",
+  "manuscript_audited": "manuscript_v43/revised_manuscript.tex",
+  "manuscript_sha256_16": "60fa9b3632ad5c0d",
   "graph": {
     "nodes": 913,
     "edges": 592,
@@ -165,9 +167,17 @@
     },
     {
       "name": "MANUSCRIPT CONSISTENCY",
-      "status": "REVIEW",
-      "n_findings": 1,
+      "status": "FAIL",
+      "n_findings": 2,
       "findings": [
+        {
+          "severity": "critical",
+          "msg": "contradiction: development-inclusive proper-score intervals are both REPORTED and described as not computed/gated",
+          "evidence": [
+            "...t-inclusive proper-score intervals were gated and not computed. no minimum worthwhile score increment was elic...",
+            "retire the 'not computed/gated' phrasing or remove the reported intervals"
+          ]
+        },
         {
           "severity": "major",
           "msg": "manuscript asserts a public GitHub repo/commit \u2014 must be verified from a clean unauthenticated environment before submission",

@@ -1,9 +1,9 @@
 # Knowledge-Graph + Agent-Graph Audit
 
-- Generated: 2026-08-07T04:19:48.733702Z
-- Repo: `/tmp/claude-1000/-home-mpcrlab/af40ce96-d2d5-4f3c-9d5a-4c9cb2ee3ec8/scratchpad/v44_build`
+- Generated: 2026-08-07T04:44:56.509121Z
+- Repo: `/tmp/claude-1000/-home-mpcrlab/af40ce96-d2d5-4f3c-9d5a-4c9cb2ee3ec8/scratchpad/v44r2_build`
 - Graph: 913 nodes / 592 edges
-- Findings: 1 critical · 4 major · 5 minor
+- Findings: 2 critical · 4 major · 5 minor
 - **SUBMISSION READY: NO**
 
 ## Release gates
@@ -19,7 +19,7 @@
 | REPRODUCIBILITY | NOT_VERIFIED | 1 |
 | REFERENCE INTEGRITY | NOT_VERIFIED | 1 |
 | RESULT TRACEABILITY | REVIEW | 1 |
-| MANUSCRIPT CONSISTENCY | REVIEW | 1 |
+| MANUSCRIPT CONSISTENCY | FAIL | 2 |
 | ADVERSARIAL REVIEW | PASS | 0 |
 | SUBMISSION DECLARATIONS | FAIL | 1 |
 
@@ -85,7 +85,10 @@
     - -0.0043 (L206: Evaluating the frozen matched predictions with strictly proper, thresh)
     - -0.0403 (L206: Evaluating the frozen matched predictions with strictly proper, thresh)
 
-### MANUSCRIPT CONSISTENCY — REVIEW
+### MANUSCRIPT CONSISTENCY — FAIL
+- **[critical]** contradiction: development-inclusive proper-score intervals are both REPORTED and described as not computed/gated  
+    - ...t-inclusive proper-score intervals were gated and not computed. no minimum worthwhile score increment was elic...
+    - retire the 'not computed/gated' phrasing or remove the reported intervals
 - **[major]** manuscript asserts a public GitHub repo/commit — must be verified from a clean unauthenticated environment before submission  
     - repository availability claim
 

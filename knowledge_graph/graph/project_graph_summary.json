@@ -1,5 +1,7 @@
 {
  "meta": {
+  "manuscript_path": "manuscript_v43/revised_manuscript.tex",
+  "manuscript_sha256_16": "60fa9b3632ad5c0d",
   "result_values": {
    "+300.0000": [
     "analysis/v17_devinclusive_finalization/SL_devinclusive_results.json",
@@ -1383,6 +1385,7 @@
   "type": "Manuscript",
   "path": "manuscript_v43/revised_manuscript.tex",
   "found": true,
+  "sha256_16": "60fa9b3632ad5c0d",
   "n_chars": 95638,
   "abstract_words": 299,
   "cited_keys": [

@@ -70,14 +70,35 @@ _V44_CONSISTENT = (
 
 def test_1_v43_proper_score_contradiction_is_caught():
     contra, reports, claims_not = agents.detect_proper_score_contradiction(_V43_CONTRADICTION)
-    assert contra is True and reports and claims_not          # v43 must fail
+    assert contra is True and reports and claims_not          # synthetic v43 must be detected
     contra2, _, _ = agents.detect_proper_score_contradiction(_V44_CONSISTENT)
-    assert contra2 is False                                    # consistent text must pass
-    # the real (repaired) manuscript must be consistent
-    g = ingest.build_graph(REPO)
-    m = agents._manuscript(g)
-    src = agents._read(os.path.join(REPO, m["path"]))
-    assert agents.detect_proper_score_contradiction(src)[0] is False
+    assert contra2 is False                                    # consistent text must NOT be detected
+
+
+def test_1b_real_v43_file_is_detected():
+    # R2 s2.1/2.4: the ACTUAL tracked manuscript_v43 CONTAINS the contradiction and MUST be
+    # detected. (A test expecting the real v43 to be 'consistent' is historically wrong.)
+    p = os.path.join(REPO, "manuscript_v43", "revised_manuscript.tex")
+    if not os.path.exists(p):
+        return  # branch without the manuscript; skip
+    src = agents._read(p)
+    assert agents.detect_proper_score_contradiction(src)[0] is True
+
+
+def test_1c_latex_interval_variants_are_equivalent():
+    # R2 s2.3: all these interval forms must be recognized (do not overfit the 4 values)
+    claim = " The development-inclusive proper scores were gated and not computed."
+    for iv in ["-0.0403 to +0.0040", "$-0.0403$ to $+0.0040$", "(-0.0403, +0.0040)",
+               "[-0.0403, +0.0040]", r"\(-0.0403\) to \(+0.0040\)"]:
+        txt = "development-inclusive proper-score NLL " + iv + "." + claim
+        assert agents.detect_proper_score_contradiction(txt)[0] is True, iv
+
+
+def test_1d_corrected_v44_text_is_not_detected():
+    # after repair (no 'not computed/gated' claim), the same reported intervals are consistent
+    ok = ("development-inclusive proper-score NLL $-0.0403$ to $+0.0040$ were subsequently "
+          "computed under the refit-both-models bootstrap.")
+    assert agents.detect_proper_score_contradiction(ok)[0] is False
 
 
 def test_2_reference_scientific_support_not_verified():

@@ -5,7 +5,7 @@ Convention: each agent returns dict(name, status, findings) where status in
 severity in {critical, major, minor}. Deterministic; no LLM, no network.
 """
 import os, re, glob, subprocess
-from knowledge_graph import schema
+from knowledge_graph import schema, ingest
 
 PASS, REVIEW, FAIL = "PASS", "REVIEW", "FAIL"
 PARTIAL, NOT_VERIFIED = "PARTIAL", "NOT_VERIFIED"   # v44 s3.2: not demonstrated != failed
@@ -244,29 +244,41 @@ def claim_agent(g, repo):
     return _mk("RESULT TRACEABILITY", [x for x in f if not x.get("ok")] or f)
 
 
-# ---------- v44 s3.1: robust semantic contradiction detector ----------
+# ---------- v44 s3.1 + R2 s2.2/2.3: LaTeX-tolerant semantic contradiction detector ----------
+# Interval recognized in any form after LaTeX normalization:
+#   -0.0403 to +0.0040 | (-0.0403, +0.0040) | [-0.0403, +0.0040]
 _CI_TOKEN = re.compile(r'[+\-]?\d\.\d{3,4}\s*(?:to|,)\s*[+\-]?\d\.\d{3,4}')
 
 
 def detect_proper_score_contradiction(text):
-    """Deterministic, not tied to one literal sentence (v44 s3.1).
-    Returns (is_contradiction, reports_di_ps, claims_not_computed).
+    """Deterministic, LaTeX-tolerant, not tied to one literal sentence (R2 s2.1-2.3).
+    Returns (is_contradiction, reports_di_ps, claims_not_computed_evidence).
     Contradiction = the doc both REPORTS development-inclusive proper-score intervals
-    AND CLAIMS they were not computed / gated / not re-executed.
+    AND CLAIMS they were not computed / gated / not re-executed / not available.
     """
-    low = text.lower()
+    norm = ingest.normalize_latex(text)
+    low = norm.lower()
+    # (a) reports development-inclusive proper-score intervals?
     reports = False
     for m in re.finditer(r'development-inclusive', low):
-        window = low[m.start():m.start() + 240]
+        window = low[m.start():m.start() + 260]
         if ("nll" in window or "brier" in window or "proper" in window) and _CI_TOKEN.search(window):
             reports = True
             break
+    # also catch the reverse ordering (interval first, 'development-inclusive' nearby)
+    if not reports:
+        for m in _CI_TOKEN.finditer(low):
+            w = low[max(0, m.start() - 90):m.start() + 30]
+            if "development-inclusive" in w and ("nll" in w or "brier" in w or "proper" in w):
+                reports = True
+                break
+    # (b) claims development-inclusive proper scores were NOT computed / gated?
     claims_not = None
     for var in schema.NOT_COMPUTED_VARIANTS:
         for m in re.finditer(re.escape(var), low):
-            ctx = low[max(0, m.start() - 170):m.start() + 50]
+            ctx = low[max(0, m.start() - 190):m.start() + 60]
             if "proper" in ctx and ("development-inclusive" in ctx or "refit-both" in ctx or "refit both" in ctx):
-                claims_not = f"...{ctx[-90:].strip()}..."
+                claims_not = f"...{ctx[-110:].strip()}..."
                 break
         if claims_not:
             break
