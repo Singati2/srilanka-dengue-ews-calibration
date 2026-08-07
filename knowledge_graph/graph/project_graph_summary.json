@@ -1,0 +1,1497 @@
+{
+ "meta": {
+  "result_values": {
+   "+300.0000": [
+    "analysis/v17_devinclusive_finalization/SL_devinclusive_results.json",
+    "analysis/v17_devinclusive_finalization/SL_devinclusive_results.json"
+   ],
+   "+0.0000": [
+    "analysis/v17_devinclusive_finalization/SL_devinclusive_results.json",
+    "analysis/v17_devinclusive_finalization/SL_devinclusive_results.json",
+    "analysis/v17_devinclusive_finalization/fig4_table6_results.json",
+    "analysis/geo_effect_decomposition/co_devincl_full_refit_results.json",
+    "analysis/geo_effect_decomposition/co_geo_partial_refit_results.json",
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json",
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json",
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json",
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json",
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json",
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json",
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json",
+    "analysis/v15_reviewer_response_finalization/recal_matched_results.json",
+    "analysis/v15_reviewer_response_finalization/recal_matched_results.json",
+    "analysis/v15_reviewer_response_finalization/recal_matched_results.json",
+    "analysis/v12_referee_response/run/co_results.json",
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json",
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json",
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.0157": [
+    "analysis/v17_devinclusive_finalization/SL_devinclusive_results.json",
+    "analysis/v17_devinclusive_finalization/SL_devinclusive_results.json",
+    "analysis/v17_devinclusive_finalization/SL_devinclusive_results.json",
+    "analysis/v15_reviewer_response_finalization/recal_matched_results.json",
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.0087": [
+    "analysis/v17_devinclusive_finalization/SL_devinclusive_results.json",
+    "analysis/v17_devinclusive_finalization/SL_devinclusive_results.json",
+    "analysis/v17_devinclusive_finalization/SL_devinclusive_results.json",
+    "analysis/v15_reviewer_response_finalization/recal_matched_results.json",
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json",
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "-0.0074": [
+    "analysis/v17_devinclusive_finalization/SL_devinclusive_results.json"
+   ],
+   "+0.0223": [
+    "analysis/v17_devinclusive_finalization/SL_devinclusive_results.json"
+   ],
+   "+0.0078": [
+    "analysis/v17_devinclusive_finalization/SL_devinclusive_results.json",
+    "analysis/v20_round3/colombia_dept_conditional/colombia_dept_conditional_results.json",
+    "analysis/v20_round3/colombia_dept_conditional/colombia_dept_conditional_results.json",
+    "analysis/geo_effect_decomposition/co_devincl_full_refit_results.json",
+    "analysis/geo_effect_decomposition/co_devincl_full_refit_results.json",
+    "analysis/geo_effect_decomposition/co_devincl_full_refit_results.json",
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/matched_robustness_results.json",
+    "analysis/v12_referee_response/run/ipw_results.json",
+    "analysis/v12_referee_response/run/woz_results.json",
+    "analysis/v12_referee_response/run/woz_results.json",
+    "analysis/v12_referee_response/run/co_results.json",
+    "analysis/v12_referee_response/run/co_results.json",
+    "audit_v42/01_colombia_climate_specification_resolution.md",
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.0015": [
+    "analysis/v17_devinclusive_finalization/SL_devinclusive_results.json"
+   ],
+   "+0.0284": [
+    "analysis/v17_devinclusive_finalization/SL_devinclusive_results.json"
+   ],
+   "+0.0143": [
+    "analysis/v17_devinclusive_finalization/SL_devinclusive_results.json",
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+1570.7000": [
+    "analysis/v17_devinclusive_finalization/SL_devinclusive_results.json"
+   ],
+   "+0.7510": [
+    "analysis/v17_devinclusive_finalization/fig4_table6_results.json"
+   ],
+   "+0.7720": [
+    "analysis/v17_devinclusive_finalization/fig4_table6_results.json"
+   ],
+   "+0.1850": [
+    "analysis/v17_devinclusive_finalization/fig4_table6_results.json"
+   ],
+   "+0.1360": [
+    "analysis/v17_devinclusive_finalization/fig4_table6_results.json",
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.0830": [
+    "analysis/v17_devinclusive_finalization/fig4_table6_results.json"
+   ],
+   "+0.0039": [
+    "analysis/v20_round3/colombia_dept_conditional/colombia_dept_conditional_results.json",
+    "analysis/v12_referee_response/run/ipw_results.json",
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.0119": [
+    "analysis/v20_round3/colombia_dept_conditional/colombia_dept_conditional_results.json",
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.0077": [
+    "analysis/v20_round3/colombia_dept_conditional/colombia_dept_conditional_results.json"
+   ],
+   "+475.0000": [
+    "analysis/v20_round3/colombia_dept_conditional/colombia_dept_conditional_results.json",
+    "analysis/v12_referee_response/run/co_results.json",
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0038": [
+    "analysis/v20_round3/colombia_dept_conditional/colombia_dept_conditional_results.json"
+   ],
+   "+0.0115": [
+    "analysis/v20_round3/colombia_dept_conditional/colombia_dept_conditional_results.json",
+    "analysis/v12_referee_response/run/woz_results.json",
+    "analysis/v12_referee_response/run/woz_results.json"
+   ],
+   "+31.0000": [
+    "analysis/v20_round3/colombia_dept_conditional/colombia_dept_conditional_results.json",
+    "analysis/geo_effect_decomposition/co_devincl_full_refit_results.json",
+    "analysis/geo_effect_decomposition/co_geo_partial_refit_results.json"
+   ],
+   "-0.0001": [
+    "analysis/v20_round3/colombia_dept_conditional/colombia_dept_conditional_results.json",
+    "analysis/geo_effect_decomposition/co_devincl_full_refit_results.json",
+    "analysis/v12_referee_response/run/sl_recal_results.json",
+    "analysis/v12_referee_response/run/sl_recal_results.json",
+    "analysis/v12_referee_response/run/woz_results.json"
+   ],
+   "+0.0244": [
+    "analysis/v20_round3/colombia_dept_conditional/colombia_dept_conditional_results.json",
+    "analysis/geo_effect_decomposition/co_devincl_full_refit_results.json",
+    "analysis/v12_referee_response/run/woz_results.json"
+   ],
+   "+1000.0000": [
+    "analysis/geo_effect_decomposition/co_devincl_full_refit_results.json",
+    "analysis/geo_effect_decomposition/co_devincl_full_refit_results.json",
+    "analysis/geo_effect_decomposition/co_geo_partial_refit_results.json",
+    "analysis/geo_effect_decomposition/co_geo_partial_refit_results.json",
+    "analysis/m6_geo_pilot/_provenance.json"
+   ],
+   "+20260612.0000": [
+    "analysis/geo_effect_decomposition/co_devincl_full_refit_results.json",
+    "analysis/geo_effect_decomposition/co_geo_partial_refit_results.json",
+    "analysis/m6_geo_pilot/_provenance.json"
+   ],
+   "+32.0000": [
+    "analysis/geo_effect_decomposition/co_devincl_full_refit_results.json"
+   ],
+   "+0.0188": [
+    "analysis/geo_effect_decomposition/co_devincl_full_refit_results.json",
+    "analysis/geo_effect_decomposition/co_devincl_full_refit_results.json",
+    "analysis/geo_effect_decomposition/co_devincl_full_refit_results.json",
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/matched_robustness_results.json",
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json",
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json",
+    "analysis/v15_reviewer_response_finalization/recal_matched_results.json",
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json",
+    "audit_v42/02_headline_results_matrix.md",
+    "audit_v42/02_headline_results_matrix.md",
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.0079": [
+    "analysis/geo_effect_decomposition/co_devincl_full_refit_results.json",
+    "analysis/geo_effect_decomposition/co_geo_partial_refit_results.json",
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/matched_robustness_results.json",
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/matched_robustness_results.json",
+    "analysis/v12_referee_response/run/ipw_results.json",
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0008": [
+    "analysis/geo_effect_decomposition/co_devincl_full_refit_results.json",
+    "analysis/geo_effect_decomposition/co_geo_partial_refit_results.json",
+    "analysis/v12_referee_response/run/co_results.json",
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.0209": [
+    "analysis/geo_effect_decomposition/co_devincl_full_refit_results.json",
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.0084": [
+    "analysis/geo_effect_decomposition/co_devincl_full_refit_results.json",
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+19.8500": [
+    "analysis/geo_effect_decomposition/co_devincl_full_refit_results.json",
+    "analysis/geo_effect_decomposition/co_geo_partial_refit_results.json"
+   ],
+   "+14.0000": [
+    "analysis/geo_effect_decomposition/co_devincl_full_refit_results.json",
+    "analysis/geo_effect_decomposition/co_geo_partial_refit_results.json",
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+25.0000": [
+    "analysis/geo_effect_decomposition/co_devincl_full_refit_results.json",
+    "analysis/geo_effect_decomposition/co_geo_partial_refit_results.json"
+   ],
+   "+17571.9000": [
+    "analysis/geo_effect_decomposition/co_devincl_full_refit_results.json"
+   ],
+   "+0.0100": [
+    "analysis/geo_effect_decomposition/co_geo_partial_refit_results.json",
+    "analysis/m6_geo_pilot/_provenance.json",
+    "analysis/m6_geo_pilot/_provenance.json",
+    "analysis/m6_geo_pilot/_provenance.json",
+    "analysis/m6_geo_pilot/_provenance.json",
+    "analysis/m6_geo_pilot/_provenance.json"
+   ],
+   "+0.0300": [
+    "analysis/geo_effect_decomposition/co_geo_partial_refit_results.json"
+   ],
+   "+0.0081": [
+    "analysis/geo_effect_decomposition/co_geo_partial_refit_results.json",
+    "analysis/geo_effect_decomposition/co_geo_partial_refit_results.json",
+    "analysis/geo_effect_decomposition/co_geo_partial_refit_results.json",
+    "analysis/v15_reviewer_response_finalization/recal_matched_results.json",
+    "analysis/v12_referee_response/run/sl_recal_results.json",
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json",
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json",
+    "audit_v42/02_headline_results_matrix.md",
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.0007": [
+    "analysis/geo_effect_decomposition/co_geo_partial_refit_results.json"
+   ],
+   "+0.0204": [
+    "analysis/geo_effect_decomposition/co_geo_partial_refit_results.json"
+   ],
+   "+0.0196": [
+    "analysis/geo_effect_decomposition/co_geo_partial_refit_results.json",
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.0082": [
+    "analysis/geo_effect_decomposition/co_geo_partial_refit_results.json",
+    "analysis/geo_effect_decomposition/co_geo_partial_refit_results.json"
+   ],
+   "+0.0006": [
+    "analysis/geo_effect_decomposition/co_geo_partial_refit_results.json",
+    "analysis/v12_referee_response/run/woz_results.json"
+   ],
+   "+0.0194": [
+    "analysis/geo_effect_decomposition/co_geo_partial_refit_results.json"
+   ],
+   "+0.0189": [
+    "analysis/geo_effect_decomposition/co_geo_partial_refit_results.json"
+   ],
+   "+0.9610": [
+    "analysis/geo_effect_decomposition/co_geo_partial_refit_results.json"
+   ],
+   "+9416.4000": [
+    "analysis/geo_effect_decomposition/co_geo_partial_refit_results.json"
+   ],
+   "+0.0122": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/matched_robustness_results.json",
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json",
+    "audit_v42/01_colombia_climate_specification_resolution.md",
+    "audit_v42/01_colombia_climate_specification_resolution.md",
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.0160": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/matched_robustness_results.json"
+   ],
+   "+0.1401": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/matched_robustness_results.json"
+   ],
+   "+0.1280": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/matched_robustness_results.json"
+   ],
+   "+0.1171": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/matched_robustness_results.json",
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json"
+   ],
+   "+0.1122": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/matched_robustness_results.json",
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json"
+   ],
+   "+0.0180": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/matched_robustness_results.json",
+    "analysis/v15_reviewer_response_finalization/recal_matched_results.json"
+   ],
+   "+0.1076": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/matched_robustness_results.json",
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/matched_robustness_results.json",
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json"
+   ],
+   "+0.0141": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/matched_robustness_results.json"
+   ],
+   "+0.0075": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/matched_robustness_results.json"
+   ],
+   "+0.0029": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/matched_robustness_results.json",
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.0133": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/matched_robustness_results.json"
+   ],
+   "+0.0070": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/matched_robustness_results.json",
+    "analysis/v12_referee_response/run/woz_results.json",
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0051": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/matched_robustness_results.json",
+    "analysis/v12_referee_response/run/co_results.json",
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0199": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/matched_robustness_results.json",
+    "analysis/v12_referee_response/run/co_results.json",
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.0012": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/matched_robustness_results.json"
+   ],
+   "+0.0400": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/matched_robustness_results.json"
+   ],
+   "+0.0339": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/matched_robustness_results.json"
+   ],
+   "+0.4982": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/matched_robustness_results.json",
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json",
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+12713.0000": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json",
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0001": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json",
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json",
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json"
+   ],
+   "+0.0003": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json",
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json"
+   ],
+   "+0.0118": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json",
+    "analysis/v12_referee_response/run/ipw_results.json"
+   ],
+   "+0.0207": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json",
+    "analysis/v12_referee_response/run/sl_recal_results.json"
+   ],
+   "+0.0095": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json"
+   ],
+   "+0.0333": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json"
+   ],
+   "+0.0048": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json"
+   ],
+   "+0.0182": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json"
+   ],
+   "+0.6852": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json"
+   ],
+   "+0.6987": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json"
+   ],
+   "+0.7255": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json"
+   ],
+   "+0.6983": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json"
+   ],
+   "+0.7240": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json"
+   ],
+   "+0.1358": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json"
+   ],
+   "+0.0237": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json"
+   ],
+   "+0.0282": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json"
+   ],
+   "+0.0125": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json",
+    "analysis/v12_referee_response/run/woz_results.json"
+   ],
+   "+0.0443": [
+    "analysis/path_b_matched_fixed_effects_original_pipeline/run/recompute_three_results.json"
+   ],
+   "+10.0000": [
+    "analysis/v15_reviewer_response_finalization/recal_matched_results.json",
+    "analysis/v15_reviewer_response_finalization/recal_matched_results.json",
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "-0.0015": [
+    "analysis/v15_reviewer_response_finalization/recal_matched_results.json",
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "-0.0025": [
+    "analysis/v15_reviewer_response_finalization/recal_matched_results.json"
+   ],
+   "+0.1398": [
+    "analysis/v15_reviewer_response_finalization/recal_matched_results.json",
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.1241": [
+    "analysis/v15_reviewer_response_finalization/recal_matched_results.json"
+   ],
+   "+0.1244": [
+    "analysis/v15_reviewer_response_finalization/recal_matched_results.json",
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.0066": [
+    "analysis/v15_reviewer_response_finalization/recal_matched_results.json",
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.0257": [
+    "analysis/v15_reviewer_response_finalization/recal_matched_results.json",
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.0154": [
+    "analysis/v15_reviewer_response_finalization/recal_matched_results.json",
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.0064": [
+    "analysis/v15_reviewer_response_finalization/recal_matched_results.json"
+   ],
+   "+0.0255": [
+    "analysis/v15_reviewer_response_finalization/recal_matched_results.json"
+   ],
+   "+3926.0000": [
+    "analysis/v15_reviewer_response_finalization/recal_matched_results.json"
+   ],
+   "+0.7959": [
+    "analysis/v12_referee_response/run/ipw_results.json"
+   ],
+   "+1.5298": [
+    "analysis/v12_referee_response/run/ipw_results.json"
+   ],
+   "+0.1366": [
+    "analysis/v12_referee_response/run/sl_recal_results.json",
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json",
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.5129": [
+    "analysis/v12_referee_response/run/sl_recal_results.json"
+   ],
+   "+1.2452": [
+    "analysis/v12_referee_response/run/sl_recal_results.json"
+   ],
+   "+0.1907": [
+    "analysis/v12_referee_response/run/sl_recal_results.json"
+   ],
+   "+0.1284": [
+    "analysis/v12_referee_response/run/sl_recal_results.json",
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json",
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.4490": [
+    "analysis/v12_referee_response/run/sl_recal_results.json"
+   ],
+   "+1.2247": [
+    "analysis/v12_referee_response/run/sl_recal_results.json"
+   ],
+   "+0.1870": [
+    "analysis/v12_referee_response/run/sl_recal_results.json"
+   ],
+   "+0.1447": [
+    "analysis/v12_referee_response/run/sl_recal_results.json",
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json",
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.4398": [
+    "analysis/v12_referee_response/run/sl_recal_results.json"
+   ],
+   "+1.0773": [
+    "analysis/v12_referee_response/run/sl_recal_results.json"
+   ],
+   "+0.1801": [
+    "analysis/v12_referee_response/run/sl_recal_results.json"
+   ],
+   "+0.1379": [
+    "analysis/v12_referee_response/run/sl_recal_results.json"
+   ],
+   "-0.0010": [
+    "analysis/v12_referee_response/run/sl_recal_results.json"
+   ],
+   "+0.9925": [
+    "analysis/v12_referee_response/run/sl_recal_results.json"
+   ],
+   "+0.1796": [
+    "analysis/v12_referee_response/run/sl_recal_results.json",
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.1470": [
+    "analysis/v12_referee_response/run/sl_recal_results.json"
+   ],
+   "-0.0005": [
+    "analysis/v12_referee_response/run/sl_recal_results.json",
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.9936": [
+    "analysis/v12_referee_response/run/sl_recal_results.json"
+   ],
+   "+0.1785": [
+    "analysis/v12_referee_response/run/sl_recal_results.json"
+   ],
+   "+0.1479": [
+    "analysis/v12_referee_response/run/sl_recal_results.json"
+   ],
+   "+0.9889": [
+    "analysis/v12_referee_response/run/sl_recal_results.json"
+   ],
+   "+0.1742": [
+    "analysis/v12_referee_response/run/sl_recal_results.json"
+   ],
+   "-0.0083": [
+    "analysis/v12_referee_response/run/sl_recal_results.json",
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.0091": [
+    "analysis/v12_referee_response/run/sl_recal_results.json"
+   ],
+   "+0.0099": [
+    "analysis/v12_referee_response/run/sl_recal_results.json",
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "-0.0079": [
+    "analysis/v12_referee_response/run/sl_recal_results.json"
+   ],
+   "+0.0270": [
+    "analysis/v12_referee_response/run/sl_recal_results.json"
+   ],
+   "+0.0035": [
+    "analysis/v12_referee_response/run/woz_results.json",
+    "analysis/v12_referee_response/run/woz_results.json"
+   ],
+   "+12368.0000": [
+    "analysis/v12_referee_response/run/woz_results.json"
+   ],
+   "+0.4234": [
+    "analysis/v12_referee_response/run/woz_results.json"
+   ],
+   "+0.0080": [
+    "analysis/v12_referee_response/run/woz_results.json",
+    "analysis/v12_referee_response/run/woz_results.json",
+    "analysis/v12_referee_response/run/co_results.json",
+    "analysis/v12_referee_response/run/co_results.json",
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0040": [
+    "analysis/v12_referee_response/run/woz_results.json",
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.0117": [
+    "analysis/v12_referee_response/run/woz_results.json",
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+12309.0000": [
+    "analysis/v12_referee_response/run/woz_results.json"
+   ],
+   "+0.4142": [
+    "analysis/v12_referee_response/run/woz_results.json"
+   ],
+   "+13361.0000": [
+    "analysis/v12_referee_response/run/woz_results.json",
+    "analysis/v12_referee_response/run/co_results.json",
+    "analysis/v12_referee_response/run/co_results.json",
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.3753": [
+    "analysis/v12_referee_response/run/woz_results.json",
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0034": [
+    "analysis/v12_referee_response/run/woz_results.json",
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+11148.0000": [
+    "analysis/v12_referee_response/run/woz_results.json"
+   ],
+   "+0.3528": [
+    "analysis/v12_referee_response/run/woz_results.json"
+   ],
+   "+0.0021": [
+    "analysis/v12_referee_response/run/woz_results.json",
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0036": [
+    "analysis/v12_referee_response/run/woz_results.json"
+   ],
+   "+10278.0000": [
+    "analysis/v12_referee_response/run/woz_results.json"
+   ],
+   "+0.3193": [
+    "analysis/v12_referee_response/run/woz_results.json"
+   ],
+   "+200.0000": [
+    "analysis/v12_referee_response/run/woz_results.json"
+   ],
+   "+127703.0000": [
+    "analysis/v12_referee_response/run/co_results.json",
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+79785.0000": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+21646.0000": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+864.0000": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+703.0000": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+152.0000": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+11.0574": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+8285.0000": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+1.9189": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+12682.0000": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+290.0000": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+11412.0000": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+198.0000": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0101": [
+    "analysis/v12_referee_response/run/co_results.json",
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+8796.0000": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+106.0000": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0126": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.1851": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0193": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0334": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+5328.0000": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.3429": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0023": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0128": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+3231.0000": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.3052": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0235": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+4802.0000": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.4586": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0175": [
+    "analysis/v12_referee_response/run/co_results.json",
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0424": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "-0.0089": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0083": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0020": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "-0.0037": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0027": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "-0.0080": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0062": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0137": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0096": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0134": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0364": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0053": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0093": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0173": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "-0.0108": [
+    "analysis/v12_referee_response/run/co_results.json",
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.0164": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0169": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0022": [
+    "analysis/v12_referee_response/run/co_results.json",
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "-0.0006": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0116": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0005": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+28.0000": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0052": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.7500": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0004": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0121": [
+    "analysis/v12_referee_response/run/co_results.json"
+   ],
+   "+0.0181": [
+    "analysis/v12_referee_response/run/co_results.json",
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json",
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.0185": [
+    "analysis/v12_referee_response/run/co_results.json",
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.0898": [
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.0462": [
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.0741": [
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.0386": [
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.0622": [
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.0549": [
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.0269": [
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.0864": [
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "-0.0016": [
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.0171": [
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.9404": [
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.1865": [
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.1345": [
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.0476": [
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.9983": [
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.1842": [
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.0330": [
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.8721": [
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.1787": [
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.0301": [
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.0060": [
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+0.0250": [
+    "analysis/v12_referee_response/run/sl_matched_recal_results.json"
+   ],
+   "+79128.0000": [
+    "analysis/m6_geo_pilot/_provenance.json"
+   ],
+   "+53108.0000": [
+    "analysis/m6_geo_pilot/_provenance.json"
+   ],
+   "+13320.0000": [
+    "analysis/m6_geo_pilot/_provenance.json"
+   ],
+   "+12700.0000": [
+    "analysis/m6_geo_pilot/_provenance.json"
+   ],
+   "+0.0010": [
+    "analysis/m6_geo_pilot/_provenance.json",
+    "analysis/m6_geo_pilot/_provenance.json",
+    "analysis/m6_geo_pilot/_provenance.json"
+   ],
+   "0.30": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "0.008": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "0.028": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.013": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "0.0012": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "0.0015": [
+    "audit_v42/02_headline_results_matrix.md",
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "0.0079": [
+    "audit_v42/02_headline_results_matrix.md",
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.0245": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "0.0002": [
+    "audit_v42/02_headline_results_matrix.md",
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.0302": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "0.0070": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.0138": [
+    "audit_v42/02_headline_results_matrix.md",
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "0.0105": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "0.0207": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "0.0346": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "0.0067": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "0.0403": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "0.0153": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.0013": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.027": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "0.027": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "0.045": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.0260": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.0042": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.0049": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.0009": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "0.0089": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "0.0165": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "0.0011": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "0.0224": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "0.0043": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "0.0102": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "0.0004": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "+0.012": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "0.109": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "0.113": [
+    "audit_v42/02_headline_results_matrix.md"
+   ],
+   "-0.0207": [
+    "ALT_STATS/results/route_a_B10000.csv"
+   ],
+   "-0.03460": [
+    "ALT_STATS/results/route_a_B10000.csv"
+   ],
+   "-0.00670": [
+    "ALT_STATS/results/route_a_B10000.csv"
+   ],
+   "-0.00787": [
+    "ALT_STATS/results/route_a_B10000.csv",
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.01285": [
+    "ALT_STATS/results/route_a_B10000.csv"
+   ],
+   "-0.00297": [
+    "ALT_STATS/results/route_a_B10000.csv"
+   ],
+   "-0.00894": [
+    "ALT_STATS/results/route_a_B10000.csv",
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.01652": [
+    "ALT_STATS/results/route_a_B10000.csv"
+   ],
+   "-0.00114": [
+    "ALT_STATS/results/route_a_B10000.csv"
+   ],
+   "-0.00427": [
+    "ALT_STATS/results/route_a_B10000.csv",
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.00761": [
+    "ALT_STATS/results/route_a_B10000.csv"
+   ],
+   "-0.00087": [
+    "ALT_STATS/results/route_a_B10000.csv"
+   ],
+   "-0.02558": [
+    "ALT_STATS/results/route_a_B10000.csv",
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.03897": [
+    "ALT_STATS/results/route_a_B10000.csv"
+   ],
+   "-0.01220": [
+    "ALT_STATS/results/route_a_B10000.csv"
+   ],
+   "-0.01066": [
+    "ALT_STATS/results/route_a_B10000.csv",
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.01566": [
+    "ALT_STATS/results/route_a_B10000.csv"
+   ],
+   "-0.00584": [
+    "ALT_STATS/results/route_a_B10000.csv"
+   ],
+   "-0.00854": [
+    "ALT_STATS/results/route_a_B10000.csv",
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.01387": [
+    "ALT_STATS/results/route_a_B10000.csv"
+   ],
+   "-0.00306": [
+    "ALT_STATS/results/route_a_B10000.csv"
+   ],
+   "-0.00364": [
+    "ALT_STATS/results/route_a_B10000.csv",
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.00591": [
+    "ALT_STATS/results/route_a_B10000.csv",
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.00129": [
+    "ALT_STATS/results/route_a_B10000.csv"
+   ],
+   "0.54058": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.56128": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.02069": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.03524": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.00678": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.999": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.02069": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.02986": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.03506": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.00604": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.17865": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.18653": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.01297": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.00310": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.04223": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.01281": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.00303": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.75116": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.72372": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.02743": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.01262": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.04538": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.65244": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.63627": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.01617": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.00171": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.03590": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.54056": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.56614": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.03911": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.01283": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.02558": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.03690": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.03800": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.01231": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.18008": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.19075": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.01561": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.00608": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.05592": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.01539": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.00585": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.77151": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.75129": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.02021": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.00283": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.03997": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.66739": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.65147": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.01591": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.00665": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.04216": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.61616": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.62510": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.01683": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.00100": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.984": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.00894": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.01290": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.01699": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.00115": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.21266": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.21694": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.00775": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.00080": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.9912": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.01969": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.00782": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.00089": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.72548": [
+    "ALT_STATS/results/route_a_primary.csv",
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.71337": [
+    "ALT_STATS/results/route_a_primary.csv",
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.01211": [
+    "ALT_STATS/results/route_a_primary.csv",
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.00181": [
+    "ALT_STATS/results/route_a_primary.csv",
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.02267": [
+    "ALT_STATS/results/route_a_primary.csv",
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.60775": [
+    "ALT_STATS/results/route_a_primary.csv",
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.59670": [
+    "ALT_STATS/results/route_a_primary.csv",
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.01104": [
+    "ALT_STATS/results/route_a_primary.csv",
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.00229": [
+    "ALT_STATS/results/route_a_primary.csv",
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.02551": [
+    "ALT_STATS/results/route_a_primary.csv",
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.59712": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.60566": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.01383": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.00294": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.9994": [
+    "ALT_STATS/results/route_a_primary.csv",
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.00854": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.01232": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.01422": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.00285": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.20532": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.20897": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.00126": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "0.01743": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.00598": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ],
+   "-0.00117": [
+    "ALT_STATS/results/route_a_primary.csv"
+   ]
+  },
+  "counts": {
+   "nodes": 913,
+   "edges": 592,
+   "by_type": {
+    "Project": 1,
+    "GitTag": 4,
+    "GitCommit": 40,
+    "Manuscript": 1,
+    "ManuscriptSection": 45,
+    "Reference": 47,
+    "DOI": 42,
+    "NumericClaim": 531,
+    "Checksum": 22,
+    "Result": 20,
+    "Script": 49,
+    "AuditFinding": 100,
+    "Analysis": 8,
+    "Model": 2,
+    "Comparator": 1
+   }
+  }
+ },
+ "manuscript": {
+  "id": "Manuscript:manuscript_v43/revised_manuscript.tex",
+  "type": "Manuscript",
+  "path": "manuscript_v43/revised_manuscript.tex",
+  "found": true,
+  "n_chars": 95638,
+  "abstract_words": 299,
+  "cited_keys": [
+   "Baharom2022",
+   "Beal2025",
+   "Benedum2020",
+   "Binuya2022",
+   "CHIRPS",
+   "CameronGelbachMiller2008",
+   "Campbell2026",
+   "Clarke2024OpenDengue",
+   "Collins2024TRIPODAI",
+   "ColonGonzalez2021",
+   "ERA5LandCDS",
+   "EWARScsd",
+   "Funk2015",
+   "Gasparrini2010",
+   "Gasparrini2011",
+   "HDXCODABSriLanka",
+   "Huber2018",
+   "HussainAlkhateeb2021",
+   "Johansson2016",
+   "Johansson2019",
+   "Leung2022",
+   "Lowe2013",
+   "Lowe2021",
+   "Moons2019",
+   "Mordecai2017",
+   "MunozSabater2021",
+   "Murphy1985",
+   "OpenDengue2024",
+   "PAHO2023",
+   "SaitoRehmsmeier2015",
+   "Sangkaew2026",
+   "Sesay2026",
+   "SriLankaCensus2025",
+   "SriLankaWER",
+   "SteyerbergVergouwe2014",
+   "Tatem2017",
+   "Tozan2023",
+   "ValleDelCauca2024",
+   "VanCalster2019",
+   "VanCalster2023",
+   "Vickers2006",
+   "Vickers2016",
+   "Vickers2019",
+   "Vickers2023",
+   "Wolff2019",
+   "WorldPop2025",
+   "vonElm2007"
+  ],
+  "bibitem_keys": [
+   "Baharom2022",
+   "Beal2025",
+   "Benedum2020",
+   "Binuya2022",
+   "CHIRPS",
+   "CameronGelbachMiller2008",
+   "Campbell2026",
+   "Clarke2024OpenDengue",
+   "Collins2024TRIPODAI",
+   "ColonGonzalez2021",
+   "ERA5LandCDS",
+   "EWARScsd",
+   "Funk2015",
+   "Gasparrini2010",
+   "Gasparrini2011",
+   "HDXCODABSriLanka",
+   "Huber2018",
+   "HussainAlkhateeb2021",
+   "Johansson2016",
+   "Johansson2019",
+   "Leung2022",
+   "Lowe2013",
+   "Lowe2021",
+   "Moons2019",
+   "Mordecai2017",
+   "MunozSabater2021",
+   "Murphy1985",
+   "OpenDengue2024",
+   "PAHO2023",
+   "SaitoRehmsmeier2015",
+   "Sangkaew2026",
+   "Sesay2026",
+   "SriLankaCensus2025",
+   "SriLankaWER",
+   "SteyerbergVergouwe2014",
+   "Tatem2017",
+   "Tozan2023",
+   "ValleDelCauca2024",
+   "VanCalster2019",
+   "VanCalster2023",
+   "Vickers2006",
+   "Vickers2016",
+   "Vickers2019",
+   "Vickers2023",
+   "Wolff2019",
+   "WorldPop2025",
+   "vonElm2007"
+  ],
+  "undefined_citations": [],
+  "uncited_bibitems": [],
+  "placeholders": [
+   {
+    "marker": "AUTHOR INPUT REQUIRED",
+    "count": 9
+   }
+  ],
+  "claims_public_github": true,
+  "em_dashes": 0
+ }
+}

@@ -1,0 +1,18 @@
+# constraints (deterministic; enforced by agent_graph + tests)
+analysis_statuses:
+  - prespecified_primary
+  - prespecified_secondary
+  - internally_design_locked
+  - post_hoc_exploratory
+  - post_result_design_locked
+  - sensitivity
+  - diagnostic
+forbidden_status_upgrades:
+  post_hoc_exploratory: ['prespecified', 'primary', 'confirmatory', 'registered', 'validated', 'prospective']
+  post_result_design_locked: ['prespecified', 'primary', 'confirmatory', 'registered', 'prospective']
+  sensitivity: ['primary', 'confirmatory']
+submission_blocking_placeholders:
+  - 'AUTHOR INPUT REQUIRED'
+  - '[DOI to verify]'
+  - 'XXXX'
+  - '\\todo{'

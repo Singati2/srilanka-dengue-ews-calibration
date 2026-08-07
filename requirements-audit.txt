@@ -1,0 +1,3 @@
+# The audit runs on the Python standard library only (deterministic, no network).
+# Tested on Python 3.10+. Optional visualization extra:
+# networkx>=3.0   # optional: richer graph queries; the core audit does not require it

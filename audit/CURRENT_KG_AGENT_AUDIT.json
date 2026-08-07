@@ -1,0 +1,178 @@
+{
+  "repo": "/tmp/claude-1000/-home-mpcrlab/af40ce96-d2d5-4f3c-9d5a-4c9cb2ee3ec8/scratchpad/kg_build",
+  "generated": "2026-08-07T03:23:46.627464Z",
+  "graph": {
+    "nodes": 913,
+    "edges": 592,
+    "by_type": {
+      "Project": 1,
+      "GitTag": 4,
+      "GitCommit": 40,
+      "Manuscript": 1,
+      "ManuscriptSection": 45,
+      "Reference": 47,
+      "DOI": 42,
+      "NumericClaim": 531,
+      "Checksum": 22,
+      "Result": 20,
+      "Script": 49,
+      "AuditFinding": 100,
+      "Analysis": 8,
+      "Model": 2,
+      "Comparator": 1
+    }
+  },
+  "gates": [
+    {
+      "name": "REPOSITORY DOCUMENTATION",
+      "status": "REVIEW",
+      "n_findings": 2,
+      "findings": [
+        {
+          "severity": "major",
+          "msg": "122 absolute machine-specific path(s) in tracked files (portability)",
+          "evidence": [
+            "ALT_STATS/PHASE1_GATE.md: /home/mpcrlab/",
+            "ALT_STATS/PHASE1_GATE.md: /home/mpcrlab/",
+            "ALT_STATS/PHASE1_GATE.md: /home/mpcrlab/",
+            "ALT_STATS/environment/requirements-lock.txt: /home/mpcrlab/",
+            "ALT_STATS/src/freeze_matched_predictions.py: /home/mpcrlab/",
+            "ALT_STATS/src/freeze_matched_predictions.py: /home/mpcrlab/",
+            "ALT_STATS/src/freeze_matched_predictions.py: /home/mpcrlab/",
+            "ALT_STATS/src/freeze_matched_predictions.py: /home/mpcrlab/"
+          ]
+        },
+        {
+          "severity": "minor",
+          "msg": "working tree dirty at audit time",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "name": "DATA PROVENANCE",
+      "status": "REVIEW",
+      "n_findings": 1,
+      "findings": [
+        {
+          "severity": "major",
+          "msg": "26 data-like csv/json tracked under analysis/ (quarantine risk)",
+          "evidence": [
+            "ALT_STATS/PAIRED_ROW_MANIFEST.csv",
+            "ALT_STATS/frozen/colombia_matched_pairs.csv",
+            "ALT_STATS/frozen/srilanka_matched_pairs.csv",
+            "ALT_STATS/logs/freeze_gates.json",
+            "ALT_STATS/logs/paired_audit.json",
+            "analysis/geo_effect_decomposition/co_devincl_full_refit_distribution.csv",
+            "analysis/geo_effect_decomposition/co_geo_partial_refit_distribution.csv",
+            "analysis/path_b_matched_fixed_effects_original_pipeline/run/path_b_bootstrap_distribution.csv"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "TEMPORAL LEAKAGE",
+      "status": "PASS",
+      "n_findings": 0,
+      "findings": []
+    },
+    {
+      "name": "SPATIAL CONSISTENCY",
+      "status": "PASS",
+      "n_findings": 1,
+      "findings": [
+        {
+          "severity": "minor",
+          "msg": "manuscript mentions both 32 dept fixed-effect columns and 31 test departments \u2014 ensure this is explained",
+          "evidence": [
+            "32 department fixed effects vs 31 analyzed test departments"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "MODEL SPECIFICATION",
+      "status": "PASS",
+      "n_findings": 0,
+      "findings": []
+    },
+    {
+      "name": "CALIBRATION",
+      "status": "PASS",
+      "n_findings": 0,
+      "findings": []
+    },
+    {
+      "name": "REPRODUCIBILITY",
+      "status": "PASS",
+      "n_findings": 0,
+      "findings": []
+    },
+    {
+      "name": "REFERENCE INTEGRITY",
+      "status": "PASS",
+      "n_findings": 0,
+      "findings": []
+    },
+    {
+      "name": "RESULT TRACEABILITY",
+      "status": "REVIEW",
+      "n_findings": 1,
+      "findings": [
+        {
+          "severity": "major",
+          "msg": "117/278 4-dp effect values not matched to a committed result file",
+          "evidence": [
+            "-0.0012 (L171: The Python DLNM-style and canonical R \\texttt{dlnm} climate specificat)",
+            "-0.0002 (L173: Because rolling recalibration in the frozen run was applied only to M0)",
+            "-0.0002 (L176: \\caption{Sri Lanka matched climate ablation decision curves (test peri)",
+            "-0.0002 (L193: Sri Lanka, recalibrated & $+0.0157$ & $+0.0066$ to $+0.0257$ & $-0.000)",
+            "-0.0346 (L206: Evaluating the frozen matched predictions with strictly proper, thresh)",
+            "-0.0067 (L206: Evaluating the frozen matched predictions with strictly proper, thresh)",
+            "-0.0165 (L206: Evaluating the frozen matched predictions with strictly proper, thresh)",
+            "-0.0011 (L206: Evaluating the frozen matched predictions with strictly proper, thresh)",
+            "-0.0256 (L206: Evaluating the frozen matched predictions with strictly proper, thresh)",
+            "-0.0085 (L206: Evaluating the frozen matched predictions with strictly proper, thresh)",
+            "-0.0043 (L206: Evaluating the frozen matched predictions with strictly proper, thresh)",
+            "-0.0403 (L206: Evaluating the frozen matched predictions with strictly proper, thresh)"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "MANUSCRIPT CONSISTENCY",
+      "status": "REVIEW",
+      "n_findings": 1,
+      "findings": [
+        {
+          "severity": "major",
+          "msg": "manuscript asserts a public GitHub repo/commit \u2014 must be verified from a clean unauthenticated environment before submission",
+          "evidence": [
+            "repository availability claim"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ADVERSARIAL REVIEW",
+      "status": "PASS",
+      "n_findings": 0,
+      "findings": []
+    },
+    {
+      "name": "SUBMISSION DECLARATIONS",
+      "status": "FAIL",
+      "n_findings": 1,
+      "findings": [
+        {
+          "severity": "critical",
+          "msg": "9 unresolved placeholder(s) (author-supplied fields block submission)",
+          "evidence": [
+            "AUTHOR INPUT REQUIRED x9"
+          ]
+        }
+      ]
+    }
+  ],
+  "submission_ready": false
+}
