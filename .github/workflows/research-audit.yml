@@ -1,0 +1,20 @@
+name: research-audit
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }          # tags needed by the repository agent
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - name: Deterministic tests
+        run: python tests/test_kg_agent.py
+      - name: KG + Agent audit (non-blocking report; gate does not fail the build yet)
+        run: |
+          python -m agent_graph.run_audit --repo . || true
+          echo "See audit/CURRENT_KG_AGENT_AUDIT.md"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kg-agent-audit
+          path: audit/CURRENT_KG_AGENT_AUDIT.*
