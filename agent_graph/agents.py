@@ -8,6 +8,7 @@ import os, re, glob, subprocess
 from knowledge_graph import schema
 
 PASS, REVIEW, FAIL = "PASS", "REVIEW", "FAIL"
+PARTIAL, NOT_VERIFIED = "PARTIAL", "NOT_VERIFIED"   # v44 s3.2: not demonstrated != failed
 
 
 def _read(p):
@@ -82,6 +83,13 @@ def data_provenance_agent(g, repo):
     return _mk("DATA PROVENANCE", [x for x in f if not x.get("ok")] or f)
 
 
+def composite_leaks_if_joined_by_start(composite_start, composite_end, forecast_origin):
+    """v44 s3.3(4): a satellite composite whose start precedes the forecast week but whose
+    END extends past the forecast origin leaks future data if the feature is joined on the
+    composite START. Dates are 'YYYY-MM-DD' strings (lexicographic order == chronological)."""
+    return composite_start < forecast_origin <= composite_end
+
+
 # ---------- 11.3 Temporal Leakage ----------
 def temporal_leakage_agent(g, repo):
     f = []
@@ -94,7 +102,16 @@ def temporal_leakage_agent(g, repo):
         src = _read(os.path.join(repo, m["path"]))
         if "no future climate" not in src and "past-only" not in src and "available at the forecast origin" not in src:
             f.append({"severity": "major", "msg": "manuscript does not explicitly state past-only / no-future-data availability", "evidence": []})
-    return _mk("TEMPORAL LEAKAGE", f)
+    # v44 s3.2: absence of .interpolate()/bfill is NOT proof of no leakage. Deeper dimensions
+    # (composite availability dates, threshold/scaling/recal windows, lag & outcome timing)
+    # cannot be verified from a static scan without the (quarantined) date-level artifacts.
+    f.append({"severity": "minor",
+              "msg": "static scan only; composite-availability dates, threshold/scaling/recalibration windows, "
+                     "lag construction, and outcome-vs-origin timing are NOT verified here",
+              "evidence": ["see composite_leaks_if_joined_by_start() — join dynamic layers on composite_end, not start"]})
+    crit = any(x["severity"] == "critical" for x in f)
+    maj = any(x["severity"] == "major" for x in f)
+    return _mk("TEMPORAL LEAKAGE", f, status=(FAIL if crit else REVIEW if maj else NOT_VERIFIED))
 
 
 # ---------- 11.4 Spatial ----------
@@ -162,27 +179,43 @@ def reproducibility_agent(g, repo):
         f.append({"severity": "major", "msg": "no environment lockfile (requirements-lock.txt) found", "evidence": []})
     if not any(n["type"] == "Checksum" for n in g["nodes"].values()):
         f.append({"severity": "major", "msg": "no checksum file for frozen inputs/outputs", "evidence": []})
-    seeded = [n for n in g["nodes"].values() if n["type"] == "Script" and n.get("seeds")]
     unseeded = [n for n in g["nodes"].values() if n["type"] == "Script" and not n.get("seeds")
                 and "bootstrap" in n.get("path", "").lower()]
     if unseeded:
         f.append({"severity": "minor", "msg": f"{len(unseeded)} bootstrap script(s) without an inline seed token", "evidence": [n["path"] for n in unseeded[:5]]})
-    return _mk("REPRODUCIBILITY", f)
+    # v44 s3.2: presence of a lockfile + checksum is NOT a strong PASS. Reproduction was
+    # not executed in this audit and quarantined inputs cannot be recomputed here.
+    f.append({"severity": "minor",
+              "msg": "reproducibility is presence-only (lockfile/checksum/seeds detected) but NOT re-executed; "
+                     "quarantined inputs cannot be recomputed in this audit",
+              "evidence": ["run scripts in a clean env with hash checks to earn a strong PASS"]})
+    status = FAIL if any(x["severity"] == "critical" for x in f) else NOT_VERIFIED
+    return _mk("REPRODUCIBILITY", f, status=status)
 
 
 # ---------- 11.8 Reference ----------
 def reference_agent(g, repo):
     f = []
     m = _manuscript(g)
+    key_integrity_ok = True
     if m:
+        # (a) citation-key integrity — deterministic, can PASS/FAIL
         und = m.get("undefined_citations", [])
         if und:
+            key_integrity_ok = False
             f.append({"severity": "critical", "msg": f"{len(und)} \\cite key(s) with no \\bibitem", "evidence": und[:10]})
         n_ref = len(m.get("bibitem_keys", []))
         dois = [n for n in g["nodes"].values() if n["type"] == "DOI"]
         if n_ref and len(dois) < n_ref * 0.5:
             f.append({"severity": "minor", "msg": f"only {len(dois)} DOIs for {n_ref} references (<50% DOI coverage)", "evidence": []})
-    return _mk("REFERENCE INTEGRITY", f)
+        # (b) v44 s3.2: DOI/metadata + claim-support verification NOT done (no network here).
+        f.append({"severity": "minor",
+                  "msg": "scientific reference support (does each cited source actually support its sentence?) is NOT_VERIFIED — "
+                         "citation-key integrity is checked, but DOI/metadata and claim-support require a network verifier",
+                  "evidence": ["a valid \\cite key does not imply the source supports the claim"]})
+    if not key_integrity_ok:
+        return _mk("REFERENCE INTEGRITY", f, status=FAIL)
+    return _mk("REFERENCE INTEGRITY", f, status=NOT_VERIFIED)
 
 
 # ---------- 11.9 Claim (numeric traceability) ----------
@@ -211,6 +244,35 @@ def claim_agent(g, repo):
     return _mk("RESULT TRACEABILITY", [x for x in f if not x.get("ok")] or f)
 
 
+# ---------- v44 s3.1: robust semantic contradiction detector ----------
+_CI_TOKEN = re.compile(r'[+\-]?\d\.\d{3,4}\s*(?:to|,)\s*[+\-]?\d\.\d{3,4}')
+
+
+def detect_proper_score_contradiction(text):
+    """Deterministic, not tied to one literal sentence (v44 s3.1).
+    Returns (is_contradiction, reports_di_ps, claims_not_computed).
+    Contradiction = the doc both REPORTS development-inclusive proper-score intervals
+    AND CLAIMS they were not computed / gated / not re-executed.
+    """
+    low = text.lower()
+    reports = False
+    for m in re.finditer(r'development-inclusive', low):
+        window = low[m.start():m.start() + 240]
+        if ("nll" in window or "brier" in window or "proper" in window) and _CI_TOKEN.search(window):
+            reports = True
+            break
+    claims_not = None
+    for var in schema.NOT_COMPUTED_VARIANTS:
+        for m in re.finditer(re.escape(var), low):
+            ctx = low[max(0, m.start() - 170):m.start() + 50]
+            if "proper" in ctx and ("development-inclusive" in ctx or "refit-both" in ctx or "refit both" in ctx):
+                claims_not = f"...{ctx[-90:].strip()}..."
+                break
+        if claims_not:
+            break
+    return (reports and bool(claims_not)), reports, claims_not
+
+
 # ---------- 11.10 Manuscript Consistency ----------
 def manuscript_consistency_agent(g, repo):
     f = []
@@ -218,10 +280,12 @@ def manuscript_consistency_agent(g, repo):
     if not m:
         return _mk("MANUSCRIPT CONSISTENCY", [{"severity": "critical", "msg": "no manuscript source found", "evidence": []}])
     src = _read(os.path.join(repo, m["path"]))
-    # contradiction: 'not computed' proper-score claim vs computed DI proper scores
-    if "development-inclusive proper-score intervals were not computed" in src and "development-inclusive" in src:
-        f.append({"severity": "critical", "msg": "contradiction: says DI proper-score intervals 'were not computed' but DI results appear present",
-                  "evidence": ["retire the 'not computed' sentence"]})
+    # v44 s3.1 — semantic contradiction: reports DI proper scores AND claims they were not computed
+    contra, reports, claims_not = detect_proper_score_contradiction(src)
+    if contra:
+        f.append({"severity": "critical",
+                  "msg": "contradiction: development-inclusive proper-score intervals are both REPORTED and described as not computed/gated",
+                  "evidence": [claims_not, "retire the 'not computed/gated' phrasing or remove the reported intervals"]})
     # public-repo claim (must be verified, not trusted)
     if m.get("claims_public_github"):
         f.append({"severity": "major", "msg": "manuscript asserts a public GitHub repo/commit — must be verified from a clean unauthenticated environment before submission",

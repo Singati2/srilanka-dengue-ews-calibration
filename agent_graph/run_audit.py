@@ -15,8 +15,10 @@ def run(repo):
     g = ingest.build_graph(repo)
     ingest.save_graph(g, repo)
     results = [fn(g, repo) for fn in agents.ALL_AGENTS]
-    # SUBMISSION READY only if no FAIL gate
+    # SUBMISSION READY only if no FAIL gate. NOT_VERIFIED/PARTIAL do not FAIL the build but
+    # are surfaced as "not demonstrated — requires out-of-audit verification" (v44 s3.2).
     ready = not any(r["status"] == "FAIL" for r in results)
+    not_verified = [r["name"] for r in results if r["status"] in ("NOT_VERIFIED", "PARTIAL")]
     report = {
         "repo": os.path.abspath(repo),
         "generated": datetime.datetime.utcnow().isoformat() + "Z",
@@ -24,6 +26,7 @@ def run(repo):
         "gates": [{"name": r["name"], "status": r["status"],
                    "n_findings": len(r["findings"]), "findings": r["findings"]} for r in results],
         "submission_ready": ready,
+        "not_verified_gates": not_verified,
     }
     return g, results, report
 
@@ -71,6 +74,9 @@ def print_summary(results, report):
     print()
     for r in results:
         print(f"{r['name']:<{width}} {r['status']}")
+    if report.get("not_verified_gates"):
+        print()
+        print("NOT_VERIFIED (not demonstrated; needs out-of-audit check): " + ", ".join(report["not_verified_gates"]))
     print()
     print(f"SUBMISSION READY: {'YES' if report['submission_ready'] else 'NO'}")
 

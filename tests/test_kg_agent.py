@@ -46,7 +46,7 @@ def test_all_agents_return_valid_status():
     g = ingest.build_graph(REPO)
     for fn in agents.ALL_AGENTS:
         r = fn(g, REPO)
-        assert r["status"] in ("PASS", "REVIEW", "FAIL")
+        assert r["status"] in schema.GATE_STATUSES
         assert isinstance(r["findings"], list)
 
 
@@ -54,6 +54,66 @@ def test_run_audit_is_deterministic():
     _, _, r1 = run_audit.run(REPO)
     _, _, r2 = run_audit.run(REPO)
     assert [x["status"] for x in r1["gates"]] == [x["status"] for x in r2["gates"]]
+
+
+# ---------------- v44 s3.3 regression tests (gate MEANING, not just legal strings) ----------------
+
+_V43_CONTRADICTION = (
+    "Methods. The refit-both-models bootstrap was not re-executed, so development-inclusive "
+    "proper-score intervals were gated and not computed; conditional intervals only. "
+    "Results. Development-inclusive proper scores: Sri Lanka NLL -0.0403 to +0.0040; "
+    "Brier -0.0153 to +0.0013; Colombia NLL -0.0224 to -0.0002.")
+_V44_CONSISTENT = (
+    "The refit-both-models bootstrap was subsequently executed for the proper scores, giving "
+    "development-inclusive Sri Lanka NLL -0.0403 to +0.0040 and Colombia NLL -0.0224 to -0.0002.")
+
+
+def test_1_v43_proper_score_contradiction_is_caught():
+    contra, reports, claims_not = agents.detect_proper_score_contradiction(_V43_CONTRADICTION)
+    assert contra is True and reports and claims_not          # v43 must fail
+    contra2, _, _ = agents.detect_proper_score_contradiction(_V44_CONSISTENT)
+    assert contra2 is False                                    # consistent text must pass
+    # the real (repaired) manuscript must be consistent
+    g = ingest.build_graph(REPO)
+    m = agents._manuscript(g)
+    src = agents._read(os.path.join(REPO, m["path"]))
+    assert agents.detect_proper_score_contradiction(src)[0] is False
+
+
+def test_2_reference_scientific_support_not_verified():
+    # a valid \cite key does not prove the source supports the claim -> never a strong PASS offline
+    g = ingest.build_graph(REPO)
+    r = agents.reference_agent(g, REPO)
+    assert r["status"] in ("NOT_VERIFIED", "FAIL")
+    assert any("NOT_VERIFIED" in f["msg"] or "support" in f["msg"] for f in r["findings"])
+
+
+def test_3_reproducibility_presence_only_is_not_strong_pass():
+    g = ingest.build_graph(REPO)
+    r = agents.reproducibility_agent(g, REPO)
+    assert r["status"] != "PASS"                               # lockfile+checksum alone must not PASS
+    assert r["status"] in ("NOT_VERIFIED", "PARTIAL", "REVIEW", "FAIL")
+
+
+def test_4_modis_composite_end_past_origin_is_leakage():
+    assert agents.composite_leaks_if_joined_by_start("2023-01-01", "2023-01-16", "2023-01-08") is True
+    assert agents.composite_leaks_if_joined_by_start("2022-12-20", "2023-01-04", "2023-01-08") is False
+    assert agents.composite_leaks_if_joined_by_start("2023-01-01", "2023-01-07", "2023-01-08") is False
+
+
+def test_5_traceability_is_token_based_not_strong_pass():
+    # RESULT TRACEABILITY relies on decimal-token matching; it must never claim a strong PASS,
+    # because the same 4-dp number can appear in unrelated results (collision risk).
+    g = ingest.build_graph(REPO)
+    r = agents.claim_agent(g, REPO)
+    assert r["status"] != "PASS"
+
+
+def test_6_a_clean_property_can_still_pass():
+    # not everything is downgraded: a genuinely demonstrated property still earns PASS.
+    g = ingest.build_graph(REPO)
+    statuses = [fn(g, REPO)["status"] for fn in agents.ALL_AGENTS]
+    assert "PASS" in statuses, "at least one gate should PASS on a demonstrated property"
 
 
 if __name__ == "__main__":

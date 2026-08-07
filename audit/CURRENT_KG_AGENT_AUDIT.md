@@ -1,9 +1,9 @@
 # Knowledge-Graph + Agent-Graph Audit
 
-- Generated: 2026-08-07T03:23:46.627464Z
-- Repo: `/tmp/claude-1000/-home-mpcrlab/af40ce96-d2d5-4f3c-9d5a-4c9cb2ee3ec8/scratchpad/kg_build`
+- Generated: 2026-08-07T04:19:48.733702Z
+- Repo: `/tmp/claude-1000/-home-mpcrlab/af40ce96-d2d5-4f3c-9d5a-4c9cb2ee3ec8/scratchpad/v44_build`
 - Graph: 913 nodes / 592 edges
-- Findings: 1 critical · 4 major · 2 minor
+- Findings: 1 critical · 4 major · 5 minor
 - **SUBMISSION READY: NO**
 
 ## Release gates
@@ -12,12 +12,12 @@
 |---|---|---|
 | REPOSITORY DOCUMENTATION | REVIEW | 2 |
 | DATA PROVENANCE | REVIEW | 1 |
-| TEMPORAL LEAKAGE | PASS | 0 |
+| TEMPORAL LEAKAGE | NOT_VERIFIED | 1 |
 | SPATIAL CONSISTENCY | PASS | 1 |
 | MODEL SPECIFICATION | PASS | 0 |
 | CALIBRATION | PASS | 0 |
-| REPRODUCIBILITY | PASS | 0 |
-| REFERENCE INTEGRITY | PASS | 0 |
+| REPRODUCIBILITY | NOT_VERIFIED | 1 |
+| REFERENCE INTEGRITY | NOT_VERIFIED | 1 |
 | RESULT TRACEABILITY | REVIEW | 1 |
 | MANUSCRIPT CONSISTENCY | REVIEW | 1 |
 | ADVERSARIAL REVIEW | PASS | 0 |
@@ -26,7 +26,7 @@
 ## Findings by gate
 
 ### REPOSITORY DOCUMENTATION — REVIEW
-- **[major]** 122 absolute machine-specific path(s) in tracked files (portability)  
+- **[major]** 130 absolute machine-specific path(s) in tracked files (portability)  
     - ALT_STATS/PHASE1_GATE.md: /home/mpcrlab/
     - ALT_STATS/PHASE1_GATE.md: /home/mpcrlab/
     - ALT_STATS/PHASE1_GATE.md: /home/mpcrlab/
@@ -48,8 +48,9 @@
     - analysis/geo_effect_decomposition/co_geo_partial_refit_distribution.csv
     - analysis/path_b_matched_fixed_effects_original_pipeline/run/path_b_bootstrap_distribution.csv
 
-### TEMPORAL LEAKAGE — PASS
-- (no issues)
+### TEMPORAL LEAKAGE — NOT_VERIFIED
+- **[minor]** static scan only; composite-availability dates, threshold/scaling/recalibration windows, lag construction, and outcome-vs-origin timing are NOT verified here  
+    - see composite_leaks_if_joined_by_start() — join dynamic layers on composite_end, not start
 
 ### SPATIAL CONSISTENCY — PASS
 - **[minor]** manuscript mentions both 32 dept fixed-effect columns and 31 test departments — ensure this is explained  
@@ -61,11 +62,13 @@
 ### CALIBRATION — PASS
 - (no issues)
 
-### REPRODUCIBILITY — PASS
-- (no issues)
+### REPRODUCIBILITY — NOT_VERIFIED
+- **[minor]** reproducibility is presence-only (lockfile/checksum/seeds detected) but NOT re-executed; quarantined inputs cannot be recomputed in this audit  
+    - run scripts in a clean env with hash checks to earn a strong PASS
 
-### REFERENCE INTEGRITY — PASS
-- (no issues)
+### REFERENCE INTEGRITY — NOT_VERIFIED
+- **[minor]** scientific reference support (does each cited source actually support its sentence?) is NOT_VERIFIED — citation-key integrity is checked, but DOI/metadata and claim-support require a network verifier  
+    - a valid \cite key does not imply the source supports the claim
 
 ### RESULT TRACEABILITY — REVIEW
 - **[major]** 117/278 4-dp effect values not matched to a committed result file  

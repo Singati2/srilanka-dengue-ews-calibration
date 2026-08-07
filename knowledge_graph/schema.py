@@ -59,3 +59,15 @@ REQUIRED_AUTHOR_FIELDS = [
 # Substrings (bracket/colon-agnostic) — the real manuscript uses
 # "[AUTHOR INPUT REQUIRED: <field>]", so match the stable core, not the exact brackets.
 PLACEHOLDER_MARKERS = ["AUTHOR INPUT REQUIRED", "[DOI to verify]", "XXXX", "\\todo{"]
+
+# v44 s3.2 — gate statuses. PASS only for demonstrated properties; PARTIAL/NOT_VERIFIED
+# for presence-only or network-dependent checks that were not actually executed.
+GATE_STATUSES = ["PASS", "REVIEW", "FAIL", "PARTIAL", "NOT_VERIFIED"]
+
+# v44 s3.1 — semantic variants of "development-inclusive X was not computed", so the
+# contradiction detector is not tied to one literal sentence.
+NOT_COMPUTED_VARIANTS = [
+    "not computed", "were not computed", "was not computed", "not re-executed",
+    "not reexecuted", "not re-run", "not available", "gated and not computed",
+    "were gated", "was gated", "not evaluated", "not calculated", "could not be recomputed",
+]

@@ -1,6 +1,6 @@
 {
-  "repo": "/tmp/claude-1000/-home-mpcrlab/af40ce96-d2d5-4f3c-9d5a-4c9cb2ee3ec8/scratchpad/kg_build",
-  "generated": "2026-08-07T03:23:46.627464Z",
+  "repo": "/tmp/claude-1000/-home-mpcrlab/af40ce96-d2d5-4f3c-9d5a-4c9cb2ee3ec8/scratchpad/v44_build",
+  "generated": "2026-08-07T04:19:48.733702Z",
   "graph": {
     "nodes": 913,
     "edges": 592,
@@ -30,7 +30,7 @@
       "findings": [
         {
           "severity": "major",
-          "msg": "122 absolute machine-specific path(s) in tracked files (portability)",
+          "msg": "130 absolute machine-specific path(s) in tracked files (portability)",
           "evidence": [
             "ALT_STATS/PHASE1_GATE.md: /home/mpcrlab/",
             "ALT_STATS/PHASE1_GATE.md: /home/mpcrlab/",
@@ -72,9 +72,17 @@
     },
     {
       "name": "TEMPORAL LEAKAGE",
-      "status": "PASS",
-      "n_findings": 0,
-      "findings": []
+      "status": "NOT_VERIFIED",
+      "n_findings": 1,
+      "findings": [
+        {
+          "severity": "minor",
+          "msg": "static scan only; composite-availability dates, threshold/scaling/recalibration windows, lag construction, and outcome-vs-origin timing are NOT verified here",
+          "evidence": [
+            "see composite_leaks_if_joined_by_start() \u2014 join dynamic layers on composite_end, not start"
+          ]
+        }
+      ]
     },
     {
       "name": "SPATIAL CONSISTENCY",
@@ -104,15 +112,31 @@
     },
     {
       "name": "REPRODUCIBILITY",
-      "status": "PASS",
-      "n_findings": 0,
-      "findings": []
+      "status": "NOT_VERIFIED",
+      "n_findings": 1,
+      "findings": [
+        {
+          "severity": "minor",
+          "msg": "reproducibility is presence-only (lockfile/checksum/seeds detected) but NOT re-executed; quarantined inputs cannot be recomputed in this audit",
+          "evidence": [
+            "run scripts in a clean env with hash checks to earn a strong PASS"
+          ]
+        }
+      ]
     },
     {
       "name": "REFERENCE INTEGRITY",
-      "status": "PASS",
-      "n_findings": 0,
-      "findings": []
+      "status": "NOT_VERIFIED",
+      "n_findings": 1,
+      "findings": [
+        {
+          "severity": "minor",
+          "msg": "scientific reference support (does each cited source actually support its sentence?) is NOT_VERIFIED \u2014 citation-key integrity is checked, but DOI/metadata and claim-support require a network verifier",
+          "evidence": [
+            "a valid \\cite key does not imply the source supports the claim"
+          ]
+        }
+      ]
     },
     {
       "name": "RESULT TRACEABILITY",
@@ -174,5 +198,10 @@
       ]
     }
   ],
-  "submission_ready": false
+  "submission_ready": false,
+  "not_verified_gates": [
+    "TEMPORAL LEAKAGE",
+    "REPRODUCIBILITY",
+    "REFERENCE INTEGRITY"
+  ]
 }
