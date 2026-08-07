@@ -1,7 +1,7 @@
 {
  "meta": {
-  "manuscript_path": "manuscript_v43/revised_manuscript.tex",
-  "manuscript_sha256_16": "60fa9b3632ad5c0d",
+  "manuscript_path": "manuscript_v44/revised_manuscript.tex",
+  "manuscript_sha256_16": "08fad12b9188b98f",
   "result_values": {
    "+300.0000": [
     "analysis/v17_devinclusive_finalization/SL_devinclusive_results.json",
@@ -1359,7 +1359,7 @@
    ]
   },
   "counts": {
-   "nodes": 913,
+   "nodes": 914,
    "edges": 592,
    "by_type": {
     "Project": 1,
@@ -1373,7 +1373,7 @@
     "Checksum": 22,
     "Result": 20,
     "Script": 49,
-    "AuditFinding": 100,
+    "AuditFinding": 101,
     "Analysis": 8,
     "Model": 2,
     "Comparator": 1
@@ -1381,12 +1381,12 @@
   }
  },
  "manuscript": {
-  "id": "Manuscript:manuscript_v43/revised_manuscript.tex",
+  "id": "Manuscript:manuscript_v44/revised_manuscript.tex",
   "type": "Manuscript",
-  "path": "manuscript_v43/revised_manuscript.tex",
+  "path": "manuscript_v44/revised_manuscript.tex",
   "found": true,
-  "sha256_16": "60fa9b3632ad5c0d",
-  "n_chars": 95638,
+  "sha256_16": "08fad12b9188b98f",
+  "n_chars": 95803,
   "abstract_words": 299,
   "cited_keys": [
    "Baharom2022",

@@ -137,6 +137,52 @@ def test_6_a_clean_property_can_still_pass():
     assert "PASS" in statuses, "at least one gate should PASS on a demonstrated property"
 
 
+# ---------------- v44 R4 s5: manuscript-readiness semantics (5 blocking cases + READY) ----------------
+
+def _all_pass():
+    return {g: "PASS" for g in schema.MANDATORY_SCIENTIFIC_GATES}
+
+
+def test_r4_readiness_all_pass_is_ready():
+    readiness, blocking = run_audit.manuscript_readiness(_all_pass())
+    assert readiness == "READY" and blocking == {}
+
+
+def test_r4_each_blocking_status_blocks_readiness():
+    # a manuscript is NOT_READY if ANY mandatory gate is FAIL/REVIEW/PARTIAL/NOT_VERIFIED
+    for blocking_status in schema.READINESS_BLOCKING_STATUSES:   # FAIL, REVIEW, PARTIAL, NOT_VERIFIED
+        gd = _all_pass()
+        gd["CALIBRATION"] = blocking_status
+        readiness, blocking = run_audit.manuscript_readiness(gd)
+        assert readiness == "NOT_READY", blocking_status
+        assert "CALIBRATION" in blocking
+
+
+def test_r4_advisory_gate_nonpass_does_not_block():
+    # OVERCLAIM LANGUAGE SCAN / REPOSITORY DOCUMENTATION are advisory, not mandatory scientific gates
+    gd = _all_pass()
+    gd["OVERCLAIM LANGUAGE SCAN"] = "REVIEW"
+    gd["REPOSITORY DOCUMENTATION"] = "FAIL"
+    readiness, _ = run_audit.manuscript_readiness(gd)
+    assert readiness == "READY"
+
+
+def test_r4_audit_health_and_readiness_are_separate():
+    # the audit software can be healthy (PASS) while the manuscript is NOT_READY
+    _, _, report = run_audit.run(REPO)
+    assert report["audit_software_health"] == "PASS"
+    assert report["manuscript_submission_readiness"] == "NOT_READY"   # real repo: declarations FAIL etc.
+
+
+def test_r4_shallow_gates_downgraded():
+    # MODEL SPECIFICATION / CALIBRATION must not strong-PASS on keyword presence; SPATIAL is PARTIAL
+    g = ingest.build_graph(REPO)
+    assert agents.statistical_agent(g, REPO)["status"] != "PASS"
+    assert agents.calibration_agent(g, REPO)["status"] != "PASS"
+    assert agents.spatial_agent(g, REPO)["status"] in ("PARTIAL", "REVIEW", "FAIL")
+    assert agents.adversarial_reviewer(g, REPO)["name"] == "OVERCLAIM LANGUAGE SCAN"
+
+
 if __name__ == "__main__":
     fns = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     ok = 0

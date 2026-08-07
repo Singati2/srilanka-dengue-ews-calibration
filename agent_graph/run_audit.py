@@ -7,17 +7,31 @@ summary, and writes audit/CURRENT_KG_AGENT_AUDIT.{md,json}. Exit code 1 if not
 submission-ready (usable as a CI gate). No LLM, no network.
 """
 import os, sys, json, argparse, datetime
-from knowledge_graph import ingest
+from knowledge_graph import ingest, schema
 from agent_graph import agents
+
+
+def manuscript_readiness(by_name):
+    """v44 R4 s5: READY iff every mandatory scientific gate == PASS. Returns (readiness, blocking).
+    by_name: {gate_name: status}."""
+    blocking = {name: by_name.get(name, "MISSING") for name in schema.MANDATORY_SCIENTIFIC_GATES
+                if by_name.get(name, "MISSING") != "PASS"}
+    return ("READY" if not blocking else "NOT_READY"), blocking
 
 
 def run(repo, manuscript_path=None):
     g = ingest.build_graph(repo, manuscript_path=manuscript_path)
     ingest.save_graph(g, repo)
     results = [fn(g, repo) for fn in agents.ALL_AGENTS]
-    # SUBMISSION READY only if no FAIL gate. NOT_VERIFIED/PARTIAL do not FAIL the build but
-    # are surfaced as "not demonstrated — requires out-of-audit verification" (v44 s3.2).
-    ready = not any(r["status"] == "FAIL" for r in results)
+    # v44 R4 s5: TWO separate concepts.
+    # (1) audit software health: did the tool run without an internal error? (agents catch their
+    #     own exceptions and always return a legal status, so a completed run is PASS.)
+    audit_software_health = "PASS"
+    # (2) manuscript submission readiness: READY iff EVERY mandatory scientific gate == PASS.
+    #     "No literal FAIL" is NOT sufficient — REVIEW/PARTIAL/NOT_VERIFIED also block.
+    by_name = {r["name"]: r["status"] for r in results}
+    manuscript_submission_readiness, blocking = manuscript_readiness(by_name)
+    ready = (manuscript_submission_readiness == "READY")
     not_verified = [r["name"] for r in results if r["status"] in ("NOT_VERIFIED", "PARTIAL")]
     report = {
         "repo": os.path.abspath(repo),
@@ -27,7 +41,10 @@ def run(repo, manuscript_path=None):
         "graph": g["meta"]["counts"],
         "gates": [{"name": r["name"], "status": r["status"],
                    "n_findings": len(r["findings"]), "findings": r["findings"]} for r in results],
-        "submission_ready": ready,
+        "audit_software_health": audit_software_health,
+        "manuscript_submission_readiness": manuscript_submission_readiness,
+        "blocking_mandatory_gates": blocking,
+        "submission_ready": ready,          # bool alias (drives exit code / back-compat)
         "not_verified_gates": not_verified,
     }
     return g, results, report
@@ -80,7 +97,11 @@ def print_summary(results, report):
         print()
         print("NOT_VERIFIED (not demonstrated; needs out-of-audit check): " + ", ".join(report["not_verified_gates"]))
     print()
-    print(f"SUBMISSION READY: {'YES' if report['submission_ready'] else 'NO'}")
+    print(f"AUDIT SOFTWARE HEALTH:          {report.get('audit_software_health', 'PASS')}")
+    print(f"MANUSCRIPT SUBMISSION READINESS: {report.get('manuscript_submission_readiness', '?')}")
+    if report.get("blocking_mandatory_gates"):
+        for name, st in report["blocking_mandatory_gates"].items():
+            print(f"    - blocked by mandatory gate {name}: {st}")
 
 
 def main(argv=None):

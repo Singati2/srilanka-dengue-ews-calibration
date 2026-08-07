@@ -13,10 +13,15 @@ assignment under-captures ~3.5% of population inside the 26 RDHS polygons (20.9�
 population-weighted exposure.
 
 **RATIFIED DECISION: accept-and-report as primary; fractional-coverage boundary weighting as the WP5 sensitivity.**
-- Population weights are normalized *within each unit*, so a roughly-proportional coastal undercount
-  largely cancels in the weighted-mean exposure; the absolute denominator is not used for per-capita rates.
-- Report the per-district capture fraction. Run fractional-coverage boundary weighting as the WP5
-  **population-product sensitivity** (already an accepted D4 extra) — not a blocker for Build B.
+- **The ~3.5% coastal shortfall is NOT assumed harmless** (corrected per v44 round-4): within-unit
+  normalization does not prove it, because missing coastal pixels can have systematically different
+  environmental values and thus bias the population-weighted exposure. This must be QUANTIFIED, not asserted.
+- The fractional-coverage boundary weighting is therefore a **MANDATORY** WP5 comparison (not optional):
+  report, by unit and feature, DeltaX_i = X_fractional - X_center — median |diff|, max diff, rank
+  correlation, most-affected units, and whether any model conclusion changes. Only after that may the
+  shortfall be described as negligible (if the evidence supports it).
+- Proceed with the center/whole-pixel method as PRIMARY and report the per-district capture fraction;
+  Build B is not blocked, but the fractional sensitivity is required before any "negligible" claim.
 - **Action for co-author:** proceed with Build B on the WorldPop denominator; add the fractional-coverage
   sensitivity in WP5.
 

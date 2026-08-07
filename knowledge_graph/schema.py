@@ -62,7 +62,21 @@ PLACEHOLDER_MARKERS = ["AUTHOR INPUT REQUIRED", "[DOI to verify]", "XXXX", "\\to
 
 # v44 s3.2 — gate statuses. PASS only for demonstrated properties; PARTIAL/NOT_VERIFIED
 # for presence-only or network-dependent checks that were not actually executed.
-GATE_STATUSES = ["PASS", "REVIEW", "FAIL", "PARTIAL", "NOT_VERIFIED"]
+GATE_STATUSES = ["PASS", "REVIEW", "FAIL", "PARTIAL", "NOT_VERIFIED", "NOT_APPLICABLE"]
+
+# v44 R4 s5 — two SEPARATE concepts:
+#   audit software health (did the tool run correctly): PASS | FAIL
+#   manuscript submission readiness: READY | NOT_READY
+# A manuscript is READY only if EVERY mandatory scientific gate is PASS. Any
+# FAIL/REVIEW/PARTIAL/NOT_VERIFIED on a mandatory gate => NOT_READY. "No literal FAIL"
+# is NOT sufficient. (Advisory gates like OVERCLAIM LANGUAGE SCAN / REPOSITORY
+# DOCUMENTATION do not block readiness.)
+MANDATORY_SCIENTIFIC_GATES = [
+    "DATA PROVENANCE", "TEMPORAL LEAKAGE", "MODEL SPECIFICATION", "CALIBRATION",
+    "SPATIAL CONSISTENCY", "REPRODUCIBILITY", "REFERENCE INTEGRITY",
+    "RESULT TRACEABILITY", "MANUSCRIPT CONSISTENCY", "SUBMISSION DECLARATIONS",
+]
+READINESS_BLOCKING_STATUSES = ["FAIL", "REVIEW", "PARTIAL", "NOT_VERIFIED"]
 
 # v44 s3.1 — semantic variants of "development-inclusive X was not computed", so the
 # contradiction detector is not tied to one literal sentence.

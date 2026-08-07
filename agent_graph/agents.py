@@ -132,7 +132,16 @@ def spatial_agent(g, repo):
     if "32 department" in src and "31 " in src:
         f.append({"severity": "minor", "msg": "manuscript mentions both 32 dept fixed-effect columns and 31 test departments — ensure this is explained",
                   "evidence": ["32 department fixed effects vs 31 analyzed test departments"]})
-    return _mk("SPATIAL CONSISTENCY", f)
+    # v44 R4 s6: separate geometry integrity from full spatial validity. This gate checks only
+    # cluster-count / diagnostic presence; spatial CV, exposure-support validity, and MAUP
+    # sensitivity are not verified here -> at most PARTIAL, never a full spatial-validity PASS.
+    f.append({"severity": "minor",
+              "msg": "spatial validity is PARTIAL: only cluster-count/diagnostic presence checked; spatial CV, "
+                     "exposure-support validity, and MAUP sensitivity NOT verified",
+              "evidence": ["WP4 spatial CV + WP5 MAUP required for a full spatial-validity PASS"]})
+    status = FAIL if any(x["severity"] == "critical" for x in f) else \
+        (REVIEW if any(x["severity"] == "major" for x in f) else PARTIAL)
+    return _mk("SPATIAL CONSISTENCY", f, status=status)
 
 
 # ---------- 11.5 Statistical ----------
@@ -156,7 +165,16 @@ def statistical_agent(g, repo):
     if re.search(r'significan\w* (net benefit|decision)', src, re.I):
         f.append({"severity": "major", "msg": "possible significance-testing language applied to net benefit (contested; Vickers 2023)",
                   "evidence": []})
-    return _mk("MODEL SPECIFICATION", f)
+    # v44 R4 s6: a strong PASS requires design-matrix/manifest evidence that the compared models
+    # differ only by the intended block, row keys match, preprocessing/tuning match, no test tuning.
+    # That is not verifiable from the manuscript alone -> never a strong PASS here.
+    f.append({"severity": "minor",
+              "msg": "matched-ablation specification is NOT_VERIFIED at strong-PASS level: no committed design-matrix "
+                     "manifest checked (feature blocks, row-key identity, preprocessing/tuning parity, no test tuning)",
+              "evidence": ["verify against the fit scripts + a design-matrix manifest to earn PASS"]})
+    status = FAIL if any(x["severity"] == "critical" for x in f) else \
+        (REVIEW if any(x["severity"] == "major" for x in f) else NOT_VERIFIED)
+    return _mk("MODEL SPECIFICATION", f, status=status)
 
 
 # ---------- 11.6 Calibration ----------
@@ -167,7 +185,15 @@ def calibration_agent(g, repo):
     for term in ["calibration", "recalibrat", "CITL", "slope", "integrated calibration index"]:
         if term.lower() not in src.lower():
             f.append({"severity": "minor", "msg": f"calibration reporting term missing: {term}", "evidence": []})
-    return _mk("CALIBRATION", f)
+    # v44 R4 s6: keyword presence (CITL/slope/ICI/recalibration) is NOT a strong PASS. A strong PASS
+    # needs algorithm-level temporal verification: SL rolling recalibration uses only outcome pairs
+    # observable before the forecast origin; Colombia Platt scaling uses validation only.
+    f.append({"severity": "minor",
+              "msg": "calibration correctness is NOT_VERIFIED: temporal recalibration observability (SL past-only "
+                     "rolling updates; Colombia Platt on validation-only) not checked at algorithm level",
+              "evidence": ["inspect the recalibration windows in the fit scripts to earn PASS"]})
+    status = FAIL if any(x["severity"] == "critical" for x in f) else NOT_VERIFIED
+    return _mk("CALIBRATION", f, status=status)
 
 
 # ---------- 11.7 Reproducibility ----------
@@ -336,7 +362,9 @@ def adversarial_reviewer(g, repo):
             f.append({"severity": "major",
                       "msg": f"possible overclaim (non-negated context): '{term}'",
                       "evidence": [src[max(0, i - 55):i + len(term) + 15].replace("\n", " ")]})
-    return _mk("ADVERSARIAL REVIEW", f)
+    # v44 R4 s6: honestly named — this is a regex language scan, NOT a scientific review.
+    # (A separate structured harsh-review council is out of scope for the deterministic gate.)
+    return _mk("OVERCLAIM LANGUAGE SCAN", f)
 
 
 def submission_declarations_agent(g, repo):

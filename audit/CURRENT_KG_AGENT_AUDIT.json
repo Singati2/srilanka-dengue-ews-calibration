@@ -1,10 +1,10 @@
 {
-  "repo": "/tmp/claude-1000/-home-mpcrlab/af40ce96-d2d5-4f3c-9d5a-4c9cb2ee3ec8/scratchpad/v44r2_build",
-  "generated": "2026-08-07T04:44:56.509121Z",
-  "manuscript_audited": "manuscript_v43/revised_manuscript.tex",
-  "manuscript_sha256_16": "60fa9b3632ad5c0d",
+  "repo": "/tmp/claude-1000/-home-mpcrlab/af40ce96-d2d5-4f3c-9d5a-4c9cb2ee3ec8/scratchpad/v44r4",
+  "generated": "2026-08-07T13:54:31.677281Z",
+  "manuscript_audited": "manuscript_v44/revised_manuscript.tex",
+  "manuscript_sha256_16": "08fad12b9188b98f",
   "graph": {
-    "nodes": 913,
+    "nodes": 914,
     "edges": 592,
     "by_type": {
       "Project": 1,
@@ -18,7 +18,7 @@
       "Checksum": 22,
       "Result": 20,
       "Script": 49,
-      "AuditFinding": 100,
+      "AuditFinding": 101,
       "Analysis": 8,
       "Model": 2,
       "Comparator": 1
@@ -88,8 +88,8 @@
     },
     {
       "name": "SPATIAL CONSISTENCY",
-      "status": "PASS",
-      "n_findings": 1,
+      "status": "PARTIAL",
+      "n_findings": 2,
       "findings": [
         {
           "severity": "minor",
@@ -97,20 +97,43 @@
           "evidence": [
             "32 department fixed effects vs 31 analyzed test departments"
           ]
+        },
+        {
+          "severity": "minor",
+          "msg": "spatial validity is PARTIAL: only cluster-count/diagnostic presence checked; spatial CV, exposure-support validity, and MAUP sensitivity NOT verified",
+          "evidence": [
+            "WP4 spatial CV + WP5 MAUP required for a full spatial-validity PASS"
+          ]
         }
       ]
     },
     {
       "name": "MODEL SPECIFICATION",
-      "status": "PASS",
-      "n_findings": 0,
-      "findings": []
+      "status": "NOT_VERIFIED",
+      "n_findings": 1,
+      "findings": [
+        {
+          "severity": "minor",
+          "msg": "matched-ablation specification is NOT_VERIFIED at strong-PASS level: no committed design-matrix manifest checked (feature blocks, row-key identity, preprocessing/tuning parity, no test tuning)",
+          "evidence": [
+            "verify against the fit scripts + a design-matrix manifest to earn PASS"
+          ]
+        }
+      ]
     },
     {
       "name": "CALIBRATION",
-      "status": "PASS",
-      "n_findings": 0,
-      "findings": []
+      "status": "NOT_VERIFIED",
+      "n_findings": 1,
+      "findings": [
+        {
+          "severity": "minor",
+          "msg": "calibration correctness is NOT_VERIFIED: temporal recalibration observability (SL past-only rolling updates; Colombia Platt on validation-only) not checked at algorithm level",
+          "evidence": [
+            "inspect the recalibration windows in the fit scripts to earn PASS"
+          ]
+        }
+      ]
     },
     {
       "name": "REPRODUCIBILITY",
@@ -167,17 +190,9 @@
     },
     {
       "name": "MANUSCRIPT CONSISTENCY",
-      "status": "FAIL",
-      "n_findings": 2,
+      "status": "REVIEW",
+      "n_findings": 1,
       "findings": [
-        {
-          "severity": "critical",
-          "msg": "contradiction: development-inclusive proper-score intervals are both REPORTED and described as not computed/gated",
-          "evidence": [
-            "...t-inclusive proper-score intervals were gated and not computed. no minimum worthwhile score increment was elic...",
-            "retire the 'not computed/gated' phrasing or remove the reported intervals"
-          ]
-        },
         {
           "severity": "major",
           "msg": "manuscript asserts a public GitHub repo/commit \u2014 must be verified from a clean unauthenticated environment before submission",
@@ -188,7 +203,7 @@
       ]
     },
     {
-      "name": "ADVERSARIAL REVIEW",
+      "name": "OVERCLAIM LANGUAGE SCAN",
       "status": "PASS",
       "n_findings": 0,
       "findings": []
@@ -208,9 +223,26 @@
       ]
     }
   ],
+  "audit_software_health": "PASS",
+  "manuscript_submission_readiness": "NOT_READY",
+  "blocking_mandatory_gates": {
+    "DATA PROVENANCE": "REVIEW",
+    "TEMPORAL LEAKAGE": "NOT_VERIFIED",
+    "MODEL SPECIFICATION": "NOT_VERIFIED",
+    "CALIBRATION": "NOT_VERIFIED",
+    "SPATIAL CONSISTENCY": "PARTIAL",
+    "REPRODUCIBILITY": "NOT_VERIFIED",
+    "REFERENCE INTEGRITY": "NOT_VERIFIED",
+    "RESULT TRACEABILITY": "REVIEW",
+    "MANUSCRIPT CONSISTENCY": "REVIEW",
+    "SUBMISSION DECLARATIONS": "FAIL"
+  },
   "submission_ready": false,
   "not_verified_gates": [
     "TEMPORAL LEAKAGE",
+    "SPATIAL CONSISTENCY",
+    "MODEL SPECIFICATION",
+    "CALIBRATION",
     "REPRODUCIBILITY",
     "REFERENCE INTEGRITY"
   ]
