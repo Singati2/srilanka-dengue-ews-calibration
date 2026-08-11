@@ -8,6 +8,209 @@
 
 ---
 
+## 2026-08-11 — Paper 1 is being finalised without geomatics; §24 items 5 and 6 delivered
+
+**`DIRECTION` — M6/WP4/WP5 are firewalled out of Paper 1, and that is a gate consequence, not a
+rejection.** PR **#8** (`agent/v44-hybrid-light-decision-framework`, `26e1fb5`, 2026-08-10) proposes
+a hybrid-light decision-theoretic v44 candidate whose `FINAL_CANONICAL_DECISION.md` states that
+M6/WP4/WP5 *"remain separate and outside Paper 1 evidence."* Read against
+`SOURCE_MANUSCRIPT_RESOLUTION.md` (§9: a token scan of `manuscript_v44/revised_manuscript.tex`
+finds `M6`=0, `WP4`=0, `WP5`=0) and the pass's own restrictions (*"no M6/WP4/WP5 promotion"*), the
+firewall is a **scope restriction of a formalisation-only task**, applied because
+`instruction_m6.md` §22's gates are unresolved — not a scientific decision to drop the workstream.
+It does **not** contradict the PI's 2026-08-07 comment on PR #1 approving geomatics inclusion in
+the v44 reframe; the PI approved inclusion in principle, and §24 item 15 admits it only after the
+gates pass. In the candidate, $\Delta V_G$ (incremental geomatics value) and the spatial-exposure
+operator $\mathcal A_w$ survive as **framework notation marked PENDING / NOT ESTIMATED**, which is
+the correct placeholder.
+
+**`OPEN` — the real risk is timing, not exclusion.** `V44_VS_BIOMATH_DECISION_MEMO.md` states *"no
+further analysis is required to submit either way; the open blockers are author-owned"* (ethics,
+ORCIDs, DOI, OpenDengue record id). Paper 1 can therefore be submitted at any time. Whether the
+geomatics work lands in Paper 1 or becomes Paper 2 is decided by whether the §22 gates close before
+that submission — and three of them are blocked on inputs the Geospatial Lead cannot supply
+(original threshold artifact, M0/M1/M2 predictions, a CDS key). Raised to the PI, not assumed.
+
+**`DELIVERABLE` — §24 item 5, `analysis/geomatics_integration_v1/M6_FEATURE_CHRONOLOGY.md`.**
+Verdict: **no formal pre-outcome feature lock existed**, and none is manufactured — §5's prescribed
+wording is adopted verbatim and `M6_CORE_FEATURE_LOCK.yaml` is deliberately **not** created. Two
+commit-provable facts bound how post-hoc the result is: the **A/B/C/D feature specification was
+committed 2026-07-17** (`baebaf7`), three weeks before first outcome access; and the **reduction to
+A/B/C was logged 2026-08-05**, one day *before* first outcome access — so the narrowing was not a
+response to performance. First outcome access = notebook 05; first fit = notebook 06 (2026-08-07
+13:43); the freeze manifest was written at 21:30, *after* performance was seen. All four deviations
+from the spec (Batch D absent, #16 partial, land-cover product substitution, §9.5 gate abandoned)
+predate outcome access. **Feature definitions changed after outcome access: none** — verified
+cell-by-cell against the `ff6287d` blobs, not asserted. Three limits keep it short of a lock:
+notebooks 04–08 entered git in one post-fit commit, so the separation rests on notebook-written
+provenance rather than commit boundaries; the analyst had prior access to the study's own outcomes
+throughout; and 19.2% of the target is itself test-informed.
+
+**`DECISION` — post-freeze working-tree edits to notebooks 00–03 discarded.** The only difference
+from the frozen blobs was output noise plus one added `pip install pystac_client` cell in notebook
+02 — no code, no feature definition. Kept, they would have silently invalidated the notebook blob
+hashes recorded in `M6_CORE_FROZEN_MANIFEST.yaml`. Backed up outside the repo before discarding.
+
+**`DELIVERABLE` — §24 item 6, `docs/MODEL_NOMENCLATURE_REGISTRY_v44.md`** (also satisfies round-3
+prompt §5.1). The collision is worse than a name clash: Colombia's pilot **M6 = cases + SPI** is a
+*hybrid*, Sri Lanka's **M6 = geomatics-only** is a *standalone with no case history* — opposite in
+kind. Rule adopted: **bare `M6`/`M7` must not appear in v44**; nothing historical is renamed;
+descriptive names only. Two further traps recorded — `M5-no-climate` (frozen, exists) versus
+`M5_NO_GEO` (BLOCKED, does not exist), and Sri Lanka's M1 carrying seasonal harmonics + RDHS fixed
+effects where Colombia's M1 does not, so any cross-country "M1" sentence is false without the
+qualifier.
+
+**`OPEN` — §24 items 8/9 (matched geomatics estimand) are `BLOCKED`, and the reason is now
+established.** `instruction_m6.md` §8 requires `BASE + GEOMATICS` versus `BASE WITHOUT GEOMATICS`
+on identical rows with identical machinery. The repo holds only M5 **predictions**
+(`ALT_STATS/frozen/srilanka_matched_pairs.csv`: `full_raw`, `noclim_raw`, `full_recal`,
+`noclim_recal`) — **no base design matrix**, so the base cannot be refit with a geomatics block
+added. Recorded as `MATCHED_GEOMATICS_ABLATION = BLOCKED`, resolvable only by the same Route A ask.
+
+---
+
+## 2026-08-07 (g) — §17 coastal sensitivity: the premise was wrong, and the real problem is elsewhere
+
+**`DELIVERABLE` — `docs/wp5_worldpop_coastal_sensitivity_report_v1.md`**, from
+`scripts/wp5_worldpop_coastal_fractional_sensitivity_v1.py` and
+`…_coastal_snap_and_exposure_v1.py`. §17's mandatory analysis, executed. Also **`M6_TARGET_PROVENANCE.md`**
+(§24 item 3) written, consolidating entries (e) and (f).
+
+**`DECISION` — do NOT adopt fractional weighting for the population layer.** Fractional vs
+centre-in-polygon differs by a median **0.007%** of a district's population (max 0.073%), Spearman
+rank correlation **1.000000**, **zero rank changes**. A genuine negative result: `wp5_00`'s weight
+field needs no rebuild on this account.
+
+**`DIRECTION` — §17 conflates two problems and fractional weighting fixes neither.** The national
+shortfall is **1.37%** (`ppp_2020`) and fractional assignment recovers **200 of 292,461 people**.
+The missing population is not partially-covered boundary pixels — it lies **wholly outside** every
+RDHS polygon, a **median 107 m** beyond the nearest boundary (max 2.1 km). It is a **land-mask
+mismatch**: WorldPop's coastline runs seaward of the RDHS coastline. The remedy is a
+**nearest-district snap**, which restores capture to **100.0000%**, not area weighting.
+
+**`DECISION` — the §17 gate is met for exposure, NOT met for denominators.**
+- **Exposure: negligible.** Snapping moves population-weighted temperature by at most **0.0115 °C**
+  (Matara), median 0.0000 °C — about **150× smaller** than Build B's −1.75/+0.83 °C displacement.
+  The orphaned population sits at the same near-sea-level elevation as the coastal population
+  already inside the polygon. The coastal shortfall **may now be described as negligible for WP5
+  exposure**, which is what §17 required before that wording could be used.
+- **Denominators: material and concentrated.** Snapping adds **+9.17% to Batticaloa**, +4.80%
+  Puttalam, +3.57% Jaffna, +3.54% Galle (median across 26 units: +0.015%). Within-unit
+  normalisation does **not** absorb this, because a denominator scales the whole series.
+
+**`OPEN` — a cross-link to the label work.** The M6 threshold is a fixed *incidence*, so a 9%
+denominator error would shift the affected districts' thresholds. The threshold recovery used
+**R2025A**, whose shortfall is **0.10%** against `ppp`'s 1.37% — 13× smaller — so the exposure is
+limited. But if the **frozen** incidence denominators were built centre-in-polygon on `ppp`, up to
+5 coastal districts carry incidence biased high by several percent. Needs the original denominator
+build to settle; raised as a targeted question, not a claim.
+
+**Note:** §18 (`all_touched` vs fractional on the coarse ERA5-Land grid, ~31% of weight misplaced)
+is a **different** finding at a different support and remains open. Nothing here supersedes it.
+
+---
+
+## 2026-08-07 (e) — governance instructions received; M6 renamed M6-core and frozen
+
+**`DIRECTION` — `instruction_m6.md` arrived from Ganesh Shiwakoti** (26 sections, commit `8de3018`,
+2026-08-07 16:58 EDT). It sits on `upstream/agent/instruction-m6-next-actions` — **not on `main`,
+not on PR #1** — and that branch is `ff6287d` plus this one file. Governing instruction: *"The goal
+is not to make M6 look successful. The goal is to make every geomatics conclusion defensible."*
+**Nothing goes into manuscript v44 until §22's checklist is resolved item by item.**
+
+**Three of the PI note's four asks are answered.** §5.1 M6 framing — signed off as an exploratory
+null, with §23 supplying the conclusion wording. §5.2 §10 contrasts — ruled: recover M0/M1/M2 on
+the identical rows, or file a formal deviation; *"do not silently rewrite the original question
+after seeing M6 performance."* §5.3 WP4 radius — ratify **before** viewing performance under
+competing radii, then freeze. **§5.4 (CDS key) is unanswered** — treat as self-service.
+
+**`DIRECTION` — three entries below this one are now overstated.**
+- **WP4 is not complete** (§14). It is *fold design and spatial-range analysis* complete until models
+  are trained and evaluated under the held-out folds. Supersedes the 08-07 (c)/(d) framing.
+- **WP5 is not only waiting on climate** (§17). The WorldPop coastal fractional-overlap sensitivity
+  is **mandatory** — per-unit `ΔX_i = X_frac − X_centre`, medians, maxima, rank correlation, most
+  affected units — before the 3.5% shortfall may be called negligible.
+- **The threshold recovery is not the clean close** that 08-07 (b) claims. See below.
+
+**`DECISION` — the executed model is `M6-core (A/B/C)`, not the 16-variable M6** (§2 audit executed).
+12 of 16 planned variables are present; **#13 mobility, #14 wealth, #15 healthcare access are fully
+absent**. #16 cropland is *partial and incidental*: `frac_crops` is one of seven Impact Observatory
+`io-lulc-annual-v02` class fractions co-extracted wholesale by notebook 03 (Batch B), the product
+differs from §6.16's ESA WorldCover, and the EVI **phenology amplitude** half was never built. The
+design matrix is 92 features, L2 only, **no selection step, 0 zero coefficients**, so candidate set =
+design matrix = fitted set. Detail: `analysis/geomatics_integration_v1/M6_BATCH_D_AUDIT.md`,
+manifest `M6_CORE_FEATURE_MANIFEST.yaml`, generator `scripts/m6_batchD_feature_audit_v1.py`.
+
+**`OPEN` — the null is narrower than "geomatics", and §7's language rule should say so.** The three
+missing variables are mobility, wealth and healthcare access — the ones most plausibly tied to human
+exposure and to *reporting* behaviour. AUC 0.601 is a null for terrain, land cover and RS dynamics.
+Proposed as an addition to §7's allowed/not-allowed list.
+
+**`DELIVERABLE` — M6-core frozen** (§6): `M6_CORE_FROZEN_MANIFEST.yaml`, generator
+`scripts/m6_core_freeze_manifest_v1.py`. Notebook blob hashes at `ff6287d`, row counts, test
+row-key hash `9db1c932d37a63be`, model config, calibration, bootstrap seed/B, MODIS gap rule,
+input/output/figure hashes, headline numbers. No future result may overwrite it.
+
+**`OPEN` — two provenance gaps found while freezing, both previously unrecorded.**
+1. **The threshold generator is not committed.** `m6_label_thresholds_srilanka_v1.csv` defines the
+   model *target*, but no committed code produces it — notebook 06 only consumes it via
+   `THRESHOLDS_CSV`, and notebook 05 stopped before constructing a label. The WorldPop year-ratio
+   recovery ran as ad-hoc session code. This trips §25's stop condition on establishing which
+   artifact produced a number, for the target itself. **Fix: port it into 05 or `scripts/` and
+   confirm the hash.**
+2. `nb05_provenance.json` still reads *"STOPPED … label NOT constructed"*, predating the recovery.
+   Its rowset hash is still correct.
+
+**`OPEN` — §3's target-provenance concern is real, and now has a number.** The chain
+`test labels → feasible interval → selected threshold → training labels → M6 fit` applies to the
+**40 of 208 district-years clamped to the frozen-outcome interval** — 5 districts (Killinochchi,
+Matara, Polonnaruwa, Puttalam, Ratnapura), all 8 years each. That is **755 of 3,926 test rows
+(19.2%) and 200 of 1,321 events** resting on a threshold chosen using the test outcomes. The other
+168 district-years are the empirical train q75 and are unaffected. Status recorded as
+`EXPLORATORY_RECONSTRUCTED_TARGET` pending Route A/B recovery.
+
+**Next:** §24 items 3–4 (target-provenance report + attempt recovery of the original frozen
+threshold/training artifact). Two external asks issued in parallel: the original threshold table
+and v2.0 training artifact from the team, and self-service CDS registration.
+
+---
+
+## 2026-08-07 (f) — the threshold generator port is BLOCKED: half of it will not reproduce
+
+**`DELIVERABLE` — `scripts/m6_threshold_recovery_v1.py`**, the port attempted in (e). It verifies
+and **writes nothing** — the frozen CSV stays the sole source of the target, so no competing
+threshold table can be mistaken for it.
+
+**`DECISION` — reported BLOCKED per §25 rather than searched further.** The result splits cleanly:
+
+- **The feasible-interval solver and clamp rule RECOVER EXACTLY.** 26/26 districts admit a
+  non-empty interval; all 26 frozen `K` lie inside the interval their own labels imply; all **5
+  clamped districts sit on the lower bound to within 1e-12**. Asserted in the script, so it is a
+  permanent regression test.
+- **The empirical q75 half does NOT recover.** Best **10 of 21** districts across
+  {2 year bases} × {6 train row-set definitions} × {5 interpolation modes}.
+
+**Why the search was halted.** The diagnostic is decisive, not merely negative: `K` is an **exact
+observed train ratio in 21/21 districts**, at quantile level **0.733–0.765** — so the method is
+confirmed to be the empirical ~75th percentile of train `cases/WorldPop`. But `K` sits at a
+**varying rank (187–195 of 255)** where a fixed quantile rule on this series must give a fixed
+rank. That points to a train row set differing from any recoverable here by a few rows, not to a
+different formula. Continuing to enumerate definitions until one matched is precisely the
+improvisation §25 forbids, and would manufacture a false provenance.
+
+**`OPEN` — the irony is worth stating to the PI.** The **19.2% of test rows that are test-informed
+are fully reproducible**; the **80.8% that are train-only are not**. The half of the target with a
+provenance problem is the half whose construction we can verify.
+
+**Consequence:** **Route A is now the only clean resolution** — the original threshold artifact, or
+the original frozen training panel that would let Route B recompute the quantile on the right rows.
+Until one arrives, `EXPLORATORY_RECONSTRUCTED_TARGET` stands and M6-core cannot be described as
+reproducible end-to-end. This does **not** disturb the M6 result itself: the frozen thresholds are
+unchanged, and notebook 06's acceptance test still passes 3,926/3,926. What is lost is the ability
+to regenerate the target from committed code.
+
+---
+
 ## 2026-08-07 (d) — WP4 §4.1: no residual spatial autocorrelation; PI note issued
 
 **`DELIVERABLE` — `notebooks_wp45/wp4_01_autocorrelation_range.ipynb`, executed.** Moran's I per week
