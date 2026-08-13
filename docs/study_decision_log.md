@@ -8,6 +8,56 @@
 
 ---
 
+## 2026-08-12 (b) — WP5 Build B is complete for both variables; the temperature arm is a measured floor
+
+**`DELIVERABLE` — `notebooks_wp45/wp5_02_temperature_exposure_twin.ipynb`, executed.** t2m mean/min/max,
+dewpoint and RH on the v2 schema, 10,842 rows, row-aligned with the precipitation twin, all QC green.
+RH computed **per cell per hour** (Alduchov–Eskridge Magnus) before any averaging, per plan §E.
+Written to quarantine as `wp5_temp_exposure_twin_srilanka_v1.csv` (sha `3dc97795984dda1d`), together
+with a **new 0.25° weight field** — `wp5_00` froze 0.05° and 0.1° only.
+
+**`DIRECTION` — with this, WP5's Build B exists for both variables, and the honest-null clause fires
+on neither.** Temperature: mean |A′→B| **0.205 °C**, district range **−0.86 °C (Badulla) to +0.34 °C
+(Colombo)**, max district-week **1.16 °C**; RH mean |0.77| pp, max 6.3. **Extremes move roughly twice
+as much as means** — weekly `t2m_max` shifts by mean |0.387| °C and up to **2.76 °C** — which matters
+more than the mean for any transmission model driven by thermal limits.
+
+**`DECISION` — the temperature arm is built on ERA5 0.25° (ARCO-ERA5, anonymous), not ERA5-Land 0.1°,
+and every number in it is a floor.** No CDS key is available on this machine. The cost was *measured
+before building*, from the DEM and WorldPop alone: Build B sees **65.3%** of the displacement at 0.25°
+versus **91.7%** at 0.1°; effective cells per district fall from 21.3/11.8 to 5.3/3.6. The bias runs
+**toward the null**, so a non-null result is a conservative lower bound — but no claim about *which*
+districts warm can rest on it: **Ratnapura retains 6.7%** of its predicted shift. Tagged as a
+substitution in `wp5_02_provenance.json`; the notebook rebuilds unchanged on 0.1° if a key arrives.
+
+**`DELIVERABLE` — the first measurement of `wp5_00`'s DEM prediction against a real temperature
+field.** Read at face value it looks weak (69% sign agreement); read properly it is strong, because in
+a flat district the prediction is ~0.01 °C and its sign is noise. Restricting to districts where the
+prediction claims something: **85.7% sign agreement and r = +0.79 above 0.2 °C**, r = **+0.86** above
+0.3 °C. **Badulla is confirmed by measurement** (−0.86 observed vs −1.75 predicted at 0.1°). **Kandy
+is a genuine disagreement** (+0.58 predicted, −0.29 observed) — the only one among districts with a
+substantial prediction, most likely steep terrain averaged away at 0.25°, and recorded rather than
+smoothed over.
+
+**`OPEN` — a confounder tested and rejected, and a caveat that survives.** At 0.25° many cells are
+part ocean and ERA5 blends in SST where ERA5-Land would not: Mannar, Batticaloa and Puttalam draw
+~44% of their population-weighted exposure from such cells (island-wide land fraction 0.858). That was
+the obvious explanation for the sign disagreements and it is **not** — 0.88 mean land fraction where
+signs agree, 0.82 where they don't, both spanning the full range. The blending caveat stands on its
+own as a second reason to prefer the 0.1° rebuild; it is not the cause of the disagreement.
+
+**`DECISION` — ERA5 acquisition, like CHIRPS, needs no account.** ARCO-ERA5's `raw/` single-level
+files are classic netCDF-3, contiguous int16, so the Sri Lanka rows form one contiguous byte span per
+timestep: 24 range requests per file instead of a 50 MB download. The full window — 70,128 hours × 2
+variables — staged in ~40 minutes and ~8 MB/year. The reader and stager are committed at
+`scripts/srilanka_era5_window_reader_v1.py` and `scripts/srilanka_era5_stage_window_v1.py`; the
+header parser is validated to **0.0 difference** against xarray. Also recorded: ERA5 packs t2m and d2m with
+*independent* scale factors, so at saturation dewpoint can exceed temperature by ~0.004 K in 0.018% of
+cell-hours — quantisation, not a decoding fault; bounded, clipped and documented rather than asserted
+away.
+
+---
+
 ## 2026-08-12 — WP5's precipitation twin is built; WP4 is blocked for the §8 reason; Build A is not here
 
 **`DELIVERABLE` — `notebooks_wp45/wp5_01_precipitation_exposure_twin.ipynb`, executed.** A

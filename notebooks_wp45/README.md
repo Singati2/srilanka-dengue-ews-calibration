@@ -26,9 +26,10 @@ respects spatial autocorrelation.
 |---|---|---|---|
 | wp5_00 | `wp5_00_population_weight_field.ipynb` — Build B weight field, A→B prediction | WorldPop + DEM (staged) | ✅ executed |
 | wp5_01 | `wp5_01_precipitation_exposure_twin.ipynb` — A′/B **precipitation** twin + contrast | CHIRPS (streamed, no account) | ✅ executed |
-| wp5_01T | temperature arm of the same twin | **ERA5-Land — needs a free CDS key** | blocked |
-| wp5_02 | exposure contrast → decision impact, Figure F2 | the fitted model (§8 blocker) | blocked |
-| wp5_03 | Build C — lapse-rate corrected temperature | wp5_01T | blocked |
+| wp5_02 | `wp5_02_temperature_exposure_twin.ipynb` — A′/B **temperature/RH** twin, ERA5 0.25° | ARCO-ERA5 (streamed, no account) | ✅ executed, **caveated** |
+| wp5_02b | temperature twin rebuilt on ERA5-Land 0.1° | **needs a free CDS key** | blocked |
+| wp5_03 | exposure contrast → decision impact, Figure F2 | the fitted model (§8 blocker) | blocked |
+| wp5_04 | Build C — lapse-rate corrected temperature | wp5_02b | blocked |
 | wp4_00 | `wp4_00_loocv_folds_and_power.ipynb` — buffered-LOOCV folds + power cost | adjacency (present) | ✅ executed |
 | wp4_01 | `wp4_01_autocorrelation_range.ipynb` — Moran's I / variogram, radius selection | M6 + frozen preds | ✅ executed |
 | wp4_02 | models re-evaluated under the folds | **design matrices (§8 blocker)** | blocked |
@@ -159,6 +160,55 @@ that way. Unnecessary: the yearly netCDFs are **netCDF-4/HDF5, chunked `(20, 112
 and Sri Lanka's bbox touches only 2×2 spatial chunks. An HTTP range read (`fsspec` + `h5netcdf`)
 pulls a full year of the window in **8–19 s** and never materialises the global grid. The whole
 2018–2025 stack is ~2 minutes and ~50 MB cached. No account, no bulk storage.
+
+## What wp5_02 establishes — and why every number in it is a floor
+
+**Build B now exists for both variables**, row-aligned with the precipitation twin: t2m mean/min/max,
+dewpoint and RH, 10,842 rows, all QC green. RH is computed **per cell per hour** by Alduchov–Eskridge
+Magnus before any averaging, as plan §E requires — deriving it from weekly-mean T and Td instead gives
+a plausible-looking wrong answer.
+
+**The temperature displacement is real but smaller than the DEM predicted**, because the grid is
+coarser: mean |A′→B| **0.205 °C**, district range **−0.86 °C (Badulla) to +0.34 °C (Colombo)**, largest
+single district-week **1.16 °C**. Two results are worth more attention than the mean:
+
+- **Extremes move more than means.** Weekly `t2m_max` shifts by mean |0.387| °C and up to **2.76 °C**,
+  nearly double the mean-temperature effect. For a transmission model driven by thermal limits rather
+  than averages, that is the number that matters.
+- **RH moves by mean |0.77| percentage points, up to 6.3.**
+
+### The grid substitution, stated plainly
+
+ERA5-Land 0.1° needs a CDS key that is not on this machine, so this is **ERA5 0.25°**. Measured before
+building, from the DEM and WorldPop alone: Build B sees **65.3%** of the population-weighting
+displacement at 0.25° against **91.7%** at 0.1°. Effective cells per district fall from 21.3/11.8
+(area/pop) to **5.3/3.6**. So every figure above is a **conservative floor, biased toward the null** —
+the safe direction for a claim that construction is *not* null, and useless for any claim about *which*
+districts warm. **Ratnapura retains 6.7%** of its predicted shift (+0.83 → +0.06 °C).
+
+### The prediction cross-check, read properly
+
+`wp5_00` predicted these shifts from elevation and a lapse rate with no climate data; this is the first
+measurement against a real temperature field. A bare "69% sign agreement" is the wrong summary — in a
+flat district the prediction is ~0.01 °C and its sign is noise. Agreement rises with what the
+prediction actually claims:
+
+| threshold | districts | sign agreement | correlation |
+|---|---|---|---|
+| all | 26 | 69.2% | +0.71 |
+| \|predicted\| > 0.2 °C | 7 | **85.7%** | **+0.79** |
+| \|predicted\| > 0.3 °C | 5 | 80.0% | **+0.86** |
+
+**Badulla is confirmed by measurement** (−0.86 °C observed against −1.75 °C predicted at 0.1°, close to
+the ~65% this grid can see). **Kandy is a genuine disagreement** — predicted +0.58 °C, observed
+−0.29 °C — the only one among districts with a substantial prediction, and most likely its steep
+terrain being averaged away at 0.25°.
+
+**A confounder tested and rejected.** Coastal districts draw much of their weight from cells that are
+part ocean, where ERA5 (unlike ERA5-Land) blends in sea surface temperature — Mannar, Batticaloa and
+Puttalam sit at ~0.56 population-weighted land fraction, island-wide 0.858. That was the obvious
+suspect for the disagreements and it does **not** explain them: mean land fraction is 0.88 where signs
+agree and 0.82 where they don't, both spanning the full range. The caveat is real; it is not the cause.
 
 ## Why WP4 cannot be finished either
 
