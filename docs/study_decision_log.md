@@ -8,6 +8,53 @@
 
 ---
 
+## 2026-08-12 — WP5's precipitation twin is built; WP4 is blocked for the §8 reason; Build A is not here
+
+**`DELIVERABLE` — `notebooks_wp45/wp5_01_precipitation_exposure_twin.ipynb`, executed.** A
+population-weighted (Build B) precipitation exposure table for Sri Lanka, 2018–2025, on the v2
+boundary-resolved schema — **10,842 rows = 417 ISO weeks × 26 RDHS**, all full 7-day spans including
+the six that cross a year boundary, all QC green. Written to gitignored quarantine as
+`wp5_precip_exposure_twin_srilanka_v1.csv` (sha `fe46af09328ccaba`).
+
+**`DIRECTION` — WP5's honest-null clause (§3.4) does not fire on precipitation either.** wp5_00
+pre-empted it for temperature by prediction; this measures it for rainfall. The A′→B displacement
+averages **−0.75 mm/week**, mean absolute **3.40 mm/week ≈ 7.9% of mean weekly rainfall**, largest
+single district-week **72.6 mm**. In the wet tail where alerts fire it grows absolutely and shrinks
+relatively: p90+ 8.6 mm (5.4%), p99+ 12.9 mm (4.9%). The A′/B correlation is 0.9935 and is *not*
+reassurance — the table is dominated by dry weeks. The sign is geographic: **Colombo −7.30 mm/week,
+Puttalam +4.37**, 15 districts down and 11 up. Splitting the gap into its two steps,
+`all_touched`→fractional-area moves **1.8%** and area→population moves **7.9%** — **the construction
+choice that matters is what you weight by, not which cells you admit.**
+
+**`DECISION` — both arms rebuilt from one staged stack, because the frozen Build A is not on this
+machine.** `rdhs_weekly_climate_exposure_2018_2025_v2_boundary_resolved.csv` (sha `3900082b…`) and
+the ~9.8 GB ERA5/CHIRPS quarantine behind it live under `~/data_quarantine/geomatics/`, which does
+not exist here; `wp5_00`'s provenance records that sha but **transcribed it from the build report**
+rather than computing it. Rebuilding both arms is the stronger design anyway — they then share
+inputs by construction, not by assumption — and a third column `a_alltouched` emulates the frozen
+mask so the gap decomposes and a validation target exists if the frozen table arrives. **This is a
+fourth absent collaborator artifact and belongs in the §5.1 ask.**
+
+**`DECISION` — CHIRPS acquisition supersedes plan §D.** The plan specifies per-day global GeoTIFFs
+(~31 GB for this window; the 2026-06 build pulled ~9.8 GB). The yearly netCDFs are netCDF-4/HDF5
+chunked `(20, 112, 400)`, and Sri Lanka touches only 2×2 spatial chunks, so an HTTP range read pulls
+a year of the window in 8–19 s. Whole stack ≈ 2 minutes, ~50 MB cached, no account. Adopted; §D's
+bulk route is retained only as the description of how the frozen table was built.
+
+**`DIRECTION` — WP4 cannot be completed either, and for the §8 reason.** `instruction_m6.md`
+corrected "WP4 complete" to *fold design complete until models are evaluated under the folds*.
+Evaluating under folds requires each model's **design matrix**; the repo holds **predictions only**
+(`ALT_STATS/frozen/srilanka_matched_pairs.csv`). M6 alone could be re-fit — we own its features and
+labels — but a spatially-CV'd M6 against a temporally-split M5 is an artifact, not a comparison, and
+publishing it would oblige the same treatment for M0/M1/M2/M5. Recorded as blocked rather than
+worked around. **Consequence: the §5.1 ask now unblocks three items — §4, §8 and WP4 — not two.**
+
+**`OPEN` — the temperature arm is where the larger effect was predicted** (−1.75 °C to +0.83 °C) and
+it needs a free CDS API key that is not on this machine. The decision half of WP5 — whether the
+measured displacement *flips an alert* — remains blocked on the same missing model.
+
+---
+
 ## 2026-08-11 — Paper 1 is being finalised without geomatics; §24 items 5 and 6 delivered
 
 **`DIRECTION` — M6/WP4/WP5 are firewalled out of Paper 1, and that is a gate consequence, not a
