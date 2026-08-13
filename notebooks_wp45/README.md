@@ -3,9 +3,10 @@
 Step-by-step build of `docs/maup_sensitivity_and_spatial_cv_plan.md`, in Jupyter so every
 intermediate is inspectable. Sri Lanka first.
 
-**Owner:** Geospatial Lead · **Status:** WP5 **precipitation** twin built (A′ vs B, 10,842 rows);
-temperature awaits a CDS key. WP4 fold geometry and radius done — **evaluation under the folds is
-blocked**, see below.
+**Owner:** Geospatial Lead · **Status:** WP5's exposure ladder is **complete — A′, B and C, both
+variables** (10,842 rows each, row-aligned). WP4 fold geometry and radius done — **evaluation under
+the folds is blocked**, see below. What remains in WP5 is the decision half, blocked on the same §8
+artifact as WP4.
 
 Separate from `notebooks/`, which is the **M6 geomatics-only model** (an *optional* Phase 4 rung).
 These two work packages carry the plan's *mandated* deliverables. Different question, different
@@ -29,7 +30,7 @@ respects spatial autocorrelation.
 | wp5_02 | `wp5_02_temperature_exposure_twin.ipynb` — A′/B **temperature/RH** twin, ERA5 0.25° | ARCO-ERA5 (streamed, no account) | ✅ executed, **caveated** |
 | wp5_02b | temperature twin rebuilt on ERA5-Land 0.1° | **needs a free CDS key** | blocked |
 | wp5_03 | exposure contrast → decision impact, Figure F2 | the fitted model (§8 blocker) | blocked |
-| wp5_04 | Build C — lapse-rate corrected temperature | wp5_02b | blocked |
+| wp5_04 | `wp5_04_build_c_lapse_corrected_temperature.ipynb` — **Build C**, lapse-corrected | ERA5 orography (streamed, no account) | ✅ executed |
 | wp4_00 | `wp4_00_loocv_folds_and_power.ipynb` — buffered-LOOCV folds + power cost | adjacency (present) | ✅ executed |
 | wp4_01 | `wp4_01_autocorrelation_range.ipynb` — Moran's I / variogram, radius selection | M6 + frozen preds | ✅ executed |
 | wp4_02 | models re-evaluated under the folds | **design matrices (§8 blocker)** | blocked |
@@ -99,9 +100,11 @@ table, the precipitation twin `wp5_precip_exposure_twin_srilanka_v1.csv`, and th
 
 ## Open
 
-- **ERA5-Land is now the only missing climate input.** CHIRPS is staged (wp5_01). ERA5-Land needs a
-  free CDS API key (`~/.cdsapirc`), which is not on this machine — it blocks the temperature arm,
-  which is where wp5_00 predicted the *larger* effect (−1.75 °C to +0.83 °C).
+- **A CDS key is still the one thing that would improve every temperature number.** Not a blocker
+  any more — the whole ladder is built at 0.25° (wp5_02, wp5_04) — but ERA5-Land 0.1° would raise
+  Build B's reach from 65.3% to 91.7% and, more importantly, anchor Build C's lapse correction to a
+  less-smoothed orography. Free, `~/.cdsapirc`, not on this machine. Every notebook rebuilds
+  unchanged on 0.1°; `wp5_00`'s weight field is already on that grid.
 - **Four collaborator artifacts are absent, not three.** Add the frozen Build A exposure table (or
   the `~/data_quarantine/geomatics/` climate quarantine) to the §5.1 ask, alongside the threshold
   artifact, the M0/M1/M2 predictions and the design matrices.
@@ -209,6 +212,59 @@ part ocean, where ERA5 (unlike ERA5-Land) blends in sea surface temperature — 
 Puttalam sit at ~0.56 population-weighted land fraction, island-wide 0.858. That was the obvious
 suspect for the disagreements and it does **not** explain them: mean land fraction is 0.88 where signs
 agree and 0.82 where they don't, both spanning the full range. The caveat is real; it is not the cause.
+
+## What wp5_04 establishes — the ladder's last rung was never blocked, and it is not the smallest
+
+**Build C needed no CDS key and no collaborator artifact.** ERA5's surface geopotential — the model's
+own orography, the missing half of any lapse correction — sits in the same open ARCO-ERA5 store as
+`t2m`, and `scripts/srilanka_era5_window_reader_v1.py` reads it unchanged. This table listed wp5_04 as
+blocked behind a 0.1° rebuild; that was wrong, and the row is now corrected.
+
+**On the grid we actually have, Build C moves exposure ~1.5× as far as Build B does:**
+
+| step | mean \|ΔT\| across the 26 districts |
+|---|---|
+| A′ → B, population weighting | 0.205 °C |
+| **B → C, lapse correction** | **0.306 °C** |
+
+`wp5_00` ranked Build C last and set its acceptance target at "a few tenths of a degree." The target
+was fine — 0.306 °C *is* a few tenths — but the **ranking inverts**, because that calculation was done
+at 0.1°, where Build B already captured 91.7% of the elevation displacement. **What Build C recovers is
+exactly what a coarse grid loses, so it grows as the grid coarsens.** It is the one rung that partly
+repairs the missing CDS key instead of being degraded by it. Largest shifts: **Nuwara Eliya −1.92 °C**,
+**Badulla −1.33 °C**, **Ratnapura +1.01 °C**.
+
+**Why the highlands move so much, in one number:** ERA5's orography over Sri Lanka peaks at **1,219 m**
+against the island's real 2,524 m. The reanalysis does not contain the central highlands, so it issues
+2 m temperature for a mountain range about half the true height — and highland populations are the ones
+nearest *Aedes*' lower thermal bound.
+
+**Do not report B→C as a MAUP effect.** It is two things, and §6 separates them: mean |orography
+deficit| **0.223 °C**, which would apply under area weighting too and belongs to the exposure-*quality*
+argument, against **0.169 °C** of genuine sub-grid population placement, which is the only part that
+belongs to WP5's exposure-*construction* argument. They can also oppose — in Nuwara Eliya, −2.26 and
++0.34 °C. Quoting the combined 0.306 °C as MAUP would overstate WP5's result by about half.
+
+**The structural finding, available before the blocked refit.** For `t2m` and `d2m` the correction
+carries no time index, so **Build C is Build B plus a constant per-district offset** (within-district
+sd across 417 weeks < 2e-6 °C, asserted). That decides in advance what the §5.1-blocked decision re-run
+*can* find: a model on district-relative temperature — anomalies, district fixed effects, per-district
+standardisation — absorbs the offset exactly and **Build C cannot flip a single alert**; a model on
+absolute temperature or a fixed thermal threshold sees the full ~2 °C. **So a Build C null must not be
+read as "terrain doesn't matter"** — it may only mean the model was district-relative. Two things do
+survive: **RH** (nonlinear in T and Td, within-district sd up to 0.71 pp) and threshold-crossing counts.
+**DTR does not** — it is offset-invariant.
+
+**Verification.** Zeroing the offsets rebuilds `wp5_02`'s frozen Build B through an independent code
+path to **3.6e-15 °C** (RH 1.7e-05 pp), and the weight field reproduces the frozen file to 9.8e-17.
+
+**Two caveats that bound every magnitude here.** The correction is anchored to ERA5's *smoothed*
+orography, so a 0.1° rebuild would start from a better one — highland magnitudes are simultaneously the
+most striking and the least trustworthy numbers in the notebook. And the rate is assumed: §10's
+MODIS-anchored bracket puts the local night-LST lapse at **5.84 °C/km [5.03, 7.70]**, *below* the 6.5
+used, so unlike `wp5_02`'s grid substitution **this one is not conservative** — scale by ~0.90 for the
+locally-anchored version. The RH shift is likewise bracketed by the dewpoint rate (−0.34 pp at
+vapour-pressure-conserving, 0.00 pp at RH-conserving); report the bracket, never the middle value alone.
 
 ## Why WP4 cannot be finished either
 

@@ -8,6 +8,72 @@
 
 ---
 
+## 2026-08-13 — Build C is built; WP5's exposure ladder is complete, and the plan's ranking of its rungs inverts
+
+**`DELIVERABLE` — `notebooks_wp45/wp5_04_build_c_lapse_corrected_temperature.ipynb`, executed.**
+Lapse-rate–corrected temperature exposure on the v2 schema — 10,842 rows, four arms (`a_frac`,
+`b_pop`, `c_frac`, `c_pop`), row-aligned to Builds A′/B, all QC green. Quarantined as
+`wp5_buildC_temp_exposure_srilanka_v1.csv` (sha `b7bf6ac8e99274ca`). **With this, WP5's A→B→C ladder
+locked on 2026-07-07 is complete for Sri Lanka**, and the remaining WP5 work is the decision half,
+blocked on the same §8 artifact as WP4.
+
+**`DECISION` — Build C was never actually blocked, and the README said it was.** The missing half of
+any lapse correction is the elevation the *model* believes, and ERA5's surface geopotential sits in
+the same open ARCO-ERA5 store as `t2m`/`d2m` — `scripts/srilanka_era5_window_reader_v1.py` reads it
+unchanged, no CDS key, invariant asserted at 0.0 across hours and across 2018 vs 2023. Correcting to
+a DEM *without* it would have been the natural error: it silently assumes ERA5 sits at the true mean
+elevation, which is precisely the assumption that fails in the highlands.
+
+**`DIRECTION` — the rung the plan ranked last moves exposure ~1.5× as far as the rung it ranked
+first.** Measured: mean |A′→B| **0.205 °C**, mean |B→C| **0.306 °C**; largest **Nuwara Eliya
+−1.92 °C**, **Badulla −1.33 °C**, **Ratnapura +1.01 °C**. `wp5_00`'s "Build C worth ≤0.36 °C, lowest
+rung, set its acceptance target at a few tenths of a degree" was computed at **0.1°**, where Build B
+already captured 91.7% of the elevation displacement. The target was right; the *ranking* was not.
+**What Build C recovers is exactly what a coarse grid loses, so its value grows as the grid coarsens**
+— at 0.25° Build B reaches only 65.3%. Build C is therefore the one rung that partially repairs the
+missing CDS key rather than being degraded by it. The physical statement is one number: ERA5's
+orography over Sri Lanka peaks at **1,219 m** against a real 2,524 m, so the reanalysis issues 2 m
+temperature for a mountain range roughly half the true height — over exactly the populations sitting
+nearest *Aedes*' lower thermal bound.
+
+**`DECISION` — B→C must not be reported as a MAUP effect; the notebook decomposes it.** Mean
+|orography deficit| **0.223 °C** (present under area weighting too — an exposure-*quality* correction)
+against **0.169 °C** of genuine sub-grid population placement, the only part belonging to WP5's
+exposure-*construction* argument. The two can oppose: Nuwara Eliya is −2.26 and +0.34 °C, so almost
+none of its headline −1.9 °C is MAUP. Quoting the combined figure as MAUP would overstate WP5 by
+about half.
+
+**`OPEN` — a structural result that constrains the blocked decision re-run before it happens.** For
+`t2m` and `d2m` the correction carries no time index, so **Build C is Build B plus a constant
+per-district offset** (within-district sd across 417 weeks < 2e-6 °C, asserted). A model on
+district-relative temperature — anomalies, district fixed effects, per-district standardisation —
+absorbs it exactly and **Build C cannot flip a single alert**; a model on absolute temperature or a
+fixed thermal threshold sees the full ~2 °C. **A Build C null must therefore not be read as "terrain
+does not matter"**; it may only mean the model was district-relative. RH survives (nonlinear,
+within-district sd up to 0.71 pp) and so do threshold-crossing counts; **DTR does not** — it is
+offset-invariant. Which model form the §5.1 artifacts use is now a question worth asking the PI
+*with* the ask, not after it.
+
+**`OPEN` — unlike `wp5_02`'s grid substitution, this notebook's bias does not run toward the null.**
+The MODIS-anchored sensitivity the plan §3.1b asked for puts Sri Lanka's night-LST lapse rate at
+**5.84 °C/km [5.03, 7.70]**, *below* the 6.5 used, so Build C magnitudes should be scaled by ~0.90
+for the locally-anchored version (a between-district surface-temperature regression, so a bracket,
+not a measurement). The RH shift is likewise bounded by the dewpoint lapse rate, not measured
+independently of it: −0.34 pp at vapour-pressure-conserving, −0.23 at the 1.5 °C/km used, 0.00 at
+RH-conserving. Report the bracket, never the middle value alone. And every magnitude is anchored to
+ERA5's *smoothed* orography — the highland numbers are simultaneously the most striking and the least
+trustworthy here, which is the dangerous combination.
+
+**`DELIVERABLE` — the pipeline is verified end to end.** Zeroing the offsets reproduces `wp5_02`'s
+frozen Build B twin to **3.6e-15 °C** (RH 1.7e-05 pp) through an independent code path, and the
+rebuilt weight field matches the frozen file to 9.8e-17. Also recorded in the notebook: because the
+lapse correction is affine in elevation, per-pair correction of the weighted-*mean* elevation is
+**exactly** equal to correcting every 100 m pixel and then aggregating — so plan §3.1b's "fine grid
+before aggregation" requirement is met at zero cost. RH is the exception and is recomputed per pair
+per hour, never patched onto the aggregate.
+
+---
+
 ## 2026-08-12 (b) — WP5 Build B is complete for both variables; the temperature arm is a measured floor
 
 **`DELIVERABLE` — `notebooks_wp45/wp5_02_temperature_exposure_twin.ipynb`, executed.** t2m mean/min/max,
