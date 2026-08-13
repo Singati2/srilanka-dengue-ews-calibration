@@ -258,13 +258,37 @@ survive: **RH** (nonlinear in T and Td, within-district sd up to 0.71 pp) and th
 **Verification.** Zeroing the offsets rebuilds `wp5_02`'s frozen Build B through an independent code
 path to **3.6e-15 °C** (RH 1.7e-05 pp), and the weight field reproduces the frozen file to 9.8e-17.
 
-**Two caveats that bound every magnitude here.** The correction is anchored to ERA5's *smoothed*
-orography, so a 0.1° rebuild would start from a better one — highland magnitudes are simultaneously the
-most striking and the least trustworthy numbers in the notebook. And the rate is assumed: §10's
-MODIS-anchored bracket puts the local night-LST lapse at **5.84 °C/km [5.03, 7.70]**, *below* the 6.5
-used, so unlike `wp5_02`'s grid substitution **this one is not conservative** — scale by ~0.90 for the
-locally-anchored version. The RH shift is likewise bracketed by the dewpoint rate (−0.34 pp at
-vapour-pressure-conserving, 0.00 pp at RH-conserving); report the bracket, never the middle value alone.
+**Validated against station observations (2026-08-13).** GHCN-Daily carries six Sri Lankan stations
+through 2025, including **Nuwara Eliya at 1,880 m** (`CE000434730`, GSN, record from 1869); free and
+anonymous. Comparing like with like — ERA5 daily (max+min)/2 on **local** days (UTC+5:30):
+
+| | station obs | ERA5 0.25° | ERA5 bias |
+|---|---|---|---|
+| Nuwara Eliya (1,880 m) | 16.40 °C | 21.17 °C | **+4.77 °C** |
+| four lowland stations (1.8–116 m) | 27.9–28.7 °C | | **−0.36 to −0.42 °C** |
+
+**ERA5 is accurate at sea level and ~5 °C too warm in the highlands** — elevation-dependent, exactly
+what Build C models, not a global offset; present in every year 2018–2025 and in both TMAX and TMIN.
+At the district level, regressing the five well-sampled stations on elevation (**6.40 °C/km**) and
+interpolating to the district's population elevation of 1,260 m implies a true mean of 19.82 °C:
+**Build B 21.89 °C (error +2.07), Build C 19.98 °C (error +0.15)** — Build C removes 93% of the error
+where the correction is largest.
+
+**The rate is well chosen; an earlier caveat here was wrong-signed and is withdrawn.** This section
+previously read that §10's MODIS night-LST estimate (5.84 °C/km) put the 6.5 used *above* the local
+rate, making Build C "not conservative", and advised scaling by ~0.90. MODIS LST was the weakest of
+the three estimates — a *surface* temperature, regressed *between* districts, confounded by land
+cover. Station **air** temperature gives **6.40 °C/km** and ERA5's own between-cell lapse over land
+cells gives **6.31 °C/km**, both within ~2% of the 6.5 used. **No rescaling is warranted.**
+
+**What still bounds every magnitude here.** The high end of the station regression rests on **one**
+station — the other four sit below 120 m. The larger TMIN bias (+5.27) than TMAX (+4.27) is the
+signature of **nocturnal cold-air pooling** in a highland basin, a local siting effect that must not
+be extrapolated to a whole district's population, and the likely reason the raw station-vs-ERA5 gap
+implies a steeper rate (~7.8 °C/km) than the clean regression. The correction is still anchored to
+ERA5's *smoothed* orography, so a 0.1° rebuild would start from a better one. And the RH shift remains
+bracketed by the dewpoint rate (−0.34 pp vapour-pressure-conserving, 0.00 pp RH-conserving) — report
+the bracket, never the middle value alone.
 
 ## Why WP4 cannot be finished either
 

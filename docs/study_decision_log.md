@@ -8,6 +8,54 @@
 
 ---
 
+## 2026-08-13 (b) — Build C validated against station observations; the §10 rate caveat was wrong-signed
+
+**`DELIVERABLE` — the Build C correction is confirmed by independent ground truth.** GHCN-Daily has
+six Sri Lankan stations reporting TMAX/TMIN through 2025, one of them **Nuwara Eliya at 1,880 m**
+(`CE000434730`, GSN, record from 1869), the rest at 1.8–116 m. Free, anonymous, no account. Compared
+like with like — ERA5 daily (max+min)/2 on **local** days (UTC+5:30), QC-flagged station values
+dropped:
+
+| | station obs | ERA5 0.25° | ERA5 bias |
+|---|---|---|---|
+| Nuwara Eliya (1,880 m) | 16.40 °C | 21.17 °C | **+4.77 °C** |
+| four lowland stations (1.8–116 m) | 27.9–28.7 °C | | **−0.36 to −0.42 °C** |
+
+**ERA5 is accurate at sea level and ~5 °C too warm in the highlands** — an elevation-dependent error,
+exactly the thing Build C models, not a global offset. The highland bias is present in **every year
+2018–2025** (+4.34 to +4.99) and in **both TMAX (+4.27) and TMIN (+5.27)**.
+
+**`DELIVERABLE` — the district-level number lands within 0.15 °C of ground truth.** Regressing the
+five well-sampled stations' observed temperature on elevation gives **6.40 °C/km**, and interpolating
+to Nuwara Eliya district's population-weighted elevation (1,260 m, so interpolation, not
+extrapolation) implies a true mean of **19.82 °C**:
+
+- **Build B: 21.89 °C — error +2.07 °C**
+- **Build C: 19.98 °C — error +0.15 °C**
+
+**Build C removes 93% of Build B's error at the district where the correction is largest.** The
+−1.92 °C shift is real and, if anything, slightly conservative.
+
+**`DECISION` — the 2026-08-13 §10 caveat "this bias does not run toward the null; scale by ~0.90" is
+withdrawn.** It rested on the MODIS night-LST estimate (5.84 °C/km), which was the weakest of the
+available estimates — a *surface* temperature, regressed *between* districts, confounded by land
+cover. Two better estimates now bracket it: station **air** temperature vs elevation **6.40 °C/km**,
+and ERA5's own between-cell lapse over land cells **6.31 °C/km** (internal to the reanalysis, no
+station involved). **The 6.5 °C/km used is well chosen — within ~2% of both — so no rescaling is
+warranted**, and Build C's magnitudes should not be discounted. A correction has been posted to PR #1,
+where the withdrawn version was sent.
+
+**`OPEN` — what the station check does *not* license.** The high end of the station regression rests
+on **one** station: the other four sit below 120 m. And the larger TMIN bias (+5.27) than TMAX
+(+4.27) is the signature of **nocturnal cold-air pooling** in a highland basin — a local siting effect
+that must *not* be extrapolated to the district's whole population, and the likely reason the raw
+station-versus-ERA5 gap implies a steeper rate (~7.8 °C/km) than the clean regression does. So: the
+rate stays at 6.5, the sign and magnitude of Build C are confirmed, and no *finer-grained* claim
+about individual highland districts rests on this. It also remains true that a 0.1° rebuild would
+anchor the correction to a less-smoothed orography.
+
+---
+
 ## 2026-08-13 — Build C is built; WP5's exposure ladder is complete, and the plan's ranking of its rungs inverts
 
 **`DELIVERABLE` — `notebooks_wp45/wp5_04_build_c_lapse_corrected_temperature.ipynb`, executed.**
