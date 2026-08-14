@@ -5,9 +5,11 @@ intermediate is inspectable. Sri Lanka first.
 
 **Owner:** Geospatial Lead · **Status:** WP5's exposure ladder is **complete — A′, B and C, both
 variables** (10,842 rows each, row-aligned), and so are **plan §3.2** (exposure contrast + Figure F2,
-`wp5_03`) and **the exposure half of plan §3.5** (population-product sensitivity, `wp5_06`). WP4 fold
-geometry and radius done — **evaluation under the folds is blocked**, see below. What remains in WP5
-is the decision half (§3.3 / F7), blocked on the same §8 artifact as WP4.
+`wp5_03`), **the exposure half of plan §3.5** (population-product sensitivity, `wp5_06`) and now
+**the runnable half of plan §3.3** (decision-flip envelope + Figure F7, `wp5_05`). WP4 fold geometry
+and radius done — **evaluation under the folds is still blocked**, see below. What remains in WP5 is
+the *registered* §3.3 re-run (ΔAUC / Δcalibration under each build), which needs the §5.1 design
+matrices.
 
 Separate from `notebooks/`, which is the **M6 geomatics-only model** (an *optional* Phase 4 rung).
 These two work packages carry the plan's *mandated* deliverables. Different question, different
@@ -32,7 +34,8 @@ respects spatial autocorrelation.
 | wp5_02b | temperature twin rebuilt on ERA5-Land 0.1° | **needs a free CDS key** | blocked |
 | wp5_03 | `wp5_03_exposure_contrast_and_F2.ipynb` — exposure contrast + **Figure F2** (plan §3.2) | the three frozen tables | ✅ executed |
 | wp5_04 | `wp5_04_build_c_lapse_corrected_temperature.ipynb` — **Build C**, lapse-corrected | ERA5 orography (streamed, no account) | ✅ executed |
-| wp5_05 | decision impact of exposure construction, Figure F7 (plan §3.3) | the fitted model (§8 blocker) | blocked |
+| wp5_05 | `wp5_05_decision_flip_envelope.ipynb` — decision-flip envelope + **Figure F7** (plan §3.3, runnable half) | frozen predictions + the three exposure tables | ✅ executed |
+| wp5_05b | ΔAUC / Δcalibration under Builds B and C (plan §3.3, registered re-run) | **design matrices (§5.1 blocker)** | blocked |
 | wp5_06 | `wp5_06_population_product_sensitivity.ipynb` — population-**product** sensitivity (plan §3.5, exposure half) | GHS-POP (streamed, no account) + staged climate | ✅ executed |
 | wp4_00 | `wp4_00_loocv_folds_and_power.ipynb` — buffered-LOOCV folds + power cost | adjacency (present) | ✅ executed |
 | wp4_01 | `wp4_01_autocorrelation_range.ipynb` — Moran's I / variogram, radius selection | M6 + frozen preds | ✅ executed |
@@ -111,8 +114,12 @@ table, the precipitation twin `wp5_precip_exposure_twin_srilanka_v1.csv`, and th
 - **Four collaborator artifacts are absent, not three.** Add the frozen Build A exposure table (or
   the `~/data_quarantine/geomatics/` climate quarantine) to the §5.1 ask, alongside the threshold
   artifact, the M0/M1/M2 predictions and the design matrices.
-- **The decision half of WP5 is blocked.** Exposure displacement is measured (`wp5_03`); whether it
-  *flips an alert* needs the fitted model, which the repo does not hold. Same §8 blocker as WP4.
+- ~~**The decision half of WP5 is blocked.**~~ — **PARTLY RECOVERED by `wp5_05`.** Whether exposure
+  construction *flips an alert* is answerable from the frozen predictions alone, to within a bounded
+  envelope: exposure construction moves **1–3%** of alerts against **10–14%** for deleting the whole
+  climate block. What still needs the design matrices is ΔAUC and Δcalibration under each build.
+  **Third time the check-whether-the-blocker-covers-all-of-it test recovered work recorded as
+  blocked** (after §3.2 and §3.5) — it is now standard practice, not a one-off.
 - **A second question belongs with the §5.1 ask: which model form do those artifacts use?**
   `wp5_03` §8.1 shows the answer decides in advance what §3.3 can find — a district-relative
   temperature model absorbs Build C exactly, so a null there would be a fact about the
@@ -414,6 +421,67 @@ where smaller and more heterogeneous municipalities give the products more room 
 three products are **modelled** surfaces sharing much of their input census, so their agreement
 bounds method sensitivity, not the truth of where people are.
 
+
+## What wp5_05 establishes — exposure construction changes alerts, and ΔNB cannot see it
+
+Plan §3.3 splits like §3.2 and §3.5 did. The *registered re-run* (ΔAUC, Δcalibration, ΔNB under a
+refit) needs the design matrices. Three other things do not, and together they bracket the answer:
+an **exact, model-free flip curve**; an observed **ceiling** (`full` vs `noclim` on identical rows);
+and a **transfer coefficient estimated** from `logit(full) − logit(noclim)` regressed on exposure.
+16/16 QC → `Manuscript_Figures/wp5/WP5_F7_decision_flip_envelope.{pdf,png}` (6 panels, double
+column) + `wp5_decision_flip_envelope_srilanka_v1.csv`.
+
+**Exposure construction moves real alert decisions.** At p\* = 0.30, across four regression
+specifications: **A′→B 35–76 alerts (0.9–1.9%)**, **A′→C 64–104 (1.6–2.6%)**. Deleting the entire
+climate block moves **441 (11.2%)**. So the construction choice carries **14–24%** of the climate
+block's decision leverage — far from nothing, far from everything. Cluster-bootstrap CI at the
+district level, p\* = 0.30: A′→B 1.94% [1.27, 2.65], A′→C 2.45% [1.50, 3.57].
+
+**The headline result is methodological, and it should reach the manuscript.** `ΔNB` stays within
+**±0.002** while the flip count is unambiguously non-zero. That is *not* flips cancelling by
+direction — they are strongly asymmetric (A′→B adds 67 alerts, removes 9). It is structural: **a row
+can only flip if it sits near p\*, and threshold-adjacent rows have an event rate ≈ p\*, which is by
+definition the break-even rate.** Measured, the flipped-row event rate tracks p\* across both rungs
+and all four thresholds (0.087 / 0.160 / 0.289 / 0.431 against 0.10 / 0.20 / 0.30 / 0.40; r = 0.96).
+**Every flip is worth ≈ 0 net benefit in either direction.** Therefore `ΔNB` is *structurally*
+insensitive to any perturbation acting near the threshold, and a near-zero `ΔNB` must **not** be read
+as "exposure construction does not affect decisions". The flip count answers that question; `ΔNB`
+answers a different one.
+
+**The exact half survives any objection to the estimated half.** The flip curve is a property of the
+frozen predictions: a perturbation of 0.02 in predicted risk cannot flip more than ~6.4% of alerts at
+p\* = 0.30, whatever generates it. Every estimate is asserted against that bound in the notebook.
+
+**Flips need a displacement *and* a prediction near the threshold.** Across the 26 districts the flip
+count correlates with the induced prediction shift but not with displacement alone — so, one step on
+from `wp5_03`'s finding, naming "exposure-sensitive districts" from the exposure contrast names the
+wrong set for decisions too.
+
+**Sensitivity to the missing artifact is measured, not asserted.** The transfer coefficient's norm
+spans **2.3×** across four specifications (R² 0.27–0.38, signs stable throughout), but the flip count
+spans much less — the flip curve is locally near-linear. β would have to be understated several-fold
+before exposure construction reached the ceiling, so the *qualitative* answer is robust to what §5.1
+would supply.
+
+### What wp5_05 found about the frozen artifact itself
+
+**`full_recal` is not a monotone recalibration of `full_raw`, and the team needs to know.** Sorting
+by `full_raw`, **49%** of adjacent `full_recal` pairs are inverted, and the AUCs differ: **0.7715 raw
+vs 0.7512 recalibrated**. A monotone recalibration cannot change AUC. The cause is in the repo —
+`analysis/v12_referee_response/run/sl_matched_and_recal.py` §(B) applies a **past-only rolling-52-week
+intercept update refitted at every test week**, so the map is time-varying and re-ranks *across*
+weeks. **Within** a week it is an exact constant shift in logit space (147 of 151 weeks; the four
+exceptions are consecutive Jan–Feb 2024 weeks that fall back to the intercept-slope variant), with
+**zero inversions inside any week**. Consequences: every reported AUC must say which column it came
+from, and "recalibration does not affect discrimination" is false for this artifact.
+
+### Traps this notebook adds
+
+- **`WK.shift` is a DataFrame method.** A column named `shift` is shadowed by `DataFrame.shift`, so
+  attribute access returns the method and fails with an `AttributeError` about a *function* — the
+  same failure mode already recorded here for `d.pop` / `pop_sum`.
+- **A near-zero ΔNB is the expected result of a threshold-local perturbation, not evidence of a
+  null.** See above; this is the notebook's main finding and the easiest number in it to misread.
 
 ## Why WP4 cannot be finished either
 

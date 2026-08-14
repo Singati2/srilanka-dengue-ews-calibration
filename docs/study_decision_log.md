@@ -8,6 +8,68 @@
 
 ---
 
+## 2026-08-14 (b) — Plan §3.3 (runnable half): exposure construction changes alerts, and ΔNB is structurally unable to show it
+
+**`DIRECTION` — the blocker-coverage test recovers work for the third time, and it is now standard
+practice.** Plan §3.3 pairs a *registered re-run* (ΔAUC, Δcalibration, ΔNB under a refit — genuinely
+blocked on the §5.1 design matrices) with the question *does the decision move?*, which is answerable
+from the frozen predictions alone. `notebooks_wp45/wp5_05_decision_flip_envelope.ipynb` is executed,
+**16/16 QC**. After §3.2 and §3.5, this is the third blocked line with a runnable half; the test is
+applied to every remaining blocked item from here, not treated as a lucky find.
+
+**`DELIVERABLE` — a bracket, built from three pieces, only one of which is modelled.**
+`Manuscript_Figures/wp5/WP5_F7_decision_flip_envelope.{pdf,png}` (6 panels, double column) plus
+`wp5_decision_flip_envelope_srilanka_v1.csv` and `wp5_decision_flip_summary_srilanka_v1.csv`.
+
+1. **An exact, model-free flip curve.** A row flips only if `|p − p*|` is smaller than the movement
+   applied to it, so `#{|p − p*| ≤ δ}` upper-bounds the flips from *any* perturbation bounded by δ.
+   At p\* = 0.30 a movement of 0.02 in predicted risk cannot flip more than ~6.4% of alerts.
+2. **An observed ceiling.** `full` and `noclim` sit on identical rows, so deleting the whole climate
+   block is measurable: **441 alerts (11.2%)** at p\* = 0.30.
+3. **An estimated transfer coefficient.** `logit(full) − logit(noclim)` isolates the climate-
+   attributable prediction; regressed on exposure it gives the model's effective sensitivity without
+   the design matrix.
+
+**`DECISION` — exposure construction is not a decision null.** At p\* = 0.30, across four
+specifications: **A′→B 35–76 alerts (0.9–1.9%)**, **A′→C 64–104 (1.6–2.6%)** — i.e. **14–24% of the
+climate block's entire decision leverage**. District-clustered bootstrap: A′→B 1.94% [1.27, 2.65],
+A′→C 2.45% [1.50, 3.57]. WP5's honest-null clause fires on the decision no more than it did on the
+exposure.
+
+**`DIRECTION` — the most consequential finding is methodological and belongs in the manuscript.**
+`ΔNB` stays within **±0.002** while flip counts are unambiguously non-zero. This is **not** flips
+cancelling by direction — they are strongly asymmetric (A′→B adds 67 alerts, removes 9). It is
+structural: **a row can only flip if it sits near p\*; threshold-adjacent rows have an event rate
+≈ p\*; and p\* is by definition the break-even rate.** Measured, the flipped-row event rate tracks
+p\* across both rungs and all four thresholds (0.087 / 0.160 / 0.289 / 0.431 against 0.10 / 0.20 /
+0.30 / 0.40; r = 0.96), and the arithmetic closes exactly:
+`ΔNB = (+14 − 44 × 0.4286)/3926 = −0.0012`. **Every flip is worth ≈ 0 net benefit either way.**
+Therefore `ΔNB` is *structurally insensitive* to any perturbation acting near the threshold, and a
+near-zero `ΔNB` must not be reported as "exposure construction does not affect decisions" — the flip
+count answers that question, `ΔNB` answers a different one. This bears on how every DCA-based
+sensitivity result in the study is worded, not only WP5's.
+
+**`OPEN` → `DECISION` — how much the missing artifact would actually change.** The transfer
+coefficient's norm spans **2.3×** across four specifications (R² 0.27–0.38, signs stable), but the
+flip count spans far less, because the flip curve is locally near-linear. β would have to be
+understated several-fold before exposure construction reached the ceiling. **What §5.1 would add is
+the ΔAUC / Δcalibration table, not a reversal of the qualitative answer** — which lowers the urgency
+of that ask for §3.3 specifically, though not for §4, §8 or WP4.
+
+**`OPEN` — a defect in the frozen artifact the team must resolve.** `full_recal` is **not** a
+monotone recalibration of `full_raw`: 49% of adjacent pairs invert, and AUC differs (**0.7715 raw vs
+0.7512 recalibrated**), which a monotone recalibration cannot do. Cause identified in
+`analysis/v12_referee_response/run/sl_matched_and_recal.py` §(B): a **past-only rolling-52-week
+intercept update refitted every test week**, so the map is time-varying and re-ranks across weeks
+while being an exact constant shift *within* a week (147 of 151 weeks; zero within-week inversions).
+It is a defensible design, but **every reported AUC must state which column it came from**, and any
+sentence of the form "recalibration does not affect discrimination" is false here. Flagged to the PI.
+
+**`DECISION` — this is not the registered §3.3 deliverable and is stamped so.** The provenance
+carries `registered_rerun: false`, so the envelope cannot later be mistaken for the re-run.
+
+---
+
 ## 2026-08-14 — Plan §3.5 (exposure half): WP5's result is not a WorldPop artifact; one open item closes
 
 **`DIRECTION` — the §3.2/§3.3 split repeats at §3.5, and the same half is runnable.** Plan §3.5 pairs
