@@ -4,10 +4,10 @@ Step-by-step build of `docs/maup_sensitivity_and_spatial_cv_plan.md`, in Jupyter
 intermediate is inspectable. Sri Lanka first.
 
 **Owner:** Geospatial Lead · **Status:** WP5's exposure ladder is **complete — A′, B and C, both
-variables** (10,842 rows each, row-aligned), and so is **plan §3.2: the exposure contrast and
-Figure F2** (`wp5_03`). WP4 fold geometry and radius done — **evaluation under the folds is
-blocked**, see below. What remains in WP5 is the decision half (§3.3 / F7), blocked on the same §8
-artifact as WP4.
+variables** (10,842 rows each, row-aligned), and so are **plan §3.2** (exposure contrast + Figure F2,
+`wp5_03`) and **the exposure half of plan §3.5** (population-product sensitivity, `wp5_06`). WP4 fold
+geometry and radius done — **evaluation under the folds is blocked**, see below. What remains in WP5
+is the decision half (§3.3 / F7), blocked on the same §8 artifact as WP4.
 
 Separate from `notebooks/`, which is the **M6 geomatics-only model** (an *optional* Phase 4 rung).
 These two work packages carry the plan's *mandated* deliverables. Different question, different
@@ -33,6 +33,7 @@ respects spatial autocorrelation.
 | wp5_03 | `wp5_03_exposure_contrast_and_F2.ipynb` — exposure contrast + **Figure F2** (plan §3.2) | the three frozen tables | ✅ executed |
 | wp5_04 | `wp5_04_build_c_lapse_corrected_temperature.ipynb` — **Build C**, lapse-corrected | ERA5 orography (streamed, no account) | ✅ executed |
 | wp5_05 | decision impact of exposure construction, Figure F7 (plan §3.3) | the fitted model (§8 blocker) | blocked |
+| wp5_06 | `wp5_06_population_product_sensitivity.ipynb` — population-**product** sensitivity (plan §3.5, exposure half) | GHS-POP (streamed, no account) + staged climate | ✅ executed |
 | wp4_00 | `wp4_00_loocv_folds_and_power.ipynb` — buffered-LOOCV folds + power cost | adjacency (present) | ✅ executed |
 | wp4_01 | `wp4_01_autocorrelation_range.ipynb` — Moran's I / variogram, radius selection | M6 + frozen preds | ✅ executed |
 | wp4_02 | models re-evaluated under the folds | **design matrices (§8 blocker)** | blocked |
@@ -120,9 +121,10 @@ table, the precipitation twin `wp5_precip_exposure_twin_srilanka_v1.csv`, and th
   requirement (§3.1) cannot be met as written. §11 measures the drift instead: the weight field
   moves ~1.1% of a typical weight over 2018→2020, so carrying 2020 forward is a bounded
   extrapolation — reported, not hidden.
-- **~1.4% of the population falls outside the 26 polygons** (centre-in-polygon on an island
-  coastline). Same quantity as notebook 03 §7 and the same open WP5 decision: accept and report, or
-  switch to fractional-coverage weighting at the boundary.
+- ~~**~1.4% of the population falls outside the 26 polygons**~~ — **CLOSED by `wp5_06` §4.** It is a
+  WorldPop UN-adjusted 2020 coastline artifact, not a property of the geometry: the same polygons
+  lose 0.23% of GHS-POP and 0.10% of WorldPop R2025A. Report it as a bounded product sensitivity;
+  neither "accept 1.4%" nor "switch to fractional-coverage weighting" was the right framing.
 
 
 ## What wp5_01 establishes
@@ -338,6 +340,79 @@ enhancement *model*, which the study's no-new-model rule bars. A property of the
 channel and pass. The three maps do **not**: a diverging ramp is symmetric in luminance, so ±1.9 °C
 print as the same grey. Mitigated by labelling the largest movers numerically on the map face; the
 notebook measures it rather than asserting it.
+
+
+## What wp5_06 establishes — WP5's result is not a WorldPop artifact
+
+Plan §3.5 splits the same way §3.2 did: *"rebuild Build B weights under an alternative population
+product"* is runnable, *"recompute ΔNB at p\* under each layer"* is not. This is the first half.
+
+Three products at the same 2020 epoch — **WorldPop UN-adjusted** (the incumbent), **WorldPop R2025A
+constrained** (a newer release from the same producer), and **GHS-POP R2023A** (JRC; a different
+institution and a different dasymetric method, built-up-surface rather than random forest). All free,
+all anonymous. Because Build B normalises weights *within* district, a product's national total
+cancels exactly; only the shape of the surface inside a district can matter.
+
+**The construction step is roughly an order of magnitude taller than the product uncertainty.**
+
+| contrast | mean displacement |
+|---|---|
+| weight moved, area → population (ERA5 grid) | **27.5%** of a district |
+| weight moved, WorldPop unadj → GHS-POP | 1.6% |
+| weight moved, WorldPop unadj → R2025A | 2.0% |
+| exposure, A′→B, weekly mean t2m | **0.205 °C** |
+| exposure, product swap, weekly mean t2m | 0.006 °C |
+| exposure, A′→B, rainfall | **3.40 mm/wk** |
+| exposure, product swap, rainfall | 0.161 mm/wk |
+
+Ratios run **16.7× to 32×** at the mean, hold in the tails where alerts fire (19.5× in the wettest 1%
+of district-weeks, 35.8× in the hottest 1%), and in **0 of 26 districts** does the product effect
+reach the weighting effect. The per-district reading survives too: ρ = 0.985 / 0.990 on the ranking
+of movers, identical top-five sets, complete sign agreement. So `wp5_03`'s statements about *which*
+districts are exposure-sensitive are not statements about WorldPop.
+
+**Version drift inside one producer exceeds the gap between producers.** WorldPop UN-adjusted and
+WorldPop's own R2025A differ *more* (mean TV 0.0201) than WorldPop and GHS-POP do (0.0157). "Same
+producer, newer release" is not the safer substitution it sounds like.
+
+**The coastal shortfall was a product defect, and this closes that open item.** The ~1.4% of
+population falling outside the 26 polygons is specific to WorldPop UN-adjusted 2020: on the same
+boundaries GHS-POP loses **0.23%** and WorldPop R2025A **0.10%**. The README's open choice between
+"accept and report" and "switch to fractional-coverage weighting at the boundary" was a choice
+between two ways of absorbing someone else's coastline error, and §6 bounds what it can do to the
+weights regardless.
+
+**The fourth arm §3.5 names is degenerate by construction.** Census district totals carry no
+within-district spatial information, so distributing them uniformly makes the climate-cell weight
+proportional to in-district area — Build A exactly (verified to 0.0). And because weights are
+normalised within district, the totals themselves cancel: the district could hold one person or ten
+million. Not a null result about population data; the arithmetic of the weighting.
+
+### Traps this notebook adds
+
+- **`rasterio.merge.merge(srcs, bounds=…)` does not snap to the source grid.** It derives the output
+  transform from the *requested bounds* and resamples into it (nearest by default). On population
+  **counts** a sub-pixel shift duplicates some 100 m cells and drops others — it moves people. Here
+  it produced a 0.54-pixel offset. §3.2 pastes tiles at integer offsets instead, with no resampling.
+- **GHS-POP needs all four tiles.** Sri Lanka straddles both the 80 °E and the 10 °N tile seams;
+  taking only the two southern tiles silently truncates Jaffna, Kilinochchi and Mullaitivu.
+- **The staged CHIRPS window was cut to WorldPop's clipped extent.** WorldPop UN-adj stops at
+  79.648 °E; GHS-POP and R2025A do not, so their weight tables reach three columns further west and
+  `j = col − J0` goes negative — NumPy wraps it and Jaffna quietly receives east-coast rainfall.
+  Asserted, dropped, renormalised, and the induced error bounded at **4.3e-4 mm/week**.
+- **RH is the one column that is not bit-reproducible across environments.** The three temperature
+  columns reproduce the frozen twin to 1e-14; RH reproduces to 1.65e-5 pp (**2.2 float32 ULP**),
+  because it is the only variable computed through `exp()` in float32 and `np.exp` is accurate to
+  ~1 ULP but not bit-identical across NumPy/libm builds. Immaterial — 2,000× below the smallest
+  effect reported — but a re-run under a different build will not match byte-for-byte, and the
+  acceptance test must say so rather than fail mysteriously.
+
+**What it does not establish.** Nothing about net benefit or decisions — that is §3.5's second half,
+blocked with `wp5_05` and `wp4_02`. A small *exposure* displacement does not mechanically imply a
+small *decision* displacement; testing that inference is what WP5 is for. Nothing about **Colombia**,
+where smaller and more heterogeneous municipalities give the products more room to disagree. And all
+three products are **modelled** surfaces sharing much of their input census, so their agreement
+bounds method sensitivity, not the truth of where people are.
 
 
 ## Why WP4 cannot be finished either

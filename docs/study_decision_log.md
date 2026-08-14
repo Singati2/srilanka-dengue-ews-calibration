@@ -8,6 +8,73 @@
 
 ---
 
+## 2026-08-14 — Plan §3.5 (exposure half): WP5's result is not a WorldPop artifact; one open item closes
+
+**`DIRECTION` — the §3.2/§3.3 split repeats at §3.5, and the same half is runnable.** Plan §3.5 pairs
+*"rebuild Build B weights under an alternative population product"* with *"recompute ΔNB at p\* under
+each layer."* Only the second needs the fitted model. `notebooks_wp45/wp5_06_population_product_sensitivity.ipynb`
+is executed, **17/17 QC**, and delivers the first. This is the second time the "check whether the
+blocker applies to all of it" test has recovered work recorded as blocked — it is now worth applying
+to every remaining blocked line rather than treating it as a one-off.
+
+**`DELIVERABLE` — three population products at one epoch (2020), all free and anonymous.** WorldPop
+UN-adjusted (incumbent), WorldPop R2025A constrained (same producer, newer release), GHS-POP R2023A
+(JRC; different institution, built-up-surface dasymetric rather than random forest). Outputs
+`wp5_population_product_sensitivity_srilanka_v1.csv` and `wp5_population_product_contrast_srilanka_v1.csv`.
+Because Build B normalises weights within district, a product's national total cancels exactly; only
+the shape of the surface inside a district can move exposure.
+
+**`DECISION` — the reviewer's obvious attack is answered with a number.** "Your MAUP result is a
+WorldPop artifact" fails:
+
+| contrast | mean displacement |
+|---|---|
+| weight moved, area → population (A′→B, ERA5 grid) | **27.5%** of a district |
+| weight moved, WorldPop unadj → GHS-POP | 1.6% |
+| exposure, A′→B, weekly mean t2m | **0.205 °C** vs product swap **0.006 °C** |
+| exposure, A′→B, rainfall | **3.40 mm/wk** vs product swap **0.161 mm/wk** |
+
+Ratios run **16.7×–32×** at the mean and do **not** narrow in the tails where alerts fire (19.5× in
+the wettest 1% of district-weeks; 35.8× in the hottest 1%). In **0 of 26** districts does the product
+effect reach the weighting effect, and the ranking of movers survives (ρ = 0.985 / 0.990, identical
+top-fives, complete sign agreement) — so `wp5_03`'s per-district statements are not statements about
+WorldPop either.
+
+**`DECISION` — version drift inside one producer exceeds the gap between producers.** WorldPop
+UN-adjusted vs WorldPop's own R2025A: mean TV **0.0201**. WorldPop vs GHS-POP: **0.0157**. The
+instinct that "same producer, newer release" is the conservative substitution is backwards here, and
+it bears on any future re-run that upgrades a population vintage without re-testing.
+
+**`OPEN` → `DECISION` — the ~1.4% coastal shortfall is CLOSED, and it was never a methods choice.**
+It is specific to WorldPop UN-adjusted 2020: the same 26 polygons lose **0.23%** of GHS-POP and
+**0.10%** of WorldPop R2025A. The standing choice between "accept and report" and "switch to
+fractional-coverage weighting at the boundary" was a choice between two ways of absorbing another
+product's coastline error. Report it as a bounded product sensitivity instead.
+
+**`DECISION` — §3.5's fourth arm is degenerate and should not be built.** Census district totals
+carry no within-district spatial information, so distributing them uniformly makes the climate-cell
+weight proportional to in-district area — Build A exactly (verified to 0.0) — and the totals
+themselves cancel in the within-district normalisation. Not an empirical null; the arithmetic of the
+weighting. The plan's §3.5 checklist should be amended to say so.
+
+**`OPEN` — nothing here touches net benefit.** A small *exposure* displacement does not imply a small
+*decision* displacement; that inference is what WP5 exists to test and it needs the §5.1 artifacts.
+Colombia's §3.5 arm is also unrun. And all three products are **modelled** surfaces over much of the
+same census input, so their agreement bounds *method* sensitivity, not the truth of where people are.
+
+**Three traps worth carrying forward.** (1) `rasterio.merge.merge(srcs, bounds=…)` derives its
+transform from the requested bounds and resamples — on population **counts** a 0.54-px offset moves
+people; paste tiles at integer offsets instead. (2) The staged CHIRPS window was cut to WorldPop's
+*clipped* extent, so unclipped products index three columns west of it and NumPy wraps the negative
+index — Jaffna silently gets east-coast rainfall. Asserted, dropped, renormalised, error bounded at
+4.3e-4 mm/wk. (3) **RH is the only column that is not bit-reproducible across environments** — 1.65e-5
+pp (2.2 float32 ULP) against the frozen twin, because it alone passes through `exp()` in float32,
+while the three temperature columns reproduce to 1e-14. Immaterial, but a re-run on a different
+NumPy/libm build will not match byte-for-byte and the acceptance test must encode that rather than
+fail mysteriously.
+
+---
+
 ## 2026-08-13 (c) — Plan §3.2 and Figure F2 are done; they were never blocked, and one memo claim narrows
 
 **`DIRECTION` — half of a "blocked" item was not blocked.** `notebooks_wp45/README.md` listed
