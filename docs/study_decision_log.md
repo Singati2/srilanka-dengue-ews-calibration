@@ -8,6 +8,69 @@
 
 ---
 
+## 2026-08-13 (c) — Plan §3.2 and Figure F2 are done; they were never blocked, and one memo claim narrows
+
+**`DIRECTION` — half of a "blocked" item was not blocked.** `notebooks_wp45/README.md` listed
+`wp5_03` as waiting on the fitted model. That conflated the plan's **§3.2** (*how far does the
+exposure move when only its construction changes?*) with its **§3.3** (*does the decision move?*).
+Only the second needs a model. §3.2 needs the three frozen exposure tables, which are on this
+machine. `notebooks_wp45/wp5_03_exposure_contrast_and_F2.ipynb` is executed, 15/15 QC, and produces
+**`Manuscript_Figures/wp5/WP5_F2_exposure_contrast.{pdf,png}`** and the per-district deliverable
+`wp5_exposure_contrast_srilanka_v1.csv`. The remaining WP5 half is renamed `wp5_05` and stays blocked
+on the §5.1 artifacts. **Worth generalising: before recording an item as blocked, check whether the
+blocker applies to all of it.**
+
+**`DELIVERABLE` — Figure F2, six panels, double column.** Three choropleths (precipitation A′→B,
+temperature A′→B, temperature B→C) over the shape of the effect (which temperature statistic each
+rung moves), the wet-week tail, and the B→C decomposition. Style block ported verbatim from
+`notebooks/08_figures.ipynb` so the figure set cannot drift.
+
+**`DELIVERABLE` — what §3.2 establishes.** Over 10,842 district-weeks:
+
+| contrast | mean \|Δ\| |
+|---|---|
+| precipitation, mask step (`all_touched` → fractional) | 0.76 mm/wk (**1.8%**) |
+| precipitation, **A′→B population weighting** | 3.40 mm/wk (**7.9%**) |
+| temperature A′→B, weekly **mean** | 0.205 °C |
+| temperature A′→B, weekly **maximum** | **0.387 °C** |
+| temperature **B→C**, all three statistics | 0.306 °C |
+
+- **The honest-null clause (§3.4) fires on neither variable.**
+- **Exposure construction is not a property of a district.** Rainfall and temperature share **one**
+  district in their top-five movers, and the rank correlation of absolute displacements is
+  indistinguishable from zero (ρ = 0.24, p = 0.23). **A single-variable sensitivity check will
+  misidentify which districts are exposed to the choice** — this is new, and it constrains how the
+  paper is allowed to summarise WP5.
+- **The two rungs act on different parts of the distribution.** Population weighting moves the weekly
+  maximum ~2× the mean; the lapse correction moves min/mean/max identically, being one offset.
+- **Only 0.169 of B→C's 0.306 °C is MAUP-attributable**; the rest is the orography deficit, which
+  applies under area weighting too. Restated here because it is the easiest number in WP5 to overclaim.
+- **In the wettest 1% of district-weeks the rainfall contrast is 12.9 mm (4.9%)** — it grows in
+  millimetres and shrinks in percent as weeks get wetter.
+
+**`DECISION` — the Build C memo's "constant offset" claim is narrowed to temperature.** PR #1 comment
+`5287452143` stated Build C is a constant per-district offset for `t2m` **and** `d2m`. Tested against
+the exact −Γ·Δz prediction rather than against zero variance: `t2m` holds to **6×10⁻⁷ °C**; `d2m`
+departs by up to **0.46 °C** (Nuwara Eliya) and varies week to week, because the physically necessary
+saturation guard `td = min(td − Γ_td·Δz, t − Γ_t·Δz)` binds in some hours and not others, in three
+highland districts. `wp5_04` §9 is amended (markdown only; the cell below it only ever tested `t2m`).
+**The consequence runs the useful way:** a district-relative *temperature* model still absorbs Build C
+exactly, but a model carrying **dewpoint or humidity** sees a residual no district effect can absorb.
+**Lesson worth keeping: the assertion that travelled furthest was the half that was never tested.**
+
+**`OPEN` — a second question belongs with the §5.1 ask: which model form do those artifacts use?**
+The answer decides in advance what §3.3 can find. If the reference model is district-relative, Build C
+can only return a null there, and that null would be a property of the parameterisation rather than of
+terrain. Better established before the re-run than explained after it.
+
+**`DECISION` — precipitation gets no Build C rung, and that is a property of the data.** CHIRPS is
+observational (cold-cloud duration calibrated to gauges), not a reanalysis carrying an internal
+orography that disagrees with the real one, so there is no "elevation the product believes" to correct
+against. The physical analogue would be an orographic-enhancement *model*, which the no-new-model rule
+bars. Recorded so it is not later read as an unfinished rung.
+
+---
+
 ## 2026-08-13 (b) — Build C validated against station observations; the §10 rate caveat was wrong-signed
 
 **`DELIVERABLE` — the Build C correction is confirmed by independent ground truth.** GHCN-Daily has

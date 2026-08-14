@@ -4,8 +4,9 @@ Step-by-step build of `docs/maup_sensitivity_and_spatial_cv_plan.md`, in Jupyter
 intermediate is inspectable. Sri Lanka first.
 
 **Owner:** Geospatial Lead · **Status:** WP5's exposure ladder is **complete — A′, B and C, both
-variables** (10,842 rows each, row-aligned). WP4 fold geometry and radius done — **evaluation under
-the folds is blocked**, see below. What remains in WP5 is the decision half, blocked on the same §8
+variables** (10,842 rows each, row-aligned), and so is **plan §3.2: the exposure contrast and
+Figure F2** (`wp5_03`). WP4 fold geometry and radius done — **evaluation under the folds is
+blocked**, see below. What remains in WP5 is the decision half (§3.3 / F7), blocked on the same §8
 artifact as WP4.
 
 Separate from `notebooks/`, which is the **M6 geomatics-only model** (an *optional* Phase 4 rung).
@@ -29,8 +30,9 @@ respects spatial autocorrelation.
 | wp5_01 | `wp5_01_precipitation_exposure_twin.ipynb` — A′/B **precipitation** twin + contrast | CHIRPS (streamed, no account) | ✅ executed |
 | wp5_02 | `wp5_02_temperature_exposure_twin.ipynb` — A′/B **temperature/RH** twin, ERA5 0.25° | ARCO-ERA5 (streamed, no account) | ✅ executed, **caveated** |
 | wp5_02b | temperature twin rebuilt on ERA5-Land 0.1° | **needs a free CDS key** | blocked |
-| wp5_03 | exposure contrast → decision impact, Figure F2 | the fitted model (§8 blocker) | blocked |
+| wp5_03 | `wp5_03_exposure_contrast_and_F2.ipynb` — exposure contrast + **Figure F2** (plan §3.2) | the three frozen tables | ✅ executed |
 | wp5_04 | `wp5_04_build_c_lapse_corrected_temperature.ipynb` — **Build C**, lapse-corrected | ERA5 orography (streamed, no account) | ✅ executed |
+| wp5_05 | decision impact of exposure construction, Figure F7 (plan §3.3) | the fitted model (§8 blocker) | blocked |
 | wp4_00 | `wp4_00_loocv_folds_and_power.ipynb` — buffered-LOOCV folds + power cost | adjacency (present) | ✅ executed |
 | wp4_01 | `wp4_01_autocorrelation_range.ipynb` — Moran's I / variogram, radius selection | M6 + frozen preds | ✅ executed |
 | wp4_02 | models re-evaluated under the folds | **design matrices (§8 blocker)** | blocked |
@@ -108,8 +110,12 @@ table, the precipitation twin `wp5_precip_exposure_twin_srilanka_v1.csv`, and th
 - **Four collaborator artifacts are absent, not three.** Add the frozen Build A exposure table (or
   the `~/data_quarantine/geomatics/` climate quarantine) to the §5.1 ask, alongside the threshold
   artifact, the M0/M1/M2 predictions and the design matrices.
-- **The decision half of WP5 is blocked.** Exposure displacement is measured; whether it *flips an
-  alert* needs the fitted model, which the repo does not hold. Same §8 blocker as WP4.
+- **The decision half of WP5 is blocked.** Exposure displacement is measured (`wp5_03`); whether it
+  *flips an alert* needs the fitted model, which the repo does not hold. Same §8 blocker as WP4.
+- **A second question belongs with the §5.1 ask: which model form do those artifacts use?**
+  `wp5_03` §8.1 shows the answer decides in advance what §3.3 can find — a district-relative
+  temperature model absorbs Build C exactly, so a null there would be a fact about the
+  parameterisation, not about terrain. Worth knowing before the re-run, not after.
 - **WorldPop UN-adj stops at 2020** against a window ending 2025, so the plan's vintage-matching
   requirement (§3.1) cannot be met as written. §11 measures the drift instead: the weight field
   moves ~1.1% of a typical weight over 2018→2020, so carrying 2020 forward is a bounded
@@ -289,6 +295,50 @@ implies a steeper rate (~7.8 °C/km) than the clean regression. The correction i
 ERA5's *smoothed* orography, so a 0.1° rebuild would start from a better one. And the RH shift remains
 bracketed by the dewpoint rate (−0.34 pp vapour-pressure-conserving, 0.00 pp RH-conserving) — report
 the bracket, never the middle value alone.
+
+## What wp5_03 establishes — plan §3.2 is done, and it was never blocked
+
+**The old row above was wrong.** This table used to list `wp5_03` as blocked behind the fitted model.
+That conflated the plan's §3.2 (*how far does the exposure move?*) with its §3.3 (*does the decision
+move?*). Only the second needs a model. §3.2 needs the three frozen tables, which are on this machine,
+and it is now complete: `Manuscript_Figures/wp5/WP5_F2_exposure_contrast.{pdf,png}` plus the
+per-district table `wp5_exposure_contrast_srilanka_v1.csv`. 15/15 QC.
+
+- **Exposure construction moves exposure on every variable measured**, so §3.4's honest-null clause
+  fires on neither. Rainfall 3.40 mm/wk (7.9% of its mean), weekly mean temperature 0.205 °C, weekly
+  **maximum** temperature 0.387 °C, the lapse correction a further 0.306 °C.
+- **The mask is a footnote; the weights are the result** — 1.8% against 7.9%.
+- **Exposure construction is not a property of a district.** Ranked by displacement, rainfall and
+  temperature share **one** district in their top fives, and the rank correlation of the absolute
+  displacements is indistinguishable from zero (ρ = 0.24, p = 0.23). A single-variable sensitivity
+  check will misidentify which districts are exposed to the choice.
+- **The two rungs act on different parts of the distribution.** Population weighting moves the weekly
+  maximum ~2× the mean (it re-weights a field whose cells disagree most in the tails); the lapse
+  correction moves min, mean and max identically because it is one number per district.
+- **Only 0.169 of B→C's 0.306 °C is attributable to MAUP.** The rest is ERA5's orography deficit,
+  which applies under area weighting too. Reporting the sum as a MAUP effect overstates WP5 by ~half.
+- **In the weeks that would trigger an alert the rainfall contrast grows in millimetres and shrinks
+  in percent** — 12.9 mm / 4.9% in the wettest 1% of district-weeks.
+
+**Correction it forces to the Build C memo.** PR #1 said Build C is a constant per-district offset
+"for `t2m` and `d2m`". Tested against the exact −Γ·Δz prediction rather than against zero variance:
+`t2m` holds to **6×10⁻⁷ °C**, `d2m` **does not** — it departs by up to **0.46 °C** (Nuwara Eliya) and
+varies week to week, because the physically necessary saturation guard
+`td = min(td − Γ_td·Δz, t − Γ_t·Δz)` binds in some hours and not others, in three highland districts.
+`wp5_04` §9 is amended accordingly. The consequence runs the useful way: a model on district-relative
+*temperature* still absorbs Build C exactly, but a model carrying **dewpoint or humidity** sees a
+residual no district effect can absorb — so §3.3 has more to find there than the memo implied.
+
+**Why precipitation has no Build C rung.** CHIRPS is observational — cold-cloud duration calibrated
+to gauges — not a reanalysis with an internal orography that disagrees with the real one. There is no
+"elevation CHIRPS believes" to correct against. The physical analogue would be an orographic
+enhancement *model*, which the study's no-new-model rule bars. A property of the data, not a gap.
+
+**Greyscale, stated rather than claimed.** The two bar panels carry hatch as a second identity
+channel and pass. The three maps do **not**: a diverging ramp is symmetric in luminance, so ±1.9 °C
+print as the same grey. Mitigated by labelling the largest movers numerically on the map face; the
+notebook measures it rather than asserting it.
+
 
 ## Why WP4 cannot be finished either
 
