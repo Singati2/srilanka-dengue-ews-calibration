@@ -7,9 +7,9 @@ intermediate is inspectable. Sri Lanka first.
 variables** (10,842 rows each, row-aligned), and so are **plan §3.2** (exposure contrast + Figure F2,
 `wp5_03`), **the exposure half of plan §3.5** (population-product sensitivity, `wp5_06`) and now
 **the runnable half of plan §3.3** (decision-flip envelope + Figure F7, `wp5_05`). WP4 fold geometry
-and radius done — **evaluation under the folds is still blocked**, see below. What remains in WP5 is
-the *registered* §3.3 re-run (ΔAUC / Δcalibration under each build), which needs the §5.1 design
-matrices.
+and radius done, and **the fold effect is now measured inside M6** (`wp4_02`). What remains is the
+*registered* §3.3 re-run (ΔAUC / Δcalibration under each build) and the **cross-model** fold re-run —
+both of which need the §5.1 design matrices.
 
 Separate from `notebooks/`, which is the **M6 geomatics-only model** (an *optional* Phase 4 rung).
 These two work packages carry the plan's *mandated* deliverables. Different question, different
@@ -39,7 +39,8 @@ respects spatial autocorrelation.
 | wp5_06 | `wp5_06_population_product_sensitivity.ipynb` — population-**product** sensitivity (plan §3.5, exposure half) | GHS-POP (streamed, no account) + staged climate | ✅ executed |
 | wp4_00 | `wp4_00_loocv_folds_and_power.ipynb` — buffered-LOOCV folds + power cost | adjacency (present) | ✅ executed |
 | wp4_01 | `wp4_01_autocorrelation_range.ipynb` — Moran's I / variogram, radius selection | M6 + frozen preds | ✅ executed |
-| wp4_02 | models re-evaluated under the folds | **design matrices (§8 blocker)** | blocked |
+| wp4_02 | `wp4_02_fold_effect_within_m6.ipynb` — fold effect measured **within M6**, against a size-matched control | M6 features + labels (ours) + `wp4_00` folds | ✅ executed |
+| wp4_02b | M5/M0/M1/M2 re-evaluated under the folds (cross-model) | **design matrices (§5.1 blocker)** | blocked |
 
 ## What wp5_00 establishes
 
@@ -483,17 +484,93 @@ from, and "recalibration does not affect discrimination" is false for this artif
 - **A near-zero ΔNB is the expected result of a threshold-local perturbation, not evidence of a
   null.** See above; this is the notebook's main finding and the easiest number in it to misread.
 
-## Why WP4 cannot be finished either
+## Why WP4 is half-finished, and which half
 
 `instruction_m6.md` corrected "WP4 complete" to *fold design complete until models are evaluated
-under the folds*. That evaluation is **blocked for the same reason §8 is**: re-fitting under spatial
-folds needs each model's **design matrix**, and `ALT_STATS/frozen/srilanka_matched_pairs.csv` carries
-**predictions only**. M6 could be re-fit alone — we own its features and labels end-to-end — but a
-spatially-CV'd M6 set against a temporally-split M5 is not a comparison, it is an artifact, and it
-would oblige the same treatment for M0/M1/M2/M5 that the artifacts do not permit.
+under the folds*. The **cross-model** evaluation is genuinely blocked: re-fitting M5/M0/M1/M2 under
+spatial folds needs each model's **design matrix**, and `ALT_STATS/frozen/srilanka_matched_pairs.csv`
+carries **predictions only**. A spatially-CV'd M6 set against a temporally-split M5 would be an
+artifact, not a comparison.
 
-**Consequence for the §5.1 ask: it now unblocks three items, not two** — §4 (threshold generator),
-§8 (matched geomatics ablation) and WP4's evaluation half.
+**But that argument only bars the cross-model contrast.** M6 under spatial folds against M6 under the
+temporal split is a *within-model* contrast — same features, same labels, same test rows, only the
+validation scheme moving — and it is a **better** instrument for WP4's question than the cross-model
+version would be, because nothing else varies. `wp4_02` does exactly that; see below.
+
+**Consequence for the §5.1 ask: it still unblocks three items** — §4 (threshold generator), §8
+(matched geomatics ablation) and WP4's *cross-model* re-run. `wp4_02` **raises** the priority of the
+third rather than lowering it (see below).
+
+
+## What wp4_02 establishes — the folds are NOT cheap, and wp4_01's inference does not survive
+
+M6 re-fitted **1,456 times** across four arms on the same 3,926 frozen test rows, 14/14 QC →
+`Manuscript_Figures/wp4/WP4_F_fold_effect_within_m6.{pdf,png}` (6 panels) plus three tables in the
+quarantine. **The baseline arm reproduces the committed M6 to 8.6e-15**, so every difference below is
+the validation scheme and nothing else; §9.1 shows the selected `C` is effectively constant across
+arms, so it is not a shrinkage effect either.
+
+**The design point that makes it mean anything.** Removing a district's neighbours from training
+removes spatial leakage *and* training data, and both push performance down. So every buffered fold
+is matched against a **random-district control trained on the same number of districts**. The
+buffered-minus-matched gap is the part attributable to geography; the rest is the price of a smaller
+training set. Without that control this would have measured sample size and called it leakage.
+
+| buffer | train districts | buffered AUC | matched control | gap | controls below |
+|---|---|---|---|---|---|
+| 0 km (adjacency, `wp4_01`'s pick) | 21 | 0.5649 | 0.5873 | **−0.022** | 0 of 10 |
+| 25 km | 19 | 0.5714 | 0.5897 | −0.018 | 1 of 10 |
+| 50 km | 15 | 0.5582 | 0.5767 | −0.018 | 2 of 10 |
+| 75 km | 12 | 0.5162 | 0.5777 | **−0.062** | 0 of 10 |
+| 100 km | 9 | 0.5024 | 0.5726 | **−0.070** | 0 of 10 |
+
+Reference points: temporal split **0.6008**, LOOCV with no buffer **0.5923**. At 100 km the
+spatially-blocked estimate is **0.502 — chance** — while a random training set of the *same size*
+still reaches 0.573. **M6's apparent skill depends materially on having geographically nearby
+districts in training.**
+
+**Where it is resolvable and where it is not.** Cluster-bootstrap CIs (2,000 replicates, districts
+resampled, control ensemble averaged inside each replicate): buffered − control mean is
+**−0.022 [−0.055, +0.011]** at 0 km — spans zero — and only excludes zero at **75 km
+(−0.061 [−0.119, −0.008])** and **100 km (−0.068 [−0.143, −0.001])**. With 26 districts the bootstrap
+has little to work with; that is `wp4_00`'s power finding arriving from the other direction.
+
+### This qualifies wp4_01, and the qualification is the transferable part
+
+`wp4_01` found residual Moran's I indistinguishable from its null at every distance band and
+concluded **"the buffered scheme is cheap"**. Direct measurement does not support that.
+**Residual spatial autocorrelation and dependence on spatially proximate training data are different
+quantities**, and here they disagree. Moran's I on residuals asks *"having fitted on everyone, is
+what is left over spatially clustered?"*; a buffered fold asks *"can this model generalise to a
+region it has never seen?"* A model can pass the first and fail the second — M6 does.
+
+**So plan §4.1's design — select the operative radius from a residual-range analysis — cannot be
+relied on to price the folds.** The price has to be measured. `wp4_00`'s power table bounds how well
+it can be measured with 26 units.
+
+**This raises the stakes on §5.1.** M5's external-validation claim rests on a temporal split. If M5
+depends on spatial proximity the way M6 does, spatial CV would move it too — which is precisely the
+reviewer concern WP4 exists to answer, and it cannot be tested without M5's design matrix. Note this
+cuts the **opposite** way from `wp5_05`, where §5.1 turned out to matter less than assumed: the two
+asks are not interchangeable and should not be bundled when they are put to the PI.
+
+**Not one district's doing.** 17 of 26 districts lose AUC under adjacency buffering and 9 gain
+(§12); Batticaloa, Kurunegala and Puttalam lose most, Ratnapura gains most. No single fold drives the
+pooled result.
+
+**What it does not establish.** Nothing about the study's headline comparison — M5 cannot be re-fitted
+(`cross_model_rerun: false` in the provenance). Nothing about M6's absolute performance: the label
+carries the `EXPLORATORY_RECONSTRUCTED_TARGET` caveat (19.2% of test rows), identical across arms so
+it cannot manufacture a difference, but enough to bar quoting any single AUC. And nothing about
+**Colombia**, where §4.3's block CV over ~1,000 municipalities is where the well-powered claim
+actually rests.
+
+### Environment
+
+`wp4_02` runs on the **`freight-eda`** kernel (`/Users/mpcr/aj/Rhee/0_EDA/.venv`, Python 3.9.6,
+sklearn 1.6.1) because **`pywmp-mac` has no scikit-learn**. The `wp5_*` notebooks stay on
+`pywmp-mac`. Nothing in `wp4_02` touches the raster stack, so the two environments never need
+reconciling.
 
 ## What wp4_00 establishes
 

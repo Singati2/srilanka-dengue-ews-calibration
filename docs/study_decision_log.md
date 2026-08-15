@@ -8,6 +8,70 @@
 
 ---
 
+## 2026-08-14 (c) — WP4's evaluation half, measured inside M6: the folds are not cheap, and wp4_01's inference does not survive
+
+**`DIRECTION` — the blocker-coverage test recovers WP4's evaluation half too (fourth time).** The
+README blocked `wp4_02` because re-fitting M5 under spatial folds needs its design matrix. True — but
+that bars only the **cross-model** contrast. **M6 under spatial folds vs M6 under the temporal split**
+is a within-model contrast we fully own, and it is a *better* instrument for WP4's question because
+nothing but the validation scheme moves. `notebooks_wp45/wp4_02_fold_effect_within_m6.ipynb`,
+**14/14 QC**, 1,456 fold-fits.
+
+**`DELIVERABLE` — `WP4_F_fold_effect_within_m6.{pdf,png}` + three quarantine tables.** Gate first:
+**the baseline arm reproduces the committed M6 to 8.6e-15** and the rebuilt label reproduces the
+frozen outcomes 3,926/3,926, so every difference is the folds. Selected `C` is effectively constant
+across arms (§9.1), so it is not a shrinkage artifact.
+
+**`DECISION` — the confound is controlled, and that is what makes the result usable.** Buffering
+removes leakage *and* training data. Every buffered fold is therefore matched against a
+**random-district control of identical size**; the buffered-minus-matched gap is the part
+attributable to geography.
+
+| buffer | train districts | buffered AUC | matched control | gap |
+|---|---|---|---|---|
+| 0 km (`wp4_01`'s selected radius) | 21 | 0.5649 | 0.5873 | **−0.022** |
+| 50 km | 15 | 0.5582 | 0.5767 | −0.018 |
+| 100 km | 9 | **0.5024** | 0.5726 | **−0.070** |
+
+Temporal split 0.6008; LOOCV without buffer 0.5923. **At 100 km the spatially-blocked estimate is
+chance (0.502) while an equally-sized random training set still reaches 0.573** — a gap that cannot
+be sample size, because size is held fixed by construction. In 0 of 10 control draws at 0, 75 and
+100 km did a random subset score below the buffered fold.
+
+**`OPEN` — how far it is resolvable with 26 units.** Cluster-bootstrap CIs (2,000 replicates,
+control ensemble averaged inside each replicate): the gap spans zero at 0 km
+(**−0.022 [−0.055, +0.011]**) and excludes zero only at 75 km (−0.061 [−0.119, −0.008]) and 100 km
+(−0.068 [−0.143, −0.001]). The point estimates are consistent and one-signed at every radius; the
+*power* to certify them is what `wp4_00`'s table already warned about.
+
+**`DIRECTION` — `wp4_01`'s "the buffered scheme is cheap" is withdrawn as an inference.** Residual
+Moran's I and dependence on spatially proximate training data are **different quantities**, and here
+they disagree: residuals of a model fitted with all districts present show no spatial structure, yet
+removing the neighbours from training still costs more than removing an equal number of random
+districts. Moran's I asks *"having fitted on everyone, is the remainder clustered?"*; a buffered fold
+asks *"can this generalise to a region it has never seen?"* **Plan §4.1's design — pick the operative
+radius from a residual-range analysis — therefore cannot price the folds.** The price must be
+measured. This is the transferable lesson, not the M6-specific number.
+
+**`DIRECTION` — the §5.1 ask gets MORE urgent, in the opposite direction to `wp5_05`.** M5's
+external-validation claim rests on a temporal split. If M5 depends on spatial proximity the way M6
+does, spatial CV moves it too — exactly the reviewer concern WP4 exists to answer — and that cannot
+be tested without M5's design matrix. Same day, `wp5_05` found §5.1 matters *less* than assumed for
+§3.3. **The two asks are not interchangeable and must be put to the PI separately rather than
+bundled.**
+
+**`DECISION` — scope stamped in the provenance.** `cross_model_rerun: false`. M6's label keeps the
+`EXPLORATORY_RECONSTRUCTED_TARGET` caveat (19.2% of test rows) — identical across arms, so it cannot
+manufacture a between-arm difference, but it bars quoting any single AUC here as M6's performance.
+Nothing here speaks to Colombia, where §4.3's ~1,000-municipality block CV carries the well-powered
+claim.
+
+**`DECISION` — environment split recorded.** `wp4_02` runs on the **`freight-eda`** kernel
+(Python 3.9.6, sklearn 1.6.1) because **`pywmp-mac` carries no scikit-learn**. The `wp5_*` series
+stays on `pywmp-mac`. No overlap in dependencies, so the two are not reconciled.
+
+---
+
 ## 2026-08-14 (b) — Plan §3.3 (runnable half): exposure construction changes alerts, and ΔNB is structurally unable to show it
 
 **`DIRECTION` — the blocker-coverage test recovers work for the third time, and it is now standard
