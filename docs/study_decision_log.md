@@ -8,6 +8,48 @@
 
 ---
 
+## 2026-08-15 — Plan Phase 6: the WP4/WP5 write-up is drafted, and one README number was wrong
+
+**`DELIVERABLE` — `manuscript/wp4_wp5_sections/`, three files.**
+`wp4_wp5_methods_results_v1.tex` carries two Methods subsections (the three-build exposure ladder;
+spatially-honest CV) and four Results subsections (exposure displacement; decisions; population
+product; spatial CV), plus five tables, three figure blocks with captions, and a commented block of
+Discussion material. `wp4_wp5_number_provenance_v1.md` maps every number to the artifact it was
+recomputed from. `wp4_wp5_references_add_v1.bib` adds the 10 citations the sections need and that the
+manuscript `.bib` does not already carry (MAUP, spatial CV, ERA5/ARCO, Magnus, GLO-30, GHCN, GHS-POP).
+Written in the v18 candidate's voice and section conventions; structural check passes (no LaTeX
+toolchain on this machine, so it is **not** compile-verified — flagged, not hidden).
+
+**`DECISION` — the write-up is held OUTSIDE the manuscript tree, deliberately.** PR #8 places
+M6/WP4/WP5 outside Paper 1 evidence pending PI direction, and Paper 1 vs Paper 2 is still unanswered.
+Drop-in fragments cost nothing to move once the PI decides; editing a live manuscript before that
+decision would have to be undone. The two §5.1-blocked analyses are marked inline with `\REGBLOCK` so
+the revisit points are mechanical to find.
+
+**`DIRECTION` — every number was recomputed from the quarantined tables, not transcribed.** That is
+what caught the error below, and it is now the standard for any prose that quotes a result.
+
+**`OPEN` → `DECISION` — a README number was wrong and is corrected.** `notebooks_wp45/README.md` said
+population weighting makes **"fifteen districts drier, eleven wetter"**; recomputation gives
+**17 down / 9 up**, identical under either baseline arm. The figure never appeared in `wp5_01` — it
+was introduced in the README summary. No notebook, table, figure or PR memo is affected. **The
+transferable lesson is where it came from:** the wrong number was in the *summary layer*, which is
+exactly the layer nobody re-derives. Summaries need the same provenance discipline as results.
+
+**`DECISION` — aggregation level is now stated explicitly wherever a displacement is quoted.** The
+same quantity has two legitimate values: population weighting moves weekly mean temperature
+**0.205 °C** per district-week but **0.171 °C** as a mean of district means. The sections quote
+district-week throughout except where a district is named. Checking a district-week claim against
+`wp5_exposure_contrast_srilanka_v1.csv` will disagree and is not an error.
+
+**`DIRECTION` — the methodological finding leads the Results, not the MAUP magnitudes.** The
+structural blindness of ΔNB to threshold-local perturbations qualifies *every* sensitivity analysis in
+this literature that reads a small ΔNB as "no decision effect" — including analyses reported elsewhere
+in this paper. It is written to travel beyond WP5, with the concrete recommendation (report a
+decision-flip count alongside ΔNB) stated in the Results and again in the Discussion material.
+
+---
+
 ## 2026-08-14 (c) — WP4's evaluation half, measured inside M6: the folds are not cheap, and wp4_01's inference does not survive
 
 **`DIRECTION` — the blocker-coverage test recovers WP4's evaluation half too (fourth time).** The

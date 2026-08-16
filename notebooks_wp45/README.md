@@ -11,6 +11,13 @@ and radius done, and **the fold effect is now measured inside M6** (`wp4_02`). W
 *registered* §3.3 re-run (ΔAUC / Δcalibration under each build) and the **cross-model** fold re-run —
 both of which need the §5.1 design matrices.
 
+**Plan Phase 6 (write-up) is drafted** as of 2026-08-15:
+`manuscript/wp4_wp5_sections/wp4_wp5_methods_results_v1.tex` holds drop-in Methods and Results
+subsections for both work packages, with `wp4_wp5_number_provenance_v1.md` mapping every number to
+the table it was recomputed from and `wp4_wp5_references_add_v1.bib` supplying the new citations.
+It is held **outside** the manuscript tree until the PI settles Paper 1 vs Paper 2 and
+`instruction_m6.md` §22.
+
 Separate from `notebooks/`, which is the **M6 geomatics-only model** (an *optional* Phase 4 rung).
 These two work packages carry the plan's *mandated* deliverables. Different question, different
 series, deliberately not renumbered into the M6 sequence.
@@ -151,7 +158,9 @@ analysis feels the millimetres, a bias argument feels the percentage.
 
 **The sign is geographic, not noise.** Colombo loses 7.30 mm/week under population weighting and
 Puttalam gains 4.37 — people cluster on the drier coastal strip in the first and away from it in the
-second. Fifteen districts move down, eleven up.
+second. **Seventeen districts move down, nine up** (corrected 2026-08-15 from "fifteen / eleven",
+which was introduced in this README and never appeared in `wp5_01`; recomputed from the twin table,
+identical under either baseline arm — see `manuscript/wp4_wp5_sections/wp4_wp5_number_provenance_v1.md`).
 
 **The mask is not the story; the weights are.** Splitting A→B into its two steps: swapping
 `all_touched` for fractional area moves **1.8%** of mean rainfall, while re-weighting area→population
