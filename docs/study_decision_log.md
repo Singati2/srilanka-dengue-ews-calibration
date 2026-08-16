@@ -8,6 +8,35 @@
 
 ---
 
+## 2026-08-16 (b) — The four open questions are consolidated into one document; both drafts await sign-off
+
+**`DELIVERABLE` — `docs/pi_ask_v1_geomatics_open_questions.md`, DRAFT, not sent.** The four questions
+have accumulated across separate PR #1 memos, where they are easy to lose. Each is stated with **the
+smallest artifact that would unblock it**, so answering is cheap and a partial answer is still useful.
+
+**`DECISION` — Q1 and Q2 need DIFFERENT artifacts, and this is the sharpest reason not to bundle
+them.** Previously they were separated only by *urgency* (wp4_02 raised one, wp5_05 lowered the
+other). They are also separated by *substance*: **WP4 re-fits the same columns on different rows, so a
+static design matrix suffices; WP5 §3.3 re-fits on different exposure values, so the columns must be
+regenerated and what it needs is the cross-basis BUILDER, not its output.** Sending the matrix does
+not unblock WP5; sending the builder does not unblock WP4 as cheaply. If only one can be answered it
+should be Q1.
+
+**`DECISION` — the v44 positions are quoted verbatim rather than characterised.** Verified against the
+branch: `FINAL_CANONICAL_DECISION.md` says M6/WP4/WP5 "appear only as **pending** Discussion notes",
+which supports the gate-consequence reading rather than a rejection; `V44_VS_BIOMATH_DECISION_MEMO.md`
+says "no further analysis is required to submit either way; the open blockers are author-owned."
+Both quotes checked against the files, not recalled.
+
+**`DELIVERABLE` — `docs/pr1_memo_draft_2026-08-16.md`, DRAFT, not posted.** Covers `9085b3f` and
+`9f4789e`, in the register of the existing memos, and points at the ask document rather than
+restating the four questions a fifth time.
+
+**`OPEN` — neither has been sent.** Posting is a communication to collaborators and is held for
+explicit sign-off.
+
+---
+
 ## 2026-08-16 — Plan §3.6 and Figure F8: the fifth recovery, and the loudest signal in the screen is a decoy
 
 **`DIRECTION` — the blocker-coverage test recovers work for the fifth time, and F8 is the last figure
