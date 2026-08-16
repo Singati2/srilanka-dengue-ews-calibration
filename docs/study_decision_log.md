@@ -8,6 +8,52 @@
 
 ---
 
+## 2026-08-16 — Plan §3.6 and Figure F8: the fifth recovery, and the loudest signal in the screen is a decoy
+
+**`DIRECTION` — the blocker-coverage test recovers work for the fifth time, and F8 is the last figure
+in the plan's checklist.** §3.6 was recorded as downstream of the §5.1-blocked refit. It is not:
+per-district calibration slope/intercept, per-district ΔNB and per-district flip counts are all
+reductions of the **frozen predictions**, and every modifier the plan names was already staged by M6
+batches A/B. `notebooks_wp45/wp5_07_miscalibration_structure_and_F8.ipynb`, **16/16 QC**.
+
+**`DELIVERABLE` — `WP5_F8_miscalibration_structure.{pdf,png}`** (6 panels, double column; PNG
+committed, PDF gitignored) + `wp5_miscalibration_structure_srilanka_v1.csv` and
+`wp5_f8_modifier_screen_srilanka_v1.csv`. With F2 and F7 this completes the plan's figure set.
+
+**`DECISION` — the screen is run under §3.6's own guardrails, treated as hard requirements.** 4
+responses × **15 pre-specified** modifiers = **60 tests**, Benjamini–Hochberg across the entire grid;
+**19 reach raw p<0.05, 6 survive**. All 60 are plotted in panel (e) so the figure cannot be read as a
+selected subset. Stamped `EXPLORATORY_EXPLANATORY`: nothing here may re-enter the ladder as an
+accuracy predictor.
+
+**`DECISION` — carry a non-geospatial decoy through any screen of this shape.** The single strongest
+association of all 60 is calibration **intercept** against the district's own **alert prevalence**
+(ρ=0.85, q<0.001) — near-tautological, since an intercept absorbs a base rate. `prev` was put in the
+panel deliberately for exactly this reason. Had it been left out, the tautology would not have gone
+away; it would have been **inherited silently** by whichever geospatial modifier happens to correlate
+with outbreak burden. This is the transferable methodological point, above any specific association.
+
+**`DELIVERABLE`/`OPEN` — miscalibration has real spatial structure; the flip concentration does not
+resolve.** Calibration slope spans **0.67–2.23** across districts and tracks cropland fraction
+(ρ=0.61, q=0.031) and land-cover diversity (0.59, q=0.032) up and population density (−0.50) down,
+**all surviving adjustment for prevalence** (partial ρ 0.50 / 0.49 / −0.44). That is the WP6 bridge.
+By contrast, flips concentrate in the highlands (Badulla 9.9%, Nuwara Eliya 9.3%, Ratnapura 6.0%;
+ρ≈0.55 on slope/elevation/HAND) but **elevation and the measured B→C displacement are collinear at
+ρ=0.74 and neither survives controlling for the other** (0.27, p=0.18; 0.05, p=0.82). **Recorded as
+unidentified at n=26 — do not let a later revision upgrade it to "terrain drives the flips".**
+
+**`DECISION` — ΔNB's blindness now has a third independent demonstration.** No modifier explains
+per-district ΔNB (strongest: population density, ρ=0.40, **q=0.15**). Given `wp5_05`'s structural
+result this is the *expected* outcome, not an additional null: the same threshold-local insensitivity
+that flattens ΔNB nationally flattens it district by district.
+
+**`DELIVERABLE` — the write-up is updated to v2** (`wp4_wp5_methods_results_v1.tex`): a Methods
+paragraph for the screen, a Results subsection, the F8 figure block and caption, provenance rows, and
+the Benjamini–Hochberg citation. Structural check re-run and extended: all `\cite` keys now resolve
+against the two `.bib` files, all four `\includegraphics` targets exist, no dangling `\ref`.
+
+---
+
 ## 2026-08-15 — Plan Phase 6: the WP4/WP5 write-up is drafted, and one README number was wrong
 
 **`DELIVERABLE` — `manuscript/wp4_wp5_sections/`, three files.**

@@ -6,7 +6,8 @@ intermediate is inspectable. Sri Lanka first.
 **Owner:** Geospatial Lead · **Status:** WP5's exposure ladder is **complete — A′, B and C, both
 variables** (10,842 rows each, row-aligned), and so are **plan §3.2** (exposure contrast + Figure F2,
 `wp5_03`), **the exposure half of plan §3.5** (population-product sensitivity, `wp5_06`) and now
-**the runnable half of plan §3.3** (decision-flip envelope + Figure F7, `wp5_05`). WP4 fold geometry
+**the runnable half of plan §3.3** (decision-flip envelope + Figure F7, `wp5_05`) and **plan §3.6**
+(spatial structure of miscalibration + Figure F8, `wp5_07`). WP4 fold geometry
 and radius done, and **the fold effect is now measured inside M6** (`wp4_02`). What remains is the
 *registered* §3.3 re-run (ΔAUC / Δcalibration under each build) and the **cross-model** fold re-run —
 both of which need the §5.1 design matrices.
@@ -44,6 +45,7 @@ respects spatial autocorrelation.
 | wp5_05 | `wp5_05_decision_flip_envelope.ipynb` — decision-flip envelope + **Figure F7** (plan §3.3, runnable half) | frozen predictions + the three exposure tables | ✅ executed |
 | wp5_05b | ΔAUC / Δcalibration under Builds B and C (plan §3.3, registered re-run) | **design matrices (§5.1 blocker)** | blocked |
 | wp5_06 | `wp5_06_population_product_sensitivity.ipynb` — population-**product** sensitivity (plan §3.5, exposure half) | GHS-POP (streamed, no account) + staged climate | ✅ executed |
+| wp5_07 | `wp5_07_miscalibration_structure_and_F8.ipynb` — spatial structure of miscalibration + **Figure F8** (plan §3.6) | frozen predictions + M6 statics | ✅ executed |
 | wp4_00 | `wp4_00_loocv_folds_and_power.ipynb` — buffered-LOOCV folds + power cost | adjacency (present) | ✅ executed |
 | wp4_01 | `wp4_01_autocorrelation_range.ipynb` — Moran's I / variogram, radius selection | M6 + frozen preds | ✅ executed |
 | wp4_02 | `wp4_02_fold_effect_within_m6.ipynb` — fold effect measured **within M6**, against a size-matched control | M6 features + labels (ours) + `wp4_00` folds | ✅ executed |
@@ -492,6 +494,40 @@ from, and "recalibration does not affect discrimination" is false for this artif
   same failure mode already recorded here for `d.pop` / `pop_sum`.
 - **A near-zero ΔNB is the expected result of a threshold-local perturbation, not evidence of a
   null.** See above; this is the notebook's main finding and the easiest number in it to misread.
+
+## What wp5_07 establishes — F8 exists, and the biggest signal in it is a warning
+
+Plan §3.6 was recorded here as downstream of the blocked refit. **It was not** — per-district
+calibration slope/intercept, per-district ΔNB and per-district flip counts are all reductions of the
+*frozen predictions*, and every modifier is already staged by M6 batches A/B. **Fifth recovery by the
+does-the-blocker-cover-all-of-it test.** 16/16 QC →
+`Manuscript_Figures/wp5/WP5_F8_miscalibration_structure.{pdf,png}` + two quarantine tables.
+
+Four responses × 15 pre-specified modifiers = **60 tests, BH-FDR across the whole grid**; 19 reach
+raw p<0.05, **6 survive**. All 60 are plotted in panel (e) — the figure cannot be read as a selected
+subset.
+
+- **The strongest association in the screen is not geospatial and is near-tautological.** Calibration
+  *intercept* tracks the district's own alert prevalence at **ρ=0.85, q<0.001**, because an intercept
+  absorbs a base rate. `prev` was carried through the panel **as a deliberate decoy**; without it,
+  any modifier correlated with outbreak burden would have inherited that association silently. **Keep
+  the decoy in any screen of this shape.**
+- **Miscalibration has real spatial structure.** Calibration slope spans **0.67–2.23** and tracks
+  cropland fraction (**ρ=0.61, q=0.031**) and land-cover diversity (0.59, q=0.032) up, population
+  density down (−0.50). All survive adjustment for prevalence (partial ρ 0.50 / 0.49 / −0.44).
+  Predictions are too spread out in dense built-up districts, too compressed in agricultural ones.
+- **Flips concentrate in the highlands — and the attribution is NOT identified.** Badulla 9.9%,
+  Nuwara Eliya 9.3%, Ratnapura 6.0%; flip rate tracks slope/elevation/HAND (ρ≈0.55, q≈0.035). But
+  **elevation and the measured B→C displacement are collinear at ρ=0.74** and *neither survives
+  controlling for the other* (0.27 p=0.18; 0.05 p=0.82). Reported as a concentration, not as
+  "terrain drives the flips". n=26 cannot separate them.
+- **ΔNB has no spatial structure at all** — strongest of 15 is population density at ρ=0.40, **q=0.15**.
+  Given `wp5_05` this is expected, not a second null: **the same threshold-local blindness that
+  flattens ΔNB nationally flattens it district by district. Third independent appearance.**
+- **Explanatory only.** Nothing here may re-enter the ladder as an accuracy predictor; stamped
+  `EXPLORATORY_EXPLANATORY` in the provenance.
+- **Environment:** `freight-eda` (needs `statsmodels` for the per-district logits) — same kernel as
+  `wp4_02`, not `pywmp-mac`.
 
 ## Why WP4 is half-finished, and which half
 

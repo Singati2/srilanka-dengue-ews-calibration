@@ -1,10 +1,10 @@
 % =====================================================================
 %  WP4 (spatially-honest cross-validation) + WP5 (MAUP / exposure sensitivity)
-%  Methods and Results subsections — drop-in fragment, v1
+%  Methods and Results subsections — drop-in fragment, v2
 %
 %  Owner:   Geospatial Lead
 %  Status:  DRAFT for PI review. Not yet assigned to a manuscript.
-%  Date:    2026-08-15
+%  Date:    2026-08-16  (v2 adds plan §3.6 / Figure F8)
 %
 %  WHY THIS IS A SEPARATE FILE, NOT AN EDIT TO A MANUSCRIPT
 %  --------------------------------------------------------
@@ -33,6 +33,7 @@
 %    manuscript .bib before compiling).
 %  * Figures: Manuscript_Figures/wp5/WP5_F2_exposure_contrast.pdf
 %             Manuscript_Figures/wp5/WP5_F7_decision_flip_envelope.pdf
+%             Manuscript_Figures/wp5/WP5_F8_miscalibration_structure.pdf
 %             Manuscript_Figures/wp4/WP4_F_fold_effect_within_m6.pdf
 %  * Assumes the host preamble already loads booktabs, graphicx, natbib.
 % =====================================================================
@@ -65,6 +66,8 @@ Precipitation was taken from CHIRPS v2 daily p05~\cite{Funk2015,CHIRPS} and temp
 \paragraph{Population-product sensitivity.} Because Build B rests on a single modelled population surface, the weight field was rebuilt under two alternatives at the same 2020 epoch: WorldPop R2025A constrained (a newer release from the same producer) and GHS-POP R2023A~\cite{Schiavina2023}, which is produced by a different institution using a built-up-surface dasymetric method rather than a random forest. The fourth arm named in the analysis plan --- census district totals --- is degenerate and was struck rather than run: totals carry no within-district spatial information, so distributing them uniformly reproduces Build A exactly, and the totals themselves cancel in the within-district normalisation.
 
 \paragraph{Decision sensitivity.} The registered form of this analysis refits the model ladder under each build and reports $\Delta$AUC, $\Delta$calibration and $\Delta$NB; it requires the model design matrices, which the frozen analysis archive does not contain (it holds predictions), and it is not reported here\,\REGBLOCK. The question \emph{does the alert decision move?} does not require refitting, and we answer it within a bounded envelope constructed from three pieces. First, an exact model-free \emph{flip curve}: a held-out row can change its alert status only if its predicted risk lies within the applied perturbation of the threshold, so $\#\{|p-p^*|\le\delta\}$ bounds the flips attributable to \emph{any} perturbation of size $\delta$, whatever generates it. Second, an observed \emph{ceiling}: the alert changes produced by deleting the entire climate block, computed on identical rows from the frozen full and climate-free predictions. Third, a \emph{transfer coefficient} $\beta$ relating exposure to predicted risk, estimated by regressing $\mathrm{logit}(p_{\mathrm{full}})-\mathrm{logit}(p_{\mathrm{noclim}})$ on the exposure variables --- which needs the predictions only. We estimated $\beta$ under four specifications (exposure alone; plus district fixed effects; plus seasonal harmonics; plus both) and report the range across all four rather than a single fit, because the specification is not identified without the design matrices. Every estimated flip count is asserted against the exact flip curve in the analysis notebook. Uncertainty used the study's established protocol: percentile intervals from 2{,}000 cluster-bootstrap resamples of the 26 RDHS units, seed 20260612~\cite{CameronGelbachMiller2008}.
+
+\paragraph{Where miscalibration and decision changes fall in space.} To locate rather than merely quantify these effects, we computed four quantities per spatial unit --- calibration slope and calibration intercept (a within-unit logistic fit of the outcome on the logit of the held-out prediction), the unit's change in net benefit when the climate block is removed, and the unit's exposure-driven alert-flip rate --- and screened each against a panel of geospatial modifiers fixed in advance from the study's risk-factor review: elevation, built-up fraction, NDVI and distance to permanent water, plus slope, topographic wetness, height-above-nearest-drainage, tree cover, cropland, land-cover diversity, land-cover edge density, surface-water fraction, population density and nighttime lights. All are static per unit and were computed on the frozen geometry. The unit's own alert prevalence was carried through the screen as a non-geospatial decoy, because a unit's outbreak burden is the most obvious alternative explanation for its calibration and would otherwise be inherited silently by any modifier correlated with it. Associations are Spearman rank correlations with Benjamini--Hochberg control of the false-discovery rate across the entire $4\times15$ grid at once~\cite{BenjaminiHochberg1995}; all 60 tests are reported, not the surviving subset. This analysis is exploratory-explanatory by design: with 26 units it is a map of where the study's conclusions are least reliable, and none of these modifiers may re-enter the model ladder as an accuracy predictor.
 
 \subsection{Spatially-honest cross-validation}
 \label{sec:methods-wp4}
@@ -128,6 +131,19 @@ The most direct objection to a population-weighted exposure result is that it in
 Two incidental findings are worth recording. First, version drift within one producer exceeded the gap between producers: WorldPop UN-adjusted and WorldPop's own R2025A differ more (mean total variation 0.0201) than WorldPop and GHS-POP do (0.0157), so ``same producer, newer release'' is not the safer substitution it appears to be. Second, the approximately 1.4\% of population that falls outside the 26 polygons under WorldPop UN-adjusted is a coastline artifact specific to that product and vintage: on identical boundaries GHS-POP loses 0.23\% and WorldPop R2025A 0.10\%. It should be reported as a bounded product sensitivity rather than treated as a property of the geometry.
 
 These three products are all modelled surfaces sharing much of their input census, so their agreement bounds method sensitivity, not the truth of where people live. And this analysis addresses exposure only; whether the product choice moves net benefit belongs to the blocked refit\,\REGBLOCK.
+
+\subsection{Where miscalibration and decision changes concentrate}
+\label{sec:results-wp5-f8}
+
+Six of the 60 pre-specified associations survived false-discovery control (Fig~\ref{fig:wp5f8}), and the largest of them is a caution rather than a result.
+
+\emph{Calibration intercept is alert prevalence in another form.} The strongest association in the entire screen was between a unit's calibration intercept and its own alert prevalence ($\rho=0.85$, $q<0.001$), which is close to tautological --- a unit's intercept absorbs its base rate. It is reported because it outranked every geospatial modifier by a wide margin, and because it demonstrates what the screen would otherwise have hidden: any modifier correlated with outbreak burden inherits this association. That is the reason prevalence was carried through the screen rather than excluded from it.
+
+\emph{Calibration slope has genuine spatial structure.} Per-unit calibration slope ranged from 0.67 to 2.23 --- the model is not uniformly calibrated in space --- and was positively associated with cropland fraction ($\rho=0.61$, $q=0.031$) and land-cover diversity ($\rho=0.59$, $q=0.032$), and negatively with population density ($\rho=-0.50$). These survive adjustment for the unit's alert prevalence (partial $\rho=0.50$, $p=0.010$ for cropland; $0.49$, $p=0.011$ for land-cover diversity; $-0.44$, $p=0.025$ for population density), so they are not the tautology above in disguise. Predictions are too widely spread in the dense, built-up units and too compressed in the agricultural and land-cover-heterogeneous ones.
+
+\emph{Exposure-driven decision changes concentrate in the highlands.} Alert flips attributable to exposure construction were associated with slope ($\rho=0.56$, $q=0.035$), elevation ($\rho=0.56$, $q=0.035$) and height-above-nearest-drainage ($\rho=0.55$, $q=0.038$); three units --- Badulla (9.9\% of weeks), Nuwara Eliya (9.3\%) and Ratnapura (6.0\%) --- carry a large share of them. This is coherent with those being the units where the lapse correction moves exposure most, but the design cannot go further: elevation and the measured B$\to$C displacement are strongly collinear across 26 units ($\rho=0.74$), and neither survives adjustment for the other (elevation given displacement $\rho=0.27$, $p=0.18$; displacement given elevation $\rho=0.05$, $p=0.82$). The concentration is real; its attribution to terrain as against measured displacement is not identified at this sample size, and we do not assign it.
+
+\emph{Net benefit again shows nothing.} No modifier reached significance for per-unit $\Delta$NB; the strongest of the 15 was population density at $\rho=0.40$, $q=0.15$. Given the structural argument above, this is the expected result rather than an additional null: the same insensitivity that flattens $\Delta$NB nationally flattens it unit by unit. It is the third independent appearance of the same mechanism in this work, and it reinforces that a decision-flip count and $\Delta$NB are not substitutes.
 
 \subsection{Spatial cross-validation}
 \label{sec:results-wp4}
@@ -257,6 +273,14 @@ Displacement in weekly district exposure attributable to the construction of the
 \caption{\textbf{Decision-flip envelope: exposure construction changes alerts that net benefit cannot see.}
 Held-out panel of 3{,}926 district-weeks, 2023--2025. The exact flip curve gives the maximum share of alert decisions that any perturbation of a given size can change, as a property of the frozen predictions alone; estimated flip counts for each exposure rung are bounded by it, and the effect of deleting the entire climate block provides the observed ceiling. The lower panels show why the change in net benefit stays within $\pm0.0023$ while flip counts are clearly non-zero: rows that flip lie near the decision threshold, and rows near the threshold have an event rate near it, which is by definition the break-even rate at which a flip is worth approximately zero net benefit in either direction.}
 \label{fig:wp5f7}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{Manuscript_Figures/wp5/WP5_F8_miscalibration_structure.pdf}
+\caption{\textbf{Where miscalibration and exposure-driven decision changes fall in space.}
+Per-unit calibration and decision quantities, all computed from the frozen held-out predictions, screened against a panel of 15 geospatial modifiers fixed in advance. (a) Alert decisions changed by exposure construction concentrate in three highland units. (b) Calibration slope varies from 0.67 to 2.23 across units, so the model is not uniformly calibrated in space. (c) Flips track altitude, but elevation and the measured exposure displacement are collinear across 26 units and neither survives adjustment for the other, so the concentration is reported without attributing it to either. (d) Calibration slope tracks cropland fraction, and the association survives adjustment for the unit's own alert prevalence. (e) All 60 tests run, filled where they survive Benjamini--Hochberg control at $q<0.05$ --- the panel is included so the figure cannot be read as a selected subset. (f) No modifier explains per-unit $\Delta$NB. The single strongest association in the whole screen is between calibration intercept and alert prevalence, which is near-tautological and is reported as a caution: any modifier correlated with outbreak burden inherits it. Analysis is exploratory-explanatory; no modifier here may re-enter the model as an accuracy predictor.}
+\label{fig:wp5f8}
 \end{figure}
 
 \begin{figure}[htbp]

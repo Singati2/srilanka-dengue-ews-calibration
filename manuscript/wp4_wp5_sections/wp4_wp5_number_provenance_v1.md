@@ -1,7 +1,7 @@
 # Number provenance — WP4 / WP5 manuscript sections v1
 
 Every numeric claim in `wp4_wp5_methods_results_v1.tex`, mapped to the artifact it came from.
-Verified by direct recomputation from the quarantined tables on **2026-08-15** (not transcribed from
+Verified by direct recomputation from the quarantined tables on **2026-08-15**; F8 rows added **2026-08-16** (not transcribed from
 notebook prose). Where a number is quoted in the text, the value in this table is the recomputed one.
 
 **Why this file exists.** The study has been bitten twice by numbers that drifted between an analysis
@@ -29,6 +29,7 @@ claim.
 | `PRODUCT` | `wp5_population_product_contrast_srilanka_v1.csv` + `..._sensitivity_...csv` | " |
 | `STATION` | `wp5_04_station_validation_srilanka.csv` (6 stations) | " |
 | `ENVELOPE` | `wp5_decision_flip_envelope_srilanka_v1.csv` (3,926 rows) | " |
+| `SCREEN` | `wp5_f8_modifier_screen_srilanka_v1.csv` (60) + `wp5_miscalibration_structure_srilanka_v1.csv` (26) | " |
 | `FLIPSUM` | `wp5_decision_flip_summary_srilanka_v1.csv` (2 rungs × 4 specs × 4 p*) | " |
 | `POWER` | `wp4_power_cost_srilanka_v1.csv` | `data_quarantine/wp4_cv/` |
 | `MORAN` | `wp4_morans_i_srilanka_v1.csv`, `wp4_variogram_srilanka_v1.csv` | " |
@@ -167,6 +168,49 @@ Held-out panel: 3,926 rows, 26 districts × 151 weeks, 2023-01-02 → 2025-12-15
 > the exposure-level ratios; if a reviewer asks for the weight ratio on the precipitation grid, it is
 > smaller and should be given as such.
 
+## Results — where miscalibration concentrates (§ results-wp5-f8)
+
+Source: `wp5_07_miscalibration_structure_and_F8.ipynb`, 16/16 QC. Responses computed per district
+from `ENVELOPE` (26 × 151); modifiers from `M6` batch A/B; screen written to
+`wp5_f8_modifier_screen_srilanka_v1.csv` (60 rows) and the joined design to
+`wp5_miscalibration_structure_srilanka_v1.csv` (26 rows).
+
+| Claim | Value | Source |
+|---|---|---|
+| Tests run / raw p<0.05 / survive FDR | **60 / 19 / 6** | screen CSV |
+| Calibration slope range across districts | **0.67 – 2.23** | `wp5_07` §2 |
+| cal. intercept ~ alert prevalence | ρ = **0.854**, q < 0.001 | screen CSV |
+| cal. slope ~ cropland fraction | ρ = **0.606**, q = 0.031 | " |
+| cal. slope ~ land-cover diversity | ρ = **0.588**, q = 0.032 | " |
+| cal. slope ~ population density | ρ = **−0.495**, q = 0.066 (raw p = 0.010) | " |
+| flip rate ~ slope | ρ = **0.560**, q = 0.035 | " |
+| flip rate ~ elevation | ρ = **0.560**, q = 0.035 | " |
+| flip rate ~ HAND | ρ = **0.548**, q = 0.038 | " |
+| Partial, cal. slope ~ cropland \| prevalence | ρ = **0.497**, p = 0.010 | `wp5_07` §5a |
+| Partial, cal. slope ~ diversity \| prevalence | ρ = 0.492, p = 0.011 | " |
+| Partial, cal. slope ~ pop. density \| prevalence | ρ = −0.439, p = 0.025 | " |
+| corr(elevation, \|B→C\| displacement) | ρ = **0.744** | `wp5_07` §5b |
+| Partial, flips ~ elevation \| displacement | ρ = 0.269, **p = 0.184** | " |
+| Partial, flips ~ displacement \| elevation | ρ = 0.047, **p = 0.820** | " |
+| Top flip districts | Badulla 9.9%, Nuwara Eliya 9.3%, Ratnapura 6.0% | `wp5_07` §7 |
+| ΔNB strongest of 15 modifiers | population density, ρ = **0.402**, q = **0.150** | screen CSV |
+
+> **The prevalence decoy is load-bearing.** `prev` is in the modifier panel deliberately and is not a
+> geospatial variable. It produced the largest association in the screen, which is near-tautological
+> (a district's calibration intercept absorbs its base rate). Removing it would not have removed the
+> problem — it would have hidden it, and any modifier correlated with outbreak burden would have
+> inherited the association silently.
+
+> **The flip concentration is not attributed.** Elevation and the measured B→C displacement are
+> collinear at ρ = 0.74 across 26 districts, and neither partial correlation survives. The prose says
+> flips concentrate in high, steep districts and stops there. Do not let a later revision upgrade this
+> to "terrain drives the flips".
+
+> **Ranked-by vs labelled-with, panel (b).** The map labels the three districts with the largest
+> |slope − 1| but prints the slope itself (Puttalam 2.23, Killinochchi 1.95, Kurunegala 1.89). Checking
+> the labels against a ranking of raw `cal_slope` will agree here, but the ranking column is the
+> deviation.
+
 ## Results — spatial CV (§ results-wp4)
 
 | Claim | Value | Source |
@@ -205,7 +249,7 @@ Held-out panel: 3,926 rows, 26 districts × 151 weeks, 2023-01-02 → 2025-12-15
 | Any Colombia figure | Out of scope for the Sri Lanka analysis; the block CV over ~1,000 municipalities is where the well-powered spatial claim rests. |
 | Any absolute AUC for the geomatics-only model | Barred by the reconstructed-target caveat (19.2% of test rows). Only *between-arm* contrasts are quoted. |
 | Which districts warm under A′→B temperature | Barred by grid attenuation (Ratnapura retains 6.7%). Per-district temperature claims are made only for B→C, which is not attenuated the same way. |
-| Figure F8 (miscalibration map) | Not built — plan §3.6, downstream of the blocked refit. |
+| ΔAUC / Δcalibration per district under Builds B/C | **Blocked** — needs design matrices. F8 uses the *frozen* predictions, so it maps where the existing model is miscalibrated, not how each build would change that. |
 
 ## Recomputation
 
