@@ -67,11 +67,11 @@ CLAIMS = {
     ("S19 Table, Colombia full climate, NLL", "nll"): 0.6162,
     ("S19 Table, Colombia full climate, Brier", "brier"): 0.2127,
     ("S19 Table, Colombia full climate, ICI", "ici"): 0.109,
-    ("S19 Table, Colombia full climate, AUC", "auc"): 0.7255,
+    ("S19 Table, Colombia full climate, AUC", "auc"): 0.725,
     ("S19 Table, Colombia matched no-climate, NLL", "nll"): 0.6251,
     ("S19 Table, Colombia matched no-climate, Brier", "brier"): 0.2169,
     ("S19 Table, Colombia matched no-climate, ICI", "ici"): 0.113,
-    ("S19 Table, Colombia matched no-climate, AUC", "auc"): 0.7134,
+    ("S19 Table, Colombia matched no-climate, AUC", "auc"): 0.713,
 }
 
 # (setting, state, model) -> row in route_a_primary.csv / calibration_metrics.csv
@@ -123,8 +123,8 @@ CO_NB_CLAIMS = {
 
 # --- Colombia discrimination quoted in prose/table (the disputed one) ---
 CO_AUC_CLAIMS = {
-    "Results Q2-CO line 295 prose, CO M5 AUC": ("A2_dlnm_no_humidity", "M5lin", 0.726),
-    "S4-ladder table line 573, CO M5 AUC": ("A2_dlnm_no_humidity", "M5lin", 0.726),
+    "Results Q2-CO line 295 prose, CO M5 AUC": ("A2_dlnm_no_humidity", "M5lin", 0.725),
+    "S4-ladder table line 573, CO M5 AUC": ("A2_dlnm_no_humidity", "M5lin", 0.725),
     "Results Q2-CO line 295 prose, CO M1 AUC": ("A2_dlnm_no_humidity", "M1", 0.685),
     "Results Q2-CO line 295 prose, CO M4 AUC": ("A2_dlnm_no_humidity", "M4lin", 0.699),
 }
@@ -135,8 +135,11 @@ CO_DELAY_CLAIMS = {
         ["A3_matched_delaycurve", "drop0_1_2", "M5-matched"], 0.0049),
     "Results Q6 line 316, CO matched DLNM cross-basis refit": (
         ["A2_matched_dlnm", "M5dlnm_minus_matched"], 0.0122),
-    "Results Q6, CO matched IPW-comparator (unweighted)": (
-        ["A3_matched_delaycurve", "full", "M5-matched"], 0.0078),
+    # Line 318 now states both arms as +0.008; the archive spread (0.00786 frozen,
+    # 0.00783 reconstructed, 0.007859) straddles the 0.0078/0.0079 boundary, so the
+    # claim is checked at 3 dp -- the precision the pipeline can actually resolve.
+    "Results Q6, CO matched IPW-comparator (both arms, 3 dp)": (
+        ["A3_matched_delaycurve", "full", "M5-matched"], 0.008),
 }
 
 # ---------------------------------------------------------------------------

@@ -8,8 +8,12 @@
 outputs read from disk, compared at the precision the manuscript uses. Exits non-zero while
 any mismatch stands. **Adding a number to the manuscript means adding it to that script.**
 
-**Result: 46 checks performed, 4 mismatches.** Plus one systematic LaTeX defect (8 cells)
-found alongside.
+**Result: 46 checks performed, 4 mismatches.** Plus one systematic LaTeX defect found alongside.
+
+> **RESOLVED 2026-08-17 (same day).** Three of the four mismatches and the whole LaTeX defect are
+> fixed on branch `wp45-into-v44`; the verifier now reports **46 checks, 1 mismatch** and exits 1.
+> See [§ Resolution](#resolution) at the foot of this document. The one that remains — the
+> `+0.0049` reporting-delay increment — **cannot be fixed by retyping** and is the outstanding item.
 
 ---
 
@@ -151,6 +155,50 @@ one defect with eight sites.
 
 **No headline conclusion is affected by any of the four mismatches.** The deflationary result
 stands exactly as written.
+
+---
+
+## Resolution
+
+Applied to `manuscript_v44_biomath_candidate/revised_manuscript_biomath.tex` on branch
+`wp45-into-v44`. **17 lines changed.** Verifier re-run: **46 checks, 1 mismatch, exit 1.**
+
+| # | Fix | Status |
+|---|---|---|
+| 1–2 | CO M5 AUC `0.726` → `0.725` at lines 295 and 573 | **done** |
+| 3 | CO 3-week reporting-delay increment `+0.0049` | **open — needs the run reconciled** |
+| 4 | Line 318 IPW/unweighted restated as both `+0.008` | **done** |
+| — | S19 AUC column normalised to 3 dp (`0.7255`→`0.725`, `0.7134`→`0.713`) | **done** |
+| — | Stray literal commas in empty table cells | **done — 16 occurrences over 12 lines** |
+
+Three notes on what changed beyond the original worklist:
+
+**The comma defect was larger than first characterised.** The initial pass caught the `&, &`
+pattern (8 sites). The actual defect is `&,` anywhere — which also occurs as `&, \\` at line ends —
+giving **16 occurrences across 12 lines**, including a table at line 677 that the first pass missed
+entirely. Fixed as one pass. Ampersand counts were verified unchanged on every touched line, so no
+table's column structure moved.
+
+**The S19 precision normalisation was not in the original worklist but removes the mechanism.**
+Colombia was reported at 4 dp in the same column where Sri Lanka was reported at 3 dp, and that
+inconsistency is precisely what let `0.726` and `0.7255` coexist without looking odd. Normalising to
+3 dp leaves the printed Δ unchanged (`0.725 − 0.713 = 0.012`, as already stated).
+
+**Line 318 now claims less than it did, on purpose.** The same matched increment exists in the
+archive as `0.00786` (frozen), `0.00783` (reconstructed) and `0.007859` (robustness JSON) — a spread
+that straddles the `0.0078`/`0.0079` boundary. Quoting two arms that differ in the fourth decimal
+implied a resolution the pipeline does not have. Both arms are now stated as `+0.008`; the
+conclusion ("essentially unchanged") is unaffected and better supported.
+
+### The one that stands
+
+`+0.0049` versus the archived `0.005079`. This is a **stable claim resting on a run that is not the
+archived JSON** — it traces consistently through `v15_final`, `v16_recalibrated_matched_integration`,
+`v17_plos_gph_submission` and `v20_round3`. Either a superseding run exists off this machine, or the
+text is stale. It needs the run reconciled, most likely on the Linux box, and it is the highest-risk
+open item in the manuscript: `v15_final/harsh_peer_review_final.md` §2.1 calls it the paper's most
+policy-relevant result, and v20 promoted it to the abstract. **A referee who recomputes it lands on
+0.0051.**
 
 ---
 
