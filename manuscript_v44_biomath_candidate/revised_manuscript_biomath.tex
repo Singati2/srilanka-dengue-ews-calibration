@@ -292,7 +292,7 @@ Because rolling recalibration in the frozen run was applied only to M0--M3, we a
 \caption{Sri Lanka matched climate ablation decision curves (test period, $h=4$, $p^*=0.05$--$0.50$). (A) Net benefit of the full model M5 and the independently refit no-climate comparator M5$_{\text{no-climate}}$, under raw and past-only-recalibrated predictions, with the alert-all reference and $p^*=0.30$ marked. (B) The matched climate ablation increment $\Delta$NB(M5$-$M5$_{\text{no-climate}}$) across thresholds. Bold vertical bars at $p^*=0.30$ are the development-inclusive 95\% cluster-bootstrap (RDHS) intervals (both models refit within each resample); both the raw ($-0.0079$ to $+0.0245$) and past-only-recalibrated ($-0.0002$ to $+0.0302$) intervals include zero. Faint shaded bands are the conditional intervals (frozen predictions), which omit model-development uncertainty. The cross-fitted (optimistic) recalibration curves are in Supporting Information.}\label{fig:sldca}\end{figure}
 
 \subsection{Q2, continued. Colombia: a second, differently-constructed case study}
-On a common-complete test set ($n=13{,}361$; test prevalence 0.375), climate-only models were again weak (M2 AUC 0.556, M3 0.564) relative to M1 (0.685). These Colombia climate-only models used a linear temperature and precipitation lag specification (lags 0--8, no humidity) rather than the distributed-lag nonlinear cross-basis used in Sri Lanka, so their near-chance discrimination partly reflects an under-specified climate representation and is not comparable to a DLNM-based operational system such as EWARS-csd~\cite{EWARScsd}; in Sri Lanka the same linear-to-DLNM change raised climate-only AUC from 0.643 to 0.714. The matched climate ablation nonetheless refit climate as a distributed-lag nonlinear cross-basis and still found only a small increment (Section~\ref{sec:robustness}), so the matched-comparator conclusion does not depend on the weak linear climate-only fit. The full hybrid exceeded M1: M5 AUC 0.726 and net benefit 0.136 at $p^*=0.30$, giving a compound $\Delta$NB(M5$-$M1)$=+0.0188$ (95\% CI $+0.0117$ to $+0.0260$; S4 Table, S4 Fig). This compound contrast combined climate with seasonal terms and 32 department fixed effects that M1 lacks and therefore did not isolate the climate contribution. Despite validation-fit Platt recalibration, all models over-predicted in the test period (CITL $-0.45$ to $-0.54$), though the models carrying the net-benefit comparison had calibration slopes near 1.
+On a common-complete test set ($n=13{,}361$; test prevalence 0.375), climate-only models were again weak (M2 AUC 0.556, M3 0.564) relative to M1 (0.685). These Colombia climate-only models used a linear temperature and precipitation lag specification (lags 0--8, no humidity) rather than the distributed-lag nonlinear cross-basis used in Sri Lanka, so their near-chance discrimination partly reflects an under-specified climate representation and is not comparable to a DLNM-based operational system such as EWARS-csd~\cite{EWARScsd}; in Sri Lanka the same linear-to-DLNM change raised climate-only AUC from 0.643 to 0.714. The matched climate ablation nonetheless refit climate as a distributed-lag nonlinear cross-basis and still found only a small increment (Section~\ref{sec:robustness}), so the matched-comparator conclusion does not depend on the weak linear climate-only fit. The full hybrid exceeded M1: M5 AUC 0.725 and net benefit 0.136 at $p^*=0.30$, giving a compound $\Delta$NB(M5$-$M1)$=+0.0188$ (95\% CI $+0.0117$ to $+0.0260$; S4 Table, S4 Fig). This compound contrast combined climate with seasonal terms and 32 department fixed effects that M1 lacks and therefore did not isolate the climate contribution. Despite validation-fit Platt recalibration, all models over-predicted in the test period (CITL $-0.45$ to $-0.54$), though the models carrying the net-benefit comparison had calibration slopes near 1.
 
 To estimate the incremental climate contribution under the matched protocol, we ran the post-hoc matched climate ablation in the original Colombia pipeline (identical rows, model family, tuning, recalibration, and municipality-cluster bootstrap), with M5$_{\text{no-climate}}$ removing only M5's 18 climate columns. Adding climate contributed $\Delta$NB(M5$-$M5$_{\text{no-climate}}$)$=+0.0078$ (conditional 95\% CI $+0.0039$ to $+0.0119$). A partial development-inclusive bootstrap, refitting both models (scaling, tuning, recalibration, predictions) in each of $B=1000$ department resamples while holding the department fixed-effect column basis frozen, gave $+0.0008$ to $+0.0209$. Under a calibration sensitivity, shifting both models by up to $\pm 1$ logit left the increment positive throughout; Colombia over-predicted (mean predicted risk $0.485$ versus observed prevalence $0.375$), and at the offsetting $-0.5$-logit shift, a mean-calibration intercept-shift sensitivity that restores calibration-in-the-large (mean predicted risk $0.376$; slope and nonlinear miscalibration uncorrected), the increment was $+0.0042$ (conditional 95\% CI $-0.0015$ to $+0.0099$): its conditional interval crossed zero, so it is only partly separable from the shared over-prediction and this conditional check does not address development-inclusive robustness (S3 Fig). Its practical importance was unresolved, limited by post-hoc status, complete-case selection, calibration, and interval widening under refitting. Under the assumed illustrative threshold $p^*=0.30$, the increment corresponds to about $0.78$ decision-analytic true-positive equivalents per 100 observations. This is a net-benefit-scale interpretation under the assumed threshold and does not represent observed cases prevented, outbreaks prevented, or public-health events averted. The matched ablation increment ($+0.0078$) is the primary climate estimand and is about $42\%$ of the compound $+0.0188$, so the compound, which bundles climate with seasonal and department structure, is not a climate-specific effect.
 
@@ -315,7 +315,7 @@ Colombia, recalibrated & $+0.0078$ & $+0.0039$ to $+0.0119$ & $+0.0008$ to $+0.0
 \subsection{Q6. Does the increment persist across robustness, selection, and horizon?}\label{sec:robustness}
 We examined whether the Colombia matched increment is stable (primary compound $+0.0188$ and matched $+0.0078$ reproduced to $<0.0001$ beforehand); the evidence was mixed. Refitting the climate terms as a distributed-lag nonlinear cross-basis moved the point increment to $+0.0122$ (reported without a bootstrap interval), so the estimate is sensitive to the climate-block specification rather than invariant. Censoring the most recent case lags to emulate reporting delay, while holding outcome and climate at finalized values, decayed the increment to $+0.0049$ at a three-week lag; this one-sided censoring does not reconstruct real-time vintages, so we read it as a limitation, not a bound. The increment was positive but variable across four rolling-origin windows and across departments (median $+0.0052$, positive in 75\% of the 28 departments with sufficient test size), approximately flat across horizons ($\approx+0.008$ through $h=8$, $+0.002$ at $h=12$; S5 Fig), and did not grow with lead time. The only pre-pandemic split (test 2018--19) gave $+0.0199$ but is confounded by the 2016 dengue-Zika year and the 2019 record epidemic, and no clean post-pandemic test was available~\cite{PAHO2023,ValleDelCauca2024}. At the stricter 90th-percentile label it was $+0.0081$ (development-inclusive $+0.0009$ to $+0.0188$); this and the Sri Lanka 90th estimate were similar in magnitude (no formal between-setting comparison was performed) and both are compatible with zero (S14 Table).
 
-The Colombia common-complete sample was selected: of the 2020--2022 test-period municipality-weeks, 62\% were common-complete, spanning 475 of 864 municipalities, and included units differed systematically from excluded ones (mean recent cases 11.1 versus 1.9; elevated-activity prevalence 0.375 versus 0.180). Inference therefore applies to that analyzed higher-incidence, better-reporting subset rather than to all Colombian municipalities. An inverse-probability-weighted sensitivity left the matched increment essentially unchanged (IPW $+0.0079$ versus unweighted $+0.0078$), but the modelled inclusion covariates only weakly predicted inclusion, so the estimand remains the analysed common-complete subset (the inclusion-versus-exclusion comparison is shown in S2 Fig; the IPW estimate is reported here in text).
+The Colombia common-complete sample was selected: of the 2020--2022 test-period municipality-weeks, 62\% were common-complete, spanning 475 of 864 municipalities, and included units differed systematically from excluded ones (mean recent cases 11.1 versus 1.9; elevated-activity prevalence 0.375 versus 0.180). Inference therefore applies to that analyzed higher-incidence, better-reporting subset rather than to all Colombian municipalities. An inverse-probability-weighted sensitivity left the matched increment essentially unchanged (IPW and unweighted both $+0.008$; the two arms differ by less than the pipeline's reconstruction tolerance, so the contrast is reported at the precision that is stable), but the modelled inclusion covariates only weakly predicted inclusion, so the estimand remains the analysed common-complete subset (the inclusion-versus-exclusion comparison is shown in S2 Fig; the IPW estimate is reported here in text).
 
 
 \subsection{Q3--Q5. Does it persist under calibration, proper scoring, and development-inclusive refitting? Threshold-free proper-score reanalysis}
@@ -536,8 +536,8 @@ M0 & $+0.530$ & $+0.029$ & $+0.137$ & $+0.338$ \\
 M1 & $+0.513$ & $+0.020$ & $+0.111$ & $+0.325$ \\
 M2 & $+0.479$ & $+0.046$ & $+0.155$ & $+0.314$ \\
 M3 & $+0.596$ & $+0.087$ & $+0.204$ & $+0.394$ \\
-M4 (raw) & $+0.449$ &, &, &, \\
-M5 (raw) & $+0.440$ &, &, &, \\
+M4 (raw) & $+0.449$ & & & \\
+M5 (raw) & $+0.440$ & & & \\
 \bottomrule
 \end{tabular}}
 
@@ -570,7 +570,7 @@ M1 & 0.685 & 0.117 \\
 M2 & 0.556 & 0.108 \\
 M3 & 0.564 & 0.108 \\
 M4 & 0.699 & 0.129 \\
-M5 & 0.726 & 0.136 \\
+M5 & 0.725 & 0.136 \\
 \bottomrule
 \end{tabular}\qquad
 \begin{tabular}{@{}lrr@{}}
@@ -636,13 +636,13 @@ humidity (lags 0--8, df${=}3$); Colombia linear temperature/precipitation lags 0
 \toprule
 Analysis & Resampling unit & $B$ & Refit? & Degenerate handling & Fail. \\
 \midrule
-SL conditional & RDHS (26) & 1000 & no (frozen) &, & 0 \\
+SL conditional & RDHS (26) & 1000 & no (frozen) & & 0 \\
 SL development-inclusive & RDHS (26) & 1000 & both models & fixed design & 0 \\
-CO conditional (muni) & municipality (475) & 1000 & no &, & 0 \\
-CO conditional (dept) & department (31) & 1000 & no &, & 0 \\
+CO conditional (muni) & municipality (475) & 1000 & no & & 0 \\
+CO conditional (dept) & department (31) & 1000 & no & & 0 \\
 CO development-inclusive & department (31) & 1000 & both models & fixed 32-col FE, all-zero absent depts & 0 \\
 GEO partial-refit diag.\ & department (31) & 1000 & free vs frozen-FE & fixed design & 0 \\
-Wild-cluster-t (M4$-$M1, M5$-$M1; percentile-t) & RDHS (26) & 1999 & no (frozen) &, & 0 \\
+Wild-cluster-t (M4$-$M1, M5$-$M1; percentile-t) & RDHS (26) & 1999 & no (frozen) & & 0 \\
 \bottomrule
 \end{tabularx}
 
@@ -674,10 +674,10 @@ code archive.
 Sensitivity & $\Delta$NB(M5$-$M1) & 95\% CI \\
 \midrule
 75th-percentile ($h=4$, primary) & $+0.0188$ & $+0.0117$ to $+0.0260$ \\
-80th-percentile & $+0.0157$ &, \\
-90th-percentile & $+0.0092$ &, \\
-Horizon $h\le 8$ & $\approx+0.008$ &, \\
-Horizon $h=12$ & $+0.002$ &, \\
+80th-percentile & $+0.0157$ & \\
+90th-percentile & $+0.0092$ & \\
+Horizon $h\le 8$ & $\approx+0.008$ & \\
+Horizon $h=12$ & $+0.002$ & \\
 2022-only subset & $+0.0150$ & $+0.0067$ to $+0.0249$ \\
 \bottomrule
 \end{tabular}}\\[0.3em]
@@ -742,10 +742,10 @@ Setting & Model & NLL & Brier & ICI & AUC \\
 \midrule
 Sri Lanka & full climate & 0.5406 & 0.1787 & 0.027 & 0.751 \\
  & matched no-climate & 0.5613 & 0.1865 & 0.045 & 0.724 \\
- & $\Delta$ (full $-$ no-climate) & $-0.0207$ & $-0.0079$ &, & $+0.027$ \\
-Colombia & full climate & 0.6162 & 0.2127 & 0.109 & 0.7255 \\
- & matched no-climate & 0.6251 & 0.2169 & 0.113 & 0.7134 \\
- & $\Delta$ (full $-$ no-climate) & $-0.0089$ & $-0.0043$ &, & $+0.012$ \\
+ & $\Delta$ (full $-$ no-climate) & $-0.0207$ & $-0.0079$ & & $+0.027$ \\
+Colombia & full climate & 0.6162 & 0.2127 & 0.109 & 0.725 \\
+ & matched no-climate & 0.6251 & 0.2169 & 0.113 & 0.713 \\
+ & $\Delta$ (full $-$ no-climate) & $-0.0089$ & $-0.0043$ & & $+0.012$ \\
 \bottomrule
 \end{tabular}}
 
