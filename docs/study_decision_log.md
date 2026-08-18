@@ -8,6 +8,99 @@
 
 ---
 
+## 2026-08-17 — An independent Sri Lanka M0–M5 rebuild runs end to end on this Mac; two undocumented conventions recovered
+
+**`DELIVERABLE` — `notebooks_sl_ladder/` (6 notebooks, all executed) + `docs/sl_ladder_rebuild_2026-08-17.md`.**
+A Sri Lanka-only reconstruction of the ladder from raw inputs, gated against the frozen run's own
+3,926 test predictions. Test set matches **exactly at 3,926**; label agreement **0.988**; matched raw
+ΔNB **+0.0071** against the frozen **+0.0087**. Analysis rows 10,490 vs 10,516 — the 26-row gap is one
+week and fully explained. Outputs go to git-ignored `data_quarantine/sl_ladder/`, per the standing
+code-and-reports-only guardrail.
+
+**`DIRECTION` — the CDS key was not the prerequisite it looked like.** The blocker was assumed to be
+ERA5-Land 0.1° behind a CDS key, plus RDHS polygons to build cell masks. But WP5 had already cached
+an ERA5 0.25° window, CHIRPS 0.05°, **and the per-district grid weight files** (`w_area`/`w_pop`) —
+and those weights are precisely what the polygons would have been needed to produce. The whole path
+therefore runs today on a coarser product. The key is now an **optional fidelity upgrade with a
+measured payoff**, not a gate.
+
+**`DELIVERABLE` — the exposure substitution's cost is localised, not merely asserted.** M5-no-climate
+and M5-full are identical except for the climate block, so comparing them against frozen isolates the
+product swap: correlation **0.976** (no-climate) vs **0.881** (full). Everything except the exposure
+reconstructs near-exactly; the gap lives where it should.
+
+**`DECISION` — two conventions in the frozen linked-table build are recorded here because they exist
+nowhere else.** Neither appears in the code or the Methods; both were recovered by sweeping against
+the frozen labels rather than guessed (`sl_03`):
+1. **Week offset** — `week_start = ISO_Monday(y, w) − 7d`, not `ISO_Monday(y, w)`. Worth 17 points of
+   label agreement (0.820 → **0.988**), with a sharp peak. Reads as the WER bulletin labelled week *w*
+   carrying the week that just ended.
+2. **Population denominator** — time-invariant per district, not year-varying. This also explains why
+   only 2018–2020 WorldPop was ever staged: a constant denominator makes the within-district quantile
+   label scale-invariant.
+Residual disagreement is 48/3,926, and **all 48 sit within 15% of their district's threshold** —
+boundary noise, not a systematic error still hiding. **These belong in the study's own documentation
+regardless of this rebuild**: anyone re-deriving the Sri Lanka table from the WER hits exactly this
+and currently has nothing to guide them.
+
+**`DIRECTION` — this is an independent robustness result the study did not previously have.** The
+deflationary conclusion (small, positive, interval covering zero) survives being rebuilt on a
+different reanalysis product. Stated with its limits: the rebuild's interval is **conditional**
+(+0.0071 [−0.0041, +0.0198], B=2000, district clusters) while the frozen headline is
+development-inclusive and therefore wider and more honest — the two are not interchangeable. M0/M2/M3
+are **reimplementations** from the Methods spec (no in-repo Sri Lanka reference) and carry weaker
+provenance than the ported M1/M4/M5.
+
+**`OPEN` — publication of a competing analysis of the upstream models goes to the PI first.** The
+rebuild lives in the fork and is internal. Also open: whether to apply the pinned fidelity environment
+(Python 3.10 / numpy 1.26.4 / pandas 2.1.3 / sklearn 1.7.2) — this ran under Python 3.12 / sklearn
+1.9.0, so some residual gap may live in library drift rather than in the exposure.
+
+---
+
+## 2026-08-17 — Colombia is closed to new work, WP4/WP5 is folded into the v44 candidate, and the target is submission
+
+**`DECISION` — no new Colombia analysis. Colombia's existing role in the manuscript is untouched.**
+The plan's remaining Colombia deliverables (§4.3 block CV, cross-setting F2, the both-settings
+leakage memo) are **withdrawn from scope**, not deferred. This is a decision about *new* work only:
+the two readings were separated explicitly before settling, because they are not the same job.
+Colombia is load-bearing in v44 — 88 mentions, one of two case studies, in the abstract, and the
+sole external validation — so **removing it would weaken the paper**, and the paper is already
+Sri Lanka–primary ("Sri Lanka (primary; RDHS division-week, 2018 to 2025) and a selected
+complete-case Colombian municipality-week subset"). Nothing in the manuscript changes.
+
+**`DIRECTION` — the cost of this is that WP4 loses its powered companion, and the write-up must say
+so.** `wp4_02`'s fold effect was designed as the compact-country sensitivity companion to Colombia's
+~1,000-municipality block CV (2026-07-07 D1). With §4.3 withdrawn there is no powered counterpart,
+so the n=26 result stands alone: point estimates one-signed at every radius, CI spanning zero at the
+operative radius (**−0.022 [−0.055, +0.011]**) and excluding it only at 75–100 km. It goes into the
+paper as a **characterised limitation with the power caveat stated plainly**, never as a certified
+claim. `wp4_00`'s power table is the citation for why.
+
+**`DECISION` — WP4/WP5 (Sri Lanka) is folded into the v44 hybrid-light candidate.** This **overrides
+`FINAL_CANONICAL_DECISION.md` line 8**, which holds M6/WP4/WP5 "outside Paper 1 evidence … only as
+pending Discussion notes". Author's call, made knowing that position. Rationale is referee-facing,
+not volume: the completed work answers the two most predictable objections to a spatial EWS paper —
+*"your CV ignores spatial autocorrelation"* (`wp4_02`, measured against a size-matched control rather
+than argued) and *"your conclusions depend on how exposure was built"* (the three-build ladder + F7)
+— and WP5's ΔNB-blindness result qualifies sensitivity analyses **elsewhere in this same paper**.
+**`OPEN`: this contradicts a canonical decision doc and therefore needs PI ratification**, which is
+now a fifth item for `docs/pi_ask_v1_geomatics_open_questions.md`.
+
+**`DIRECTION` — submission is not blocked by §5.1, and the earlier framing of Q1 was measured against
+the wrong target.** `V44_VS_BIOMATH_DECISION_MEMO.md`: "No further analysis is required to submit
+either way; the open blockers are author-owned (ethics, ORCIDs, funding, COI, Zenodo DOI/license,
+OpenDengue v1.3 record id)" — all administrative. Q1/Q2 remain the critical path to *completing*
+§3.3 (`wp5_05b`) and the cross-model contrast (`wp4_02b`), but **not** to submitting. Both blocked
+analyses are refinements of results that already stand.
+
+**`DIRECTION` — the integration target is v44 on `upstream/agent/v44-hybrid-light-decision-framework`,
+not this branch.** `manuscript/wp4_wp5_sections/*.tex` was drafted in **v18's** voice and section
+conventions; v44 is a different document with a different estimand notation
+($\Delta V_{C,k}$). The fragments must be **ported, not copied**. Working branch `wp45-into-v44`.
+
+---
+
 ## 2026-08-16 (b) — The four open questions are consolidated into one document; both drafts await sign-off
 
 **`DELIVERABLE` — `docs/pi_ask_v1_geomatics_open_questions.md`, DRAFT, not sent.** The four questions
