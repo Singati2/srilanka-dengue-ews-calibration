@@ -84,8 +84,11 @@ No TeX toolchain on this machine, so the port was checked structurally instead o
 2. **Figures.** The four PDFs exist at `Manuscript_Figures/wp{4,5}/` and are referenced as
    `submission_figs/…` per the candidate's convention (gitignored; `\safeincludegraphics` renders a
    placeholder). They must be copied into `submission_figs/` at build time.
-3. **Number verification.** The ~90 numbers introduced by this port are **not** in
-   `scripts/verify_numbers_v44.py`. The project's own discipline is that adding a number to the
-   manuscript means adding it to that script; `wp4_wp5_number_provenance_v1.md` maps each to its
-   source table and is the input for doing so.
+3. ~~**Number verification.**~~ **DONE 2026-08-18.** 137 WP4/WP5 numbers are now recomputed by
+   `scripts/verify_numbers_v44.py` (46 checks -> 183). Three defects were found and fixed in this
+   candidate: Table `wp4-fold` 50 km gap `-0.018`->`-0.019`, 100 km gap `-0.068`->`-0.070`, and the
+   flipped-row event rate at `p*=0.10` `0.087`->`0.088`. The 100 km cell mattered most: the Gap
+   column had been mixing bootstrap point estimates (0/75/100 km) with direct buffered-minus-control
+   gaps (25/50 km), so the row read `0.502`, `0.573`, `-0.068` and a reader subtracting got `-0.071`.
+   The column is now the direct gap throughout with the bootstrap CI around it. No conclusion moves.
 4. **Compile and re-read.** Both PDFs, then a read-through for flow at the two seams.
