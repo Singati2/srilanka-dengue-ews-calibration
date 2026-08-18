@@ -207,3 +207,59 @@ policy-relevant result, and v20 promoted it to the abstract. **A referee who rec
 Every file in this checkout carries its **checkout** mtime (2026-08-02 for repo files), so
 mtime cannot establish whether text predates an output. That class was **not** audited. If it
 needs auditing, compare git commit dates of each output against the `.tex`.
+
+---
+
+## Addendum 2026-08-18 — WP4/WP5 numbers added to the verifier
+
+The WP4/WP5 port introduced ~130 numbers into Results Q7. Per the study's own discipline (*adding a
+number to the manuscript means adding it to the script*), they are now in `verify_numbers_v44.py`.
+
+**Verifier: 46 checks → 183 checks. 137 WP4/WP5 numbers recomputed** from the quarantine tables —
+never transcribed. Still exits 1 while any mismatch stands.
+
+Because the quarantine tables are gitignored by study policy, the section **skips cleanly** on a
+machine without them and says so, rather than failing or silently passing.
+
+### Two aggregation hazards, handled explicitly
+
+The provenance doc warns that the same displacement has two legitimate values. Both traps were live:
+
+- **district-week vs district-mean.** Temperature A′→B is `0.205 °C` per district-week but `0.171`
+  as a mean of 26 district means. The checks use the 10,842-row tables for table/prose claims and
+  the 26-row table only where a district is named.
+- **raw vs recalibrated.** The flip analysis is quoted in the **raw** state throughout (recal gives
+  46–83 where raw gives 35–76), except the exact bound, which the text labels as recalibrated. The
+  climate-removal ceiling is 441 only when compared raw-to-raw; recal-vs-raw gives 759.
+
+### Three defects found, all fixed
+
+| Location | Was | Recomputed | Class |
+|---|---|---|---|
+| Table `wp4-fold`, 50 km gap | `−0.018` | `−0.019` | Stale/rounding |
+| Table `wp4-fold`, 100 km gap | `−0.068` | `−0.070` | Inconsistent |
+| Results Q7, flipped-row event rate at `p*=0.10` | `0.087` | `0.088` | Rounding |
+
+The 100 km cell is the interesting one. The **Gap** column was not self-consistent in its sourcing:
+at 0, 75 and 100 km it quoted the cluster-bootstrap point estimate, and at 25 and 50 km — where no
+bootstrap was recorded — it quoted buffered-minus-control directly. At 100 km that showed on the face
+of the table: the row read `0.502`, `0.573`, `−0.068`, and a reader subtracting the two columns gets
+`−0.071`. The column is now the direct gap throughout, with the bootstrap CI around it, so the point
+estimate is the quantity its neighbours imply. Only two cells moved and no conclusion changes.
+
+### One defect in the checker itself
+
+The first draft guarded its modifier-screen lookups with `if key in fi:`, which **silently skipped six
+checks** when the key was wrong — the screen's flip response is `flip_AC_pct`, not `flip_AB_pct`.
+A silently skipped check is the untraceable class this script exists to prevent, so the guard is now
+an assertion. The same wrong-rung error had been applied to the three top-flip districts
+(Badulla 9.9%, Nuwara Eliya 9.3%, Ratnapura 6.0% are the A′→C rung).
+
+### What the new section does not cover
+
+Reported at the foot of every run. The largest gap: **the population-product columns of Table
+`wp5-product`**. The local product table is per-district (t2m `0.0070`) while the manuscript quotes
+per-district-week (`0.0088`); the district-week product table is not on this machine, so checking one
+against the other would be wrong rather than merely lax. Also unchecked: every cluster-bootstrap
+interval (notebook cell outputs, not tables), the grid-attenuation figures, the transfer-coefficient
+spread, the station lapse-rate interpolation, the partial correlations, and the WP4 reproduce gates.

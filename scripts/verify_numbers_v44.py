@@ -187,8 +187,322 @@ def check(results, location, label, claimed, actual, source):
     return ok
 
 
+# ---------------------------------------------------------------------------
+# WP4 / WP5 (Sri Lanka), ported into v44 Results Q7 on 2026-08-17.
+#
+# These read the WP4/WP5 quarantine tables. Those are gitignored by study policy
+# ("code and reports only"), so on a machine without them this whole section
+# reports as SKIPPED rather than failing -- absence is not a mismatch.
+#
+# Everything below is RECOMPUTED from the source table, never transcribed. Two
+# aggregation hazards are handled explicitly:
+#   * district-week vs district-mean. The same displacement has two legitimate
+#     values (t2m A'->B is 0.205 per district-week but 0.171 as a mean of 26
+#     district means). The manuscript quotes district-week throughout except
+#     where it names a district, so the checks below use the 10,842-row tables
+#     and the 26-row table only for per-district claims.
+#   * raw vs recalibrated state. The flip analysis is quoted in the RAW state
+#     throughout (recal gives 46-83 where raw gives 35-76), except the exact
+#     bound, which the text labels as recalibrated. Both are checked as labelled.
+# ---------------------------------------------------------------------------
+
+WP45_QUAR = ("data_quarantine/wp5_exposure", "data_quarantine/wp4_cv")
+
+
+def _rows(rel):
+    with open(REPO / rel) as fh:
+        return list(csv.DictReader(fh))
+
+
+def _mean(xs):
+    return sum(xs) / len(xs)
+
+
+def _absdiff(rows, a, b):
+    return [abs(float(r[a]) - float(r[b])) for r in rows]
+
+
+def _spearman(xs, ys):
+    def rank(v):
+        order = sorted(range(len(v)), key=lambda i: v[i])
+        rk = [0.0] * len(v)
+        i = 0
+        while i < len(order):
+            j = i
+            while j + 1 < len(order) and v[order[j + 1]] == v[order[i]]:
+                j += 1
+            avg = (i + j) / 2 + 1
+            for k in range(i, j + 1):
+                rk[order[k]] = avg
+            i = j + 1
+        return rk
+    rx, ry = rank(xs), rank(ys)
+    mx, my = _mean(rx), _mean(ry)
+    num = sum((a - mx) * (b - my) for a, b in zip(rx, ry))
+    den = (sum((a - mx) ** 2 for a in rx) * sum((b - my) ** 2 for b in ry)) ** 0.5
+    return num / den if den else float("nan")
+
+
+def check_wp45(results):
+    """Recompute every WP4/WP5 number quoted in Results Q7. Returns n checked."""
+    P = _rows("data_quarantine/wp5_exposure/wp5_precip_exposure_twin_srilanka_v1.csv")
+    T = _rows("data_quarantine/wp5_exposure/wp5_temp_exposure_twin_srilanka_v1.csv")
+    C = _rows("data_quarantine/wp5_exposure/wp5_buildC_temp_exposure_srilanka_v1.csv")
+    X = _rows("data_quarantine/wp5_exposure/wp5_exposure_contrast_srilanka_v1.csv")
+    E = _rows("data_quarantine/wp5_exposure/wp5_decision_flip_envelope_srilanka_v1.csv")
+    S = _rows("data_quarantine/wp5_exposure/wp5_decision_flip_summary_srilanka_v1.csv")
+    F = _rows("data_quarantine/wp5_exposure/wp5_f8_modifier_screen_srilanka_v1.csv")
+    M = _rows("data_quarantine/wp5_exposure/wp5_miscalibration_structure_srilanka_v1.csv")
+    ST = _rows("data_quarantine/wp5_exposure/wp5_04_station_validation_srilanka.csv")
+    PW = _rows("data_quarantine/wp4_cv/wp4_power_cost_srilanka_v1.csv")
+    FG = _rows("data_quarantine/wp4_cv/wp4_fold_effect_gap_srilanka_v1.csv")
+    FM = _rows("data_quarantine/wp4_cv/wp4_fold_effect_metrics_srilanka_v1.csv")
+    MI = _rows("data_quarantine/wp4_cv/wp4_morans_i_srilanka_v1.csv")
+    n0 = len(results)
+
+    src_p = "data_quarantine/wp5_exposure/wp5_precip_exposure_twin_srilanka_v1.csv"
+    src_t = "data_quarantine/wp5_exposure/wp5_temp_exposure_twin_srilanka_v1.csv"
+    src_c = "data_quarantine/wp5_exposure/wp5_buildC_temp_exposure_srilanka_v1.csv"
+    src_x = "data_quarantine/wp5_exposure/wp5_exposure_contrast_srilanka_v1.csv"
+    src_e = "data_quarantine/wp5_exposure/wp5_decision_flip_envelope_srilanka_v1.csv"
+    src_s = "data_quarantine/wp5_exposure/wp5_decision_flip_summary_srilanka_v1.csv"
+    src_f = "data_quarantine/wp5_exposure/wp5_f8_modifier_screen_srilanka_v1.csv"
+    src_w = "data_quarantine/wp4_cv/"
+
+    # ---- cohort sizes -----------------------------------------------------
+    for nm, tbl, src in (("precip", P, src_p), ("temp", T, src_t), ("buildC", C, src_c)):
+        check(results, f"Methods/Table wp5-ladder, {nm} table rows", "district-weeks",
+              10842, len(tbl), src)
+    check(results, "Table wp5-flips, held-out panel rows", "district-weeks", 3926, len(E), src_e)
+    check(results, "Results Q7, spatial units", "districts", 26, len(X), src_x)
+
+    # ---- Table wp5-ladder: rainfall --------------------------------------
+    base = [float(r["precip_sum_mm_a_frac"]) for r in P]
+    mask = _absdiff(P, "precip_sum_mm_a_frac", "precip_sum_mm_a_alltouched")
+    a2b = _absdiff(P, "precip_sum_mm_b_pop", "precip_sum_mm_a_frac")
+    mean_rain = _mean(base)
+    check(results, "Table wp5-ladder, rainfall A->A' (mask)", "mean |d| mm", 0.76, _mean(mask), src_p)
+    check(results, "Table wp5-ladder, rainfall A->A' (mask)", "% of mean", 1.8,
+          100 * _mean(mask) / mean_rain, src_p)
+    check(results, "Table wp5-ladder, rainfall A'->B", "mean |d| mm", 3.40, _mean(a2b), src_p)
+    check(results, "Table wp5-ladder, rainfall A'->B", "max |d| mm", 72.6, max(a2b), src_p)
+    check(results, "Table wp5-ladder, rainfall A'->B", "% of mean", 7.9,
+          100 * _mean(a2b) / mean_rain, src_p)
+    check(results, "Results Q7 prose, mean weekly rainfall", "mm", 42.9, mean_rain, src_p)
+
+    order = sorted(range(len(P)), key=lambda i: base[i])
+    for lab, frac, claim_mm, claim_pct in (("wettest decile", 0.90, 8.56, 5.4),
+                                           ("wettest percentile", 0.99, 12.89, 4.9)):
+        cut = order[int(len(P) * frac):]
+        check(results, f"Table wp5-ladder, rainfall A'->B, {lab}", "mean |d| mm",
+              claim_mm, _mean([a2b[i] for i in cut]), src_p)
+        check(results, f"Table wp5-ladder, rainfall A'->B, {lab}", "% of mean",
+              claim_pct, 100 * _mean([a2b[i] for i in cut]) / _mean([base[i] for i in cut]), src_p)
+
+    # ---- Table wp5-ladder: temperature and humidity -----------------------
+    for var, claim_mean, claim_max in (("t2m_mean_c", 0.205, 1.16),
+                                       ("t2m_max_c", 0.387, 2.76),
+                                       ("t2m_min_c", 0.316, 2.34),
+                                       ("rh_mean_percent", 0.77, 6.29)):
+        d = _absdiff(T, f"{var}_b_pop", f"{var}_a_frac")
+        check(results, f"Table wp5-ladder, {var} A'->B", "mean |d|", claim_mean, _mean(d), src_t)
+        check(results, f"Table wp5-ladder, {var} A'->B", "max |d|", claim_max, max(d), src_t)
+    dbc = _absdiff(C, "t2m_mean_c_c_pop", "t2m_mean_c_b_pop")
+    check(results, "Table wp5-ladder, t2m_mean_c B->C", "mean |d|", 0.306, _mean(dbc), src_c)
+    check(results, "Table wp5-ladder, t2m_mean_c B->C", "max |d|", 1.92, max(dbc), src_c)
+    check(results, "Table wp5-ladder, B->C orography component", "mean |d| C", 0.223,
+          _mean([abs(float(r["temp_b2c_orography_c"])) for r in X]), src_x)
+    check(results, "Table wp5-ladder, B->C sub-grid component", "mean |d| C", 0.169,
+          _mean([abs(float(r["temp_b2c_subgrid_c"])) for r in X]), src_x)
+
+    # ---- per-district claims (the 26-row table, correctly) ----------------
+    by_name = {r["rdhs_name"]: r for r in X}
+    for dist, claim in (("Nuwara Eliya", -1.92), ("Badulla", -1.33), ("Ratnapura", 1.01)):
+        check(results, f"Results Q7 prose, {dist} B->C", "signed C", claim,
+              float(by_name[dist]["temp_b2c_c"]), src_x)
+    for dist, claim in (("Colombo", -7.30), ("Puttalam", 4.37)):
+        check(results, f"Results Q7 prose, {dist} rainfall A'->B", "signed mm", claim,
+              float(by_name[dist]["precip_a2b_mm"]), src_x)
+    signed = [float(r["precip_a2b_mm"]) for r in X]
+    check(results, "Results Q7 prose, districts drier under weighting", "count", 17,
+          sum(1 for v in signed if v < 0), src_x)
+    check(results, "Results Q7 prose, districts wetter under weighting", "count", 9,
+          sum(1 for v in signed if v > 0), src_x)
+    check(results, "Results Q7 prose, rho(|rain|,|temp|) displacement", "Spearman", 0.24,
+          _spearman([abs(float(r["precip_a2b_mm"])) for r in X],
+                    [abs(float(r["temp_a2b_c"])) for r in X]), src_x)
+
+    # ---- Table wp5-flips (RAW state, as the text specifies) ---------------
+    at30 = [r for r in S if abs(float(r["p_star"]) - 0.30) < 1e-9]
+    for rung, lo, hi, plo, phi, dnb in (("A'->B", 35, 76, 0.9, 1.9, 0.0013),
+                                        ("A'->C", 64, 104, 1.6, 2.6, 0.0009)):
+        v = [r for r in at30 if r["rung"] == rung]
+        check(results, f"Table wp5-flips, {rung} flips (low)", "count", lo,
+              min(int(r["flips_raw"]) for r in v), src_s)
+        check(results, f"Table wp5-flips, {rung} flips (high)", "count", hi,
+              max(int(r["flips_raw"]) for r in v), src_s)
+        check(results, f"Table wp5-flips, {rung} %% of rows (low)", "pct", plo,
+              min(float(r["flip_pct_raw"]) for r in v), src_s)
+        check(results, f"Table wp5-flips, {rung} %% of rows (high)", "pct", phi,
+              max(float(r["flip_pct_raw"]) for r in v), src_s)
+        # quoted as "$\\le$", so the claim is that the bound holds, not that it is tight
+        obs = max(abs(float(r["dNB_raw"])) for r in v)
+        check(results, f"Table wp5-flips, {rung} |dNB| bound holds", "<= claim", dnb,
+              obs if obs > dnb else dnb, src_s)
+    check(results, "Results Q7 prose, |dNB| across all rungs/specs/thresholds", "abs", 0.0023,
+          max(abs(float(r["dNB_recal"])) for r in S), src_s)
+
+    nE = len(E)
+    ceil_n = sum(1 for r in E
+                 if (float(r["p_full_raw"]) >= 0.30) != (float(r["p_noclim_raw"]) >= 0.30))
+    check(results, "Table wp5-flips, climate block removed (ceiling)", "flips", 441, ceil_n, src_e)
+    check(results, "Table wp5-flips, climate block removed (ceiling)", "pct", 11.2,
+          100 * ceil_n / nE, src_e)
+    bnd = sum(1 for r in E if abs(float(r["p_full_recal"]) - 0.30) <= 0.02)
+    check(results, "Table wp5-flips, exact bound |p-p*|<=0.02 (recal)", "rows", 253, bnd, src_e)
+    check(results, "Table wp5-flips, exact bound |p-p*|<=0.02 (recal)", "pct", 6.4,
+          100 * bnd / nE, src_e)
+    braw = sum(1 for r in E if abs(float(r["p_full_raw"]) - 0.30) <= 0.02)
+    check(results, "Results Q7 prose, exact bound on the raw scale", "pct", 6.0,
+          100 * braw / nE, src_e)
+    fl = [r for r in E if r["flip_A_to_B_p30"] in ("True", "1")]
+    check(results, "Results Q7 prose, A'->B flips added", "count", 67,
+          sum(1 for r in fl if float(r["p_A_to_B"]) >= 0.30), src_e)
+    check(results, "Results Q7 prose, A'->B flips removed", "count", 9,
+          sum(1 for r in fl if float(r["p_A_to_B"]) < 0.30), src_e)
+    ev = []
+    for p, claim in (("10", 0.088), ("20", 0.160), ("30", 0.289), ("40", 0.431)):
+        f_ = [r for r in E if r[f"flip_A_to_B_p{p}"] in ("True", "1")]
+        rate = sum(int(r["outcome"]) for r in f_) / len(f_)
+        ev.append(rate)
+        check(results, f"Results Q7 prose, flipped-row event rate at p*=0.{p}", "rate",
+              claim, rate, src_e)
+    both = ev + [sum(int(r["outcome"]) for r in g) / len(g) for p in ("10", "20", "30", "40")
+                 for g in ([r for r in E if r[f"flip_A_to_C_p{p}"] in ("True", "1")],) if g]
+    ts = [0.10, 0.20, 0.30, 0.40] * 2
+    mb, mt = _mean(both), _mean(ts)
+    r_ = (sum((a - mb) * (b - mt) for a, b in zip(both, ts))
+          / ((sum((a - mb) ** 2 for a in both) * sum((b - mt) ** 2 for b in ts)) ** 0.5))
+    check(results, "Results Q7 prose, corr(flipped-row event rate, p*)", "Pearson r", 0.96, r_, src_e)
+
+    # ---- F8 modifier screen -----------------------------------------------
+    check(results, "Results Q7 prose, modifier screen tests run", "count", 60, len(F), src_f)
+    check(results, "Results Q7 prose, associations surviving FDR", "count", 6,
+          sum(1 for r in F if r["survives_fdr"] == "True"), src_f)
+    fi = {(r["response"], r["modifier"]): r for r in F}
+    for resp, mod, claim_rho in (("cal_intercept", "prev", 0.85),
+                                 ("cal_slope", "frac_crops", 0.61),
+                                 ("cal_slope", "lc_shannon", 0.59),
+                                 ("cal_slope", "pop_density_km2", -0.50),
+                                 ("flip_AC_pct", "slope_mean", 0.56),
+                                 ("flip_AC_pct", "elev_mean", 0.56),
+                                 ("flip_AC_pct", "hand_mean", 0.55),
+                                 ("dNB_clim", "pop_density_km2", 0.40)):
+        k = (resp, mod)
+        assert k in fi, f"screen row missing: {k} -- a silently skipped check is untraceable"
+        check(results, f"Results Q7 prose, rho({resp} ~ {mod})", "Spearman",
+              claim_rho, float(fi[k]["rho"]), src_f)
+    for resp, mod, claim_q in (("cal_slope", "frac_crops", 0.031),
+                               ("cal_slope", "lc_shannon", 0.032),
+                               ("flip_AC_pct", "slope_mean", 0.035),
+                               ("flip_AC_pct", "elev_mean", 0.035),
+                               ("flip_AC_pct", "hand_mean", 0.038),
+                               ("dNB_clim", "pop_density_km2", 0.15)):
+        k = (resp, mod)
+        assert k in fi, f"screen row missing: {k} -- a silently skipped check is untraceable"
+        check(results, f"Results Q7 prose, q({resp} ~ {mod})", "BH q",
+              claim_q, float(fi[k]["q"]), src_f)
+    sl = [float(r["cal_slope"]) for r in M]
+    src_m = "data_quarantine/wp5_exposure/wp5_miscalibration_structure_srilanka_v1.csv"
+    check(results, "Results Q7 prose, calibration slope range (min)", "slope", 0.67, min(sl), src_m)
+    check(results, "Results Q7 prose, calibration slope range (max)", "slope", 2.23, max(sl), src_m)
+    mn = {r["rdhs_name"]: r for r in M}
+    for dist, claim in (("Badulla", 9.9), ("Nuwara Eliya", 9.3), ("Ratnapura", 6.0)):
+        check(results, f"Results Q7 prose, {dist} exposure flip rate (A'->C)", "pct",
+              claim, float(mn[dist]["flip_AC_pct"]), src_m)
+    check(results, "Results Q7 prose, rho(elevation, |B->C| displacement)", "Spearman", 0.74,
+          _spearman([float(r["elev_mean"]) for r in M], [float(r["abs_b2c"]) for r in M]), src_m)
+
+    # ---- station validation ----------------------------------------------
+    src_st = "data_quarantine/wp5_exposure/wp5_04_station_validation_srilanka.csv"
+    ne = next(r for r in ST if r["station"] == "Nuwara Eliya")
+    check(results, "Results Q7 prose, Nuwara Eliya station elevation", "m", 1880,
+          float(ne["z_stn"]), src_st)
+    check(results, "Results Q7 prose, Nuwara Eliya station observed", "C", 16.40,
+          float(ne["stn_C"]), src_st)
+    check(results, "Results Q7 prose, Nuwara Eliya ERA5", "C", 21.17, float(ne["era5_C"]), src_st)
+    check(results, "Results Q7 prose, Nuwara Eliya bias", "C", 4.77, float(ne["bias_C"]), src_st)
+    check(results, "Methods sec:methods-wp5, ERA5 orography peak", "m", 1219,
+          max(float(r["z_orog"]) for r in ST), src_st)
+
+    # ---- WP4: power table -------------------------------------------------
+    pw = {r["buffer"]: r for r in PW}
+    for buf, med, worst, uw, deg in (("km_0", 21, 16, 5481, 0), ("km_25", 19, 14, 4959, 0),
+                                     ("km_50", 15, 10, 4045, 0), ("km_75", 12, 6, 3132, 0),
+                                     ("km_100", 9, 5, 2349, 0), ("km_150", 5, 0, 1435, 12)):
+        r = pw[buf]
+        check(results, f"Table wp4-power, {buf} median train units", "count", med,
+              float(r["train_units_median"]), src_w + "wp4_power_cost_srilanka_v1.csv")
+        check(results, f"Table wp4-power, {buf} worst fold", "count", worst,
+              float(r["train_units_min"]), src_w + "wp4_power_cost_srilanka_v1.csv")
+        check(results, f"Table wp4-power, {buf} median train district-weeks", "count", uw,
+              float(r["train_unitweeks_median"]), src_w + "wp4_power_cost_srilanka_v1.csv")
+        check(results, f"Table wp4-power, {buf} degenerate folds", "count", deg,
+              float(r["degenerate_folds"]), src_w + "wp4_power_cost_srilanka_v1.csv")
+    check(results, "Results Q7 prose, retained district-weeks at 0 km", "pct", 84,
+          float(pw["km_0"]["retained_pct"]), src_w + "wp4_power_cost_srilanka_v1.csv")
+    check(results, "Results Q7 prose, retained district-weeks at 100 km", "pct", 36,
+          float(pw["km_100"]["retained_pct"]), src_w + "wp4_power_cost_srilanka_v1.csv")
+
+    # ---- WP4: fold table --------------------------------------------------
+    fg = {r["buffer"]: r for r in FG}
+    src_fg = src_w + "wp4_fold_effect_gap_srilanka_v1.csv"
+    for buf, units, auc, ctrl in (("km_0", 21, 0.565, 0.587), ("km_25", 19, 0.571, 0.590),
+                                  ("km_50", 15, 0.558, 0.577), ("km_75", 12, 0.516, 0.578),
+                                  ("km_100", 9, 0.502, 0.573)):
+        r = fg[buf]
+        check(results, f"Table wp4-fold, {buf} train units", "count", units,
+              float(r["train_units"]), src_fg)
+        check(results, f"Table wp4-fold, {buf} buffered AUC", "AUC", auc,
+              float(r["auc_buffered"]), src_fg)
+        check(results, f"Table wp4-fold, {buf} matched control", "AUC", ctrl,
+              float(r["auc_control_mean"]), src_fg)
+
+    # The "Gap [95% CI]" column is NOT self-consistent in its sourcing. At 0, 75
+    # and 100 km it quotes the cluster-bootstrap point estimate; at 25 and 50 km
+    # no bootstrap was recorded, so it quotes buffered-minus-control directly.
+    # Checked here against the direct gap, which is the quantity the neighbouring
+    # two columns imply -- a reader subtracting them gets this, not the bootstrap.
+    for buf, gap in (("km_0", -0.022), ("km_25", -0.018), ("km_50", -0.019),
+                     ("km_75", -0.061), ("km_100", -0.070)):
+        check(results, f"Table wp4-fold, {buf} gap (vs buffered-minus-control)", "dAUC",
+              gap, float(fg[buf]["auc_gap"]), src_fg)
+    fm = {r["arm"]: r for r in FM}
+    src_fm = src_w + "wp4_fold_effect_metrics_srilanka_v1.csv"
+    for arm, claim in (("0 temporal (frozen M6)", 0.601),):
+        if arm in fm:
+            check(results, "Results Q7 prose, temporal-split AUC", "AUC", claim,
+                  float(fm[arm]["AUC"]), src_fm)
+            check(results, "Results Q7 prose, temporal-split calibration slope", "slope", 0.875,
+                  float(fm[arm]["cal_slope"]), src_fm)
+    adj = [r for r in MI if r["band_km"] == "adjacent" and r["model"].startswith("M6")]
+    if adj:
+        check(results, "Results Q7 prose, M6 adjacency Moran's I", "I", 0.001,
+              float(adj[0]["I"]), src_w + "wp4_morans_i_srilanka_v1.csv")
+        check(results, "Results Q7 prose, M6 adjacency permutation p", "p", 0.99,
+              float(adj[0]["p_perm"]), src_w + "wp4_morans_i_srilanka_v1.csv")
+    ps = [float(r["p_perm"]) for r in MI]
+    check(results, "Results Q7 prose, Moran's I permutation p (min)", "p", 0.53, min(ps),
+          src_w + "wp4_morans_i_srilanka_v1.csv")
+    check(results, "Results Q7 prose, Moran's I permutation p (max)", "p", 0.99, max(ps),
+          src_w + "wp4_morans_i_srilanka_v1.csv")
+
+    return len(results) - n0
+
+
 def main():
     results = []
+    wp45_n, wp45_skipped = 0, False
 
     # ---- S19 table levels: route_a_primary.csv + calibration_metrics.csv ----
     calib = load_csv_rows("ALT_STATS/results/calibration_metrics.csv")
@@ -241,6 +555,12 @@ def main():
         check(results, location, "/".join(map(str, keys)), claimed, dig(rob, keys), src_rob)
 
     # ---- report ----
+    # ---- WP4/WP5 (Sri Lanka), ported into Results Q7 on 2026-08-17 ----
+    if all((REPO / d).is_dir() for d in WP45_QUAR):
+        wp45_n = check_wp45(results)
+    else:
+        wp45_skipped = True
+
     fails = [r for r in results if not r["ok"]]
     width = max(len(r["location"]) for r in results)
     print(f"{'LOCATION'.ljust(width)}  {'LABEL':<28} {'CLAIMED':>10} {'OUTPUT':>12} {'AT PREC':>9}  OK")
@@ -264,6 +584,28 @@ def main():
                  "rolling-origin median +0.0052 / 75% of 28 departments",
                  "wild-cluster-t and LODO jackknife intervals (S15/S16)"]:
         print(f"  - {note}")
+
+    if wp45_skipped:
+        print("\n  WP4/WP5 (Results Q7): SKIPPED -- the quarantine tables are gitignored by")
+        print("  study policy and are not on this machine. None of its ~130 numbers were checked.")
+    else:
+        print(f"\n  WP4/WP5 (Results Q7): {wp45_n} numbers recomputed from the quarantine tables.")
+        for note in [
+            "population-product district-week displacements (Table wp5-product, the "
+            "R2025A/GHS-POP columns). The local product table is PER-DISTRICT (t2m 0.0070) "
+            "and the manuscript quotes PER-DISTRICT-WEEK (0.0088); the district-week product "
+            "table is not on this machine. Checking one against the other would be wrong, not lax.",
+            "every cluster-bootstrap interval (wp5-flips CIs, wp4-fold CIs) -- these live in "
+            "notebook cell outputs, not in a table this script can read",
+            "grid attenuation 65.3%/91.7% and effective cells 21.3/11.8 -> 5.3/3.6 (wp5_02 §3)",
+            "transfer-coefficient spread 2.3x and R^2 0.27-0.38 (wp5_05 §6)",
+            "station lapse rates 6.40 / 6.31 C/km and the Nuwara Eliya interpolation "
+            "19.82 / 21.89 / 19.98 (wp5_04 §10-11)",
+            "partial correlations adjusting for alert prevalence (wp5_07 §5a-b)",
+            "1,456 model fits, the 8.6e-15 reproduce gate, and the 19.2% exploratory-target "
+            "caveat (wp4_02 §2-8)",
+        ]:
+            print(f"    - not checked: {note}")
 
     print("\nNOTE ON THE 'SUPERSEDED' DEFECT CLASS: every file in this checkout carries the")
     print("checkout mtime, so mtime cannot establish whether text predates an output. Use git")
