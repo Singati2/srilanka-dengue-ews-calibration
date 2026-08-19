@@ -8,6 +8,68 @@
 
 ---
 
+## 2026-08-18 (b) — The cross-model fold contrast is measured on M5 itself, and M5's answer is not M6's
+
+**`DELIVERABLE` — `notebooks_wp45/wp4_02b_fold_effect_within_m5.ipynb`, 17/17 QC, 2,912 fold-fits →
+`Manuscript_Figures/wp4/WP4_F_fold_effect_within_m5.{pdf,png}` + 7 quarantine tables.** The contrast
+`wp4_02` recorded as blocked — **M5 under buffered spatial CV versus M5 under the temporal split** —
+now exists. M5 and its no-climate twin are refitted under every fold, each buffered fold matched to
+**ten random-district controls of identical size**, exactly the design that made `wp4_02`
+interpretable.
+
+**`DIRECTION` — the price of a fold is a property of the MODEL, not of the geography alone.** M6 and
+M5 disagree in **sign** at the operative radius and agree only at the far end:
+
+| radius | M6 gap (`wp4_02`) | M5 gap (`wp4_02b`) |
+|---|---|---|
+| 0 km | −0.022 | **+0.023** (z = 2.09, 10/10 controls below) |
+| 100 km | −0.070 | −0.053 (z = −2.54, 0/10 below) |
+
+At the radius `wp4_01` selected and the study actually uses, **M5's buffered fold beats an
+equally-sized random training set.** So `wp4_02`'s within-M6 result could never have substituted for
+this one, and the 2026-08-14 (d) note that the two §5.1 asks "are not interchangeable" was right for
+a reason stronger than the one given then: the models differ not in degree but in direction.
+
+**`DECISION` — report the significance on the decision metric, not on AUC.** Every M5
+buffered-minus-control **ΔAUC** interval spans zero, 100 km included (−0.0505 [−0.1107, +0.0064]).
+On **ΔNB at p\*=0.30** the 75 km (−0.0216 [−0.0412, −0.0039]) and 100 km (−0.0353 [−0.0610, −0.0120])
+intervals exclude it. The defensible claim is a **monotone, one-signed trend reaching conventional
+significance only past 50 km and only on net benefit** — `wp4_00`'s power table is the citation for
+why, at n = 26, that is the most the design can carry.
+
+**`DELIVERABLE` — the referee's actual question is answered, and the answer is favourable.** The
+paper claims an *increment*, not an AUC. Under buffered folds the climate block earns **+0.0218 (0 km),
++0.0200 (25), +0.0266 (50), +0.0152 (75), −0.0015 (100)** against **+0.0071** under the temporal split;
+every change-vs-temporal interval spans zero. **Spatial CV does not deflate the increment** — if
+anything the temporal split is the conservative choice. The point estimates sitting *above* temporal
+are **not** claimed as a real gain; the honest reading is *unchanged*.
+
+**`DIRECTION` — the long-radius dependence localises in the climate block.** The no-climate twin's
+gap stays nearly flat (+0.0072 → −0.0154) while M5's falls to −0.0526. Coherent: climate fields are
+spatially smooth over hundreds of km, so a neighbour's rainfall proxies yours in a way a neighbour's
+case history does not.
+
+**`DECISION` — this is the independent-rebuild version and is labelled as such everywhere.** Refitted
+on `sl_linked_v2equiv.csv` (ERA5 0.25° + CHIRPS), not the frozen linked table. Fidelity measured:
+3,926 test rows matched exactly, label agreement 0.988, M5 AUC 0.7570 vs the frozen 0.7715, ρ = 0.881.
+The baseline arm reproduces `sl_04` to **exactly 0.0** through the generalised fitter, so every
+contrast is within-rebuild and the offset is common to all arms. `registered_rerun: false` is stamped
+in the provenance.
+
+**`OPEN` — two traps recorded because either would have produced a confident wrong number.**
+(1) A held-out district's RDHS fixed effect is **not estimable** — its dummy is all-zero in training,
+so it is scored at the reference district's intercept. **Every temporal-versus-fold contrast therefore
+conflates losing the neighbours with losing the fixed effect**; only buffered-minus-control separates
+them, because the control carries the identical handicap. (2) **Pooled AUC and per-district AUC answer
+different questions**: at 0 km the pooled gap is +0.0233 while **15 of 26 districts are individually
+negative**. Pooling rewards the between-district ordering, which the per-district table cannot see.
+
+**`OPEN` — `wp5_05b` is now the last unrun analysis in the plan**, and it is runnable on the same
+substitute: the registered §3.3 re-run (ΔAUC / Δcalibration under Builds A′/B/C), with WP5's exposure
+tables already sitting beside the linked table in the quarantine.
+
+---
+
 ## 2026-08-18 — The WP4/WP5 port is in the v44 candidate and every number in it is machine-checked; the "§5.1 blocked" framing is retired
 
 **`DELIVERABLE` — Results Q7 exists in the v44 biomath candidate** (`wp45-into-v44` @ `e08f2ee`,

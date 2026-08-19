@@ -8,9 +8,11 @@ variables** (10,842 rows each, row-aligned), and so are **plan §3.2** (exposure
 `wp5_03`), **the exposure half of plan §3.5** (population-product sensitivity, `wp5_06`) and now
 **the runnable half of plan §3.3** (decision-flip envelope + Figure F7, `wp5_05`) and **plan §3.6**
 (spatial structure of miscalibration + Figure F8, `wp5_07`). WP4 fold geometry
-and radius done, and **the fold effect is now measured inside M6** (`wp4_02`). What remains is the
-*registered* §3.3 re-run (ΔAUC / Δcalibration under each build) and the **cross-model** fold re-run —
-both of which need the §5.1 design matrices.
+and radius done, the fold effect measured inside M6 (`wp4_02`), and **the cross-model contrast now
+measured on M5 itself** (`wp4_02b`) — the §5.1 blocker turned out to cover the *input table*, not the
+builders, and the `sl_ladder` rebuild supplies a substitute of measured fidelity. What remains is the
+*registered* §3.3 re-run (ΔAUC / Δcalibration under each build, `wp5_05b`), which is runnable on the
+same substitute and has not been run.
 
 **Plan Phase 6 (write-up) is drafted** as of 2026-08-15:
 `manuscript/wp4_wp5_sections/wp4_wp5_methods_results_v1.tex` holds drop-in Methods and Results
@@ -49,7 +51,7 @@ respects spatial autocorrelation.
 | wp4_00 | `wp4_00_loocv_folds_and_power.ipynb` — buffered-LOOCV folds + power cost | adjacency (present) | ✅ executed |
 | wp4_01 | `wp4_01_autocorrelation_range.ipynb` — Moran's I / variogram, radius selection | M6 + frozen preds | ✅ executed |
 | wp4_02 | `wp4_02_fold_effect_within_m6.ipynb` — fold effect measured **within M6**, against a size-matched control | M6 features + labels (ours) + `wp4_00` folds | ✅ executed |
-| wp4_02b | M5/M0/M1/M2 re-evaluated under the folds (cross-model) | **design matrices (§5.1 blocker)** | blocked |
+| wp4_02b | `wp4_02b_fold_effect_within_m5.ipynb` — **M5 and its no-climate twin** under the same folds (the cross-model contrast) | `sl_ladder` rebuilt linked table + `wp4_00` folds | ✅ executed (independent-rebuild version) |
 
 ## What wp5_00 establishes
 
@@ -679,3 +681,89 @@ scheme, and the power table remains frozen if a more conservative radius is pref
 This is a **first estimate**: §4.1 specifies the reference model's residuals and M5-full as frozen is
 the closest available. If the registered reference model differs, re-run — only the residual column
 changes.
+
+## What wp4_02b establishes — M5's folds are cheap where the study uses them and expensive beyond, and the climate increment survives
+
+`wp4_02` measured the fold effect inside M6 because the cross-model contrast was recorded as blocked:
+the archive holds M5's *predictions*, not its design matrix. **That justification does not survive
+inspection.** `analysis/v12_referee_response/run/sl_matched_and_recal.py` carries the design-matrix and
+cross-basis builders in full, and `notebooks_sl_ladder/` rebuilt the linked table they read. **Sixth
+recovery by the does-the-blocker-cover-all-of-it test** — and the one that had been shaping scope longest.
+
+**What it is not.** The frozen linked table has never been on this machine, so M5 is refitted on the
+rebuild (ERA5 0.25° + CHIRPS). Fidelity is measured, not assumed: 3,926 test rows matched exactly,
+label agreement **0.988**, M5 AUC **0.7570** here against the frozen **0.7715**, no-climate **0.7323**
+against **0.7513**, ρ = 0.881 full and 0.976 no-climate. **This is an independent-rebuild version of
+the registered re-run and must never be reported as the registered one.** Every contrast below is
+within-rebuild, so the offset is common to all arms and cannot manufacture a fold effect.
+
+### The result: M5's answer is not M6's
+
+| radius | buffered | size-matched control | gap | ΔNB gap | controls below |
+|---|---|---|---|---|---|
+| 0 km | 0.7411 | 0.7177 | **+0.0233** | +0.0110 | 10/10 |
+| 25 km | 0.7344 | 0.7212 | +0.0132 | +0.0071 | 9/10 |
+| 50 km | 0.7078 | 0.7171 | −0.0092 | −0.0014 | 2/10 |
+| 75 km | 0.6842 | 0.7171 | −0.0329 | −0.0217 | 1/10 |
+| 100 km | 0.6500 | 0.7026 | **−0.0526** | −0.0355 | 0/10 |
+
+**At the operative radius the folds are not merely cheap — the buffered fold BEATS an equally-sized
+random training set** (+0.0233, z = 2.09, every one of ten controls below it). M6 lost 0.022 at the
+same radius. The two models disagree in **sign** at 0 km and agree at 100 km, which is why
+`wp4_02`'s within-M6 result could never have stood in for this one: *the price of a fold is a
+property of the model, not of the geography alone.*
+
+**Read the significance honestly.** On AUC, **every** buffered-minus-control interval spans zero,
+100 km included (−0.0505 [−0.1107, +0.0064]). On net benefit at p\* = 0.30 the 75 km
+(−0.0216 [−0.0412, −0.0039]) and 100 km (−0.0353 [−0.0610, −0.0120]) intervals exclude it. So the
+defensible claim is **a monotone, one-signed trend that reaches conventional significance only on
+the decision metric and only past 50 km** — n = 26 is the binding constraint, exactly as `wp4_00`
+priced it.
+
+### The climate increment is what the paper claims, and it survives
+
+| arm | ΔNB (M5 − no-climate) | change vs temporal |
+|---|---|---|
+| temporal split | +0.0071 | — |
+| LOOCV, no buffer | +0.0057 | — |
+| buffered 0 km | +0.0218 | +0.0148 [−0.0095, +0.0420] |
+| buffered 25 km | +0.0200 | +0.0130 [−0.0086, +0.0370] |
+| buffered 50 km | +0.0266 | +0.0192 [−0.0053, +0.0437] |
+| buffered 75 km | +0.0152 | +0.0078 [−0.0189, +0.0344] |
+| buffered 100 km | −0.0015 | −0.0088 [−0.0325, +0.0162] |
+
+**Under spatial CV the climate block earns at least as much as it does under the temporal split**, at
+every radius up to 75 km, and every change-vs-temporal interval spans zero. This is the direct answer
+to *"your CV ignores spatial autocorrelation, so your increment is inflated"*: it is **not** inflated
+by the temporal split — if anything the temporal split is the conservative choice. The point estimates
+running *above* temporal are not claimed as a real gain; the intervals cover zero and the honest
+reading is *unchanged*.
+
+### Where the spatial dependence lives, and where it does not
+
+Panel (e). The no-climate twin's gap is nearly flat (+0.0072 → −0.0154 across the radii) while M5's
+falls to −0.0526. **Most of what long-radius blocking removes is in the climate block** — which is
+coherent: climate fields are spatially smooth over hundreds of km, so a neighbour's rainfall is a
+usable proxy for yours in a way a neighbour's case history is not.
+
+### Traps this notebook adds
+
+- **A held-out district's fixed effect is not estimable.** M5 carries an RDHS dummy per district; hold
+  one out and its column is all-zero in training, so it is scored at the reference district's
+  intercept (`LK11`, dropped by `drop_first`). **Therefore every temporal-versus-fold contrast
+  conflates losing the neighbours with losing the fixed effect** — only buffered-minus-control
+  separates them, because the control carries the identical handicap. This is the M5 analogue of
+  `wp4_02`'s sample-size confound and it needs the same matched-control cure.
+- **Pooled AUC and per-district AUC answer different questions.** At 0 km the pooled gap is
+  **+0.0233** while **15 of 26 districts are individually negative**. Pooling rewards getting the
+  between-district ordering right; the per-district table does not see that at all. Quote the one you
+  mean. (At 100 km the two agree: 17 of 26 negative.)
+- **The frozen pipeline imputes missing lags with a train-set mean over all districts**, which is a
+  cross-district touch under a spatial fold. It is bounded here rather than waved past: 182 rows
+  (1.73%) have an incomplete lag window, **0 of them in the test split**, so no imputed row is ever
+  predicted on.
+- **`pd.concat` keeps both frames' indices**, and `pd.crosstab` then reindexes — duplicate labels
+  raise `cannot reindex on an axis with duplicate labels`. Reset the index after concatenating.
+- **Environment: a third one.** `wp4_02b` runs on the **`python3` kernel → `/Users/mpcr/aj/Dengue/.venv`**
+  (3.14.6, sklearn 1.9.0) — the only env here with sklearn + patsy + statsmodels that reproduces
+  `sl_04` to **exactly 0.0**. `wp5_*` stays on `pywmp-mac`, `wp4_02` on `freight-eda`.
