@@ -8,7 +8,82 @@
 
 ---
 
+## 2026-08-18 (c) — The ladder rebuild's rainfall was mirrored north-to-south; corrected, and two conclusions change
+
+**`DECISION` — a defect found in `sl_01_exposure.ipynb` and fixed; `notebooks_sl_ladder/` and
+`wp4_02b` are both re-run.** `sl_01` indexed the staged CHIRPS window with
+`ai = cell_row − min(cell_row)`. `cell_row` is **raster order (north-down)**; the staged array is
+stored in the netCDF's **latitude-ascending (south-up)** order. Every district received its north–south
+mirror image's rainfall — Galle got Killinochchi's, Colombo got Mannar's, Ratnapura got Mullaitivu's.
+**Only 3 of 26 districts got their own.** The existing bbox assert could not catch it: a flipped index
+range is identical, so the check passed on a completely wrong table.
+
+**`DIRECTION` — this is the trap the study already recorded, and writing it down did not prevent it.**
+The 2026-08-12 entry records exactly this hazard (`i = 1999 − row`) from building WP5's precipitation
+twin. The rebuild hit it anyway three notebooks later, because the note was filed as a property of the
+CHIRPS **reader** and `sl_01` is a CHIRPS **consumer**. **A trap recorded against one component does
+not transfer to the next component that touches the same data.** The durable fix is a gate at the
+point of use, not a note.
+
+**`DELIVERABLE` — two gates now sit in `sl_01`, either of which would have caught it.** A
+**geographic** one — the southwest wet zone must out-rain the northern dry zone, now reading Kalutara
+3,821 mm against Killinochchi 996 mm — and a **cross-check against `wp5_01`'s independently-built
+Build A′**, which now agrees to **4.2e-6 mm**. The second is the stronger and was available all along:
+*the answer was already in the quarantine, computed by another notebook.*
+
+**`DIRECTION` — the diagnostic that isolates a data defect from a modelling difference.** Every
+climate-carrying model moved and no climate-free model did: M2 **0.6422 → 0.7034**, M3 0.6735 → 0.7204,
+M4 0.7190 → 0.7604, M5 0.7570 → **0.7652**, while M0, M1 and M5-no-climate are unchanged to the digit.
+**If a data error is real, the models that cannot see the data must not move.** Worth applying to any
+future discrepancy before reaching for an explanation.
+
+**`DECISION` — §4 of the rebuild report is withdrawn and rewritten; its argument was wrong.** It read
+the full-model correlation with the frozen run (0.881) against the no-climate arm's (0.976) as the
+**measured cost of ERA5 0.25° in place of ERA5-Land 0.1°**, and concluded a CDS key would buy most of
+it back. Corrected, the full-model correlation is **0.9752** against **0.9758** — a gap of **0.0006**,
+not 0.095. **Essentially all of it was the defect.** What a CDS key would buy is now *unmeasured, not
+measured*.
+
+**The transferable lesson, and it is not about CHIRPS: a defect was absorbed by the most plausible
+explanation available.** An exposure substitution the team already knew was in play sat exactly where
+the discrepancy appeared, so the reasoning looked sound — which is what made it dangerous. The check
+that broke it was cheap and structural: **M5-full and M5-no-climate differ only in the climate block,
+so their correlations with the frozen run cannot diverge by 0.095 unless the climate block itself is
+wrong.** Ask what a discrepancy *cannot* be before accepting what it plausibly is.
+
+**`OPEN` — the rebuild's headline moved and the earlier claim was too generous.** The matched increment
+is now **+0.0166 [+0.0055, +0.0293]** (was +0.0071 [−0.0041, +0.0198]) against the frozen
+**+0.0087 [−0.0079, +0.0245]**. So the rebuild's conditional interval now **excludes zero** and its
+point estimate is roughly **twice** the frozen one. The 2026-08-17 entry's "the deflationary conclusion
+survives the substitution — same qualitative reading, interval covers zero" **is corrected**: the sign
+and order of magnitude replicate, the magnitude does not, and the rebuild is the more favourable of the
+two. Two reasons not to read it as a challenge to the frozen result: the intervals are not comparable
+(conditional vs development-inclusive), and the exposure is a different product. **The deflationary
+conclusion is not overturned; the claim that it was independently confirmed at the same magnitude is.**
+
+**`DIRECTION` — `wp4_02b`'s monotone trend did not survive, and the increment result got stronger.**
+Corrected, the buffered-minus-control gap runs **+0.0379 / +0.0238 / +0.0030 / −0.0539 / −0.0274**
+across 0–100 km: it **turns at 75 km and partially recovers at 100 km**, so the tidy "cost grows with
+radius" reading in the 2026-08-18 (b) entry is withdrawn. **Exactly one radius reaches significance —
+75 km, −0.0532 [−0.0916, −0.0157]** — and 100 km does not. Meanwhile the climate increment is now
+**unchanged by spatial CV in the clean direction**: every change-vs-temporal interval spans zero with
+every point estimate within 0.008 of the temporal split, where the mirrored run had put the buffered
+arms awkwardly *above* temporal.
+
+**`DECISION` — quote the cluster bootstrap, not the control-draw z.** The z compares a buffered fold to
+the spread of ten control draws and ignores district-level sampling error. At 0 km it reads +2.57 with
+all ten controls below while the bootstrap CI spans zero. The 2026-08-18 (b) entry leaned on the z;
+that framing is corrected here.
+
+---
+
 ## 2026-08-18 (b) — The cross-model fold contrast is measured on M5 itself, and M5's answer is not M6's
+
+> **PARTLY SUPERSEDED by the 2026-08-18 (c) entry above.** This run used the mirrored rainfall column.
+> The headline — M5's fold is not expensive at the operative radius, and the climate increment survives
+> spatial CV — holds and strengthens. **Withdrawn: the monotone "cost grows with radius" reading** (the
+> corrected series turns at 75 km) **and the reliance on the control-draw z-score.** Corrected numbers
+> are in the (c) entry and in `notebooks_wp45/README.md`.
 
 **`DELIVERABLE` — `notebooks_wp45/wp4_02b_fold_effect_within_m5.ipynb`, 17/17 QC, 2,912 fold-fits →
 `Manuscript_Figures/wp4/WP4_F_fold_effect_within_m5.{pdf,png}` + 7 quarantine tables.** The contrast
