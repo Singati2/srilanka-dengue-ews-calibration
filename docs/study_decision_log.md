@@ -8,6 +8,78 @@
 
 ---
 
+## 2026-08-18 — The WP4/WP5 port is in the v44 candidate and every number in it is machine-checked; the "§5.1 blocked" framing is retired
+
+**`DELIVERABLE` — Results Q7 exists in the v44 biomath candidate** (`wp45-into-v44` @ `e08f2ee`,
+worktree branch, three commits ahead of `upstream/agent/v44-hybrid-light-decision-framework`,
+**unpushed**). Ported, not copied: the fragment was written in v18's voice against a Methods section
+with no incremental-estimand formalism, so it is reframed against $\Delta V_{C,k}$ — exposure
+construction is an operationalisation choice inside $I^C$, and the fragment's "climate block removed
+(ceiling)" **is** the estimand's own $I^{SC} \to I^S$ contrast and is named that way throughout.
+Two Methods subsections, one Results question, five tables, four figures, its own Discussion
+subsection, 11 new bibitems. `FINAL_CANONICAL_DECISION.md` line 8 is **annotated, not rewritten** —
+the override is still unratified, and the original wording is preserved beneath it. **No TeX
+toolchain here: verified structurally (58/58 cites, 20/20 refs, 15/15 tabular column counts,
+balanced environments) — A COMPILE HAS NOT BEEN RUN.**
+
+**`DELIVERABLE` — `scripts/verify_numbers_v44.py` now carries 183 checks, up from 46**, and
+`docs/v44_number_verification_2026-08-17.md` records both passes. The first pass found **4
+mismatches inherited from v44** — none introduced by the biomath rewrite — plus a 16-occurrence
+stray-comma table defect; 3 of 4 and the whole LaTeX defect are fixed. The second pass added the
+port's **137 WP4/WP5 numbers, recomputed from the quarantine tables rather than transcribed**, and
+that recomputation surfaced **three more defects** in the freshly-ported text (50 km gap −0.018 →
+−0.019, 100 km gap −0.068 → −0.070, flipped-row event rate 0.087 → 0.088), all fixed.
+
+**`DIRECTION` — the crosswalk-versus-recompute distinction is the reusable lesson.**
+`BIOMATH_NUMERIC_CROSSWALK.md`'s "no candidate number differs from the canonical manuscript" is true
+and is *not* this check: it compares the candidate to the **previous `.tex`**, where numbers are
+preserved by construction, and never opens an analysis output. It therefore cannot see an error
+**inherited from** v44 — which is where all four mismatches lived. Same shape as 2026-08-15's README
+defect: **the summary layer is the layer nobody re-derives.**
+
+**`DECISION` — a skipped check is now an assertion, not a silent pass.** The first draft of the
+WP4/WP5 section guarded its modifier-screen lookups with `if key in fi:` and **silently skipped six
+checks** on a wrong key (the screen's flip response is `flip_AC_pct`, not `flip_AB_pct`; the same
+wrong-rung error had been applied to the three top-flip districts). A silently skipped check is
+precisely the untraceable class the script exists to prevent. Both aggregation hazards the
+provenance doc warns about were also live and are handled explicitly: **district-week vs
+district-mean** (0.205 °C vs 0.171) and **raw vs recalibrated** (flips 35–76 raw vs 46–83 recal; the
+441 ceiling holds raw-to-raw only, recal-vs-raw gives 759).
+
+**`DIRECTION` — "blocked by §5.1" is retired as a description of the two registered re-runs; the
+correct statement is "has not been run."** The old justification was that the archive holds
+predictions and not design matrices. It does not survive inspection:
+`analysis/v12_referee_response/run/sl_matched_and_recal.py` contains **both** the design-matrix and
+cross-basis builders (`design()`, `crossbasis()`, `climate_block()`, `fit_eval()`) and reproduces
+frozen M1/M4/M5 to <1e-6. All three `\REGBLOCK` sites now say so. **Sixth recovery by the
+does-the-blocker-cover-all-of-it test** — and this one had been load-bearing for a year of scope
+decisions.
+
+**`OPEN` — what actually remains is an *input*, and a local substitute for it exists.** The
+builder's declared inputs are `/home/mpcrlab/…` paths (the frozen v2 linked table, the two pilot
+prediction files) that are not on this Mac. But the 2026-08-17 ladder rebuild produced
+`data_quarantine/sl_ladder/sl_linked_v2equiv.csv` — same schema, 10,764 rows, carrying
+`t2m_mean_c` / `precip_sum_mm` / `rh_mean_percent` and the three missing-flags — and WP5's A′/B/C
+exposure tables sit beside it in `data_quarantine/wp5_exposure/`. **So both re-runs are runnable
+here today**, conditionally: on a rebuilt table whose fidelity is *measured* (test set exact at
+3,926, label agreement 0.988, matched raw ΔNB **+0.0071** against the frozen **+0.0087**,
+no-climate correlation 0.976 and full 0.881). A result from it is an **independent-rebuild version**
+of the registered re-run, not the registered re-run — it must never be reported as the latter.
+
+**`OPEN` — the `+0.0049` three-week reporting-delay increment still stands against the archived
+`0.005079`.** Unfixable by retyping: a stable claim tracing through `v15_final`,
+`v16_recalibrated_matched_integration`, `v17_plos_gph_submission` and `v20_round3`, resting on a run
+that is not the archived JSON. It is the highest-risk open number in the manuscript — v15's own peer
+review calls it the most policy-relevant result and v20 promoted it to the abstract. **A referee who
+recomputes it lands on 0.0051.** Needs the run reconciled, most likely on the Linux box.
+
+**Unpushed as of this entry:** four commits on `m6-geomatics-notebooks` (`b4240fa` PI-ask draft,
+`dc0a062` ladder rebuild, `4ca6a51`, `20b16e6` verifier) and three on `wp45-into-v44`. The
+consolidated PI ask (`docs/pi_ask_v1_geomatics_open_questions.md`, five items) is still **DRAFT and
+unsent**.
+
+---
+
 ## 2026-08-17 — An independent Sri Lanka M0–M5 rebuild runs end to end on this Mac; two undocumented conventions recovered
 
 **`DELIVERABLE` — `notebooks_sl_ladder/` (6 notebooks, all executed) + `docs/sl_ladder_rebuild_2026-08-17.md`.**
