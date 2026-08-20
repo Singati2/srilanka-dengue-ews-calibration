@@ -146,7 +146,11 @@ Re-checked structurally, same limits as before --- **a compile has still not bee
    upstream models on a rebuilt input is a decision for the PI, not a technical choice.
 2. **Figures** --- now six PDFs to copy into `submission_figs/` at build time, adding
    `WP5_F7b_decision_sensitivity_refit.pdf` and `WP4_F_fold_effect_within_m5.pdf`.
-3. **Number verification** --- the new numbers are recomputed by `scripts/verify_numbers_v44.py`
-   (183 checks → see that script's WP4/WP5 section). One pre-existing mismatch still stands, the
-   `+0.0049` three-week reporting-delay increment, which needs the Linux box.
+3. **Number verification** --- **DONE 2026-08-20.** The new numbers are recomputed by
+   `scripts/verify_numbers_v44.py`, which grows from 183 checks to **324** (278 of them WP4/WP5).
+   One defect was surfaced and fixed in this candidate: Table `tab:wp4-fold-m5`'s 50 km train-units
+   cell read `15.5`, the *mean* over folds from the metrics file, where Table `tab:wp4-fold` quotes
+   the *median* from the gap file (`15`); the two tables were not comparable in that column. One
+   pre-existing mismatch still stands, the `+0.0049` three-week reporting-delay increment, which
+   needs the Linux box.
 4. **Compile and re-read** --- unchanged, and now the first thing to do.
