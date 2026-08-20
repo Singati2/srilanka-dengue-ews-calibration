@@ -500,6 +500,282 @@ def check_wp45(results):
     return len(results) - n0
 
 
+# ---------------------------------------------------------------------------
+# The 2026-08-20 additions: the plan 3.3 refit (wp5_05b) and the within-M5 fold
+# contrast (wp4_02b). Both run on an INDEPENDENT REBUILD of the linked analysis
+# table, so every number below belongs to the \REBUILD provenance class and is
+# quoted in the manuscript as a sensitivity analysis, never as a registered
+# re-run. Checking them is what stops that distinction from eroding silently.
+#
+# One number here is derived in the write-up rather than in a notebook: the
+# refit's own climate-removal ceiling (427 flips at p*=0.30). Its recipe is one
+# line over the prediction panel and is executed below rather than transcribed,
+# because a derived number with no owning notebook is exactly the kind that
+# drifts.
+# ---------------------------------------------------------------------------
+
+
+def _pearson(xs, ys):
+    mx, my = _mean(xs), _mean(ys)
+    num = sum((a - mx) * (b - my) for a, b in zip(xs, ys))
+    den = (sum((a - mx) ** 2 for a in xs) * sum((b - my) ** 2 for b in ys)) ** 0.5
+    return num / den if den else float("nan")
+
+
+def check_wp45b(results):
+    """Recompute the refit and within-M5 fold numbers. Returns n checked."""
+    q5 = "data_quarantine/wp5_exposure/"
+    q4 = "data_quarantine/wp4_cv/"
+    RM = _rows(q5 + "wp5_05b_refit_metrics_srilanka_v1.csv")
+    RF = _rows(q5 + "wp5_05b_refit_flips_srilanka_v1.csv")
+    RB = _rows(q5 + "wp5_05b_refit_deltas_bootstrap_srilanka_v1.csv")
+    RK = _rows(q5 + "wp5_05b_knot_sensitivity_srilanka_v1.csv")
+    RE = _rows(q5 + "wp5_05b_envelope_vs_refit_srilanka_v1.csv")
+    RD = _rows(q5 + "wp5_05b_per_district_flips_srilanka_v1.csv")
+    RP = _rows(q5 + "wp5_05b_refit_predictions_srilanka_v1.csv")
+    with open(REPO / q5 / "wp5_05b_provenance.json") as fh:
+        RJ = json.load(fh)
+    MG = _rows(q4 + "wp4_02b_fold_effect_m5_gap_srilanka_v1.csv")
+    MM = _rows(q4 + "wp4_02b_fold_effect_m5_metrics_srilanka_v1.csv")
+    MB = _rows(q4 + "wp4_02b_fold_effect_m5_bootstrap_srilanka_v1.csv")
+    MD = _rows(q4 + "wp4_02b_fold_effect_m5_per_district_srilanka_v1.csv")
+    with open(REPO / q4 / "wp4_02b_provenance.json") as fh:
+        MJ = json.load(fh)
+    n0 = len(results)
+
+    src_rm = q5 + "wp5_05b_refit_metrics_srilanka_v1.csv"
+    src_rf = q5 + "wp5_05b_refit_flips_srilanka_v1.csv"
+    src_rb = q5 + "wp5_05b_refit_deltas_bootstrap_srilanka_v1.csv"
+    src_rp = q5 + "wp5_05b_refit_predictions_srilanka_v1.csv"
+    src_rj = q5 + "wp5_05b_provenance.json"
+    src_mg = q4 + "wp4_02b_fold_effect_m5_gap_srilanka_v1.csv"
+    src_mm = q4 + "wp4_02b_fold_effect_m5_metrics_srilanka_v1.csv"
+    src_mb = q4 + "wp4_02b_fold_effect_m5_bootstrap_srilanka_v1.csv"
+    src_md = q4 + "wp4_02b_fold_effect_m5_per_district_srilanka_v1.csv"
+
+    ARMS = ("A_frac", "B_pop", "C_frac", "C_pop")
+    LAB = {"A_frac": "A'", "B_pop": "B", "C_frac": "C-orography", "C_pop": "C-full"}
+
+    # ---- Table wp5-refit: levels ------------------------------------------
+    met = {(r["arm"], r["model"]): r for r in RM}
+    for arm, auc, slope in (("A_frac", 0.7653, 1.085), ("B_pop", 0.7668, 1.108),
+                            ("C_frac", 0.7659, 1.108), ("C_pop", 0.7650, 1.119)):
+        check(results, f"Table wp5-refit, {LAB[arm]} AUC", "AUC", auc,
+              float(met[(arm, "M5")]["AUC"]), src_rm)
+        check(results, f"Table wp5-refit, {LAB[arm]} calibration slope", "slope", slope,
+              float(met[(arm, "M5")]["cal_slope"]), src_rm)
+    aucs = [float(met[(a, "M5")]["AUC"]) for a in ARMS]
+    check(results, "Results Q7 prose, AUC span across builds", "AUC", 0.0018,
+          max(aucs) - min(aucs), src_rm)
+    check(results, "Table wp5-refit, climate block removed AUC", "AUC", 0.7323,
+          float(met[("A_frac", "matched")]["AUC"]), src_rm)
+    check(results, "Table wp5-refit, climate block removed slope", "slope", 1.156,
+          float(met[("A_frac", "matched")]["cal_slope"]), src_rm)
+    check(results, "Table wp5-refit, climate block removed dAUC", "dAUC", -0.0330,
+          float(met[("A_frac", "matched")]["AUC"]) - float(met[("A_frac", "M5")]["AUC"]), src_rm)
+    check(results, "Table wp5-refit, climate block removed dslope", "slope", 0.071,
+          float(met[("A_frac", "matched")]["cal_slope"])
+          - float(met[("A_frac", "M5")]["cal_slope"]), src_rm)
+
+    # ---- Table wp5-refit / Q7 prose: deltas with their intervals -----------
+    boot = {(r["model"], r["arm"], r["stat"]): r for r in RB}
+    DELTAS = {
+        ("B_pop", "dAUC"): (0.0015, -0.0008, 0.0037),
+        ("C_frac", "dAUC"): (0.0005, -0.0018, 0.0028),
+        ("C_pop", "dAUC"): (-0.0003, -0.0040, 0.0036),
+        ("B_pop", "dNB@0.30"): (0.0013, -0.0015, 0.0043),
+        ("C_frac", "dNB@0.30"): (-0.0025, -0.0063, 0.0009),
+        ("C_pop", "dNB@0.30"): (0.0004, -0.0022, 0.0031),
+        ("B_pop", "dCalSlope"): (0.023, 0.005, 0.042),
+        ("C_frac", "dCalSlope"): (0.024, 0.010, 0.037),
+        ("C_pop", "dCalSlope"): (0.035, 0.010, 0.062),
+    }
+    for (arm, stat), (pt, lo, hi) in DELTAS.items():
+        r = boot[("M5", arm, stat)]
+        check(results, f"Table wp5-refit, M5 {LAB[arm]} {stat}", "point", pt,
+              float(r["point"]), src_rb)
+        check(results, f"Table wp5-refit, M5 {LAB[arm]} {stat}", "CI lower", lo,
+              float(r["lo"]), src_rb)
+        check(results, f"Table wp5-refit, M5 {LAB[arm]} {stat}", "CI upper", hi,
+              float(r["hi"]), src_rb)
+    # the claim that carries the argument: only the calibration deltas exclude 0
+    excl = sorted(f"{r['model']} {r['arm']} {r['stat']}" for r in RB
+                  if r["excludes_0"].strip().lower() == "true")
+    check(results, "Results Q7 prose, deltas excluding zero", "count", 3, len(excl), src_rb)
+    check(results, "Results Q7 prose, deltas excluding zero are all M5 dCalSlope", "count", 3,
+          sum(1 for e in excl if e.startswith("M5") and e.endswith("dCalSlope")), src_rb)
+    # the reduced specification reverses sign and spans zero
+    for arm, pt in (("B_pop", 0.003), ("C_frac", -0.009), ("C_pop", -0.019)):
+        check(results, f"Results Q7 prose, M4 {LAB[arm]} dCalSlope", "point", pt,
+              float(boot[("M4", arm, "dCalSlope")]["point"]), src_rb)
+
+    # ---- flips at the reference threshold ---------------------------------
+    flips = {(r["model"], r["arm"], r["p_star"]): r for r in RF}
+    for arm, n, pct, on, off in (("B_pop", 72, 1.8, 35, 37), ("C_frac", 64, 1.6, 15, 49),
+                                 ("C_pop", 121, 3.1, 42, 79)):
+        r = flips[("M5", arm, "0.3")]
+        check(results, f"Table wp5-refit, M5 {LAB[arm]} flips", "count", n, float(r["flips"]), src_rf)
+        check(results, f"Table wp5-refit, M5 {LAB[arm]} flips", "% of rows", pct,
+              float(r["flip_pct"]), src_rf)
+        check(results, f"Results Q7 prose, M5 {LAB[arm]} alerts switched on", "count", on,
+              float(r["off_to_on"]), src_rf)
+        check(results, f"Results Q7 prose, M5 {LAB[arm]} alerts switched off", "count", off,
+              float(r["on_to_off"]), src_rf)
+    check(results, "Table wp5-refit, swap-path null flips", "count", 3,
+          float(flips[("M5", "B_pop", "0.3")]["noise_floor"]), src_rf)
+    check(results, "Results Q7 prose, swap-path null at p*=0.30", "count", 3,
+          float(RJ["gates"]["swap_path_noise_floor_flips"]["0.3"]), src_rj)
+    # the rung order swaps at p*=0.40 -- stated in the fragment, so checked
+    check(results, "Fragment prose, M5 B flips at p*=0.40", "count", 60,
+          float(flips[("M5", "B_pop", "0.4")]["flips"]), src_rf)
+    check(results, "Fragment prose, M5 C-orography flips at p*=0.40", "count", 67,
+          float(flips[("M5", "C_frac", "0.4")]["flips"]), src_rf)
+    check(results, "Results Q7 prose, largest M5 flip rate at any rung/threshold", "pct", 3.44,
+          max(float(r["flip_pct"]) for r in RF if r["model"] == "M5"), src_rf)
+
+    # ---- the derived ceiling, executed rather than transcribed ------------
+    ceiling = sum(1 for r in RP
+                  if (float(r["p_A_frac_M5"]) >= 0.30) != (float(r["p_A_frac_matched"]) >= 0.30))
+    check(results, "Table wp5-refit, climate-removal flips (DERIVED)", "count", 427,
+          ceiling, src_rp + " (recomputed)")
+    check(results, "Table wp5-refit, climate-removal flips (DERIVED)", "% of rows", 10.9,
+          100 * ceiling / len(RP), src_rp + " (recomputed)")
+    check(results, "Results Q7 prose, exposure share of climate leverage, low", "pct", 15,
+          100 * float(flips[("M5", "C_frac", "0.3")]["flips"]) / ceiling, src_rp + " (recomputed)")
+    check(results, "Results Q7 prose, exposure share of climate leverage, high", "pct", 28,
+          100 * float(flips[("M5", "C_pop", "0.3")]["flips"]) / ceiling, src_rp + " (recomputed)")
+
+    # ---- envelope vs refit, knots, mechanism ------------------------------
+    env = {r["rung"]: r for r in RE}
+    for rung, e, m in (("A'->B", 76, 72), ("A'->C", 104, 121)):
+        check(results, f"Results Q7 prose, envelope estimate {rung}", "count", e,
+              float(env[rung]["envelope_flips"]), q5 + "wp5_05b_envelope_vs_refit_srilanka_v1.csv")
+        check(results, f"Results Q7 prose, refit measurement {rung}", "count", m,
+              float(env[rung]["refit_flips"]), q5 + "wp5_05b_envelope_vs_refit_srilanka_v1.csv")
+    knots = {r["arm"]: r for r in RK}
+    for arm, fixed in (("B_pop", 74), ("C_frac", 65), ("C_pop", 119)):
+        check(results, f"Results Q7 prose, fixed-knot flips {LAB[arm]}", "count", fixed,
+              float(knots[arm]["flips_knots_fixed_at_A"]),
+              q5 + "wp5_05b_knot_sensitivity_srilanka_v1.csv")
+    check(results, "Results Q7 prose, B->C flips through the cross-basis", "count", 67,
+          float(RJ["results"]["mechanism"]["B_to_C_flips_crossbasis"]), src_rj)
+    check(results, "Results Q7 prose, B->C flips with temperature entered linearly", "count", 10,
+          float(RJ["results"]["mechanism"]["B_to_C_flips_linear_exposure"]), src_rj)
+
+    # ---- gates: these are assertions, not decorations ---------------------
+    check(results, "Methods sec:methods-wp5, refit baseline reproduces the ladder", "max |d|", 0.0,
+          float(RJ["gates"]["baseline_vs_sl04_M5_max_abs"]), src_rj)
+    check(results, "Methods sec:methods-wp5, no-climate twin invariant across arms", "max |d|", 0.0,
+          float(RJ["gates"]["noclimate_invariance_max_abs"]), src_rj)
+    check(results, "Methods sec:methods-wp5, held-out panel rows", "count", 3926, len(RP), src_rp)
+
+    # ---- per-district concentration ---------------------------------------
+    src_rd = q5 + "wp5_05b_per_district_flips_srilanka_v1.csv"
+    dist = sorted(RD, key=lambda r: -float(r["flip_pct_C"]))
+    for i, (name, pct) in enumerate((("Nuwara Eliya", 7.9), ("Matale", 7.3), ("Badulla", 6.6))):
+        check(results, f"Results Q7 prose, flip rate rank {i + 1} ({name})", "pct", pct,
+              float(dist[i]["flip_pct_C"]), src_rd)
+        # the district NAMED at this rank, checked as a 1/0 rather than skipped:
+        # a ranking claim that silently stops being verified is the failure mode
+        # this script exists to prevent.
+        check(results, f"Results Q7 prose, rank {i + 1} district is {name}", "match", 1,
+              1 if dist[i]["rdhs_name"] == name else 0, src_rd)
+    check(results, "Results Q7 prose, national flip rate (C-full)", "pct", 3.1,
+          100 * sum(int(r["flips_C"]) for r in RD) / len(RP), src_rd)
+    check(results, "Results Q7 prose, corr(flips, |Build C offset|)", "r", 0.66,
+          _pearson([abs(float(r["dT_c_pop"])) for r in RD], [float(r["flips_C"]) for r in RD]),
+          src_rd)
+
+    # ---- WP4: the within-M5 fold contrast ---------------------------------
+    # Train units come from the GAP file (a median over folds), not the metrics
+    # file, which carries the mean and reads 15.5 at 50 km. Table wp4-fold uses
+    # the median, so wp4-fold-m5 must too or the two tables are not comparable.
+    mg = {r["buffer"]: r for r in MG if r["model"] == "M5"}
+    for buf, units, auc, ctrl, gap, below in (
+            ("km_0", 21, 0.743, 0.705, 0.038, 10), ("km_25", 19, 0.735, 0.712, 0.024, 9),
+            ("km_50", 15, 0.709, 0.706, 0.003, 6), ("km_75", 12, 0.662, 0.716, -0.054, 0),
+            ("km_100", 9, 0.667, 0.695, -0.027, 2)):
+        r = mg[buf]
+        check(results, f"Table wp4-fold-m5, {buf} train units", "count", units,
+              float(r["train_units"]), src_mg)
+        check(results, f"Table wp4-fold-m5, {buf} buffered AUC", "AUC", auc,
+              float(r["auc_buffered"]), src_mg)
+        check(results, f"Table wp4-fold-m5, {buf} matched control", "AUC", ctrl,
+              float(r["auc_control_mean"]), src_mg)
+        check(results, f"Table wp4-fold-m5, {buf} gap (buffered-minus-control)", "dAUC", gap,
+              float(r["auc_gap"]), src_mg)
+        check(results, f"Table wp4-fold-m5, {buf} controls below", "of 10", below,
+              10 * float(r["pct_controls_below"]), src_mg)
+    check(results, "Results Q7 prose, control-draw z at 0 km", "z", 2.57,
+          float(mg["km_0"]["z"]), src_mg)
+
+    mb = {r["contrast"]: r for r in MB}
+    for buf, lo, hi in (("km_0", -0.012, 0.111), ("km_75", -0.092, -0.016)):
+        r = mb[f"M5: buffered {buf} − control"]
+        check(results, f"Table wp4-fold-m5, {buf} gap CI lower", "dAUC", lo, float(r["dAUC_lo"]), src_mb)
+        check(results, f"Table wp4-fold-m5, {buf} gap CI upper", "dAUC", hi, float(r["dAUC_hi"]), src_mb)
+    r75 = mb["M5: buffered km_75 − control"]
+    check(results, "Results Q7 prose, 75 km gap on net benefit", "dNB", -0.030,
+          float(r75["dNB"]), src_mb)
+    check(results, "Results Q7 prose, 75 km gap on net benefit", "CI lower", -0.049,
+          float(r75["dNB_lo"]), src_mb)
+    check(results, "Results Q7 prose, 75 km gap on net benefit", "CI upper", -0.013,
+          float(r75["dNB_hi"]), src_mb)
+    # exactly one radius excludes zero on dAUC, and it is 75 km
+    excl_auc = [b for b in ("km_0", "km_25", "km_50", "km_75", "km_100")
+                if float(mb[f"M5: buffered {b} − control"]["dAUC_lo"])
+                * float(mb[f"M5: buffered {b} − control"]["dAUC_hi"]) > 0]
+    check(results, "Results Q7 prose, radii excluding zero on dAUC", "count", 1, len(excl_auc), src_mb)
+    check(results, "Results Q7 prose, the radius excluding zero is 75 km", "match", 1,
+          1 if excl_auc == ["km_75"] else 0, src_mb)
+
+    mm = {r["arm"]: r for r in MM if r["model"] == "M5"}
+    check(results, "Table wp4-fold-m5, temporal-split AUC", "AUC", 0.765,
+          float(mm["0 temporal"]["AUC"]), src_mm)
+    check(results, "Table wp4-fold-m5, unbuffered LOOCV AUC", "AUC", 0.720,
+          float(mm["1 LOOCV, no buffer"]["AUC"]), src_mm)
+    check(results, "Results Q7 prose, M5 temporal calibration slope", "slope", 1.084,
+          float(mm["0 temporal"]["cal_slope"]), src_mm)
+    check(results, "Results Q7 prose, M5 buffered slope at 0 km", "slope", 0.721,
+          float(mm["2 buffered km_0"]["cal_slope"]), src_mm)
+    check(results, "Results Q7 prose, M5 buffered slope at 100 km", "slope", 0.230,
+          float(mm["2 buffered km_100"]["cal_slope"]), src_mm)
+
+    inc = MJ["results"]["increment_dNB"]
+    check(results, "Results Q7 prose, climate increment under the temporal split", "dNB", 0.017,
+          float(inc["0 temporal"]), q4 + "wp4_02b_provenance.json")
+    for buf, claim in (("km_0", 0.009), ("km_25", 0.015), ("km_50", 0.015),
+                       ("km_75", 0.009), ("km_100", 0.016)):
+        check(results, f"Results Q7 prose, climate increment buffered {buf}", "dNB", claim,
+              float(inc[f"2 buffered {buf}"]), q4 + "wp4_02b_provenance.json")
+    chg = MJ["results"]["increment_change_vs_temporal"]
+    # a BOUND, not an equality: the text says "within 0.008", so check the bound
+    # holds rather than checking a number the text never claims.
+    check(results, "Results Q7 prose, increment change vs temporal within 0.008", "holds", 1,
+          1 if max(abs(v[0]) for v in chg.values()) < 0.008 else 0,
+          q4 + "wp4_02b_provenance.json")
+    check(results, "Results Q7 prose, increment-change intervals spanning zero", "count", 5,
+          sum(1 for v in chg.values() if v[1] < 0 < v[2]), q4 + "wp4_02b_provenance.json")
+
+    twin = {r["buffer"]: r for r in MG if r["model"] == "matched"}
+    tw = [float(twin[b]["auc_gap"]) for b in ("km_0", "km_25", "km_50", "km_75", "km_100")]
+    check(results, "Results Q7 prose, twin gap upper bound across radii", "dAUC", 0.017,
+          max(tw), src_mg)
+    check(results, "Results Q7 prose, twin gap lower bound across radii", "dAUC", -0.015,
+          min(tw), src_mg)
+    for buf, neg in (("gap_km_0", 15), ("gap_km_100", 20)):
+        check(results, f"Results Q7 prose, districts with negative {buf}", "count", neg,
+              sum(1 for r in MD if float(r[buf]) < 0), src_md)
+    check(results, "Methods sec:methods-wp4, M5 label agreement vs frozen", "fraction", 0.988,
+          float(MJ["gates"]["label_agreement_vs_frozen"]), q4 + "wp4_02b_provenance.json")
+    check(results, "Methods sec:methods-wp4, M5 correlation vs frozen", "r", 0.975,
+          float(MJ["gates"]["corr_vs_frozen_full"]), q4 + "wp4_02b_provenance.json")
+    check(results, "Methods sec:methods-wp4, twin correlation vs frozen", "r", 0.976,
+          float(MJ["gates"]["corr_vs_frozen_noclim"]), q4 + "wp4_02b_provenance.json")
+
+    return len(results) - n0
+
+
 def main():
     results = []
     wp45_n, wp45_skipped = 0, False
@@ -557,7 +833,7 @@ def main():
     # ---- report ----
     # ---- WP4/WP5 (Sri Lanka), ported into Results Q7 on 2026-08-17 ----
     if all((REPO / d).is_dir() for d in WP45_QUAR):
-        wp45_n = check_wp45(results)
+        wp45_n = check_wp45(results) + check_wp45b(results)
     else:
         wp45_skipped = True
 
@@ -604,6 +880,13 @@ def main():
             "partial correlations adjusting for alert prevalence (wp5_07 §5a-b)",
             "1,456 model fits, the 8.6e-15 reproduce gate, and the 19.2% exploratory-target "
             "caveat (wp4_02 §2-8)",
+            "the refits themselves. Every wp5_05b/wp4_02b number below is checked against the "
+            "notebook's OUTPUT tables, so a defect inside the fitting code would be reproduced, "
+            "not caught. What guards that layer is the notebooks' own gates -- baseline "
+            "reproduces to 0.0, the no-climate twin is bit-identical across arms, the swap-path "
+            "null gives the noise floor -- and those three gate values ARE checked here",
+            "2,912 fold-fits and 20/20 + 17/17 notebook QC counts (provenance JSON, not a table)",
+            "the within-district sd of the B->C offset (1.5e-6 C), quoted from wp5_05b §8",
         ]:
             print(f"    - not checked: {note}")
 

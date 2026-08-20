@@ -316,6 +316,7 @@ Source: `wp4_02b_fold_effect_within_m5.ipynb`, 17/17 QC, seed 20260612, same `.v
 | LOOCV unbuffered AUC, M5 | 0.7201 (**below** buffered 0 km — unexplained, see note) | " |
 | Buffered AUC, 0/25/50/75/100 km | 0.7430 / 0.7355 / 0.7095 / 0.6624 / 0.6672 | " |
 | Matched-control mean AUC | 0.7051 / 0.7116 / 0.7065 / 0.7163 / 0.6946 | `FOLD-M5` gap |
+| Train units (median over folds) | 21 / 19 / 15 / 12 / 9 | `FOLD-M5` gap — **not** the metrics file's mean |
 | Gap (buffered − control) | **+0.0379 / +0.0238 / +0.0030 / −0.0539 / −0.0274** | " |
 | Controls scoring below buffered | 10/10 · 9/10 · 6/10 · 0/10 · 2/10 | `FOLD-M5.pct_controls_below` |
 | Control-draw z at 0 km | +2.57 (yet the bootstrap CI spans zero) | " |
@@ -330,6 +331,11 @@ Source: `wp4_02b_fold_effect_within_m5.ipynb`, 17/17 QC, seed 20260612, same `.v
 | Twin's gap across radii (flat) | +0.0072 / +0.0166 / +0.0005 / −0.0040 / −0.0154 | `FOLD-M5` gap, `matched` rows |
 | Districts with negative gap | 15/26 (0 km) · 17 · 20 · 20 · 20/26 (100 km) | `FOLD-M5` per-district |
 | Gates | label agreement 0.9880 vs frozen; corr 0.9752 (full) / 0.9758 (twin); baseline vs `sl_04` **0.0** | `PROV` |
+
+> **Train units come from the gap file, not the metrics file.** The gap file reports the *median*
+> training-set size over the 26 folds (50 km: 15); the metrics file reports the *mean* (15.5). Table
+> `wp4-fold` quotes the median, so `wp4-fold-m5` must too --- the two tables are printed to be read
+> against each other. The verifier caught this after the first draft of the table used 15.5.
 
 > **Two point estimates exist for each gap and the fragment quotes the direct one.** The gap table's
 > `auc_gap` is the full-sample buffered − control-mean difference (75 km: −0.0539); the bootstrap's
