@@ -8,6 +8,88 @@
 
 ---
 
+## 2026-08-20 — `wp5_05b` run: exposure construction moves the **decision**, not the score — and a recorded structural claim is corrected
+
+**`DELIVERABLE` — the last unrun analysis in the plan is done.** `notebooks_wp45/wp5_05b_decision_
+sensitivity_refit.ipynb`, 20/20 QC → `Manuscript_Figures/wp5/WP5_F7b_decision_sensitivity_refit.
+{pdf,png}` + 8 quarantine tables + a full prediction panel. M5, M4 and M5's no-climate twin refitted
+under **four** exposure arms, on the `sl_ladder` rebuild. **Independent-rebuild version — never to be
+reported as the registered re-run.** Baseline reproduces `sl_04` to **exactly 0.0**. **Every notebook
+in the plan has now been run.**
+
+**`DECISION` — the ladder is run with four arms, not three.** Build C is two changes at once, and
+the 2026-08-13 entry is explicit that only one is MAUP. So `C_frac` (lapse correction, area weights)
+was added to isolate the **orography deficit** from **sub-grid population placement**. Without it the
+headline number would have silently attributed the whole of Build C to MAUP — the exact error that
+entry warned against.
+
+**`DIRECTION` — THE finding, and it changes what a sensitivity analysis should report.** Exposure
+construction does **not** move what the model *scores*: ΔAUC and ΔNB@0.30 span zero under every arm
+and both models (AUC range across builds 0.0018; |ΔNB| ≤ 0.003). It **does** move what the model
+*decides*: **72** alerts flip under population weighting, **64** under the orography correction,
+**121** under both — against a measured swap-path noise floor of **3**. A sensitivity analysis
+reading only ΔAUC and ΔNB would have reported a null. **Report the flip count alongside them.**
+
+**`DIRECTION` — fourth independent appearance of ΔNB's blindness to threshold-local perturbations.**
+121 alerts change sign and ΔNB moves **+0.0004 [−0.0022, +0.0031]**. Net benefit averages over the
+panel a quantity in which flips in opposite directions cancel; it is the right decision-theoretic
+summary and the wrong sensitivity statistic. Now demonstrated on the registered re-run itself, not
+only on perturbations of frozen predictions.
+
+**`DECISION` — the one thing that does move is calibration, and only in M5.** Δ calibration slope is
+**+0.0234 / +0.0235 / +0.0345** under B / C-orography / C-full, and **all three intervals exclude
+zero**; M4's do not, and change sign. Small in absolute terms and *away* from the ideal of 1
+(1.0847 → 1.1192), so the honest reading is a detectable, clinically minor degradation — not a
+finding to headline. It is the WP6 bridge again: miscalibration is where exposure construction shows
+up.
+
+**`DECISION` — a claim in the 2026-08-13 entry is CORRECTED, with the mechanism measured.** That
+entry reads: Build C = Build B + a constant per-district offset, so *"district-relative models absorb
+it exactly → Build C cannot flip any alert."* **The premise is confirmed** (within-district sd of the
+B→C temperature offset, max over districts: **1.5e-6 °C**). **The conclusion is false for M5**, which
+carries district fixed effects and flips **67** alerts B→C. Rather than argue it, the notebook breaks
+the model in the one place the argument depends on: **refit M5 with the climate entered linearly and
+the flips collapse to 10 (0.25%) — a 6.7× drop.** An additive district intercept absorbs a constant
+shift in the **linear predictor**; Build C shifts **temperature**, which M5 reads through a natural-
+cubic crossbasis, and a nonlinear function of a shifted input is not a shifted function of the input.
+**The rule as it should now read: models *linear* in temperature with district fixed effects absorb
+Build C; models with a nonlinear exposure–response do not.** The distinction matters because the
+second description is the published model, and is the commoner design in this literature.
+
+**`DIRECTION` — the transferable lesson: a structural argument is a hypothesis until something is
+broken to test it.** The 2026-08-13 claim was correct algebra about the wrong object, and it survived
+three months because it was *plausible and never executed*. It cost nothing to check — one refit with
+the crossbasis swapped out. **Where a conclusion rests on "the model absorbs this", delete the
+absorbing structure and count.**
+
+**`DELIVERABLE` — `wp5_05`'s envelope is VALIDATED, and its stated bias had the stated sign.**
+`wp5_05` bounded this answer without a refit and warned its transfer coefficient was *"attenuated by
+the missing lag structure"*. Against the refit at p*=0.30: A′→B envelope **76** vs refit **72**;
+A′→C envelope **104** vs refit **121**. It bracketed both rungs, was within four alerts at the first,
+and **under-counted at the second — the direction it predicted**. Its 6.0% bound was never approached
+(largest refit flip rate anywhere in the band **3.44%**). **A bound whose error direction is known in
+advance earns its place in the record even when the refit is coming.**
+
+**`DIRECTION` — the two rungs act differently, which is why they had to be separated.** Population
+weighting flips **near-symmetrically** (35 on / 37 off); the orography correction is **directional**
+(15 on / 49 off) — cooling the highlands turns alerts off. Flips concentrate where the Build C offset
+is largest (**r = +0.66** across 26 districts; Nuwara Eliya 7.9%, Matale 7.3%, Badulla 6.6%), which
+**independently corroborates `wp5_07`'s F8 result through a refit rather than an envelope**.
+
+**`DECISION` — gates that carried the run.** (1) The **negative control**: M5's no-climate twin is
+bit-identical (**exactly 0.0**) under all four arms — the 2026-08-18 diagnostic applied *before* the
+fact rather than after. (2) The **swap-path null**: rebuilding Build A′ *through the swap machinery*
+gives the noise floor (3 flips, max|Δp| 1.06e-3), so every flip count is read against the machinery's
+own movement. (3) The **panel gate**: labels and split are byte-identical across arms. (4) **Knots
+re-derived per arm**, with a fixed-knot variant showing the flips survive (72/64/121 → 74/65/119).
+
+**`OPEN` — write-up integration is the outstanding item, not analysis.** `wp5_05b` is not yet in
+`manuscript/wp4_wp5_sections/`, not in the v44 Results Q7 port, and its numbers are not in
+`scripts/verify_numbers_v44.py`. The correction above also means the **2026-08-13 entry's structural
+note must not be quoted as written** in any draft.
+
+---
+
 ## 2026-08-18 (c) — The ladder rebuild's rainfall was mirrored north-to-south; corrected, and two conclusions change
 
 **`DECISION` — a defect found in `sl_01_exposure.ipynb` and fixed; `notebooks_sl_ladder/` and

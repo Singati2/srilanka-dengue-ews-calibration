@@ -6,13 +6,13 @@ intermediate is inspectable. Sri Lanka first.
 **Owner:** Geospatial Lead · **Status:** WP5's exposure ladder is **complete — A′, B and C, both
 variables** (10,842 rows each, row-aligned), and so are **plan §3.2** (exposure contrast + Figure F2,
 `wp5_03`), **the exposure half of plan §3.5** (population-product sensitivity, `wp5_06`) and now
-**the runnable half of plan §3.3** (decision-flip envelope + Figure F7, `wp5_05`) and **plan §3.6**
-(spatial structure of miscalibration + Figure F8, `wp5_07`). WP4 fold geometry
-and radius done, the fold effect measured inside M6 (`wp4_02`), and **the cross-model contrast now
-measured on M5 itself** (`wp4_02b`) — the §5.1 blocker turned out to cover the *input table*, not the
-builders, and the `sl_ladder` rebuild supplies a substitute of measured fidelity. What remains is the
-*registered* §3.3 re-run (ΔAUC / Δcalibration under each build, `wp5_05b`), which is runnable on the
-same substitute and has not been run.
+**plan §3.3 in both halves** — the decision-flip envelope + Figure F7 (`wp5_05`) and the **refit
+itself** + Figure F7b (`wp5_05b`) — and **plan §3.6** (spatial structure of miscalibration + Figure
+F8, `wp5_07`). WP4 fold geometry and radius done, the fold effect measured inside M6 (`wp4_02`), and
+**the cross-model contrast measured on M5 itself** (`wp4_02b`) — the §5.1 blocker turned out to cover
+the *input table*, not the builders, and the `sl_ladder` rebuild supplies a substitute of measured
+fidelity. **Every notebook in the plan has now been run**; what is outstanding is write-up
+integration, not analysis.
 
 **Plan Phase 6 (write-up) is drafted** as of 2026-08-15:
 `manuscript/wp4_wp5_sections/wp4_wp5_methods_results_v1.tex` holds drop-in Methods and Results
@@ -45,7 +45,7 @@ respects spatial autocorrelation.
 | wp5_03 | `wp5_03_exposure_contrast_and_F2.ipynb` — exposure contrast + **Figure F2** (plan §3.2) | the three frozen tables | ✅ executed |
 | wp5_04 | `wp5_04_build_c_lapse_corrected_temperature.ipynb` — **Build C**, lapse-corrected | ERA5 orography (streamed, no account) | ✅ executed |
 | wp5_05 | `wp5_05_decision_flip_envelope.ipynb` — decision-flip envelope + **Figure F7** (plan §3.3, runnable half) | frozen predictions + the three exposure tables | ✅ executed |
-| wp5_05b | ΔAUC / Δcalibration under Builds B and C (plan §3.3, registered re-run) | **design matrices (§5.1 blocker)** | blocked |
+| wp5_05b | `wp5_05b_decision_sensitivity_refit.ipynb` — ΔAUC / Δcalibration / ΔNB and the **alert decision** under Builds A′/B/C (plan §3.3, registered re-run) | `sl_ladder` rebuilt linked table + the three WP5 exposure tables | ✅ executed (independent-rebuild version) |
 | wp5_06 | `wp5_06_population_product_sensitivity.ipynb` — population-**product** sensitivity (plan §3.5, exposure half) | GHS-POP (streamed, no account) + staged climate | ✅ executed |
 | wp5_07 | `wp5_07_miscalibration_structure_and_F8.ipynb` — spatial structure of miscalibration + **Figure F8** (plan §3.6) | frozen predictions + M6 statics | ✅ executed |
 | wp4_00 | `wp4_00_loocv_folds_and_power.ipynb` — buffered-LOOCV folds + power cost | adjacency (present) | ✅ executed |
