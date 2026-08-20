@@ -8,6 +8,81 @@
 
 ---
 
+## 2026-08-20 (b) — the write-up catches up: v3 of the fragment, Q7 of the v44 candidate, 324 machine checks
+
+**`DELIVERABLE` — the outstanding integration is done.** `manuscript/wp4_wp5_sections/` is at **v3**
+(`8dccbb6`) and the v44 candidate's Results Q7 carries both analyses (`9520e0e`, `25cf2df` on the
+`wp45-into-v44` worktree branch, still unpushed). `wp5_05b` and `wp4_02b` are now written up
+everywhere they belong: Methods, Results, two tables and two figures in each of the two documents,
+the provenance file, and the verifier.
+
+**`DECISION` — `\REGBLOCK` is retired and replaced by `\REBUILD`, which says something different.**
+The old marker meant "blocked on the §5.1 design matrices", a framing withdrawn on 2026-08-18. The
+new one means "this claim rests on an independent rebuild of the linked analysis table, and is a
+sensitivity analysis, not the registered re-run". The distinction is now carried by a macro in both
+documents (10 uses in the v44 candidate, 9 in the fragment) rather than by a reader's memory. **The
+registered re-runs remain outstanding and stay on the PI ask.**
+
+**`DECISION` — Q7's answer is favourable, and the reason it is credible is that the decision-level
+movement is reported next to it.** For the v44 estimand: $\Delta V_{C,k}$ is **not** detectably
+sensitive to how $\mathcal I^{C}$ is realised numerically --- every $\Delta$AUC and $\Delta$NB
+interval spans zero across four builds --- while 72/64/121 alert decisions flip against a noise
+floor of 3. Reporting only the first half would have been a null that a referee could not check.
+
+**`DIRECTION` — two stale claims were surfaced by the integration and corrected in place.**
+1. The fragment still said the well-powered spatial claim rests on the Colombia block CV. That
+   analysis was **withdrawn from the study on 2026-08-17**, so the $n=26$ limitation has no
+   companion coming and is now written as permanent rather than as future work. *A limitation
+   inherited from a plan outlives the plan unless someone re-reads it.*
+2. The envelope's **direction split** (67 alerts on, 9 off for A$'\to$B) is contradicted by the
+   refit (35 on, 37 off) even though its **count** was nearly exact (76 vs 72). A transfer
+   coefficient applied to a displacement produces one-signed movement almost by construction.
+   **Rule recorded: an envelope of that kind may have its counts quoted and its direction splits
+   may not.** Both documents now say so where the asymmetry claim appears.
+
+**`DELIVERABLE` — `scripts/verify_numbers_v44.py` grows from 183 checks to 324** (278 of them
+WP4/WP5), and `scripts/check_wp45_fragment.py` replaces the ad-hoc structural check with a committed
+one (51 checks: cite keys, figure targets, refs, labels, marker macros, tabular arity). Three
+lessons went into the verifier rather than into a comment:
+- **The derived number is executed, not transcribed.** The refit's own climate-removal ceiling (427
+  flips) is derived in the write-up and has no owning notebook, so the check runs its recipe over
+  the prediction panel. It exists because quoting refit flips against the *frozen* ceiling of 441
+  would mix two provenance classes.
+- **A bound is checked as a bound.** "every point within 0.008" is not an equality; the first draft
+  checked it as one and produced a false mismatch. **False mismatches are how a verifier stops being
+  read.**
+- **Ranking claims are checked as 1/0 matches, never skipped when the name does not line up** — the
+  2026-08-18 "never guard a check with `if key in dict`" rule, applied to a new shape.
+
+**`DECISION` — one real defect found and fixed: the 50 km train-units cell.** `tab:wp4-fold-m5` had
+15.5, the *mean* training-set size over folds from the metrics file, where the adjacent
+`tab:wp4-fold` has the *median* from the gap file (15). The two tables are printed to be read
+against each other, so the column has to come from the same estimator in both. **A number can be
+correct in isolation and wrong beside its neighbour.** No conclusion moves.
+
+**`OPEN` — an unexplained inversion, recorded rather than smoothed.** Under the folds M5 scores
+0.720 on unbuffered leave-one-out and **0.743** under adjacency buffering, while training on four
+fewer districts. The estimand is unaffected (the matched control holds training size fixed), but
+both write-ups now state the inversion in the text instead of omitting the LOOCV row. Do not let a
+revision quietly drop it.
+
+**`DELIVERABLE` — the PI ask is rewritten as v2 and v1 is marked DO NOT SEND.**
+`docs/pi_ask_v2_geomatics_open_questions.md`. v1's four questions do not survive the last three
+days: **Q2 (the design-matrix builder) is withdrawn** — the artifact was in the repo all along;
+**Q1 changes artifact**, from the fitted design matrix to the *linked analysis table* the committed
+builder reads, which is the only thing still missing; **Q3 shrinks to a confirmation**, because its
+structural argument was disproved by measurement; and Q4 (Paper 1 or Paper 2) is unchanged in
+substance but now has a commit behind it. **The new Q1 is a decision only the PI can make: may
+results refitted on a rebuilt input be reported at all, and under what label?** That is a judgement
+about the collaboration, not about the statistics. v1 is kept unedited with a banner, as the record
+of what was believed on 2026-08-16.
+
+**`OPEN` — still outstanding:** the registered re-runs; the PI ask, now **v2, still DRAFT and
+unsent**; **no LaTeX toolchain here, so neither document has been compiled**; and the `+0.0049`
+reporting-delay increment, which needs the Linux box.
+
+---
+
 ## 2026-08-20 — `wp5_05b` run: exposure construction moves the **decision**, not the score — and a recorded structural claim is corrected
 
 **`DELIVERABLE` — the last unrun analysis in the plan is done.** `notebooks_wp45/wp5_05b_decision_

@@ -1,6 +1,13 @@
 # Four open questions for the PI — geomatics (WP4 / WP5)
 
-**Status: DRAFT, not yet sent.** Prepared by the Geospatial Lead, 2026-08-16.
+> **SUPERSEDED 2026-08-20 by `docs/pi_ask_v2_geomatics_open_questions.md`. Do not send this
+> version.** Q1 and Q2 rest on the claim that the frozen archive holds predictions rather than
+> design matrices, so the re-runs could not be executed here. That claim is false — the builders are
+> in `analysis/v12_referee_response/run/sl_matched_and_recal.py` — and Q3's structural argument
+> ("a district-relative model absorbs Build C exactly, so it cannot flip an alert") was disproved by
+> measurement: it flips 67. Kept unedited as the record of what was believed on 2026-08-16.
+
+**Status: DRAFT, never sent, SUPERSEDED.** Prepared by the Geospatial Lead, 2026-08-16.
 Companion to `docs/study_decision_log.md` and `docs/maup_sensitivity_and_spatial_cv_plan.md`.
 
 ---
