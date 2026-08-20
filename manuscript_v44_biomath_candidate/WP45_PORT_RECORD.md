@@ -1,7 +1,7 @@
 # WP4/WP5 port into the v44 biomath candidate
 
-**Date:** 2026-08-17 · **Branch:** `wp45-into-v44` · **By:** Geospatial Lead
-**Source:** `manuscript/wp4_wp5_sections/wp4_wp5_methods_results_v1.tex` (v2, 2026-08-16)
+**Date:** 2026-08-17, extended 2026-08-20 · **Branch:** `wp45-into-v44` · **By:** Geospatial Lead
+**Source:** `manuscript/wp4_wp5_sections/wp4_wp5_methods_results_v1.tex` (v3, 2026-08-20)
 
 **Ported, not copied.** The fragment was written in v18's voice against a manuscript whose Methods
 carried no incremental-estimand formalism. What changed, and why.
@@ -92,3 +92,61 @@ No TeX toolchain on this machine, so the port was checked structurally instead o
    gaps (25/50 km), so the row read `0.502`, `0.573`, `-0.068` and a reader subtracting got `-0.071`.
    The column is now the direct gap throughout with the bootstrap CI around it. No conclusion moves.
 4. **Compile and re-read.** Both PDFs, then a read-through for flow at the two seams.
+
+---
+
+# Second pass, 2026-08-20: the two deferred analyses are in
+
+The v2 port carried three `\REGBLOCK` sites saying the registered refits "have not been run". Both
+have now been run --- on an **independent rebuild** of the linked analysis table, never on the
+registered input --- so the marker changes meaning rather than disappearing.
+
+## What changed
+
+| Location | Change |
+|---|---|
+| Preamble | `\REGBLOCK` **retired**, replaced by `\REBUILD` (10 uses). Zero occurrences of `\REGBLOCK` remain. |
+| Methods `sec:methods-wp5` | New paragraph *Decision sensitivity by refitting, and the fourth arm it requires* --- the substitution and its gates, the four-arm ladder, the swap-path null. Carries `\label{par:rebuild}`, which the WP4 methods `\pageref`s. |
+| Methods `sec:methods-wp4` | *Measuring what the folds cost* rewritten for two models, plus the non-estimable held-out fixed effect and why only the matched control separates it from the loss of neighbours. |
+| Results Q7 | New paragraphs: the refit under each build, and the corrected structural claim; the M5 fold contrast. |
+| Results Q7 | `tab:wp5-refit` and `tab:wp4-fold-m5`; `fig:wp5f7b` and `fig:wp4fm5`. Five tables → 7, four figures → 6. |
+| Results Q7 | "third independent appearance" of the $\Delta\mathrm{NB}$ mechanism → **fourth**; the population-product tail no longer defers to a blocked refit. |
+| Discussion | 14--24% → **15--28%** of the climate block's decision leverage (the refit's own ceiling, 427 flips, not the frozen 441); the $\Delta\mathrm{NB}$ point now rests on a refit; the closing "has not been run" is replaced by what the refit measured. |
+
+## The finding the port has to carry
+
+Exposure construction moves the **decision** and not the **score**. Across four builds every
+$\Delta$AUC and $\Delta\mathrm{NB}$ interval spans zero while 72 / 64 / 121 alert decisions flip
+against a measured swap-path noise floor of 3. A sensitivity analysis reading only $\Delta$AUC and
+$\Delta\mathrm{NB}$ would have reported a null. For this candidate specifically: **$\Delta V_{C,k}$
+is not detectably sensitive to how $\mathcal I^{C}$ is realized numerically**, which is the
+favourable answer to Q7 --- and it is only credible because the decision-level movement is reported
+alongside it rather than suppressed by the same metrics.
+
+## The claim this pass corrects
+
+The v2 port inherited a structural argument holding that district fixed effects absorb Build C
+exactly, so it could flip nothing. Measured, it flips 67; entering temperature linearly instead of
+through the cross-basis collapses that to 10. The narrow rule survives (a model **linear** in
+temperature absorbs a uniform offset) and the model in use is not that kind. Any draft quoting the
+old claim as written is wrong.
+
+## Verification
+
+Re-checked structurally, same limits as before --- **a compile has still not been run**:
+
+- 58 `\cite` keys all resolve to `\bibitem`, none uncited · **pass**
+- 25 `\ref`/`\pageref` all resolve to `\label`, no duplicates · **pass**
+- **all 17 `tabular` column counts consistent with their specs** · **pass**
+- `\REBUILD` defined before first use; `\REGBLOCK` absent · **pass**
+
+## Outstanding, restated
+
+1. **PI ratification** --- unchanged, and now with a second item: publishing a competing refit of the
+   upstream models on a rebuilt input is a decision for the PI, not a technical choice.
+2. **Figures** --- now six PDFs to copy into `submission_figs/` at build time, adding
+   `WP5_F7b_decision_sensitivity_refit.pdf` and `WP4_F_fold_effect_within_m5.pdf`.
+3. **Number verification** --- the new numbers are recomputed by `scripts/verify_numbers_v44.py`
+   (183 checks → see that script's WP4/WP5 section). One pre-existing mismatch still stands, the
+   `+0.0049` three-week reporting-delay increment, which needs the Linux box.
+4. **Compile and re-read** --- unchanged, and now the first thing to do.
