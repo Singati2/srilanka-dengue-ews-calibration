@@ -1,0 +1,138 @@
+% =====================================================================
+%  Bibliography entries required by wp4_wp5_methods_results_v1.tex
+%  and NOT already present in the manuscript .bib (checked against
+%  manuscript/plos_ntd_revision_v18_submission_clean_candidate/references_v18.bib
+%  on 2026-08-15).
+%
+%  Already present and reused, do not duplicate: Funk2015, CHIRPS,
+%  MunozSabater2021, ERA5LandCDS, Tatem2017, WorldPop2025,
+%  CameronGelbachMiller2008, Vickers2006.
+% =====================================================================
+
+% --- MAUP, the conceptual basis of WP5 -------------------------------
+@book{Openshaw1984,
+  author    = {Openshaw, Stan},
+  title     = {The Modifiable Areal Unit Problem},
+  series    = {Concepts and Techniques in Modern Geography},
+  number    = {38},
+  publisher = {Geo Books},
+  address   = {Norwich, UK},
+  year      = {1984}
+}
+
+@article{Fotheringham1991,
+  author  = {Fotheringham, A. Stewart and Wong, David W. S.},
+  title   = {The modifiable areal unit problem in multivariate statistical analysis},
+  journal = {Environment and Planning A},
+  volume  = {23},
+  number  = {7},
+  pages   = {1025--1044},
+  year    = {1991},
+  doi     = {10.1068/a231025}
+}
+
+% --- Spatial cross-validation, the basis of WP4 ----------------------
+@article{Roberts2017,
+  author  = {Roberts, David R. and Bahn, Volker and Ciuti, Simone and Boyce, Mark S.
+             and Elith, Jane and Guillera-Arroita, Gurutzeta and Hauenstein, Severin
+             and Lahoz-Monfort, Jos{\'e} J. and Schr{\"o}der, Boris and Thuiller, Wilfried
+             and Warton, David I. and Wintle, Brendan A. and Hartig, Florian and Dormann, Carsten F.},
+  title   = {Cross-validation strategies for data with temporal, spatial, hierarchical,
+             or phylogenetic structure},
+  journal = {Ecography},
+  volume  = {40},
+  number  = {8},
+  pages   = {913--929},
+  year    = {2017},
+  doi     = {10.1111/ecog.02881}
+}
+
+@article{Valavi2019,
+  author  = {Valavi, Roozbeh and Elith, Jane and Lahoz-Monfort, Jos{\'e} J. and Guillera-Arroita, Gurutzeta},
+  title   = {blockCV: An R package for generating spatially or environmentally separated folds
+             for k-fold cross-validation of species distribution models},
+  journal = {Methods in Ecology and Evolution},
+  volume  = {10},
+  number  = {2},
+  pages   = {225--232},
+  year    = {2019},
+  doi     = {10.1111/2041-210X.13107}
+}
+
+% --- Climate fields actually used (ERA5 at 0.25 deg, not ERA5-Land) --
+@article{Hersbach2020,
+  author  = {Hersbach, Hans and Bell, Bill and Berrisford, Paul and Hirahara, Shoji
+             and Hor{\'a}nyi, Andr{\'a}s and Mu{\~n}oz-Sabater, Joaqu{\'i}n and Nicolas, Julien
+             and Peubey, Carole and Radu, Raluca and Schepers, Dinand and others},
+  title   = {The {ERA5} global reanalysis},
+  journal = {Quarterly Journal of the Royal Meteorological Society},
+  volume  = {146},
+  number  = {730},
+  pages   = {1999--2049},
+  year    = {2020},
+  doi     = {10.1002/qj.3803}
+}
+
+@misc{Carver2023ARCO,
+  author       = {Carver, Robert W. and Merose, Alexander},
+  title        = {{ARCO-ERA5}: An Analysis-Ready Cloud-Optimized Reanalysis Dataset},
+  howpublished = {22nd Conference on Artificial Intelligence for Environmental Science,
+                  American Meteorological Society},
+  year         = {2023},
+  note         = {Public mirror of ECMWF ERA5; accessed 2026-08-12}
+}
+
+@article{AlduchovEskridge1996,
+  author  = {Alduchov, Oleg A. and Eskridge, Robert E.},
+  title   = {Improved {Magnus} form approximation of saturation vapor pressure},
+  journal = {Journal of Applied Meteorology},
+  volume  = {35},
+  number  = {4},
+  pages   = {601--609},
+  year    = {1996},
+  doi     = {10.1175/1520-0450(1996)035<0601:IMFAOS>2.0.CO;2}
+}
+
+% --- Terrain and validation ------------------------------------------
+@misc{CopernicusDEM2021,
+  author       = {{European Space Agency} and {Airbus}},
+  title        = {Copernicus {DEM} GLO-30: Global 30-metre Digital Elevation Model},
+  year         = {2021},
+  doi          = {10.5270/ESA-c5d3d65},
+  note         = {Accessed via AWS Open Data Registry, 2026-08}
+}
+
+@article{Menne2012,
+  author  = {Menne, Matthew J. and Durre, Imke and Vose, Russell S. and Gleason, Byron E.
+             and Houston, Tamara G.},
+  title   = {An overview of the {Global Historical Climatology Network--Daily} database},
+  journal = {Journal of Atmospheric and Oceanic Technology},
+  volume  = {29},
+  number  = {7},
+  pages   = {897--910},
+  year    = {2012},
+  doi     = {10.1175/JTECH-D-11-00103.1}
+}
+
+% --- Alternative population product -----------------------------------
+@misc{Schiavina2023,
+  author       = {Schiavina, Marcello and Freire, Sergio and Carioli, Alessandra and MacManus, Kytt},
+  title        = {{GHS-POP} R2023A --- {GHS} population grid multitemporal (1975--2030)},
+  publisher    = {European Commission, Joint Research Centre (JRC)},
+  year         = {2023},
+  doi          = {10.2905/2FF68A52-5B5B-4A22-8F40-C41DA8332CFE},
+  note         = {Accessed 2026-08-14}
+}
+
+% --- Multiplicity control for the F8 modifier screen -------------------
+@article{BenjaminiHochberg1995,
+  author  = {Benjamini, Yoav and Hochberg, Yosef},
+  title   = {Controlling the false discovery rate: a practical and powerful
+             approach to multiple testing},
+  journal = {Journal of the Royal Statistical Society, Series B},
+  volume  = {57},
+  number  = {1},
+  pages   = {289--300},
+  year    = {1995},
+  doi     = {10.1111/j.2517-6161.1995.tb02031.x}
+}

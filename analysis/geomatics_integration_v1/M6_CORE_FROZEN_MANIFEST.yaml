@@ -1,0 +1,151 @@
+# M6-core frozen manifest
+# instruction_m6.md §6 — freeze the present result so it cannot drift.
+# NO FUTURE RESULT MAY OVERWRITE THIS VERSION. A re-fit goes to a new version tag.
+
+model_label: M6-core (A/B/C)
+freeze_commit: ff6287d0e336ab4e3a3d178593d3bb28e3f33a21
+country: sri_lanka
+label_source: recovered
+quotable: true
+feature_manifest: analysis/geomatics_integration_v1/M6_CORE_FEATURE_MANIFEST.yaml
+
+notebooks:  # sha256[:16] of the committed blob at freeze_commit
+  00_setup_and_geometry: 949d72ff063e720c  # worktree differs (re-execution noise only)
+  01_terrain_batchA: a35f4a5975d8db5c  # worktree differs (re-execution noise only)
+  02_dynamic_modis: ae0f2e34d40e0754  # worktree differs (re-execution noise only)
+  03_batchB_statics: c66f262cf6e0cdfe  # worktree differs (re-execution noise only)
+  04_feature_assembly: 3ff0b1e4bc247ca0
+  05_label_and_row_mask: 86e2c2a402b6f40f
+  06_fit_m6: c86e5937e8331220
+  07_evaluation: 4dfc7a293e0600c8
+  08_figures: 8c1df9d89a4e4055
+
+rows:
+  train: 5245
+  val: 1300
+  test: 3926
+  test_panel: 26 RDHS x 151 weeks, 2023-01-02 to 2025-11-17
+  test_rowkey_sha256_16: 9db1c932d37a63be
+  identical_to_frozen_comparator_rows: true
+
+model:
+  estimator: LogisticRegression
+  penalty: l2
+  C_selected: 0.001
+  C_grid: [0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10]
+  C_selected_on: validation log loss (val carved from train tail, 2022-01-01 onward)
+  n_features: 92
+  feature_selection: none
+  standardized_on: train split only
+  seed: 20260612
+
+calibration:
+  m6_method: Platt on validation
+  m6_platt_intercept: -0.8953101547374744
+  m6_platt_slope: 0.36484756580002153
+  comparator_method: past-only rolling-52-week recalibration
+  primary_comparison: raw predictions
+  primary_comparison_reason: >-
+    M6 and the comparators use different recalibration schemes; raw keeps all three on
+    equal footing. Per instruction_m6.md §10 the raw contrast is the primary fair
+    standalone comparison and calibrated differences must not be read as pure
+    model-information differences.
+
+uncertainty:
+  scheme: cluster bootstrap on RDHS
+  B: 1000
+  seed: 20260612
+  failures: 0
+  pstar: 0.3
+
+modis_gap_rule:
+  gap: 2025-07-04 to 2025-11-17 (both MODIS products, source-side catalogue gap)
+  rule: forward-fill last valid composite; stale_flag set; rows NOT dropped
+  reason_not_dropped: >-
+    dropping breaks identical-rows comparability with the frozen comparators
+    (M6.md §11 STOP condition).
+  sensitivity_all_rows: {n: 3926, AUC: 0.6008, NB: 0.058}
+  sensitivity_fresh_MODIS_only: {n: 3484, AUC: 0.6121, NB: 0.0653}
+
+inputs:
+  features_weekly: 69033629d021dc39
+  rowset: 64f6a58d3466161f
+  label_thresholds: 9746e68bcf89d4a3
+  implied_thresholds: 1a6d444e151e4e7c
+  worldpop_r2025a: 9c42513fc3de8f1c
+  comparator_panel: b4eb932b19654f87
+  comparator_panel_path: ALT_STATS/frozen/srilanka_matched_pairs.csv
+  comparators_available: ['M5_full', 'M5_noclim']
+  comparators_absent: ['M0', 'M1', 'M2']
+
+outputs:
+  m6_predictions_srilanka_v1.csv: 286a06b3aff2dbe6
+  m6_coefficients_srilanka_v1.csv: 2fac7f7ce998d32c
+  m6_metrics_srilanka_v1.csv: c58eb1a50ebb456c
+  m6_bootstrap_ci_srilanka_v1.csv: 5bb91033a4e5e9b8
+  m6_dca_srilanka_v1.csv: 081105d68b02d505
+
+figures:
+  M6_F1_discrimination_and_decision.pdf: 9fe798ab5f7e7ad9
+  M6_F1_discrimination_and_decision.png: 819a36385447fabb
+  M6_F2_calibration.pdf: 012f1be4b25a5cb5
+  M6_F2_calibration.png: 436cabd88a9f9254
+  M6_F3_contrasts.pdf: 861d7228e9139719
+  M6_F3_contrasts.png: 32656becde59b8f0
+
+headline_result:  # do not restate these numbers from any other artifact
+  M6:         {AUC: 0.601, CI: [0.568, 0.638], PR_AUC: 0.442, Brier: 0.223, NB_at_0.30: 0.058, NB_CI: [0.033, 0.085]}
+  M5_full:    {AUC: 0.771, CI: [0.741, 0.804], PR_AUC: 0.667, Brier: 0.180, NB_at_0.30: 0.145, NB_CI: [0.106, 0.184]}
+  M5_noclim:  {AUC: 0.751, CI: [0.721, 0.782], PR_AUC: 0.652, Brier: 0.191, NB_at_0.30: 0.135, NB_CI: [0.100, 0.176]}
+  M6_vs_M5_full: {dAUC: '-0.1697 [-0.2034, -0.1354]', dNB: '-0.0867 [-0.1118, -0.0620]'}
+  M6_vs_M5_noclim: {dAUC: '-0.1498 [-0.1816, -0.1154]', dNB: '-0.0775 [-0.1040, -0.0539]'}
+  test_prevalence: 0.3365
+  test_events: 1321
+
+# ---------------------------------------------------------------------------
+# PROVENANCE GAPS found while freezing. Both are open items, not PASS.
+# ---------------------------------------------------------------------------
+provenance_gaps:
+  threshold_generator_not_committed:
+    severity: blocking_for_reproducibility
+    status: BLOCKED  # port attempted 2026-08-07; only half recovers
+    detail: >-
+      m6_label_thresholds_srilanka_v1.csv defines the model target, but no committed
+      code produces it. Notebook 06 only consumes it via THRESHOLDS_CSV; notebook 05
+      stopped before constructing a label. The WorldPop year-ratio recovery was run as
+      ad-hoc session code and was never written to scripts/ or a notebook. This trips
+      instruction_m6.md §25's stop condition on establishing which artifact produced a
+      manuscript number, for the target itself.
+    port_attempt: scripts/m6_threshold_recovery_v1.py
+    recovered: >-
+      The feasible-interval solver and the clamp rule reproduce EXACTLY: 26/26 districts
+      admit a non-empty interval, all 26 frozen K values lie inside their own interval,
+      and all 5 clamped districts sit on the lower bound to within 1e-12.
+    not_recovered: >-
+      The empirical q75 half does not reproduce: best 10 of 21 districts across
+      {2 year bases} x {6 train row-sets} x {5 interpolation modes}. K is an exact
+      observed train ratio in 21/21 districts at quantile level 0.733-0.765, so the
+      method is confirmed, but K sits at a VARYING rank (187-195 of 255) where a fixed
+      quantile rule would give a fixed rank -- the original train row set differed from
+      any recoverable here by a few rows. Search halted per §25 rather than continuing
+      until a definition matched.
+    consequence: >-
+      The 19.2% of test rows that are test-informed ARE reproducible; the 80.8% that are
+      train-only are NOT. Route A (the original threshold artifact) is now the only
+      clean resolution.
+  nb05_provenance_stale:
+    severity: documentation
+    detail: >-
+      nb05_provenance.json still records status 'STOPPED at M6.md §11 — thresholds not
+      reproducible; label NOT constructed', which predates the recovery. Its rowset
+      output hash is still correct and is what notebook 06 consumed.
+
+target_provenance:  # instruction_m6.md §3 — quantified, see M6_TARGET_PROVENANCE.md
+  threshold_district_years_total: 208
+  threshold_district_years_clamped: 40
+  districts_with_any_clamp: 5
+  districts_clamped: ['Killinochchi', 'Matara', 'Polonnaruwa', 'Puttalam', 'Ratnapura']
+  test_rows_on_clamped_threshold: 755
+  test_rows_on_clamped_threshold_frac: 0.1923
+  test_events_on_clamped_threshold: 200
+  status: EXPLORATORY_RECONSTRUCTED_TARGET  # pending Route A/B recovery

@@ -1,0 +1,468 @@
+% =====================================================================
+%  WP4 (spatially-honest cross-validation) + WP5 (MAUP / exposure sensitivity)
+%  Methods and Results subsections — drop-in fragment, v3
+%
+%  Owner:   Geospatial Lead
+%  Status:  DRAFT for PI review. Not yet assigned to a manuscript.
+%  Date:    2026-08-20  (v3 adds the plan §3.3 refit and the WP4 cross-model
+%           fold contrast; v2 added plan §3.6 / Figure F8)
+%
+%  WHY THIS IS A SEPARATE FILE, NOT AN EDIT TO A MANUSCRIPT
+%  --------------------------------------------------------
+%  Two governance items are unresolved: (1) PR #8's FINAL_CANONICAL_DECISION.md
+%  places M6/WP4/WP5 outside Paper 1 evidence pending PI direction, and (2) the
+%  Paper 1 vs Paper 2 assignment for the geomatics work has been put to the PI
+%  and not answered. These subsections are therefore written to be dropped into
+%  whichever manuscript the PI designates, and are held outside the v44 tree
+%  until instruction_m6.md §22 is resolved.
+%
+%  SCOPE OF WHAT IS REPORTED HERE
+%  ------------------------------
+%  Everything below is computed and executed. Through v2 this file recorded two
+%  registered analyses as blocked on the "§5.1 artifacts" (the design matrices):
+%  the plan §3.3 refit under Builds B and C, and the cross-model re-evaluation
+%  of the published model under the spatial folds. THAT FRAMING IS WITHDRAWN.
+%  The design-matrix, cross-basis and fitting code was never missing — it is in
+%  analysis/v12_referee_response/run/sl_matched_and_recal.py, which reproduces
+%  the frozen M1/M4/M5 to <1e-6. What was missing was an INPUT: the linked
+%  analysis table, whose committed builder reads paths that exist only on the
+%  study's Linux host.
+%
+%  Both analyses are therefore now run, on an INDEPENDENT REBUILD of that input
+%  (data_quarantine/sl_ladder/sl_linked_v2equiv.csv; ERA5 0.25 deg + CHIRPS in
+%  place of the registered ERA5-Land fields), gated against the frozen run:
+%  label agreement 0.988 on the 3,926 test rows, and the baseline arm of each
+%  notebook reproduces the committed predictions to exactly 0.0.
+%
+%  *** THE REBUILD RESULTS ARE NOT THE REGISTERED RE-RUNS AND MUST NEVER BE  ***
+%  *** REPORTED AS THEM. Every claim resting on the rebuild is marked        ***
+%  *** \REBUILD below and is worded as a sensitivity analysis, not as the    ***
+%  *** registered result. The registered re-run stays outstanding and is on  ***
+%  *** the PI ask.                                                           ***
+%
+%  Everything else stands on the frozen archive and is traceable through
+%  wp4_wp5_number_provenance_v1.md.
+%
+%  DEPENDENCIES
+%  ------------
+%  * New bibliography entries: wp4_wp5_references_add_v1.bib (merge into the
+%    manuscript .bib before compiling).
+%  * Figures: Manuscript_Figures/wp5/WP5_F2_exposure_contrast.pdf
+%             Manuscript_Figures/wp5/WP5_F7_decision_flip_envelope.pdf
+%             Manuscript_Figures/wp5/WP5_F7b_decision_sensitivity_refit.pdf
+%             Manuscript_Figures/wp5/WP5_F8_miscalibration_structure.pdf
+%             Manuscript_Figures/wp4/WP4_F_fold_effect_within_m6.pdf
+%             Manuscript_Figures/wp4/WP4_F_fold_effect_within_m5.pdf
+%  * Assumes the host preamble already loads booktabs, graphicx, natbib.
+% =====================================================================
+
+% Marker for every claim that rests on the independent rebuild of the linked
+% analysis table rather than on the frozen archive. Such claims are sensitivity
+% analyses and must not be presented as the registered re-runs. Resolve to an
+% explicit footnote before submission; the dagger is a placeholder.
+\providecommand{\REBUILD}{\textsuperscript{\ddag}}
+
+% =====================================================================
+%  METHODS
+%  Insert after \subsection{Climate exposures and temporal alignment}
+% =====================================================================
+
+\subsection{Exposure construction and the exposure ladder}
+\label{sec:methods-wp5}
+
+Areal climate exposure is a construction, not an observation: a gridded weather field must be collapsed onto administrative polygons, and the collapse requires a choice of which cells to admit and what to weight them by. Because that choice is analyst-controlled and unreported in most early-warning studies, it is a candidate explanation for any miscalibration we attribute to the models themselves --- the modifiable areal unit problem in its weighting form~\cite{Openshaw1984,Fotheringham1991}. We therefore built the exposure table three ways and propagated all three through the decision analysis, holding the weather fields, the geometry, the outcome labels, the temporal split and the reference threshold fixed.
+
+The three builds form a nested ladder, each adding exactly one refinement. \textbf{Build A} is the incumbent area-weighted construction: every grid cell touching a polygon is admitted (an \texttt{all\_touched} mask) and cells are averaged with equal weight. \textbf{Build A$'$} replaces that mask with fractional-area weighting, so a cell contributes in proportion to the share of its footprint inside the polygon; isolating this step separates \emph{which cells are admitted} from \emph{what they are weighted by}. \textbf{Build B} re-weights the same admitted cells by the population they contain. \textbf{Build C} additionally corrects temperature for the elevation difference between the reanalysis orography and the population's true elevation before aggregation. Each table carries the same 10{,}842 keys (26 RDHS $\times$ 417 ISO weeks, 2018-01-01 to 2025-12-28) and is row-aligned to the others, so the builds differ from one another by construction alone.
+
+All weighting was performed in an equal-area projection (EPSG:32644); no area or population weight was computed in geographic degrees. Population weights came from WorldPop 100\,m UN-adjusted constrained rasters~\cite{Tatem2017,WorldPop2025}, assigned to (district, climate cell) pairs by pixel centre and normalised within district, so that a district's national population total cancels and only the \emph{shape} of the population surface inside the district can affect exposure. WorldPop UN-adjusted terminates at 2020 against an exposure window ending in 2025, so the plan's vintage-matching requirement could not be met as specified; we instead held the 2020 weight field constant and measured the drift it induces (approximately 1.1\% of a typical weight over 2018--2020), reporting it as a bounded extrapolation rather than imputing later vintages.
+
+Precipitation was taken from CHIRPS v2 daily p05~\cite{Funk2015,CHIRPS} and temperature and dewpoint from ERA5 single-level reanalysis~\cite{Hersbach2020} accessed through the analysis-ready cloud-optimised mirror~\cite{Carver2023ARCO}. Relative humidity was computed per grid cell per hour from temperature and dewpoint by the Alduchov--Eskridge Magnus formulation~\cite{AlduchovEskridge1996} \emph{before} any spatial or temporal averaging; deriving it instead from weekly-mean temperature and dewpoint yields a plausible-looking but incorrect field, because the relation is nonlinear.
+
+\paragraph{Grid resolution, and the direction of its bias.} The pre-specified temperature source was ERA5-Land at $0.1^{\circ}$, which requires a Copernicus Climate Data Store account that was not available to the geospatial analysis environment. Temperature and humidity were therefore built on ERA5 at $0.25^{\circ}$. This substitution attenuates the very effect WP5 measures, and the attenuation was quantified before any exposure table was built, from the digital elevation model and the population raster alone: at $0.25^{\circ}$ the population-weighted construction recovers 65.3\% of the elevation displacement it would recover at $0.1^{\circ}$ (91.7\%), and the effective number of contributing cells per district falls from 21.3 (area) and 11.8 (population) to 5.3 and 3.6. The bias therefore runs \emph{toward the null}, so every temperature displacement reported below is a conservative floor. The same attenuation makes district-level attributions unreliable for the A$'\to$B temperature step in the most strongly attenuated districts (Ratnapura retains 6.7\% of its predicted shift), and we make no claim about \emph{which} districts warm under population weighting on that rung. Precipitation is unaffected: CHIRPS was used at its native $0.05^{\circ}$ in every build.
+
+\paragraph{Build C: correcting to the elevation the reanalysis believes.} A lapse-rate correction requires two elevations, not one --- the true population-weighted elevation and the elevation the reanalysis implicitly assumes. We took the latter from ERA5's own surface geopotential, which is distributed in the same store as the temperature fields and was verified invariant across hours and across years. Correcting to a digital elevation model without it --- the natural shortcut --- assumes the reanalysis already sits at true mean elevation, which is precisely what fails in the highlands: ERA5's orography over Sri Lanka peaks at 1{,}219\,m against the island's true 2{,}524\,m. Temperature and dewpoint were corrected at the environmental lapse rate ($6.5\,^{\circ}$C\,km$^{-1}$; $1.5\,^{\circ}$C\,km$^{-1}$ for dewpoint) with a saturation guard preventing dewpoint from exceeding temperature, then aggregated under the Build B population weights, so the B$\to$C step isolates terrain on top of population weighting. Because the correction is affine in elevation, correcting each fine-grid pixel and then aggregating is exactly equivalent to correcting the weighted-mean elevation, which we verified; relative humidity is the exception and was recomputed per cell per hour from the corrected fields rather than patched onto the aggregate. Copernicus GLO-30 supplied the terrain~\cite{CopernicusDEM2021}. Precipitation carries no Build C rung: CHIRPS is an observational product calibrated to gauges, not a reanalysis with an internal orography to correct against, and constructing an orographic-enhancement model would violate the study's no-new-model rule.
+
+\paragraph{Independent validation of Build C.} Because Build C is the one rung that asserts a physical correction rather than a re-weighting, it was validated against station observations rather than accepted on construction. GHCN-Daily~\cite{Menne2012} provides six Sri Lankan stations reporting through 2025, one of them at Nuwara Eliya at 1{,}880\,m and the remainder between 1.8 and 116\,m. Station daily means were compared with ERA5 daily means on local (UTC+5:30) days.
+
+\paragraph{Population-product sensitivity.} Because Build B rests on a single modelled population surface, the weight field was rebuilt under two alternatives at the same 2020 epoch: WorldPop R2025A constrained (a newer release from the same producer) and GHS-POP R2023A~\cite{Schiavina2023}, which is produced by a different institution using a built-up-surface dasymetric method rather than a random forest. The fourth arm named in the analysis plan --- census district totals --- is degenerate and was struck rather than run: totals carry no within-district spatial information, so distributing them uniformly reproduces Build A exactly, and the totals themselves cancel in the within-district normalisation.
+
+\paragraph{Decision sensitivity without refitting.} The registered form of this analysis refits the model ladder under each build and reports $\Delta$AUC, $\Delta$calibration and $\Delta$NB. We report it in two independent forms, and the weaker one first, because it needs nothing beyond the frozen predictions and therefore carries no substitution caveat at all. The question \emph{does the alert decision move?} does not require refitting, and we answer it within a bounded envelope constructed from three pieces. First, an exact model-free \emph{flip curve}: a held-out row can change its alert status only if its predicted risk lies within the applied perturbation of the threshold, so $\#\{|p-p^*|\le\delta\}$ bounds the flips attributable to \emph{any} perturbation of size $\delta$, whatever generates it. Second, an observed \emph{ceiling}: the alert changes produced by deleting the entire climate block, computed on identical rows from the frozen full and climate-free predictions. Third, a \emph{transfer coefficient} $\beta$ relating exposure to predicted risk, estimated by regressing $\mathrm{logit}(p_{\mathrm{full}})-\mathrm{logit}(p_{\mathrm{noclim}})$ on the exposure variables --- which needs the predictions only. We estimated $\beta$ under four specifications (exposure alone; plus district fixed effects; plus seasonal harmonics; plus both) and report the range across all four rather than a single fit, because the specification is not identified without the design matrices. Every estimated flip count is asserted against the exact flip curve in the analysis notebook. Uncertainty used the study's established protocol: percentile intervals from 2{,}000 cluster-bootstrap resamples of the 26 RDHS units, seed 20260612~\cite{CameronGelbachMiller2008}.
+
+\paragraph{Decision sensitivity by refitting, and the four-arm ladder it requires.}\REBUILD{} We additionally refitted the model under each build, which is the registered form of the analysis and answers what the envelope above cannot: whether construction moves what the model \emph{scores}, not only what it \emph{decides}. Refitting requires the linked analysis table, which is not held in the analysis environment used here; the model, cross-basis and fitting code is, and reproduces the frozen fits. We therefore refitted on an independent rebuild of that table, built from the same weather windows and the same district weights, and gated against the frozen run: refitted on the rebuild, the published specification agrees with the frozen model's alert labels on 98.8\% of the 3{,}926 held-out rows and its held-out predictions correlate 0.975 with the frozen ones, the climate-free twin behaving the same way (0.976).\label{par:rebuild} Results from it are reported as a sensitivity analysis and not as the registered re-run, which remains outstanding.
+
+Three models were refitted under each build: the published specification, which carries district fixed effects, seasonal harmonics and a nonlinear temperature cross-basis; a reduced specification without the fixed effects or harmonics; and the published specification's climate-free twin. The exposure ladder was run with \emph{four} arms rather than three, because Build C makes two changes at once and only one of them is a construction effect: \textbf{C-orography} applies the lapse correction under area weights, isolating the reanalysis orography deficit, and \textbf{C-full} applies it under population weights, adding sub-grid population placement. Without the third arm the whole of Build C would be attributed to the modifiable areal unit, which the exposure decomposition (Section~\ref{sec:results-wp5-exposure}) already shows it is not. Cross-basis knots were re-derived from each arm's own training rows, with a fixed-knot variant run as a sensitivity. We report AUC, calibration slope and calibration-in-the-large, the Brier score, net benefit at thresholds 0.10--0.40, and the number of held-out alert decisions that change relative to Build A$'$, with the same cluster bootstrap as above (2{,}000 paired replicates over the 26 units, seed 20260612).
+
+Four gates were passed before any contrast was read, and two of them are worth naming because they test the machinery rather than the result. The Build A$'$ arm reproduces the rebuild's own committed baseline predictions to \emph{exactly} zero, so any movement across arms is the exposure and not the refit. The climate-free twin is bit-identical across all four arms --- a model that cannot see the climate fields must not move when they are rebuilt, and had it moved, every flip count would have been an artifact. A \emph{swap-path null} rebuilds Build A$'$ through the identical substitution machinery and re-fits, giving the number of flips the pipeline produces when nothing changes: this is the noise floor against which flip counts must be read, and it is 3 of 3{,}926 rows at the reference threshold. Finally, the outcome labels and the temporal split were asserted invariant across arms.
+
+\paragraph{Where miscalibration and decision changes fall in space.} To locate rather than merely quantify these effects, we computed four quantities per spatial unit --- calibration slope and calibration intercept (a within-unit logistic fit of the outcome on the logit of the held-out prediction), the unit's change in net benefit when the climate block is removed, and the unit's exposure-driven alert-flip rate --- and screened each against a panel of geospatial modifiers fixed in advance from the study's risk-factor review: elevation, built-up fraction, NDVI and distance to permanent water, plus slope, topographic wetness, height-above-nearest-drainage, tree cover, cropland, land-cover diversity, land-cover edge density, surface-water fraction, population density and nighttime lights. All are static per unit and were computed on the frozen geometry. The unit's own alert prevalence was carried through the screen as a non-geospatial decoy, because a unit's outbreak burden is the most obvious alternative explanation for its calibration and would otherwise be inherited silently by any modifier correlated with it. Associations are Spearman rank correlations with Benjamini--Hochberg control of the false-discovery rate across the entire $4\times15$ grid at once~\cite{BenjaminiHochberg1995}; all 60 tests are reported, not the surviving subset. This analysis is exploratory-explanatory by design: with 26 units it is a map of where the study's conclusions are least reliable, and none of these modifiers may re-enter the model ladder as an accuracy predictor.
+
+\subsection{Spatially-honest cross-validation}
+\label{sec:methods-wp4}
+
+The study's held-out evaluation is a single temporal split, which leaves the external-validation claim exposed to a spatial objection: neighbouring units share weather and outbreak timing, so a model trained on a district's neighbours has seen much of that district's signal. WP4 addresses this with buffered leave-one-out cross-validation, sized to Sri Lanka's 26 units~\cite{Roberts2017,Valavi2019}.
+
+\paragraph{Fold construction and the leakage audit.} For each of the 26 RDHS units in turn, the unit was held out and the training set additionally excluded every unit within a buffer radius of it. Distance was measured \emph{boundary-to-boundary} in the equal-area projection, not centroid-to-centroid: adjacent Sri Lankan districts sit 28--119\,km apart by centroid while sharing a border, so a centroid buffer would apply a wildly uneven exclusion. Folds were built as a function of radius (0, 10, 25, 50, 75, 100 and 150\,km, plus graph-hop variants) so that the operative radius could be selected from the autocorrelation analysis without rebuilding. Hop-based and kilometre-based buffers are not interchangeable --- one graph hop removes between 2 and 7 districts depending on location, applying an uneven buffer while appearing uniform --- and the kilometre buffers are treated as primary. The spatial half of the leakage audit was asserted rather than assumed: for every radius and every fold, zero train--test unit pairs fall within the buffer. Temporal honesty is enforced upstream, where a composite predictor is admissible for week $W$ only if its averaging window \emph{ended} before $W$ began; the two constraints are orthogonal, so the scheme is spatio-temporal.
+
+\paragraph{Residual autocorrelation range.} The buffer radius was to be set from the residual spatial autocorrelation range. Moran's $I$ was computed per test week across distance bands on the adjacency graph and tested against a permutation null (999 shuffles, seed 20260612), and an empirical variogram was fitted over 0--400\,km, for the frozen full and climate-free models and for the geomatics-only model.
+
+\paragraph{Measuring what the folds cost.} A spatially cross-validated model set against a temporally split comparator would be an artifact of the schemes rather than a comparison, so the fold effect must be measured as a \emph{within-model} contrast: the same model, the same features, the same 3{,}926 held-out rows, with only the validation scheme changing. We ran that contrast on two models. The first is the geomatics-only model, whose features and labels are held locally and which therefore carries no substitution caveat. The second is the published specification itself\,\REBUILD, refitted under every fold on the independent rebuild of the linked table described above (p.~\pageref{par:rebuild}); it is reported as a sensitivity analysis rather than as the registered cross-model re-run. Running both was not redundancy: the price of a fold is a property of the model as well as of the geography, and reporting only the geomatics-only version would have given the wrong sign at the operative radius.
+
+\paragraph{What a held-out fixed effect does, and why it is not the fold effect.} The published specification carries a district fixed effect, and a held-out district's dummy is all-zero in every training set, so the district is scored at the reference intercept whatever the buffer. Every temporal-versus-fold contrast for that model therefore conflates two losses --- the neighbouring districts and the district's own fixed effect --- and cannot be read as the cost of spatial honesty. The matched random-district control carries the identical handicap, so only the buffered-minus-control gap separates them; it is the estimand throughout, and the raw buffered-minus-temporal differences are reported only to show how much of the drop the control absorbs.
+
+The design point is the control. Buffering a fold removes spatial leakage \emph{and} training data, and both depress performance, so a raw buffered-versus-temporal comparison measures sample size and calls it leakage. Every buffered fold was therefore matched against a \emph{random-district control} trained on an identical number of districts, drawn without regard to geography (10 draws per radius); the buffered-minus-matched-control gap is the part attributable to geography, and the remainder is the price of a smaller training set. Across four arms this required 1{,}456 model fits for the geomatics-only model and 2{,}912 for the published specification and its climate-free twin. Two gates were passed before any contrast was read: for the geomatics-only model the rebuilt outcome labels reproduce the frozen outcomes on all 3{,}926 test rows and the baseline arm reproduces the committed model's predictions to $8.6\times10^{-15}$; for the published specification the temporal-split arm reproduces the rebuild's own committed predictions exactly, and the climate-free twin is fitted under every fold alongside it so that any part of the fold effect can be attributed to the climate block or to the rest of the model. Uncertainty used the same cluster bootstrap as above (2{,}000 replicates, districts resampled, seed 20260612), with the control ensemble averaged inside each replicate.
+
+The analysis plan positioned the Sri Lanka spatial result as a compact-country companion to a well-powered block cross-validation over approximately 1{,}000 Colombian municipalities. That companion analysis has since been withdrawn from the study rather than deferred, so nothing recovers the power lost at $n=26$: the spatial claims below are bounded by 26 units, and we report that as a characterised limitation rather than as a gap a later analysis will close.
+
+% =====================================================================
+%  RESULTS
+%  Insert after \subsection{Threshold and stricter-outcome robustness}
+% =====================================================================
+
+\subsection{Exposure construction moves exposure}
+\label{sec:results-wp5-exposure}
+
+Exposure construction moved every variable measured, so the pre-specified honest-null clause fired on none of them (Table~\ref{tab:wp5-ladder}, Fig~\ref{fig:wp5f2}). Across 10{,}842 district-weeks, replacing area weighting with population weighting displaced weekly rainfall by a mean absolute 3.40\,mm (7.9\% of the 42.9\,mm mean weekly rainfall), with a largest single district-week of 72.6\,mm; weekly mean temperature by 0.205\,$^{\circ}$C; weekly maximum temperature by 0.387\,$^{\circ}$C; and relative humidity by 0.77 percentage points. The lapse correction moved weekly mean temperature by a further 0.306\,$^{\circ}$C.
+
+Four features of that displacement matter more than its magnitude.
+
+\emph{The mask is a footnote; the weights are the result.} Decomposing A$\to$B into its two steps, exchanging the \texttt{all\_touched} mask for fractional-area weighting moved 1.8\% of mean rainfall, while re-weighting from area to population moved 7.9\%. What an exposure table is weighted by matters roughly four times more than which cells it admits --- and it is the weighting, not the mask, that studies leave unreported.
+
+\emph{The rungs act on different parts of the distribution.} Population weighting moved the weekly \emph{maximum} temperature roughly twice as far as the weekly mean (0.387 against 0.205\,$^{\circ}$C, with a maximum of 2.76\,$^{\circ}$C), because it re-weights a field whose cells disagree most in the tails. For a transmission process governed by thermal limits rather than averages, the tail is the relevant quantity. The lapse correction, being one offset per district, moved minimum, mean and maximum identically.
+
+\emph{In the weeks that would trigger an alert, the rainfall contrast grows in millimetres and shrinks in percent.} In the wettest decile of district-weeks the displacement was 8.6\,mm (5.4\%) and in the wettest percentile 12.9\,mm (4.9\%). A decision analysis feels the millimetres; a bias argument feels the percentage. Relatedly, the correlation between the two arms (0.9935 for rainfall) is not the reassurance it appears to be, because the table is dominated by dry weeks.
+
+\emph{Exposure sensitivity is not a property of a district.} Ranked by absolute displacement, rainfall and temperature share only one district in their top five, and the rank correlation between them is indistinguishable from zero ($\rho=0.24$, $p=0.23$). A single-variable sensitivity check will therefore identify the wrong set of exposure-sensitive districts, and no single such map exists. The signs are nonetheless geographic rather than noisy: Colombo loses 7.30\,mm per week of rainfall under population weighting and Puttalam gains 4.37, as people cluster on the drier coastal strip in the first case and away from it in the second; 17 districts move down and 9 up.
+
+\paragraph{The lapse correction, and what part of it belongs to MAUP.} On the grid available the lapse correction moved exposure about 1.5 times as far as population weighting did (0.306 against 0.205\,$^{\circ}$C), reversing the ranking anticipated in the analysis plan. That reversal is a resolution effect and it is coherent: what the correction recovers is exactly what a coarse grid loses, so it grows as the grid coarsens, and it is the one rung that partly repairs the missing $0.1^{\circ}$ product rather than being degraded by it. The largest district shifts were Nuwara Eliya $-1.92\,^{\circ}$C, Badulla $-1.33\,^{\circ}$C and Ratnapura $+1.01\,^{\circ}$C.
+
+The B$\to$C step must not be reported as a MAUP effect in full. Decomposed, a mean 0.223\,$^{\circ}$C is an orography deficit --- ERA5 issuing temperature for a mountain range about half its true height --- which would apply under area weighting too and belongs to the exposure-\emph{quality} argument, while 0.169\,$^{\circ}$C is genuine sub-grid population placement and is the only part belonging to WP5's exposure-\emph{construction} argument. The two can oppose each other (in Nuwara Eliya, $-2.26$ and $+0.34\,^{\circ}$C), so quoting the combined figure as MAUP would overstate the result by roughly half.
+
+\paragraph{Station validation.} ERA5 is accurate at sea level over Sri Lanka and approximately 5\,$^{\circ}$C too warm in the highlands --- an elevation-dependent bias, which is what Build C models, not a global offset. Against GHCN-Daily, the Nuwara Eliya station (1{,}880\,m) records 16.40\,$^{\circ}$C against ERA5's 21.17\,$^{\circ}$C (bias $+4.77\,^{\circ}$C), while four well-sampled lowland stations (1.8--116\,m) sit between $-0.36$ and $-0.42\,^{\circ}$C; the pattern holds in every year 2018--2025 and in both daily maxima and minima. Regressing the five well-sampled stations on elevation gives a local lapse rate of $6.40\,^{\circ}$C\,km$^{-1}$, and ERA5's own between-cell lapse over land is $6.31\,^{\circ}$C\,km$^{-1}$, both within about 2\% of the $6.5\,^{\circ}$C\,km$^{-1}$ applied, so no rescaling is warranted. Interpolating the station regression to Nuwara Eliya's population-weighted elevation (1{,}260\,m) implies a true district mean of 19.82\,$^{\circ}$C, against Build B's 21.89 (error $+2.07$) and Build C's 19.98 (error $+0.15$): the correction removes 93\% of the error where it is largest. Three limits bound this: the high end of the regression rests on a single station; the larger bias in daily minima ($+5.27$) than maxima ($+4.27$) is the signature of nocturnal cold-air pooling in a highland basin, a local siting effect that should not be extrapolated to a district's whole population; and the correction remains anchored to ERA5's smoothed orography, so a $0.1^{\circ}$ rebuild would start from a better one.
+
+\subsection{Exposure construction changes alert decisions, and net benefit cannot see it}
+\label{sec:results-wp5-decision}
+
+At the reference threshold $p^*=0.30$, exposure construction changed the alert decision on 35--76 held-out district-weeks (0.9--1.9\%) for the A$'\to$B step and 64--104 (1.6--2.6\%) for A$'\to$C, the range spanning the four transfer specifications (Table~\ref{tab:wp5-flips}, Fig~\ref{fig:wp5f7}). For scale, deleting the entire climate block from the model changed 441 decisions (11.2\%) on the same rows. Exposure construction alone therefore carries 14--24\% of the climate block's entire decision leverage --- far from nothing, and far from everything. Under the district-fixed-effects specification, cluster-bootstrap intervals were 1.94\% [1.27, 2.65] for A$'\to$B and 2.45\% [1.50, 3.57] for A$'\to$C, against 11.23\% [9.40, 13.17] for climate removal. In operational terms, at 26 districts and 52 weeks a 1.9\% flip rate is approximately 26 changed alert decisions per year nationally, against approximately 152 for the presence or absence of climate information altogether.
+
+These estimates are bounded from above by a quantity that requires no model at all. Because a row can change its alert status only if its predicted risk lies within the applied perturbation of the threshold, and only 6.4\% of held-out rows lie within 0.02 of $p^*=0.30$ on the recalibrated scale (6.0\% on the raw scale), no perturbation of that size can flip more than 6.4\% of decisions however it is generated. Every estimate above is asserted against that exact bound. The transfer coefficient's norm varies by a factor of 2.3 across the four specifications ($R^2$ 0.27--0.38, signs stable throughout), but the flip count varies far less, because the flip curve is locally near-linear --- the coefficient would have to be understated several-fold before exposure construction approached the ceiling. The refit reported next supplies the check the envelope could not perform on itself, and the envelope survives it (Section~\ref{sec:results-wp5-refit}).
+
+\paragraph{A near-zero $\Delta$NB is not evidence of decision insensitivity.} Across every rung, specification and threshold examined, the change in net benefit remained within $\pm0.0023$ while the flip counts above were unambiguously non-zero. This is not flips cancelling by direction: under this estimate they are strongly asymmetric (A$'\to$B at $p^*=0.30$ added 67 alerts and removed 9). The refit finds the same rung near-symmetric instead (Section~\ref{sec:results-wp5-refit}), and $\Delta$NB is near zero either way, which is the point: the structural argument below does not depend on the direction split at all. It is structural, and it follows from the definition of the decision-analytic threshold. A row can flip only if it sits near $p^*$; rows near $p^*$ have an event rate near $p^*$; and $p^*$ is by construction the break-even rate at which a true positive and the corresponding false positives are worth the same. Every flip is therefore worth approximately zero net benefit in either direction. Measured, the event rate among flipped rows tracks $p^*$ across both rungs and all four thresholds (0.087, 0.160, 0.289 and 0.431 against thresholds of 0.10, 0.20, 0.30 and 0.40; $r=0.96$), and the arithmetic closes exactly.
+
+The implication is general and reaches beyond this study: \emph{net benefit is structurally insensitive to any perturbation acting near the decision threshold}, so a near-zero $\Delta$NB must not be reported as evidence that a perturbation does not affect decisions. It answers a different question --- whether the perturbation changes the value of the alerts --- from the one a decision-flip count answers. Any sensitivity analysis in this literature that concludes ``no decision effect'' from a small $\Delta$NB alone is subject to this critique, including several reported elsewhere in this paper; we accordingly report flip counts alongside $\Delta$NB throughout.
+
+Finally, flips require a displacement \emph{and} a prediction near the threshold. Across the 26 districts the flip count correlates with the induced prediction shift but not with exposure displacement alone --- so, one step beyond the finding above, naming ``exposure-sensitive districts'' from an exposure contrast names the wrong set for decisions as well.
+
+\subsection{Refitting under each build: the decision moves, the score does not}
+\label{sec:results-wp5-refit}
+
+Refitting the model under each build\,\REBUILD{} separates two questions the envelope above could not: whether exposure construction changes what the model \emph{scores}, and whether it changes what the model \emph{decides}. The answer differs between them (Table~\ref{tab:wp5-refit}, Fig~\ref{fig:wp5f7b}).
+
+\emph{The score does not move.} Across the four builds the held-out AUC of the published specification spans 0.0018 in total (0.7649--0.7668). Against Build A$'$, $\Delta$AUC is $+0.0015$ [$-0.0008$, $+0.0037$] under population weighting, $+0.0005$ [$-0.0018$, $+0.0028$] under the orography correction alone and $-0.0003$ [$-0.0040$, $+0.0036$] under both; $\Delta$NB at $p^*=0.30$ is $+0.0013$, $-0.0025$ and $+0.0004$ on intervals of comparable width. Every one of these intervals spans zero, and the point estimates do not order consistently by rung.
+
+\emph{The decision moves, well clear of the noise floor.} On the same fits, 72 held-out alert decisions change under population weighting (1.83\%), 64 under the orography correction (1.63\%) and 121 under both (3.08\%), against a swap-path null in which rebuilding Build A$'$ through the identical machinery changes 3. Deleting the entire climate block from the same refit changes 427 decisions (10.9\%) on the same rows, so exposure construction alone carries 15--28\% of the climate block's decision leverage --- an independent refit reproducing the 14--24\% the frozen-prediction envelope gave, and extending its upper end.
+
+\emph{A sensitivity analysis reading only $\Delta$AUC and $\Delta$NB would have reported a null here}, and it would have been wrong in the operationally relevant direction: 121 changed alerts is roughly 40 changed alert decisions a year nationally, arising from a construction choice that most studies do not state. It is the same blindness of net benefit to threshold-local perturbations established above, now demonstrated on a refit rather than on a perturbation of frozen predictions --- which closes the obvious escape route, that the envelope's near-zero $\Delta$NB was an artifact of not refitting: 121 decisions change sign while $\Delta$NB moves $+0.0004$ [$-0.0022$, $+0.0031$]. The mechanism is the structural one given above --- a flip can only occur near $p^*$, where a flip in either direction is worth approximately zero net benefit --- and under this rung a partial cancellation of directions compounds it (42 alerts added, 79 removed). The two are separable in the data: population weighting flips almost symmetrically and the orography correction almost one-signed (49 of its 64 flips remove an alert), and $\Delta$NB stays within $\pm0.0025$ under both. Cancellation alone would not do that.
+
+\emph{The two rungs act differently, which is why the ladder needs four arms and not three.} Population weighting flips near-symmetrically (35 alerts on, 37 off) --- it redistributes weight within a district without moving the district. The orography correction is directional (15 on, 49 off): it cools the highlands, and cooling removes alerts. Reporting Build C as a single MAUP rung would average a symmetric redistribution with a one-signed physical correction and describe neither.
+
+\emph{The one quantity that does move is calibration, and only in the published specification.} Its calibration slope rises from 1.085 under Build A$'$ to 1.108, 1.108 and 1.119 under the three rungs; the changes are $+0.0234$ [$+0.0052$, $+0.0424$], $+0.0235$ [$+0.0097$, $+0.0374$] and $+0.0345$ [$+0.0101$, $+0.0618$], and all three intervals exclude zero. In the reduced specification the corresponding changes span zero and reverse sign ($+0.003$, $-0.009$, $-0.019$), so this is a property of the published model rather than of the exposure alone. The movement is small, and it is \emph{away} from 1: exposure construction makes the published model slightly less well calibrated, detectably but not by an amount that changes clinical interpretation. It should not be headlined; it is reported because it is the only score-level quantity in the analysis whose interval excludes zero, and because a sensitivity analysis that reported the null on $\Delta$AUC would have missed it too.
+
+\paragraph{The envelope was a good bound, and its error had the sign it advertised.} The estimated envelope gave 76 flips for A$'\to$B against 72 measured, and 104 for A$'\to$C against 121 measured. The first is accurate; the second under-counts by 17, which is the direction its own stated limitation predicted --- a transfer coefficient fitted on contemporaneous exposure cannot see the lagged cross-basis terms through which a sustained temperature offset acts. The exact model-free ceiling was never approached: the published specification's largest flip rate at any rung and any threshold is 3.44\%, against a bound of 6.4\%. \emph{A bound with a known error direction earns its place in a report even when the refit that will supersede it is already planned}, and the practical form of that is to state which way it is expected to be wrong before it can be checked. One thing it got wrong is worth recording, because it is a property of the method rather than an accident: the envelope makes the A$'\to$B step strongly one-signed (67 alerts added, 9 removed) where the refit finds near-symmetry (35, 37). A transfer coefficient applied to a displacement produces movement in the direction of that displacement almost by construction, so an envelope of this kind can estimate \emph{how many} decisions move while getting \emph{which way} they move badly wrong. Its counts may be quoted; its direction splits may not.
+
+\paragraph{A recorded structural argument, corrected by measurement.} An earlier note in this work reasoned that because the published specification carries district fixed effects and the Build B$\to$C offset is constant within a district (measured within-district standard deviation $1.5\times10^{-6}\,^{\circ}$C), the fixed effects must absorb the correction exactly and Build C could not flip any alert. The premise is right and the conclusion is wrong: B$\to$C flips 67 decisions in that model. An additive intercept absorbs a shift in the \emph{linear predictor}, but Build C shifts \emph{temperature}, which enters through a nonlinear distributed-lag cross-basis, and a nonlinear function of a shifted input is not a shifted function of the input. Refitting with temperature entered linearly collapses the flips from 67 to 10, which is the measurement that separates the two cases. The rule that survives is narrower than the one recorded: \emph{a model linear in temperature absorbs a uniform exposure offset; a model with a nonlinear exposure--response does not} --- and the published model is the second kind. We record the episode because the original claim stood unchallenged for three months on plausibility alone: where a conclusion rests on ``the model absorbs this'', the absorbing structure has to be deleted and the difference counted.
+
+\paragraph{Where the flips fall, and a cross-check on the highland result.} Per district, changed decisions concentrate in the highlands --- Nuwara Eliya 7.9\% of its held-out weeks, Matale 7.3\%, Badulla 6.6\%, against a national 3.1\% --- and the count tracks the magnitude of the district's Build C temperature offset ($r=0.66$ across 26 districts). This is the same concentration the frozen-prediction screen found (Section~\ref{sec:results-wp5-f8}), recovered here through a refit rather than an envelope, which is a stronger form of the same evidence. It remains a concentration and not an attribution: $r=0.66$ is not 1, because a flip needs a displacement \emph{and} a prediction sitting near the threshold. The two largest offsets do sit in the two highest-flipping districts, but Matale ranks second on changed decisions with only the seventh-largest offset ($0.21\,^{\circ}$C).
+
+\paragraph{Robustness of the refit itself.} Re-deriving the cross-basis knots from each arm's own training rows is a defensible choice that also lets the knots absorb part of the exposure change; holding the Build A$'$ knots fixed across all arms instead gives 74, 65 and 119 flips against 72, 64 and 121, so the result is not a knot artifact. The climate-free twin is bit-identical across all four arms, so no part of these differences can come from anything but the climate block. Flip counts are reported at four thresholds (0.10--0.40); the combined rung is the largest at all four, while the two single-step rungs sit close together and swap order at $p^*=0.40$ (60 against 67), so the design separates population weighting from the orography correction in \emph{character} --- symmetric against directional --- more reliably than in size.
+
+\subsection{The exposure result is not an artifact of the population product}
+\label{sec:results-wp5-product}
+
+The most direct objection to a population-weighted exposure result is that it inherits the errors of a single modelled population surface. It does not (Table~\ref{tab:wp5-product}). Rebuilding the weight field under WorldPop R2025A and GHS-POP R2023A moved 2.0\% and 1.6\% of a district's weight respectively, against 27.5\% for the area-to-population step itself. On exposure the separation is an order of magnitude or more: the product swap moved weekly mean temperature by 0.006--0.009\,$^{\circ}$C against 0.205 for the construction step, and rainfall by 0.16--0.20\,mm against 3.40. Ratios of construction effect to product effect run from 16.7 to 32.1 across variables; they do not narrow in the tails where alerts fire (19.5 in the wettest percentile of district-weeks, 35.8 in the hottest); and in 0 of 26 districts does the product effect reach the weighting effect. The per-district reading survives as well, with rank correlations of 0.985 and 0.990 on the ranking of movers, identical top-five sets and complete sign agreement, so the statements above about which districts are exposure-sensitive are not statements about WorldPop.
+
+Two incidental findings are worth recording. First, version drift within one producer exceeded the gap between producers: WorldPop UN-adjusted and WorldPop's own R2025A differ more (mean total variation 0.0201) than WorldPop and GHS-POP do (0.0157), so ``same producer, newer release'' is not the safer substitution it appears to be. Second, the approximately 1.4\% of population that falls outside the 26 polygons under WorldPop UN-adjusted is a coastline artifact specific to that product and vintage: on identical boundaries GHS-POP loses 0.23\% and WorldPop R2025A 0.10\%. It should be reported as a bounded product sensitivity rather than treated as a property of the geometry.
+
+These three products are all modelled surfaces sharing much of their input census, so their agreement bounds method sensitivity, not the truth of where people live. And this analysis addresses exposure only: the refit reported above varies the \emph{construction}, not the population product, so whether the product choice moves net benefit is not measured here. Since the product effect on exposure is 16--32 times smaller than the construction effect, and the construction effect moves neither $\Delta$AUC nor $\Delta$NB detectably, a detectable product effect on either is implausible --- but that is an inference from the exposure contrast, not a measurement, and we do not report it as a null.
+
+\subsection{Where miscalibration and decision changes concentrate}
+\label{sec:results-wp5-f8}
+
+Six of the 60 pre-specified associations survived false-discovery control (Fig~\ref{fig:wp5f8}), and the largest of them is a caution rather than a result.
+
+\emph{Calibration intercept is alert prevalence in another form.} The strongest association in the entire screen was between a unit's calibration intercept and its own alert prevalence ($\rho=0.85$, $q<0.001$), which is close to tautological --- a unit's intercept absorbs its base rate. It is reported because it outranked every geospatial modifier by a wide margin, and because it demonstrates what the screen would otherwise have hidden: any modifier correlated with outbreak burden inherits this association. That is the reason prevalence was carried through the screen rather than excluded from it.
+
+\emph{Calibration slope has genuine spatial structure.} Per-unit calibration slope ranged from 0.67 to 2.23 --- the model is not uniformly calibrated in space --- and was positively associated with cropland fraction ($\rho=0.61$, $q=0.031$) and land-cover diversity ($\rho=0.59$, $q=0.032$), and negatively with population density ($\rho=-0.50$). These survive adjustment for the unit's alert prevalence (partial $\rho=0.50$, $p=0.010$ for cropland; $0.49$, $p=0.011$ for land-cover diversity; $-0.44$, $p=0.025$ for population density), so they are not the tautology above in disguise. Predictions are too widely spread in the dense, built-up units and too compressed in the agricultural and land-cover-heterogeneous ones.
+
+\emph{Exposure-driven decision changes concentrate in the highlands.} Alert flips attributable to exposure construction were associated with slope ($\rho=0.56$, $q=0.035$), elevation ($\rho=0.56$, $q=0.035$) and height-above-nearest-drainage ($\rho=0.55$, $q=0.038$); three units --- Badulla (9.9\% of weeks), Nuwara Eliya (9.3\%) and Ratnapura (6.0\%) --- carry a large share of them. This is coherent with those being the units where the lapse correction moves exposure most, but the design cannot go further: elevation and the measured B$\to$C displacement are strongly collinear across 26 units ($\rho=0.74$), and neither survives adjustment for the other (elevation given displacement $\rho=0.27$, $p=0.18$; displacement given elevation $\rho=0.05$, $p=0.82$). The concentration is real; its attribution to terrain as against measured displacement is not identified at this sample size, and we do not assign it. The refit (Section~\ref{sec:results-wp5-refit}) reproduces the concentration on independently computed flips --- Nuwara Eliya and Badulla again in the top three, Ratnapura fifth, Matale entering second --- so it does not depend on the transfer approximation used here; it inherits the same collinearity, and does not identify the attribution either.
+
+\emph{Net benefit again shows nothing.} No modifier reached significance for per-unit $\Delta$NB; the strongest of the 15 was population density at $\rho=0.40$, $q=0.15$. Given the structural argument above, this is the expected result rather than an additional null: the same insensitivity that flattens $\Delta$NB nationally flattens it unit by unit. It is the fourth independent appearance of the same mechanism in this work --- after the national envelope, the refit and the threshold sweep --- and it reinforces that a decision-flip count and $\Delta$NB are not substitutes.
+
+\subsection{Spatial cross-validation}
+\label{sec:results-wp4}
+
+\paragraph{The power cost, quantified.} Sri Lanka is approximately 430\,km end to end, so a buffer is necessarily a large fraction of the country (Table~\ref{tab:wp4-power}). Excluding only immediately adjacent districts leaves a median of 21 of 25 possible training districts (worst fold 16) and retains 84\% of training district-weeks. At 100\,km the median fold trains on 9 districts and the worst on 5, retaining 36\%; at 150\,km the scheme collapses, with 12 of 26 folds keeping fewer than 5 training districts. The plan's qualitative caveat that leave-one-out remains low-powered at $n=26$ is thereby quantified rather than asserted. Across every radius and fold, zero train--test pairs fell within the buffer.
+
+\paragraph{Residual autocorrelation is undetectable, and does not settle the question.} Moran's $I$ on model residuals was indistinguishable from its permutation null at every distance band for all three models examined (permutation $p$ from 0.53 to 0.99), and the empirical variogram was flat from 25 to 400\,km. This is more robust than it first appears: the full model carries district fixed effects, which absorb time-invariant spatial structure and could manufacture a null, but the geomatics-only model carries no fixed effects at all and returns the same answer ($I=0.001$ among adjacent districts, $p=0.99$). With 26 units the permutation null has a standard deviation of approximately 0.02, so this excludes residual spatial correlation above roughly $|I|=0.04$ rather than proving its absence.
+
+\paragraph{The folds are nonetheless expensive for the geomatics-only model.} Direct measurement contradicts the inference that would follow from the residual analysis (Table~\ref{tab:wp4-fold}, Fig~\ref{fig:wp4f}). Against a temporal-split AUC of 0.601 and an unbuffered leave-one-out AUC of 0.592, adjacency buffering scored 0.565 while a random-district control trained on the same 21 districts scored 0.587 --- a geography-attributable gap of $-0.022$. The gap widens with radius, and at 100\,km the spatially blocked estimate is 0.502, indistinguishable from chance, while an equally sized random training set still reaches 0.573. Because training-set size is held fixed by construction, that difference cannot be sample size. In 0 of 10 control draws at 0, 75 and 100\,km did a random subset score below the buffered fold. Calibration degrades along the same gradient, the calibration slope falling from 0.875 under the temporal split to 0.529 at adjacency buffering and 0.018 at 100\,km. The effect is not one district's doing: 17 of 26 districts lose discrimination under adjacency buffering and 9 gain.
+
+Power is the binding constraint on certifying this. Cluster-bootstrap intervals for the buffered-minus-control gap span zero at 0\,km ($-0.022$ [$-0.055$, $+0.011$]) and exclude zero only at 75\,km ($-0.061$ [$-0.119$, $-0.008$]) and 100\,km ($-0.068$ [$-0.143$, $-0.001$]). The point estimates are consistent and one-signed at every radius, but with 26 clusters the bootstrap has little to work with --- the power table above arriving from the other direction. Intervals spanning zero here mean no difference was detected, not that none exists.
+
+\paragraph{On the published specification the answer is different, and at the operative radius it has the opposite sign.}\REBUILD{} Refitting the published model under the same folds (Table~\ref{tab:wp4-fold-m5}, Fig~\ref{fig:wp4fm5}) gives a buffered-minus-control gap of $+0.038$ at adjacency buffering, $+0.024$ at 25\,km, $+0.003$ at 50\,km, $-0.054$ at 75\,km and $-0.027$ at 100\,km. Where the geomatics-only model \emph{lost} 0.022 to geography at the operative radius, the published model \emph{gains} 0.038: at 0\,km the two models disagree in sign, and they agree only at 100\,km ($-0.027$ against $-0.070$). The price of a fold is therefore a property of the model as much as of the geography, and the within-model result on one model cannot be substituted for the other --- which is the specific reason the cross-model contrast had to be run rather than argued from the first.
+
+The dependence on radius is not monotone either. The gap turns negative at 75\,km and recovers at 100, so the reading that the cost of spatial honesty grows steadily with buffer radius --- available from the geomatics-only model alone --- is withdrawn for this model. Nor is the effect monotone in training-set size: adjacency buffering scores 0.743 against unbuffered leave-one-out's 0.720 while training on four fewer districts. We have no identified explanation for that inversion and do not offer one; it is the reason the estimand is the buffered-minus-matched-control gap, which holds training-set size fixed by construction, rather than any comparison against the temporal split.
+
+Certification again rests on the cluster bootstrap rather than on the control draws, and the two can disagree: at 0\,km all 10 random-district controls score below the buffered fold and the control-draw $z$ is $+2.57$, yet the bootstrap interval for the gap spans zero ($+0.038$ [$-0.012$, $+0.111$]). The control draws quantify sampling of the control set with the 26 districts held fixed; the bootstrap resamples the districts, which is the inference the claim needs. Exactly one radius survives it: at 75\,km the gap is $-0.054$ [$-0.092$, $-0.016$] on AUC and $-0.030$ [$-0.049$, $-0.013$] on net benefit at $p^*=0.30$. Every other radius spans zero on both metrics. Calibration degrades along the radius gradient in both arms, the buffered slope falling from 1.084 under the temporal split to 0.721 at adjacency buffering and 0.230 at 100\,km.
+
+\paragraph{The referee's question gets a favourable answer, and it should be stated as \emph{unchanged}, not as \emph{improved}.} The concern this work package exists to address is whether the climate block's contribution survives spatially honest validation. Fitting the climate-free twin under every fold answers it directly: the increment in net benefit at $p^*=0.30$ attributable to the climate block is $+0.017$ under the temporal split and $+0.009$, $+0.015$, $+0.015$, $+0.009$ and $+0.016$ under buffered folds at 0, 25, 50, 75 and 100\,km. Every change-versus-temporal interval spans zero and every point estimate sits within 0.008 of the temporal value. \emph{Spatial cross-validation does not deflate the climate increment.} The estimates under buffering must not be read as a gain over the temporal split --- the intervals do not support that, and the honest reading is that the increment is unchanged.
+
+\paragraph{Where the fold effect lives, and two ways to misread it.} The long-radius dependence localises in the climate block: the climate-free twin's gap stays within $[+0.017, -0.015]$ across every radius while the published model's falls to $-0.053$ at 75\,km. This is coherent with the physics --- climate fields are smooth over hundreds of kilometres, so a distant training district still carries usable information about the held-out one, whereas case history is not smooth in that way and gains less from proximity. Two readings must be avoided. First, pooled and per-district AUC answer different questions: at 0\,km the pooled gap is $+0.038$ while 15 of 26 districts are individually negative, so a favourable national number does not mean a favourable number for most districts. Second, the temporal-versus-fold differences for this model are not the cost of spatial honesty, because the held-out district's fixed effect is not estimable in any fold; only the matched-control gap separates that from the loss of neighbours.
+
+The methodological point generalises beyond this model. \emph{Residual spatial autocorrelation and dependence on spatially proximate training data are different quantities, and they can disagree.} Moran's $I$ on residuals asks whether what remains after fitting on every unit is spatially clustered; a buffered fold asks whether a model can generalise to a region it has never seen. A model can pass the first and fail the second, and the model examined here does. Selecting a buffer radius from a residual-range analysis --- the conventional design, and the one this study's own plan specified --- therefore cannot be relied on to price the folds; the price has to be measured directly.
+
+Two limits bound what this establishes. The published specification was refitted here on a rebuilt input rather than on the registered one\,\REBUILD, so the cross-model result is a sensitivity analysis: it answers the reviewer's concern in the favourable direction, and the registered re-run is what would settle it. And it says nothing about absolute performance: the geomatics-only model's outcome labels are a reconstruction carrying an exploratory-target caveat on 19.2\% of test rows, identical across arms so that it cannot manufacture a between-arm difference, but sufficient to bar quoting any single AUC here as that model's performance.
+
+% =====================================================================
+%  TABLES
+% =====================================================================
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{The exposure ladder: how far each construction step moves exposure.} Mean absolute displacement over 10{,}842 district-weeks (26 RDHS $\times$ 417 ISO weeks, 2018--2025). A$\to$A$'$ exchanges an \texttt{all\_touched} mask for fractional-area weighting; A$'\to$B re-weights area to population; B$\to$C corrects temperature to the population's elevation. Temperature figures are conservative floors (see Methods, grid resolution).}
+\label{tab:wp5-ladder}
+\begin{tabular}{llrrr}
+\toprule
+Variable & Step & Mean $|\Delta|$ & Max $|\Delta|$ & \% of mean \\
+\midrule
+Weekly rainfall (mm)      & A $\to$ A$'$ (mask)   & 0.76  & ---   & 1.8\% \\
+Weekly rainfall (mm)      & A$'\to$ B (weights)   & 3.40  & 72.6  & 7.9\% \\
+\quad wettest decile      & A$'\to$ B             & 8.56  & ---   & 5.4\% \\
+\quad wettest percentile  & A$'\to$ B             & 12.89 & ---   & 4.9\% \\
+Weekly mean $T$ ($^{\circ}$C)    & A$'\to$ B      & 0.205 & 1.16  & --- \\
+Weekly max $T$ ($^{\circ}$C)     & A$'\to$ B      & 0.387 & 2.76  & --- \\
+Weekly min $T$ ($^{\circ}$C)     & A$'\to$ B      & 0.316 & 2.34  & --- \\
+Relative humidity (pp)           & A$'\to$ B      & 0.77  & 6.29  & --- \\
+Weekly mean $T$ ($^{\circ}$C)    & B $\to$ C      & 0.306 & 1.92  & --- \\
+\quad orography component        & B $\to$ C      & 0.223 & ---   & --- \\
+\quad sub-grid population component & B $\to$ C   & 0.169 & ---   & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{Alert decisions changed by exposure construction, $p^*=0.30$.} Held-out panel of 3{,}926 district-weeks (26 RDHS $\times$ 151 weeks, 2023--2025). Ranges span four transfer specifications; intervals are 95\% percentile cluster bootstrap (2{,}000 replicates, districts resampled) under the district-fixed-effects specification. $\Delta$NB is the change in net benefit at the same threshold.}
+\label{tab:wp5-flips}
+\begin{tabular}{lrrrr}
+\toprule
+Contrast & Flips & \% of rows & Bootstrap 95\% CI & $|\Delta \mathrm{NB}|$ \\
+\midrule
+A$'\to$ B (population weighting) & 35--76  & 0.9--1.9  & 1.94 [1.27, 2.65]    & $\le 0.0013$ \\
+A$'\to$ C (adds lapse correction) & 64--104 & 1.6--2.6  & 2.45 [1.50, 3.57]    & $\le 0.0009$ \\
+Climate block removed (ceiling)   & 441     & 11.2      & 11.23 [9.40, 13.17]  & --- \\
+Exact bound, $|p-p^*|\le0.02$     & $\le$253 & $\le$6.4 & ---                  & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{\textbf{Refitting the published model under each build: the decision moves, the score does not.}\REBUILD{} Same held-out panel of 3{,}926 district-weeks; the model is refitted on each build's exposure table, with cross-basis knots re-derived per arm. Deltas are against Build A$'$; intervals are 95\% percentile cluster bootstrap (2{,}000 paired replicates, districts resampled). Flips are held-out alert decisions changing status at $p^*=0.30$. The swap-path null rebuilds Build A$'$ through the identical substitution machinery and refits, giving the flip count the pipeline produces when nothing changes. The last row deletes the climate block from the same refit and is the internal ceiling.}
+\label{tab:wp5-refit}
+\begin{tabular}{lrlrlr}
+\toprule
+Arm & AUC & $\Delta$AUC [95\% CI] & Cal.\ slope & $\Delta$slope [95\% CI] & Flips (\%) \\
+\midrule
+A$'$ (fractional area)      & 0.7653 & ---                                & 1.085 & ---                                & --- \\
+B (population)              & 0.7668 & $+0.0015$ [$-0.0008$, $+0.0037$]   & 1.108 & $+0.023$ [$+0.005$, $+0.042$]      & 72 (1.8) \\
+C-orography (area weights)  & 0.7659 & $+0.0005$ [$-0.0018$, $+0.0028$]   & 1.108 & $+0.024$ [$+0.010$, $+0.037$]      & 64 (1.6) \\
+C-full (population weights) & 0.7650 & $-0.0003$ [$-0.0040$, $+0.0036$]   & 1.119 & $+0.035$ [$+0.010$, $+0.062$]      & 121 (3.1) \\
+\midrule
+Swap-path null (A$'\to$A$'$) & ---    & ---                               & ---   & ---                                & 3 (0.1) \\
+Climate block removed        & 0.7323 & $-0.0330$                         & 1.156 & $+0.071$                           & 427 (10.9) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{Population-product sensitivity against the construction effect.} Mean absolute displacement over 10{,}842 district-weeks; weight displacement is mean total variation of the within-district weight vector on the ERA5 grid.}
+\label{tab:wp5-product}
+\begin{tabular}{lrrrr}
+\toprule
+Quantity & A$'\to$ B & $\to$R2025A & $\to$GHS-POP & Min.\ ratio \\
+\midrule
+Weight displaced (\% of district) & 27.5  & 2.0    & 1.6    & 13.8$\times$ \\
+Weekly mean $T$ ($^{\circ}$C)     & 0.205 & 0.0088 & 0.0064 & 23.2$\times$ \\
+Weekly max $T$ ($^{\circ}$C)      & 0.387 & 0.0231 & 0.0187 & 16.8$\times$ \\
+Relative humidity (pp)            & 0.769 & 0.0416 & 0.0319 & 18.5$\times$ \\
+Weekly rainfall (mm)              & 3.399 & 0.2032 & 0.1612 & 16.7$\times$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{Power cost of buffered leave-one-out cross-validation, 26 RDHS units.} Training districts available out of 25; distance is boundary-to-boundary in EPSG:32644. A degenerate fold retains fewer than 5 training districts.}
+\label{tab:wp4-power}
+\begin{tabular}{lrrrr}
+\toprule
+Buffer & Median train units & Worst fold & Median train district-weeks & Degenerate folds \\
+\midrule
+Adjacency (0\,km) & 21 & 16 & 5{,}481 & 0 \\
+25\,km            & 19 & 14 & 4{,}959 & 0 \\
+50\,km            & 15 & 10 & 4{,}045 & 0 \\
+75\,km            & 12 & 6  & 3{,}132 & 0 \\
+100\,km           & 9  & 5  & 2{,}349 & 0 \\
+150\,km           & 5  & 0  & 1{,}435 & 12 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{The cost of spatial folds, measured within one model against a size-matched control.} Every buffered fold is matched to a random-district control trained on the same number of districts (10 draws), so the gap isolates geography from sample size. Reference points: temporal split AUC 0.601, unbuffered leave-one-out 0.592. Intervals are 95\% percentile cluster bootstrap (2{,}000 replicates).}
+\label{tab:wp4-fold}
+\begin{tabular}{lrrrrr}
+\toprule
+Buffer & Train units & Buffered AUC & Matched control & Gap [95\% CI] & Controls below \\
+\midrule
+0\,km   & 21 & 0.565 & 0.587 & $-0.022$ [$-0.055$, $+0.011$] & 0 of 10 \\
+25\,km  & 19 & 0.571 & 0.590 & $-0.018$ [$-0.058$, $+0.021$] & 1 of 10 \\
+50\,km  & 15 & 0.558 & 0.577 & $-0.018$ [$-0.054$, $+0.018$] & 2 of 10 \\
+75\,km  & 12 & 0.516 & 0.578 & $-0.061$ [$-0.119$, $-0.008$] & 0 of 10 \\
+100\,km & 9  & 0.502 & 0.573 & $-0.068$ [$-0.143$, $-0.001$] & 0 of 10 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{\textbf{The same fold cost, measured on the published specification.}\REBUILD{} Design identical to Table~\ref{tab:wp4-fold}: every buffered fold matched to a random-district control trained on the same number of districts (10 draws). Reference points: temporal split AUC 0.765, unbuffered leave-one-out 0.720. Intervals are 95\% percentile cluster bootstrap (2{,}000 replicates). At adjacency buffering the gap has the \emph{opposite sign} to the geomatics-only model in Table~\ref{tab:wp4-fold}; the ``controls below'' column and the bootstrap interval disagree there, and the interval is what the claim rests on.}
+\label{tab:wp4-fold-m5}
+\begin{tabular}{lrrrrr}
+\toprule
+Buffer & Train units & Buffered AUC & Matched control & Gap [95\% CI] & Controls below \\
+\midrule
+0\,km   & 21   & 0.743 & 0.705 & $+0.038$ [$-0.012$, $+0.111$] & 10 of 10 \\
+25\,km  & 19   & 0.735 & 0.712 & $+0.024$ [$-0.021$, $+0.080$] & 9 of 10 \\
+50\,km  & 15   & 0.709 & 0.706 & $+0.003$ [$-0.039$, $+0.053$] & 6 of 10 \\
+75\,km  & 12   & 0.662 & 0.716 & $-0.054$ [$-0.092$, $-0.016$] & 0 of 10 \\
+100\,km & 9    & 0.667 & 0.695 & $-0.027$ [$-0.087$, $+0.029$] & 2 of 10 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% =====================================================================
+%  FIGURES
+% =====================================================================
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{Manuscript_Figures/wp5/WP5_F2_exposure_contrast.pdf}
+\caption{\textbf{Exposure construction contrast across the three-build ladder, Sri Lanka 2018--2025.}
+Displacement in weekly district exposure attributable to the construction of the exposure variable alone, with the weather fields, geometry and temporal alignment held fixed. Panels show the per-district displacement for rainfall and temperature under population weighting (A$'\to$B) and under the additional lapse correction (B$\to$C), the decomposition of the mask step from the weighting step, the behaviour of the contrast in the wet tail where alerts fire, and the spatial pattern of each. Rainfall and temperature displacement are effectively uncorrelated across districts ($\rho=0.24$, $p=0.23$), so no single map identifies the exposure-sensitive districts. Maps are drawn in EPSG:32644. The three map panels use a diverging ramp that is symmetric in luminance and therefore does not survive greyscale reproduction; the largest movers are labelled numerically on the map face for that reason.}
+\label{fig:wp5f2}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{Manuscript_Figures/wp5/WP5_F7_decision_flip_envelope.pdf}
+\caption{\textbf{Decision-flip envelope: exposure construction changes alerts that net benefit cannot see.}
+Held-out panel of 3{,}926 district-weeks, 2023--2025. The exact flip curve gives the maximum share of alert decisions that any perturbation of a given size can change, as a property of the frozen predictions alone; estimated flip counts for each exposure rung are bounded by it, and the effect of deleting the entire climate block provides the observed ceiling. The lower panels show why the change in net benefit stays within $\pm0.0023$ while flip counts are clearly non-zero: rows that flip lie near the decision threshold, and rows near the threshold have an event rate near it, which is by definition the break-even rate at which a flip is worth approximately zero net benefit in either direction.}
+\label{fig:wp5f7}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{Manuscript_Figures/wp5/WP5_F7b_decision_sensitivity_refit.pdf}
+\caption{\textbf{Refitting under each build separates what the model scores from what it decides.}\REBUILD{}
+The model is refitted on each build's exposure table and evaluated on the same 3{,}926 held-out district-weeks; deltas are against Build A$'$, with 95\% cluster-bootstrap intervals over the 26 units. (a) Neither discrimination nor net benefit moves: every $\Delta$AUC and $\Delta$NB interval spans zero under every rung and both specifications. (b) Calibration slope does move, and only in the published specification (filled): all three intervals exclude zero, while the specification without district fixed effects (open) spans zero and reverses sign. (c) Alert flips against the threshold, with the swap-path noise floor shaded --- rebuilding Build A$'$ through the identical machinery changes at most 3 decisions, so the flip counts are not pipeline noise; the open stars mark the estimates the frozen-prediction envelope gave at $p^*=0.30$, which land on the refit for population weighting and below it for the full Build C, in the direction that envelope's stated limitation predicted. (d) The two rungs act differently: population weighting is near-symmetric in direction, the orography correction is one-signed, so the combined rung is not either one scaled up. (e) Why a district fixed effect does not absorb the Build C offset even though the offset is constant within district: entering temperature linearly leaves 10 flips, entering it through the nonlinear cross-basis leaves 67, in models that both carry the fixed effects. (f) Changed decisions track the magnitude of a district's Build C temperature offset ($r=0.66$), concentrating in the highlands without being determined by displacement alone.}
+\label{fig:wp5f7b}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{Manuscript_Figures/wp5/WP5_F8_miscalibration_structure.pdf}
+\caption{\textbf{Where miscalibration and exposure-driven decision changes fall in space.}
+Per-unit calibration and decision quantities, all computed from the frozen held-out predictions, screened against a panel of 15 geospatial modifiers fixed in advance. (a) Alert decisions changed by exposure construction concentrate in three highland units. (b) Calibration slope varies from 0.67 to 2.23 across units, so the model is not uniformly calibrated in space. (c) Flips track altitude, but elevation and the measured exposure displacement are collinear across 26 units and neither survives adjustment for the other, so the concentration is reported without attributing it to either. (d) Calibration slope tracks cropland fraction, and the association survives adjustment for the unit's own alert prevalence. (e) All 60 tests run, filled where they survive Benjamini--Hochberg control at $q<0.05$ --- the panel is included so the figure cannot be read as a selected subset. (f) No modifier explains per-unit $\Delta$NB. The single strongest association in the whole screen is between calibration intercept and alert prevalence, which is near-tautological and is reported as a caution: any modifier correlated with outbreak burden inherits it. Analysis is exploratory-explanatory; no modifier here may re-enter the model as an accuracy predictor.}
+\label{fig:wp5f8}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{Manuscript_Figures/wp4/WP4_F_fold_effect_within_m6.pdf}
+\caption{\textbf{What spatially buffered folds cost for the geomatics-only model, measured against a size-matched control.}
+Discrimination and calibration under buffered leave-one-out cross-validation at increasing buffer radius, each buffered fold matched to a random-district control trained on an identical number of districts so that the loss of training data is held fixed and the remaining gap is attributable to geography. Residual spatial autocorrelation is undetectable in these models at every distance band, yet performance still depends on having geographically proximate districts in training --- the two quantities disagree, so a residual-range analysis cannot be used to price the folds.}
+\label{fig:wp4f}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{Manuscript_Figures/wp4/WP4_F_fold_effect_within_m5.pdf}
+\caption{\textbf{The same measurement on the published specification: the price of a fold depends on the model.}\REBUILD{}
+Design identical to Fig~\ref{fig:wp4f} --- buffered leave-one-out at increasing radius, every fold matched to a random-district control of the same training size --- applied to the published specification refitted on the rebuilt input. (a) Performance under each scheme, with the temporal split and unbuffered leave-one-out as reference lines; the buffered arm is \emph{above} the size-matched control at short radii and below it at 75\,km, and above unbuffered leave-one-out at 0\,km despite training on fewer districts. (b) The geography-attributable gap with cluster-bootstrap intervals: not monotone in radius, and excluding zero at 75\,km only. Compare the same panel in Fig~\ref{fig:wp4f}, where the gap at adjacency buffering has the opposite sign --- the within-model result on one model does not transfer to another. (c) Training districts remaining, the power cost that the matched control is designed to remove from the comparison. (d) The climate block's contribution to net benefit survives buffering at every radius and is statistically unchanged from the temporal split. (e) The radius dependence localises in the climate block: the climate-free twin stays flat while the full model falls away. (f) The national number hides district-level disagreement: at 100\,km the gap is negative in 20 of 26 districts and positive in 6.}
+\label{fig:wp4fm5}
+\end{figure}
+
+% =====================================================================
+%  DISCUSSION MATERIAL (raw; not yet written to the Discussion's voice)
+% =====================================================================
+%
+%  Six points from this work belong in the Discussion, in decreasing order of
+%  reach beyond this study:
+%
+%  1. NET BENEFIT IS BLIND TO THRESHOLD-LOCAL PERTURBATIONS. This is a general
+%     property of decision-curve analysis, not a WP5 result, and it qualifies
+%     every sensitivity analysis in this literature that reads a small dNB as
+%     "no decision effect" — including analyses reported elsewhere in this
+%     paper. The recommendation is concrete: report a decision-flip count
+%     alongside dNB whenever the perturbation acts near the threshold. It now
+%     rests on a refit, not only on perturbed frozen predictions: 121 alert
+%     decisions change while dNB moves +0.0004 [-0.0022, +0.0031].
+%
+%  2. A SENSITIVITY ANALYSIS THAT READS ONLY dAUC AND dNB CAN REPORT A NULL
+%     WHERE THE DECISION MOVES. That is the single most transportable finding
+%     here: across four exposure builds, every dAUC and dNB interval spans zero
+%     while 121 of 3,926 alert decisions flip against a measured noise floor of
+%     3. The score and the decision are different quantities and a sensitivity
+%     analysis has to report both.
+%
+%  3. EXPOSURE CONSTRUCTION IS AN UNREPORTED ANALYST DEGREE OF FREEDOM that
+%     carries 15–28% of the entire climate block's decision leverage (refit;
+%     14–24% by the frozen-prediction envelope). The weighting choice matters
+%     ~4x more than the masking choice, and it is the weighting that papers
+%     leave unstated.
+%
+%  4. RESIDUAL AUTOCORRELATION DOES NOT PRICE SPATIAL FOLDS, AND NEITHER DOES
+%     ANOTHER MODEL. The conventional design (choose the buffer from a residual
+%     range) fails here in the direction that matters: residuals look spatially
+%     clean while performance depends materially on proximate training data.
+%     And the price is model-specific — at the operative radius the two models
+%     measured here disagree in SIGN — so a within-model fold cost measured on
+%     a convenient model cannot be quoted for the published one.
+%
+%  5. A NONLINEAR EXPOSURE-RESPONSE DOES NOT ABSORB A UNIFORM EXPOSURE OFFSET
+%     THE WAY A LINEAR ONE DOES. A district fixed effect absorbs a shift in the
+%     linear predictor; it does not absorb a shift in temperature read through
+%     a cross-basis. Measured, not argued: 67 flips against 10 when the same
+%     model enters temperature linearly. This is why "the model absorbs this"
+%     is a hypothesis rather than an argument, and it generalises to any
+%     DLNM-style specification.
+%
+%  6. THE COMPACT-COUNTRY CAVEAT, NOW WITHOUT ITS COMPANION. n=26 bounds what
+%     any of this can certify, and the Colombia block CV that was to supply the
+%     well-powered spatial claim has been withdrawn from the study. The
+%     limitation is therefore permanent for this paper and should be written as
+%     one, not as future work.
+%
+%  Deliberately NOT claimed anywhere above: that the REGISTERED re-runs have
+%  been performed (the refits reported here run on an independently rebuilt
+%  input and are sensitivity analyses); that the buffered-fold estimates above
+%  the temporal split are a real gain (every interval spans zero — the honest
+%  reading is "unchanged"); that the calibration-slope movement is clinically
+%  material; that exposure construction moves dAUC or dNB; that the highland
+%  concentration of flips is attributable to terrain rather than to measured
+%  displacement (collinear at n=26, not identified); anything about Colombia;
+%  any absolute performance figure for the geomatics-only model.

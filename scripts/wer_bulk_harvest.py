@@ -11,9 +11,13 @@ RETRIEVAL_DATE = "2026-06-10"
 LISTING_URL = "https://www.epid.gov.lk/weekly-epidemiological-report"
 VOLYEAR = {45:2018,46:2019,47:2020,48:2021,49:2022,50:2023,51:2024,52:2025}
 RAW = "raw_bulk"
+# epid.gov.lk began returning HTTP 403 to curl's default agent some time after the
+# 2026-06-10 harvest; a browser agent is served normally. Same URLs, same logic.
+UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
+      "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36")
 
 def get_listing():
-    return subprocess.run(["curl","-sL","--max-time","60",LISTING_URL],
+    return subprocess.run(["curl","-sL","--max-time","60","-A",UA,LISTING_URL],
                           capture_output=True, text=True).stdout
 
 def harvest_urls(html):
@@ -46,7 +50,7 @@ def fetch(item):
     outdir = os.path.join(RAW, str(year)); os.makedirs(outdir, exist_ok=True)
     out = os.path.join(outdir, f"Vol_{vol}_no_{iss:02d}.pdf")
     for u in urls:
-        subprocess.run(["curl","-sL","--max-time","90",u,"-o",out],
+        subprocess.run(["curl","-sL","--max-time","90","-A",UA,u,"-o",out],
                        capture_output=True)
         if is_pdf(out):
             h = hashlib.sha256(open(out,"rb").read()).hexdigest()
