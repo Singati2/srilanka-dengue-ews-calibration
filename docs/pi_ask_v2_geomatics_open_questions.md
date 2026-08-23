@@ -106,10 +106,11 @@ rejection, and not a contradiction of the 2026-08-07 PR #1 comment approving geo
 I have not treated it as a rejection, but I would rather be told than keep inferring.
 
 **What has changed since v1 is that the inference now has a commit behind it.** WP4/WP5 are ported
-into the v44 biomath candidate as Results Q7, on an unpushed worktree branch. That port **overrides
+into the v44 biomath candidate as Results Q7, on the branch `wp45-into-v44`. That port **overrides
 line 8 of `FINAL_CANONICAL_DECISION.md`**, which I have annotated rather than rewritten, because
-overriding a ratified decision is not mine to do. Nothing is pushed. If the answer is Paper 2, the
-port is reverted and the Colombia arm — where the well-powered spatial claim would have lived — is
+overriding a ratified decision is not mine to do. The branch is pushed so you can read it, but
+nothing is merged and no pull request is open against it: pushing a branch is not a claim that the
+override stands. If the answer is Paper 2, the port is reverted and the Colombia arm — where the well-powered spatial claim would have lived — is
 the question to revisit; note that the Colombia block CV was withdrawn from the study on 2026-08-17,
 so **the n=26 limitation currently has no companion analysis coming and is written as permanent.**
 
