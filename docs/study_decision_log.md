@@ -8,6 +8,35 @@
 
 ---
 
+## 2026-08-23 (b) — the GitHub account is renamed `spatial-py` → `earthdatascience`
+
+**`DECISION` — live instructions are rewritten, the historical record is not.** `docs/M6.md` carries
+executable commands (the clone URL, the `git remote -v` expectation, `git config user.name`, the
+`gh repo view` checks) and following it as written would now set a stale identity, so its 12
+references are updated and a dated rename note added at the top. **This log is left alone below this
+entry.** Older entries and the PR #1 memos say `spatial-py` because that is what the account was
+called when they were written; retro-editing a dated record to match the present makes it stop being
+a record. Same reasoning that kept PI ask v1 banner-marked rather than rewritten.
+
+**`DECISION` — the two facts §12 depends on were re-verified under the new name, not assumed to
+carry over.** `earthdatascience/srilanka-dengue-ews-calibration` is still **`isFork: false`** with no
+parent, and the account still holds **`push: true`** on `Singati2/srilanka-dengue-ews-calibration`.
+So the documented gotcha is unchanged: a cross-repo PR is still impossible and the route is still
+push a review branch to `upstream`, then open a same-repo PR. **A rename is exactly the kind of event
+that silently revokes access, so the permission was checked rather than presumed** — collaborator
+grants key off the numeric user id, which the rename does not change.
+
+**`DIRECTION` — `origin` re-pointed at the new URL and both pushed branches confirmed present there**
+(`m6-geomatics-notebooks` at `a864388`, `wp45-into-v44` at `25cf2df`, neither ahead). GitHub redirects
+the old URL, so the old remote would have kept working; it is updated so that the redirect is not a
+load-bearing dependency. The repo's `user.name` now reads `earthdatascience`; **commit attribution was
+never at risk** — GitHub links commits by email, and `ajaythapa061@gmail.com` is unchanged.
+
+**Not done, and flagged rather than actioned:** four unrelated clones under `/Users/mpcr/aj`
+(`Mangrove`, `Galileo`, `Systematic_Review`, `Rhee/Freight`) still have `spatial-py` remotes.
+
+---
+
 ## 2026-08-23 — everything is pushed to both remotes; the ask is the only thing still held back
 
 **`DELIVERABLE` — the three-day backlog of unpushed work is on both remotes.** `m6-geomatics-notebooks`
