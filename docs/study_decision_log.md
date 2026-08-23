@@ -8,6 +8,35 @@
 
 ---
 
+## 2026-08-23 — everything is pushed to both remotes; the ask is the only thing still held back
+
+**`DELIVERABLE` — the three-day backlog of unpushed work is on both remotes.** `m6-geomatics-notebooks`
+went `9f4789e..556ae7f` (12 commits: the ladder rebuild, the mirrored-rainfall fix, `wp4_02b`,
+`wp5_05b`, write-up v3, the verifier at 324 checks, PI ask v2) and `wp45-into-v44` is pushed as a new
+branch on both (5 commits, the Results Q7 port). Nothing merged, no pull request opened against
+either.
+
+**`DECISION` — pushing the port branch is deliberately not a claim that the override stands.** The
+port overrides line 8 of `FINAL_CANONICAL_DECISION.md`, which is a ratified decision and not the
+Geospatial Lead's to overturn. Pushing makes it readable by the PI, which is what Q3 of the ask needs;
+merging it would be the thing that is not ours to do, and has not been done. **Q3 of the PI ask was
+edited in the same batch** (`556ae7f`) because it asserted "nothing is pushed" — *an unsent memo whose
+factual claims are falsified by your own next action is a defect, and the cheapest moment to catch it
+is before it is sent.*
+
+**Verification re-run rather than quoted before the push.** `scripts/verify_numbers_v44.py` — 324
+checks, 1 mismatch, still the `+0.0049` three-week reporting-delay increment that needs the Linux box.
+`scripts/check_wp45_fragment.py` — 51 passed, 0 failed. **Still no LaTeX toolchain on this machine
+(re-checked: pdflatex, xelatex, lualatex, latexmk, tectonic all absent), so neither document has been
+compiled.**
+
+**`OPEN` — unchanged, and now the whole of what is left.** The PI ask v2 is still unsent; the
+registered re-runs still need the linked analysis table; nothing is compiled. A branch sweep found no
+new instruction branches — newest upstream activity is still `v44-hybrid-light-decision-framework`
+(2026-08-10).
+
+---
+
 ## 2026-08-20 (b) — the write-up catches up: v3 of the fragment, Q7 of the v44 candidate, 324 machine checks
 
 **`DELIVERABLE` — the outstanding integration is done.** `manuscript/wp4_wp5_sections/` is at **v3**
